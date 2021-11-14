@@ -35,7 +35,9 @@ module.exports = class ApiUser {
             }
 
             await User.create(user);
-            user.imageUrl = user.imageUrl.split(' ')[0];
+            if(user.imageUrl) {
+                user.imageUrl = user.imageUrl.split(' ')[0];
+            }
             res.status(201).json({
                 error: false,
                 msg: 'Đăng kí tài khoản thành công',
@@ -75,7 +77,8 @@ module.exports = class ApiUser {
                     id: user.id,
                 },
             };
-            user.imageUrl = user.imageUrl.split(' ')[0];
+
+
             jwt.sign(
                 payload,
                 process.env.JWT_SECRET,
@@ -89,7 +92,9 @@ module.exports = class ApiUser {
                         ),
                         httpOnly: true,
                     };
-                    user.imageUrl = user.imageUrl.split(' ')[0];
+                    if(user.imageUrl) {
+                        user.imageUrl = user.imageUrl.split(' ')[0];
+                    }
                     return res
                         .status(200)
                         .cookie('token', token, options)
