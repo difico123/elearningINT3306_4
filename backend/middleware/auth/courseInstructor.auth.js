@@ -1,4 +1,4 @@
-const { User } = require('../../db/models');
+const { User,Course } = require('../../db/models');
 
 module.exports = async function (req, res, next) {
     try {
@@ -9,16 +9,16 @@ module.exports = async function (req, res, next) {
                 : req.params.courseId;
 
         let { id } = req.user;
-        CourseService.getSingleInstructorCourse(id, courseId).then(
-            (instructorCourse) => {
-                return !instructorCourse[0]
-                    ? res.status(403).json({
-                          error: true,
-                          msg: 'Course instructor resources access denied',
-                      })
-                    : next();
-            },
-        );
+
+        await Course.findOne({where: {instructorId: id, id: courseId}}).then(v => {
+                return !v
+                ? res.status(403).json({
+                      error: true,
+                      msg: 'Quyền truy cập này chỉ dành cho giáo viên trong khoá học',
+                  })
+                : next();
+        })
+
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Server Error');

@@ -35,9 +35,6 @@ module.exports = class ApiUser {
             }
 
             await User.create(user);
-            if(user.imageUrl) {
-                user.imageUrl = user.imageUrl.split(' ')[0];
-            }
             res.status(201).json({
                 error: false,
                 msg: 'Đăng kí tài khoản thành công',
@@ -81,18 +78,17 @@ module.exports = class ApiUser {
 
             jwt.sign(
                 payload,
-                process.env.JWT_SECRET,
-                { expiresIn: 36000 },
+                process.env.JWT_SECRET, { expiresIn: 36000 },
                 (err, token) => {
                     if (err) throw err;
                     const options = {
                         expires: new Date(
                             Date.now() +
-                                process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+                            process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
                         ),
                         httpOnly: true,
                     };
-                    if(user.imageUrl) {
+                    if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }
                     return res
@@ -237,8 +233,9 @@ module.exports = class ApiUser {
             //get user information by id
             let { id } = req.user;
             let user = await User.findOne({ where: { id } });
-
-            user.imageUrl = user.imageUrl.split(' ')[0];
+            if (user.imageUrl) {
+                user.imageUrl = user.imageUrl.split(' ')[0];
+            }
 
             res.status(200).json({
                 error: false,
@@ -255,7 +252,7 @@ module.exports = class ApiUser {
     // @access  Private
     static async editInfo(req, res) {
         let { firstName, middleName, lastName, phoneNumber, address, city } =
-            req.body;
+        req.body;
         try {
             let user = await User.findOne({ where: { id: req.user.id } });
 
