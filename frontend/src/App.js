@@ -9,6 +9,11 @@ function App() {
     <div className="App">
       <Header />
       <Home />
+      <div class="flex">
+      <h2 class="bg-blue-300">fdsfa</h2>
+      <h2 class="bg-blue-300">fdsfa</h2>
+        
+      </div>
       <Footer />
     </div>
   );

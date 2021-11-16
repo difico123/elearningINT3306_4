@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import Login from "./auth/login";
 import category from "../service/categoryService"
 
 export default class Home extends Component {
@@ -9,7 +8,7 @@ export default class Home extends Component {
     this.state = {
       data : [
         {
-          name:" ",
+          name:" abc",
           imageUrl: ""
         }
       ]
@@ -21,7 +20,7 @@ export default class Home extends Component {
       this.setState({data: res.data.categories})
     })
   }
-  
+
   render() {
     const categories = this.state.data.map((category, index) => {
       return (
@@ -34,7 +33,6 @@ export default class Home extends Component {
     return (
       <Wrap>
       <Categories> {categories}
-        <Login></Login>
       </Categories>
     </Wrap>
     )
