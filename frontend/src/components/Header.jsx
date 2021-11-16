@@ -21,10 +21,10 @@ function Header() {
           <CustomSearch style={{ fontSize: 30 }} />
         </button>
       </SearchBar>
-      <Checkout>
-        <BecomeInstructor src="https://cdn-icons-png.flaticon.com/512/65/65882.png"></BecomeInstructor>
+      <BecomeInstructor>
+        <InstructorIcon src="https://cdn-icons-png.flaticon.com/512/65/65882.png"></InstructorIcon>
         <p>Trở thành giảng viên</p>
-      </Checkout>
+      </BecomeInstructor>
       <Buttons>
         <SigninButton>Đăng nhập</SigninButton>
         <SignupButton>Đăng ký</SignupButton>
@@ -58,24 +58,26 @@ const Categories = styled.div`
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+  font-weight: 600;
 `;
 
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 1100px;
+  width: 900px;
   border: 2px solid black;
   border-radius: 100px;
-  opacity: 0.85;
+
   cursor: pointer;
-  padding: 10px 25px;
+  padding: 8px 25px;
   cursor: text;
   font-weight: lighter;
 
   input {
+    padding-left: 10px;
     border: none;
-    width: 100%;
+    width: 90%;
     autocomplete: off;
     background-image: none;
     font-size: 15px;
@@ -85,7 +87,6 @@ const SearchBar = styled.div`
   button {
     cursor: pointer;
     border: none;
-    background-image: none;
     background: transparent;
   }
   textarea:focus,
@@ -94,7 +95,7 @@ const SearchBar = styled.div`
   }
 `;
 
-const Checkout = styled.div`
+const BecomeInstructor = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
@@ -102,6 +103,7 @@ const Checkout = styled.div`
   align-items: center;
   cursor: pointer;
   height: 40px;
+  font-weight: 600;
 `;
 
 const Buttons = styled.div`
@@ -148,6 +150,6 @@ const CustomSearch = styled(SearchIcon)``;
 
 const CustomMenu = styled(MenuIcon)``;
 
-const BecomeInstructor = styled.img`
+const InstructorIcon = styled.img`
   height: 30px;
 `;

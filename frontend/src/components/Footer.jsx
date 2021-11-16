@@ -49,7 +49,7 @@ function Footer() {
 
 export default Footer;
 const BottomNav = styled.div`
-  bottom: 0;
+  bottom: 0px;
   height: 350px;
   background-color: #f0f0f0;
   display: flex;

@@ -42,14 +42,14 @@ function SignUpForm() {
           </button>
 
           <div class="text-center text-sm text-grey-dark mt-4">
-            By signing up, you agree to the
+            By signing up, you agree to the{" "}
             <a
               class="no-underline border-b border-grey-dark text-grey-dark"
               href="#"
             >
               Terms of Service
             </a>{" "}
-            and
+            and{" "}
             <a
               class="no-underline border-b border-grey-dark text-grey-dark"
               href="#"
@@ -60,11 +60,8 @@ function SignUpForm() {
         </div>
 
         <div class="text-grey-dark mt-6">
-          Already have an account?
-          <a
-            class="no-underline border-b border-blue text-blue"
-            href="../login/"
-          >
+          Already have an account?{" "}
+          <a class="no-underline border-b border-blue text-blue" href="./login">
             Log in
           </a>
           .
