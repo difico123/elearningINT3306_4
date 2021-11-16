@@ -60,6 +60,7 @@ const BottomNav = styled.div`
   border-top: 0.1px solid black;
   gap: 25px;
   text-align: center;
+  display: absolute;
 `;
 
 const Title = styled.div`

@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import Login from "./auth/Login";
+import Category from "../service/categoryService";
 
 function Home() {
   return (
     <Wrap>
-      <Categories></Categories>
+      <Categories>
+        <Login></Login>
+      </Categories>
     </Wrap>
   );
 }
-export default Home;
 
 const Wrap = styled.div`
-  height: 100vh;
-  width: 100vw;
+  min-height: calc(100vh - 435px);
 `;
 
 const Categories = styled.div`
@@ -21,6 +23,6 @@ const Categories = styled.div`
   flex-wrap: nowrap;
   justify-content: flex-start;
   gap: 150px;
-  padding-top: 10vh;
-  padding-left: 10vw;
 `;
+
+export default Home;

@@ -11,7 +11,7 @@ module.exports = function (req, res, next) {
     if (!token) {
         return res.status(401).json({
             error: true,
-            msg: 'No token, access denied',
+            msg: 'Không có token, không thể truy cập',
         });
     }
     //Verify token

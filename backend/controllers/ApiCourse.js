@@ -1,6 +1,6 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-const { Course, Category } = require('../db/models');
+const {User, Course, Category } = require('../db/models');
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -47,26 +47,22 @@ module.exports = class ApiCourse {
     // @desc    activate course
     // @access  Private
     static async activateCourse(req, res) {
-        const instructorId = req.user.id;
         const courseId = req.params.courseId;
-        const activeStatus = 1;
         try {
-            CourseService.CourseStatus(
-                instructorId,
-                courseId,
-                activeStatus,
-            ).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Bạn chưa kích hoạt được khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được kích hoạt thành công',
+            let course = await Course.findOne({where :{ id: courseId}});
+            if(course.verified) {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'Khoá học này đã được kích hoạt từ trước',
                 });
-            });
+            } else {
+                course.verified = true;
+                await course.save();
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Khoá học này đã được kích hoạt',
+                });
+            }
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -77,26 +73,24 @@ module.exports = class ApiCourse {
     // @desc    Suspend course
     // @access  Private
     static async suspendCourse(req, res) {
-        const instructorId = req.user.id;
         const courseId = req.params.courseId;
-        const suspendStatus = 0;
         try {
-            CourseService.CourseStatus(
-                instructorId,
-                courseId,
-                suspendStatus,
-            ).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: false,
-                        msg: 'Chưa tạm dừng khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được tạm dừng thành công',
+            let course = await Course.findOne({where :{ id: courseId}});
+            if(!course.verified) {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'Khoá học này đã được tạm dừng từ trước',
                 });
-            });
+            } else {
+                course.verified = false;
+
+                await course.save();
+
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Khoá học này đã được tạm dừng',
+                });
+            }
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -107,44 +101,39 @@ module.exports = class ApiCourse {
     // @desc    edit course
     // @access  Private
     static async edit(req, res) {
-        const newCourse = {
-            id: req.params.courseId,
-            instructor: req.user.id,
-            name: req.body.name,
-            des: req.body.des,
-        };
+        let {name,description} = req.body;
+        let {courseId} = req.params;
 
         try {
+            let course = await Course.findOne({ where: { id: courseId}});
+
             if (req.file !== undefined) {
-                await CourseService.getCourseById(req.params.courseId).then(
-                    async (data) => {
-                        let { imageUrl } = data[0];
-                        if (imageUrl) {
-                            await cloudinary.uploader.destroy(
-                                imageUrl.split(' ')[1],
-                            );
-                        }
-                    },
-                );
+                let { imageUrl } = course;
+                if (imageUrl) {
+                    await cloudinary.uploader.destroy(
+                        imageUrl.split(' ')[1],
+                    );
+                }
+
                 const result = await cloudinary.uploader.upload(req.file.path, {
                     folder: 'courses',
                 });
 
-                newCourse.imageUrl = `${result.secure_url} ${result.public_id}`;
+                course.imageUrl = `${result.secure_url} ${result.public_id}`;
             }
 
-            CourseService.updateCourse(newCourse).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Bạn chưa sửa được khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được sửa thành công',
-                    course: newCourse,
-                });
+            course.name = name;
+            course.description = description;
+
+            await course.save();
+            
+            if(course.imageUrl) {
+                course.imageUrl = course.imageUrl.split(' ')[0]
+            }
+            res.status(200).json({
+                error: false,
+                msg: 'Khoá học đã được sửa thành công',
+                course: course,
             });
         } catch (error) {
             console.log(error.message);
@@ -217,13 +206,15 @@ module.exports = class ApiCourse {
     static async getCourses(req, res) {
         try {
             let courses = await Course.findAll({
-                where: { instructorId: req.user.id },
-                include: 'categories',include: 'users',
+                where: { instructorId: req.user.id }
             });
-
+            let instructor = await User.findOne({
+                where: { id: req.user.id }
+            });
             courses = courses == null ? 'Bạn chưa có khoá học nào' : courses;
             res.status(200).json({
                 error: false,
+                instructor,
                 courses: courses,
             });
         } catch (error) {
