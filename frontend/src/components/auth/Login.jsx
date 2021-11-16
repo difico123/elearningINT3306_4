@@ -14,7 +14,7 @@ function LoginForm() {
               type="text"
               id="username"
               name="username"
-              placeholder="Tên đăng nhập"
+              placeholder="Tên đăng nhập..."
             ></input>
           </Field>
           <Field>
@@ -23,7 +23,7 @@ function LoginForm() {
               type="password"
               id="password"
               name="password"
-              placeholder="Mật khẩu"
+              placeholder="Mật khẩu..."
             ></input>
           </Field>
           <Field>

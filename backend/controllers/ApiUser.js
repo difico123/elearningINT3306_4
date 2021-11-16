@@ -35,10 +35,6 @@ module.exports = class ApiUser {
             }
 
             await User.create(user);
-<<<<<<< HEAD
-=======
-            user.imageUrl = user.imageUrl.split(' ')[0];
->>>>>>> 821a4b9 (init express sequelize mysql)
             res.status(201).json({
                 error: false,
                 msg: 'Đăng kí tài khoản thành công',
@@ -78,25 +74,16 @@ module.exports = class ApiUser {
                     id: user.id,
                 },
             };
-<<<<<<< HEAD
 
 
             jwt.sign(
                 payload,
                 process.env.JWT_SECRET, { expiresIn: 36000 },
-=======
-            user.imageUrl = user.imageUrl.split(' ')[0];
-            jwt.sign(
-                payload,
-                process.env.JWT_SECRET,
-                { expiresIn: 36000 },
->>>>>>> 821a4b9 (init express sequelize mysql)
                 (err, token) => {
                     if (err) throw err;
                     const options = {
                         expires: new Date(
                             Date.now() +
-<<<<<<< HEAD
                             process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
                         ),
                         httpOnly: true,
@@ -104,13 +91,6 @@ module.exports = class ApiUser {
                     if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }
-=======
-                                process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-                        ),
-                        httpOnly: true,
-                    };
-                    user.imageUrl = user.imageUrl.split(' ')[0];
->>>>>>> 821a4b9 (init express sequelize mysql)
                     return res
                         .status(200)
                         .cookie('token', token, options)
@@ -253,14 +233,9 @@ module.exports = class ApiUser {
             //get user information by id
             let { id } = req.user;
             let user = await User.findOne({ where: { id } });
-<<<<<<< HEAD
             if (user.imageUrl) {
                 user.imageUrl = user.imageUrl.split(' ')[0];
             }
-=======
-
-            user.imageUrl = user.imageUrl.split(' ')[0];
->>>>>>> 821a4b9 (init express sequelize mysql)
 
             res.status(200).json({
                 error: false,
@@ -277,11 +252,7 @@ module.exports = class ApiUser {
     // @access  Private
     static async editInfo(req, res) {
         let { firstName, middleName, lastName, phoneNumber, address, city } =
-<<<<<<< HEAD
         req.body;
-=======
-            req.body;
->>>>>>> 821a4b9 (init express sequelize mysql)
         try {
             let user = await User.findOne({ where: { id: req.user.id } });
 
@@ -400,8 +371,4 @@ module.exports = class ApiUser {
             res.status(500).send('Server error');
         }
     }
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> 821a4b9 (init express sequelize mysql)

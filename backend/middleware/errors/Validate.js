@@ -88,7 +88,6 @@ module.exports = {
             next();
         };
     },
-<<<<<<< HEAD
     checkCourseInput: function (fields) {
         let names = ['name', 'title'];
         let contents = ['description', 'content'];
@@ -124,8 +123,6 @@ module.exports = {
                 next();
             }
         },
-=======
->>>>>>> 821a4b9 (init express sequelize mysql)
 
     validateInput: function (req, res, next) {
         const errors = validationResult(req);

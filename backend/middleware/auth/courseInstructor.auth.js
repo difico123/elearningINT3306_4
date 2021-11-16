@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const { User,Course } = require('../../db/models');
-=======
-const { User } = require('../../db/models');
->>>>>>> 821a4b9 (init express sequelize mysql)
 
 module.exports = async function (req, res, next) {
     try {
@@ -13,7 +9,6 @@ module.exports = async function (req, res, next) {
                 : req.params.courseId;
 
         let { id } = req.user;
-<<<<<<< HEAD
 
         await Course.findOne({where: {instructorId: id, id: courseId}}).then(v => {
                 return !v
@@ -24,18 +19,6 @@ module.exports = async function (req, res, next) {
                 : next();
         })
 
-=======
-        CourseService.getSingleInstructorCourse(id, courseId).then(
-            (instructorCourse) => {
-                return !instructorCourse[0]
-                    ? res.status(403).json({
-                          error: true,
-                          msg: 'Course instructor resources access denied',
-                      })
-                    : next();
-            },
-        );
->>>>>>> 821a4b9 (init express sequelize mysql)
     } catch (error) {
         console.log(error.message);
         res.status(500).send('Server Error');

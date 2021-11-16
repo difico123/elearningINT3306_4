@@ -11,11 +11,7 @@ module.exports = function (req, res, next) {
     if (!token) {
         return res.status(401).json({
             error: true,
-<<<<<<< HEAD
             msg: 'Không có token, không thể truy cập',
-=======
-            msg: 'No token, access denied',
->>>>>>> 821a4b9 (init express sequelize mysql)
         });
     }
     //Verify token

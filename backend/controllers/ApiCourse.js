@@ -1,10 +1,6 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-<<<<<<< HEAD
 const {User, Course, Category } = require('../db/models');
-=======
-const { Course, Category } = require('../db/models');
->>>>>>> 821a4b9 (init express sequelize mysql)
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -51,7 +47,6 @@ module.exports = class ApiCourse {
     // @desc    activate course
     // @access  Private
     static async activateCourse(req, res) {
-<<<<<<< HEAD
         const courseId = req.params.courseId;
         try {
             let course = await Course.findOne({where :{ id: courseId}});
@@ -68,28 +63,6 @@ module.exports = class ApiCourse {
                     msg: 'Khoá học này đã được kích hoạt',
                 });
             }
-=======
-        const instructorId = req.user.id;
-        const courseId = req.params.courseId;
-        const activeStatus = 1;
-        try {
-            CourseService.CourseStatus(
-                instructorId,
-                courseId,
-                activeStatus,
-            ).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Bạn chưa kích hoạt được khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được kích hoạt thành công',
-                });
-            });
->>>>>>> 821a4b9 (init express sequelize mysql)
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -100,7 +73,6 @@ module.exports = class ApiCourse {
     // @desc    Suspend course
     // @access  Private
     static async suspendCourse(req, res) {
-<<<<<<< HEAD
         const courseId = req.params.courseId;
         try {
             let course = await Course.findOne({where :{ id: courseId}});
@@ -119,28 +91,6 @@ module.exports = class ApiCourse {
                     msg: 'Khoá học này đã được tạm dừng',
                 });
             }
-=======
-        const instructorId = req.user.id;
-        const courseId = req.params.courseId;
-        const suspendStatus = 0;
-        try {
-            CourseService.CourseStatus(
-                instructorId,
-                courseId,
-                suspendStatus,
-            ).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: false,
-                        msg: 'Chưa tạm dừng khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được tạm dừng thành công',
-                });
-            });
->>>>>>> 821a4b9 (init express sequelize mysql)
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -151,7 +101,6 @@ module.exports = class ApiCourse {
     // @desc    edit course
     // @access  Private
     static async edit(req, res) {
-<<<<<<< HEAD
         let {name,description} = req.body;
         let {courseId} = req.params;
 
@@ -166,32 +115,10 @@ module.exports = class ApiCourse {
                     );
                 }
 
-=======
-        const newCourse = {
-            id: req.params.courseId,
-            instructor: req.user.id,
-            name: req.body.name,
-            des: req.body.des,
-        };
-
-        try {
-            if (req.file !== undefined) {
-                await CourseService.getCourseById(req.params.courseId).then(
-                    async (data) => {
-                        let { imageUrl } = data[0];
-                        if (imageUrl) {
-                            await cloudinary.uploader.destroy(
-                                imageUrl.split(' ')[1],
-                            );
-                        }
-                    },
-                );
->>>>>>> 821a4b9 (init express sequelize mysql)
                 const result = await cloudinary.uploader.upload(req.file.path, {
                     folder: 'courses',
                 });
 
-<<<<<<< HEAD
                 course.imageUrl = `${result.secure_url} ${result.public_id}`;
             }
 
@@ -207,23 +134,6 @@ module.exports = class ApiCourse {
                 error: false,
                 msg: 'Khoá học đã được sửa thành công',
                 course: course,
-=======
-                newCourse.imageUrl = `${result.secure_url} ${result.public_id}`;
-            }
-
-            CourseService.updateCourse(newCourse).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Bạn chưa sửa được khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Khoá học đã được sửa thành công',
-                    course: newCourse,
-                });
->>>>>>> 821a4b9 (init express sequelize mysql)
             });
         } catch (error) {
             console.log(error.message);
@@ -296,7 +206,6 @@ module.exports = class ApiCourse {
     static async getCourses(req, res) {
         try {
             let courses = await Course.findAll({
-<<<<<<< HEAD
                 where: { instructorId: req.user.id }
             });
             let instructor = await User.findOne({
@@ -306,15 +215,6 @@ module.exports = class ApiCourse {
             res.status(200).json({
                 error: false,
                 instructor,
-=======
-                where: { instructorId: req.user.id },
-                include: 'categories',include: 'users',
-            });
-
-            courses = courses == null ? 'Bạn chưa có khoá học nào' : courses;
-            res.status(200).json({
-                error: false,
->>>>>>> 821a4b9 (init express sequelize mysql)
                 courses: courses,
             });
         } catch (error) {
