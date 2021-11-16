@@ -6,9 +6,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 function Footer() {
   return (
     <BottomNav>
-      <Title>
-        <h3>Công ty trách nhiệm hữu hạn nhiều thành viên Nông Lương Đức</h3>
-      </Title>
+      <Title>Công ty trách nhiệm hữu hạn nhiều thành viên Nông Lương Đức</Title>
       <Section>
         <AboutUs>
           <Wrap>
@@ -60,10 +58,13 @@ const BottomNav = styled.div`
   border-top: 0.1px solid black;
   gap: 25px;
   text-align: center;
+  display: absolute;
 `;
 
 const Title = styled.div`
   padding-left: 150px;
+  font-size: 30px;
+  font-weight: bold;
 `;
 
 const Section = styled.div`

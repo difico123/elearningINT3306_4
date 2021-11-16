@@ -1,49 +1,22 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import category from "../service/categoryService"
+import Login from "./auth/Login";
+import Category from "../service/categoryService";
 
-export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data : [
-        {
-          name:" abc",
-          imageUrl: ""
-        }
-      ]
-    }
-  }
-
-  componentDidMount() {
-    category.getAll().then((res) => {
-      this.setState({data: res.data.categories})
-    })
-  }
-
-  render() {
-    const categories = this.state.data.map((category, index) => {
-      return (
-        <span key={index}>
-            {category.name}
-        </span>
-      );
-    });
-
-    return (
-      <Wrap>
-      <Categories> {categories}
-      </Categories>
+function Home() {
+  return (
+    <Wrap>
+      <Categories></Categories>
+      <div className="flex flex-col">
+        <div className="bg-yellow-300">abc</div>
+        <div className="bg-yellow-300">xyz</div>
+      </div>
     </Wrap>
-    )
-  }
+  );
 }
 
-
-
 const Wrap = styled.div`
-  height: 100vh;
-  width: 100vw;
+  min-height: calc(100vh - 435px);
 `;
 
 const Categories = styled.div`
@@ -52,7 +25,6 @@ const Categories = styled.div`
   flex-wrap: nowrap;
   justify-content: flex-start;
   gap: 150px;
-  padding-top: 10vh;
-  padding-left: 10vw;
 `;
- 
+
+export default Home;
