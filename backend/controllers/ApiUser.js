@@ -75,16 +75,16 @@ module.exports = class ApiUser {
                 },
             };
 
-
             jwt.sign(
                 payload,
-                process.env.JWT_SECRET, { expiresIn: 36000 },
+                process.env.JWT_SECRET,
+                { expiresIn: 36000 },
                 (err, token) => {
                     if (err) throw err;
                     const options = {
                         expires: new Date(
                             Date.now() +
-                            process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
+                                process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
                         ),
                         httpOnly: true,
                     };
@@ -251,8 +251,7 @@ module.exports = class ApiUser {
     // @desc    Edit user information
     // @access  Private
     static async editInfo(req, res) {
-        let { firstName, middleName, lastName, phoneNumber, address, city } =
-        req.body;
+        let { firstName, lastName, phoneNumber, address, city } = req.body;
         try {
             let user = await User.findOne({ where: { id: req.user.id } });
 
@@ -272,7 +271,6 @@ module.exports = class ApiUser {
 
             user.firstName = firstName;
             user.lastName = lastName;
-            user.middleName = middleName;
             user.phoneNumber = phoneNumber;
             user.address = address;
             user.city = city;

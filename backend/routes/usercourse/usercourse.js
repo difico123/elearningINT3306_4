@@ -1,15 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth/auth');
-const ApiUserCourse = require('../controllers/ApiUserCourse');
-const userCourseAuth = require('../middleware/auth/userCourse.auth');
-const { check } = require('express-validator');
-const validateInput = require('../middleware/errors/validateInput');
+const auth = require('../../middleware/auth/auth');
+const ApiUserCourse = require('../../controllers/ApiUserCourse');
+const {
+    courseInstructorAuth,
+} = require('../../middleware/auth/courseInstructor.auth');
+const {
+    checkCourseInput,
+    validateInput,
+} = require('../../middleware/errors/Validate');
 
 // @route   POST api/userCourse/enroll/:courseId
 // @desc    enroll a course by student
 // @access  private
-router.post('/enroll/:courseId', auth, ApiUserCourse.enroll);
+router.put(
+    '/enroll/:courseId',
+    auth,
+    courseInstructorAuth(false),
+    ApiUserCourse.enroll,
+);
 
 // @route   Get api/userCourse/all
 // @desc    get the list of user courses
@@ -21,9 +30,8 @@ router.get('/all', auth, ApiUserCourse.getAll);
 // @access  private
 router.post(
     '/rate/:courseId',
-    [check('rating', 'Bạn chưa đánh giá').not().isEmpty()],
+    [checkCourseInput(['rating'])],
     auth,
-    userCourseAuth,
     validateInput,
     ApiUserCourse.rate,
 );

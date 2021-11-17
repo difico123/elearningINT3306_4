@@ -1,24 +1,19 @@
-const CategoryService = require('../dbservice/CategoryService');
-const CourseService = require('../dbservice/CourseService');
-const TopicService = require('../dbservice/TopicService');
-const QuizService = require('../dbservice/QuizService');
-const QuestionService = require('../dbservice/QuestionService');
+const { User, Category, Course } = require('../db/models');
 
 module.exports = {
-    categoryPassport: function (req, res, next) {
+    categoryPassport: async (req, res, next) => {
         let categoryId = req.params.categoryId;
 
-        CategoryService.checkCourseCategory(categoryId).then((categories) => {
-            if (categories.length === 0) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Không có loại khoá học',
-                });
-            } else {
-                req.categoryId = categoryId;
-                next();
-            }
-        });
+        let category = await Category.findOne({ where: { id: categoryId } });
+        if (!category) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có loại khoá học',
+            });
+        } else {
+            req.categoryId = categoryId;
+            next();
+        }
     },
 
     coursePassport: function (req, res, next) {

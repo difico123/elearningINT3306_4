@@ -1,7 +1,5 @@
-const CourseService = require('../dbservice/CourseService');
-const UserCourseService = require('../dbservice/UserCourseService');
-const NotificationService = require('../dbservice/NotificationService');
-const UserService = require('../dbservice/UserService');
+const { pagination } = require('../utils/feature');
+const { User, Course, Category, UserCourse } = require('../db/models');
 
 module.exports = class ApiCourse {
     // @route   GET api/userCourse/enroll/:courseId
@@ -11,69 +9,31 @@ module.exports = class ApiCourse {
         let courseId = req.params.courseId;
         let studentId = req.user.id;
         try {
-            // check if the student is this course'instructor or this course is not activate
-            CourseService.getCourseById(courseId).then((courses) => {
-                let course = courses[0];
-                if (
-                    !course ||
-                    course.instructor === studentId ||
-                    course.verified === 0
-                ) {
+            let course = await Course.findOne({ where: { id: courseId } });
+            if (!course || !course.verified) {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'Bạn không thể đăng kí khoá học này',
+                });
+            }
+            let userCourse = {
+                userId: studentId,
+                courseId: parseInt(courseId),
+            };
+            await UserCourse.create(userCourse)
+                .then((v) => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: 'Đăng kí khoá học thành công',
+                        v,
+                    });
+                })
+                .catch(() => {
                     return res.status(400).json({
                         error: true,
-                        msg: 'Bạn không thể đăng kí khoá học này',
+                        msg: 'Bạn đã đăng kí khoá học này rồi!',
                     });
-                }
-                // student can enroll course but studen enrolled this course will not enroll again
-                let userCourse = {
-                    user: studentId,
-                    course: courseId,
-                };
-                UserCourseService.add(userCourse).then((added) => {
-                    //duplication error
-                    if (!added) {
-                        return res.status(400).json({
-                            error: true,
-                            msg: 'Bạn đã đăng kí khoá học rồi',
-                        });
-                    }
-
-                    UserService.getUserInfoById(studentId).then(
-                        async (data) => {
-                            let courseName = '';
-
-                            await CourseService.getCourseById(courseId).then(
-                                (courses) => {
-                                    courseName = courses[0].name;
-                                },
-                            );
-                            let student = data[0];
-
-                            let details = `${student.lastName} vừa đăng kí khoá học ${courseName} của bạn`;
-                            let notification = {
-                                user: course.instructor,
-                                topic: 'Đăng kí khoá học',
-                                details: details,
-                            };
-
-                            NotificationService.addNotification(
-                                notification,
-                            ).then((notified) => {
-                                if (!notified) {
-                                    return res.status(400).json({
-                                        error: true,
-                                        msg: 'chưa thông báo được đến thầy ',
-                                    });
-                                }
-                                return res.status(200).json({
-                                    error: false,
-                                    msg: 'tin nhắn đã thông báo đến instructor, Đăng kí khoá học thành công',
-                                });
-                            });
-                        },
-                    );
                 });
-            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -124,13 +84,12 @@ module.exports = class ApiCourse {
     static async getAll(req, res) {
         try {
             let { id } = req.user;
-            UserCourseService.getUserCourseByUserId(id).then((data) => {
-                return data.length === 0
-                    ? res.status(200).json({
-                          error: false,
-                          msg: 'Bạn chưa đăng kí khoá học nào',
-                      })
-                    : res.status(200).json({ error: false, data });
+
+            let userCourse = await UserCourse.findAll({where: {UserId : id}})
+
+            res.status(200).json({
+                error: false,
+                courses: userCourse
             });
         } catch (error) {
             console.log(error.message);

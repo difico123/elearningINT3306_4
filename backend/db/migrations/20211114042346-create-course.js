@@ -18,10 +18,12 @@ module.exports = {
             },
             instructorId: {
                 type: DataTypes.INTEGER,
+                references: { model: 'users', key: 'id' },
                 allowNull: false,
             },
             categoryId: {
                 type: DataTypes.INTEGER,
+                references: { model: 'categories', key: 'id' },
                 allowNull: false,
             },
             verified: {
