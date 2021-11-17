@@ -3,7 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Home from "./components/Home";
 import Footer from "./components/Footer";
-import Detail from "./components/Detail";
+import Detail from "./Detail";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";

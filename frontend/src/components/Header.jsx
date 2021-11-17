@@ -122,7 +122,7 @@ const SigninButton = styled.button`
   font-size: 15px;
   width: 120px;
   height: 50px;
-  transition: 0.3s ease 0s;
+  transition: 0.5s ease 0s;
   &:hover {
     border: transparent;
     color: white;

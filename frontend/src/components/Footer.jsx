@@ -49,6 +49,7 @@ function Footer() {
 
 export default Footer;
 const BottomNav = styled.div`
+  overflow: hidden;
   bottom: 0px;
   height: 350px;
   background-color: #f0f0f0;
@@ -58,7 +59,6 @@ const BottomNav = styled.div`
   border-top: 0.1px solid black;
   gap: 25px;
   text-align: center;
-  display: absolute;
 `;
 
 const Title = styled.div`

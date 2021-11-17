@@ -45,6 +45,7 @@ const Wrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: calc(100vh - 435px);
 `;
 
 const Container = styled.div`
