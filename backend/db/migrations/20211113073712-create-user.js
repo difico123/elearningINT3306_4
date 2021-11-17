@@ -16,10 +16,6 @@ module.exports = {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            middleName: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             lastName: {
                 type: DataTypes.STRING,
                 allowNull: false,

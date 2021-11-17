@@ -251,7 +251,7 @@ module.exports = class ApiUser {
     // @desc    Edit user information
     // @access  Private
     static async editInfo(req, res) {
-        let { firstName, middleName, lastName, phoneNumber, address, city } =
+        let { firstName, lastName, phoneNumber, address, city } =
         req.body;
         try {
             let user = await User.findOne({ where: { id: req.user.id } });
@@ -272,7 +272,6 @@ module.exports = class ApiUser {
 
             user.firstName = firstName;
             user.lastName = lastName;
-            user.middleName = middleName;
             user.phoneNumber = phoneNumber;
             user.address = address;
             user.city = city;

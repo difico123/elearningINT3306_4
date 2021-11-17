@@ -3,7 +3,7 @@ const { validationResult } = require('express-validator');
 
 module.exports = {
     checkUserInput: function (fields) {
-        let names = ['firstName', 'lastName', 'middleName'];
+        let names = ['firstName', 'lastName'];
         let address = ['address', 'city'];
         let password = ['password', 'confirmPassword', 'newPassword'];
         let phoneNumber = 'phoneNumber';

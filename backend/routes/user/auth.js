@@ -15,7 +15,6 @@ router.post(
     upload.single('imageUrl'),
     checkUserInput([
         'firstName',
-        'middleName',
         'lastName',
         'email',
         'password',
