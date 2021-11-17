@@ -17,7 +17,6 @@ module.exports = {
                 {
                     uuid: 'd18cdc82-0941-48a8-940f-7c2e5a82e914',
                     firstName: 'John',
-                    middleName: 'Lons',
                     lastName: 'Qahn',
                     email: 'admin@gmail.com',
                     phoneNumber: 12345678,
@@ -30,7 +29,6 @@ module.exports = {
                 {
                     uuid: 'd18cdc82-0941-48a8-940f-7c2e588qe914',
                     firstName: 'John',
-                    middleName: 'Lons',
                     lastName: 'Qahn',
                     email: 'user1@gmail.com',
                     phoneNumber: 12345678,
@@ -43,7 +41,6 @@ module.exports = {
                 {
                     uuid: 'd18cdc82-0941-48a8-940f-7c2e5882w914',
                     firstName: 'John',
-                    middleName: 'Lons',
                     lastName: 'Qahn',
                     email: 'instructor1@gmail.com',
                     phoneNumber: 12345678,

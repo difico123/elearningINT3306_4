@@ -13,10 +13,18 @@ module.exports = (sequelize, DataTypes) => {
             this.belongsTo(Category, {
                 foreignKey: 'CategoryId',
                 as: 'categories',
-                onDelete: 'cascade'
+                onDelete: 'cascade',
             });
-            this.belongsTo(User, { foreignKey: 'instructorId', as: 'users' , onDelete: 'cascade'});
-            this.belongsToMany(User, { as: 'usercourses', through: UserCourse });
+            this.belongsTo(User, {
+                foreignKey: 'instructorId',
+                as: 'users',
+                onDelete: 'cascade',
+            });
+            this.belongsToMany(User, {
+                through: 'usercourses',
+                foreignKey: 'courseId',
+                onDelete: 'CASCADE',
+            });
         }
 
         toJSON() {

@@ -92,37 +92,36 @@ module.exports = {
         let names = ['name', 'title'];
         let contents = ['description', 'content'];
         return async (req, res, next) => {
-                for (let i = 0; i < fields.length; i++) {
-                    let name = '';
-                    switch (fields[i]) {
-                        case 'name':
-                            name = 'Tên khoá học';
-                            break;
-                        case 'description':
-                            name = 'Phần mô tả';
-                            break;
-                    }
-                    if (names.includes(fields[i])) {
-                        await check(fields[i])
-                            .isLength({
-                                min: 10,
-                                max: 30,
-                            })
-                            .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
-                            .run(req);
-                    } else if (contents.includes(fields[i])) {
-                        await check(fields[i])
-                            .isLength({
-                                min: 20
-                            })
-                            .withMessage(`${name} phải chứa từ 20 kí tự trở lên`)
-                            .run(req);
-                    }
-
+            for (let i = 0; i < fields.length; i++) {
+                let name = '';
+                switch (fields[i]) {
+                    case 'name':
+                        name = 'Tên khoá học';
+                        break;
+                    case 'description':
+                        name = 'Phần mô tả';
+                        break;
                 }
-                next();
+                if (names.includes(fields[i])) {
+                    await check(fields[i])
+                        .isLength({
+                            min: 10,
+                            max: 30,
+                        })
+                        .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
+                        .run(req);
+                } else if (contents.includes(fields[i])) {
+                    await check(fields[i])
+                        .isLength({
+                            min: 20,
+                        })
+                        .withMessage(`${name} phải chứa từ 20 kí tự trở lên`)
+                        .run(req);
+                }
             }
-        },
+            next();
+        };
+    },
 
     validateInput: function (req, res, next) {
         const errors = validationResult(req);

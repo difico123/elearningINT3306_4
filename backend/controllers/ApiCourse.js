@@ -1,6 +1,6 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-const {User, Course, Category } = require('../db/models');
+const { User, Course, Category } = require('../db/models');
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -8,21 +8,12 @@ module.exports = class ApiCourse {
     // @access  Private
     static async createCourse(req, res) {
         const course = {
-            categoryId: req.params.categoryId,
+            categoryId: req.categoryId,
             instructorId: req.user.id,
             name: req.body.name,
             description: req.body.description,
         };
         try {
-            let category = await Category.findOne({
-                where: { id: req.params.categoryId },
-            });
-            if (!category) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Loại khoá học không hợp lệ',
-                });
-            }
             if (req.file !== undefined) {
                 const result = await cloudinary.uploader.upload(req.file.path, {
                     folder: 'courses',
@@ -49,8 +40,8 @@ module.exports = class ApiCourse {
     static async activateCourse(req, res) {
         const courseId = req.params.courseId;
         try {
-            let course = await Course.findOne({where :{ id: courseId}});
-            if(course.verified) {
+            let course = await Course.findOne({ where: { id: courseId } });
+            if (course.verified) {
                 return res.status(400).json({
                     error: true,
                     msg: 'Khoá học này đã được kích hoạt từ trước',
@@ -75,8 +66,8 @@ module.exports = class ApiCourse {
     static async suspendCourse(req, res) {
         const courseId = req.params.courseId;
         try {
-            let course = await Course.findOne({where :{ id: courseId}});
-            if(!course.verified) {
+            let course = await Course.findOne({ where: { id: courseId } });
+            if (!course.verified) {
                 return res.status(400).json({
                     error: true,
                     msg: 'Khoá học này đã được tạm dừng từ trước',
@@ -101,18 +92,16 @@ module.exports = class ApiCourse {
     // @desc    edit course
     // @access  Private
     static async edit(req, res) {
-        let {name,description} = req.body;
-        let {courseId} = req.params;
+        let { name, description } = req.body;
+        let { courseId } = req.params;
 
         try {
-            let course = await Course.findOne({ where: { id: courseId}});
+            let course = await Course.findOne({ where: { id: courseId } });
 
             if (req.file !== undefined) {
                 let { imageUrl } = course;
                 if (imageUrl) {
-                    await cloudinary.uploader.destroy(
-                        imageUrl.split(' ')[1],
-                    );
+                    await cloudinary.uploader.destroy(imageUrl.split(' ')[1]);
                 }
 
                 const result = await cloudinary.uploader.upload(req.file.path, {
@@ -126,9 +115,9 @@ module.exports = class ApiCourse {
             course.description = description;
 
             await course.save();
-            
-            if(course.imageUrl) {
-                course.imageUrl = course.imageUrl.split(' ')[0]
+
+            if (course.imageUrl) {
+                course.imageUrl = course.imageUrl.split(' ')[0];
             }
             res.status(200).json({
                 error: false,
@@ -206,10 +195,10 @@ module.exports = class ApiCourse {
     static async getCourses(req, res) {
         try {
             let courses = await Course.findAll({
-                where: { instructorId: req.user.id }
+                where: { instructorId: req.user.id },
             });
             let instructor = await User.findOne({
-                where: { id: req.user.id }
+                where: { id: req.user.id },
             });
             courses = courses == null ? 'Bạn chưa có khoá học nào' : courses;
             res.status(200).json({

@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth/auth');
-const courseInstructorAuth = require('../../middleware/auth/courseInstructor.auth');
+const {
+    courseInstructorAuth,
+} = require('../../middleware/auth/courseInstructor.auth');
 const instructorAuth = require('../../middleware/auth/instructor.auth');
 const ApiCourse = require('../../controllers/ApiCourse');
 const upload = require('../../utils/multer');
+const { categoryPassport } = require('../../middleware/passport');
 const {
     checkCourseInput,
     validateInput,
@@ -18,8 +21,9 @@ const {
 // @access  Private
 router.post(
     '/create/:categoryId',
+    categoryPassport,
     upload.single('courseImage'),
-    checkCourseInput(['name','description']),
+    checkCourseInput(['name', 'description']),
     validateInput,
     auth,
     instructorAuth,
@@ -37,7 +41,7 @@ router.get('/instructorCourses', auth, instructorAuth, ApiCourse.getCourses);
 router.put(
     '/activate/:courseId',
     auth,
-    courseInstructorAuth,
+    courseInstructorAuth(true),
     ApiCourse.activateCourse,
 );
 
@@ -47,7 +51,7 @@ router.put(
 router.put(
     '/suspend/:courseId',
     auth,
-    courseInstructorAuth,
+    courseInstructorAuth(true),
     ApiCourse.suspendCourse,
 );
 
@@ -57,10 +61,10 @@ router.put(
 router.put(
     '/edit/:courseId',
     upload.single('courseImage'),
-    checkCourseInput(['name','description']),
+    checkCourseInput(['name', 'description']),
     validateInput,
     auth,
-    courseInstructorAuth,
+    courseInstructorAuth(true),
     ApiCourse.edit,
 );
 
