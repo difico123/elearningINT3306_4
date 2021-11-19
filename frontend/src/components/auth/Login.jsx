@@ -4,33 +4,47 @@ import styled from "styled-components";
 import LockIcon from "@mui/icons-material/Lock";
 import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
-import Axios from "axios";
+import cookies from 'js-cookie';
+import AuthApi from '../../service/authUser';
 
 function LoginForm() {
+  let Auth = React.useContext(AuthApi)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState([]);
+  const [isError, setIsError] = useState("");
 
   const signin = () => {
-    Axios.post(`/api/auth/login`, {
-      email: email,
-      password: password,
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    let user = {
+      email,
+      password,
+    }
 
-    let user = { email, password };
-    console.log(user);
+   auth.login(user)
+      .then((res) => {
+        let {token,error} = res.data;
+        console.log(res);
+        setIsError(error)
+        cookies.set('token',token)
+        Auth.setAuth(true)
+      })
+      .catch((err) => {
+        let {error,msg} = err.response.data;
+        setIsError(error)
+        setErrorMsg(msg)
+        console.log(isError)
+      });
   };
 
+  const renderErrors = errorMsg.map((value) => (
+    <div>
+      <label className="text-red-300">{value}</label>
+    </div>
+  ));
   return (
     <Wrap>
       <Container>
         <Title>Tham gia vào những khóa học dành riêng cho bạn!</Title>
-
         <Form>
           <Field>
             <MailIcon></MailIcon>
@@ -54,7 +68,7 @@ function LoginForm() {
               }}
             ></input>
           </Field>
-
+          {isError? renderErrors:''}
           <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
         <RedirectForgotPassword>
@@ -62,7 +76,7 @@ function LoginForm() {
         </RedirectForgotPassword>
         <RedirectSignUp>
           Không có tài khoản? Tạo mới{" "}
-          <Link to="/auth/register">
+          <Link to="/register">
             <span>ở đây</span>
           </Link>
         </RedirectSignUp>

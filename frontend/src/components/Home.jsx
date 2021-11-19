@@ -3,16 +3,18 @@ import styled from "styled-components";
 import Login from "./auth/Login";
 import Category from "../service/categoryService";
 
-function Homepage() {
+function Home() {
   return (
     <Wrap>
-      <Categories></Categories>
+      <Categories>
+        Hello World
+      </Categories>
     </Wrap>
   );
 }
 
 const Wrap = styled.main`
-  min-height: calc(100vh - 435px);
+  min-height: calc(100vh - 350px);
 `;
 
 const Categories = styled.div`
@@ -23,4 +25,4 @@ const Categories = styled.div`
   gap: 150px;
 `;
 
-export default Homepage;
+export default Home;

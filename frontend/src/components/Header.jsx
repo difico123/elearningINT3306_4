@@ -3,12 +3,45 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AuthApi from "../service/authUser";
+import auth from "../service/authService";
 
 function Header() {
+  let Auth = React.useContext(AuthApi);
+
+  const loginIcon = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/login`}>
+          <SigninButton>Đăng nhập</SigninButton>
+        </Link>
+        <Link to={`/register`}>
+          <SignupButton>Đăng ký</SignupButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
+  const handleLogout = () => {
+    auth.logout().then((res) => {
+      console.log(res.data);
+    });
+    Auth.setAuth(false);
+  };
+
+  const person = (
+    <React.Fragment>
+      <div className="bg-blue-200 border-light-blue-500 rounded-xl">
+        {" "}
+        <AccountCircleIcon className="p-0" />
+      </div>
+    </React.Fragment>
+  );
+
   return (
     <Nav>
       <Logo>
-        <Link to={`/`}>
+        <Link to={`/home`}>
           <img
             src="
     https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg"
@@ -29,14 +62,7 @@ function Header() {
         <InstructorIcon src="https://cdn-icons-png.flaticon.com/512/65/65882.png"></InstructorIcon>
         <p>Trở thành giảng viên</p>
       </BecomeInstructor>
-      <Buttons>
-        <Link to={`/auth/login`}>
-          <SigninButton>Đăng nhập</SigninButton>
-        </Link>
-        <Link to={`/auth/register`}>
-          <SignupButton>Đăng ký</SignupButton>
-        </Link>
-      </Buttons>
+      {Auth.auth ? person : loginIcon}
     </Nav>
   );
 }

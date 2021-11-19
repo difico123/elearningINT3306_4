@@ -1,12 +1,17 @@
 import http from "./httpService";
 
-const apiEndpoint = "/auth";
+const apiEndpoint = "/api/auth";
 
-async function login(username, password) {
-  return http.post(apiEndpoint + "/login", {
-    username,
-    password,
-  });
+function login({ email, password }) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.post(
+    apiEndpoint + "/login",
+    {
+      email,
+      password,
+    },
+    config
+  );
 }
 async function register(username, password, firstName, middleName) {
   return http.post(apiEndpoint + "/register", {
@@ -17,21 +22,12 @@ async function register(username, password, firstName, middleName) {
   });
 }
 
-async function loginWithJwt(jwt) {
-  localStorage.setItem("token", jwt);
-}
-
 function logout() {
-  localStorage.removeItem("token");
-}
-
-function getJwt() {
-  return localStorage.getItem("token");
+  return http.get(apiEndpoint + "/logout");
 }
 
 export default {
   login,
-  loginWithJwt,
   logout,
-  getJwt,
+  register,
 };
