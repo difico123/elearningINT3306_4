@@ -56,7 +56,7 @@ module.exports = class ApiUser {
             if (!user) {
                 return res.status(400).json({
                     error: true,
-                    msg: ['Tài khoàn này không tồn tại'],
+                    msg: 'Tài khoàn này không tồn tại ',
                 });
             }
 
@@ -65,7 +65,7 @@ module.exports = class ApiUser {
             if (!isMatch) {
                 return res.status(400).json({
                     error: true,
-                    msg: ['Mật khẩu của bạn không chính xác'],
+                    msg: 'Mật khẩu của bạn không chính xác',
                 });
             }
 

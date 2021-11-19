@@ -12,46 +12,45 @@ import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import Axios from "axios";
 
 function SignUpForm() {
-  const [emailReg, setEmailReg] = useState("");
-  const [lastNameReg, setLastNameReg] = useState("");
-  const [firstNameReg, setFirstNameReg] = useState("");
-  const [phoneNumberReg, setphoneNumberReg] = useState("");
-  const [cityReg, setCityReg] = useState("");
-  const [addressReg, setAddressReg] = useState("");
-  const [passwordReg, setPasswordReg] = useState("");
-  const [message, setMessage] = useState([]);
-  const [successMsg, setSuccessMsg] = useState("");
-  const [isError, setIsError] = useState(false);
+  const [userReg, setUserReg] = useState({
+    email: "",
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    city: "",
+    address: "",
+    password: "",
+  });
 
-  const register = async () => {
-    Axios.post(`/api/register`, {
-      firstName: firstNameReg,
-      lastName: lastNameReg,
-      email: emailReg,
-      password: passwordReg,
-      phoneNumber: phoneNumberReg,
-      address: addressReg,
-      city: cityReg,
+  const { email, lastName, firstName, phoneNumber, city, address, password } =
+    userReg;
+
+  const [message, setMessage] = useState([]);
+  var [successMsg, setSuccessMsg] = useState("");
+  var [isError, setIsError] = useState(false);
+
+  const onChange = (e) =>
+    setUserReg({ ...userReg, [e.target.name]: e.target.value });
+
+  const register = () => {
+    Axios.post(`/api/auth/register`, {
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      phoneNumber: phoneNumber,
+      address: address,
+      city: city,
     })
       .then((response) => {
         setSuccessMsg(response.data.msg[0]);
+        setIsError(response.data.error);
+        console.log(response.data);
       })
       .catch((error) => {
         setIsError(error.response.data.error);
         setMessage(error.response.data.msg);
       });
-
-    let userReg = {
-      emailReg,
-      lastNameReg,
-      firstNameReg,
-      phoneNumberReg,
-      cityReg,
-      addressReg,
-      passwordReg,
-    };
-
-    console.log(userReg);
   };
 
   const errors = message.map((value) => (
@@ -70,12 +69,11 @@ function SignUpForm() {
           <Field>
             <MailIcon className="Icon"></MailIcon>
             <input
-              value={emailReg}
+              value={email}
               type="email"
               placeholder="Địa chỉ Email..."
-              onChange={(e) => {
-                setEmailReg(e.target.value);
-              }}
+              name="email"
+              onChange={onChange}
             ></input>
             <div></div>
           </Field>
@@ -83,72 +81,66 @@ function SignUpForm() {
           <Field>
             <UserIcon className="Icon"></UserIcon>
             <input
-              value={lastNameReg}
+              value={lastName}
               type="text"
               placeholder="Họ..."
-              onChange={(e) => {
-                setLastNameReg(e.target.value);
-              }}
+              name="lastName"
+              onChange={onChange}
             ></input>
           </Field>
 
           <Field>
             <UserIcon className="Icon"></UserIcon>
             <input
-              value={firstNameReg}
+              value={firstName}
               type="text"
               placeholder="Tên..."
-              onChange={(e) => {
-                setFirstNameReg(e.target.value);
-              }}
+              name="firstName"
+              onChange={onChange}
             ></input>
           </Field>
 
           <Field>
             <PhoneIcon className="Icon"></PhoneIcon>
             <input
-              value={phoneNumberReg}
+              value={phoneNumber}
               type="number"
               placeholder="Số điện thoại..."
-              onChange={(e) => {
-                setphoneNumberReg(e.target.value);
-              }}
+              name="phoneNumber"
+              onChange={onChange}
             ></input>
           </Field>
 
           <Field>
             <CityIcon className="Icon"></CityIcon>
             <input
-              value={cityReg}
+              value={city}
               type="text"
               placeholder="Thành phố"
-              onChange={(e) => {
-                setCityReg(e.target.value);
-              }}
+              name="city"
+              onChange={onChange}
             ></input>
           </Field>
 
           <Field>
             <AddressIcon className="Icon"></AddressIcon>
             <input
-              value={addressReg}
+              value={address}
               type="text"
               placeholder="Địa chỉ"
-              onChange={(e) => {
-                setAddressReg(e.target.value);
-              }}
+              name="address"
+              onChange={onChange}
             ></input>
           </Field>
 
           <Field>
             <PasswordIcon className="Icon"></PasswordIcon>
             <input
-              value={passwordReg}
+              value={password}
               type="password"
               placeholder="Mật khẩu..."
-              onChange={(e) => {
-                setPasswordReg(e.target.value);
-              }}
+              name="password"
+              onChange={onChange}
             ></input>
           </Field>
           {isError ? errors : success}
@@ -156,7 +148,7 @@ function SignUpForm() {
         </Form>
         <RedirectLogIn>
           Đã có tài khoản?
-          <Link to="/login">
+          <Link to="/auth/login">
             <span> Đăng nhập</span>
           </Link>
         </RedirectLogIn>

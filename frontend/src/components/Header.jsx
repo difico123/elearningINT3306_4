@@ -3,35 +3,40 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AuthApi from '../service/authUser';
-import auth from "../service/authService"
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AuthApi from "../service/authUser";
+import auth from "../service/authService";
 
 function Header() {
-  let Auth = React.useContext(AuthApi)
+  let Auth = React.useContext(AuthApi);
 
   const loginIcon = (
     <React.Fragment>
-    <Buttons>
-      <Link to={`/login`}>
-        <SigninButton>Đăng nhập</SigninButton>
-      </Link>
-    </Buttons>
-  </React.Fragment>
-  )
+      <Buttons>
+        <Link to={`/login`}>
+          <SigninButton>Đăng nhập</SigninButton>
+        </Link>
+        <Link to={`/register`}>
+          <SignupButton>Đăng ký</SignupButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
   const handleLogout = () => {
     auth.logout().then((res) => {
-      console.log(res.data)
-    })
-    Auth.setAuth(false)
-  }
+      console.log(res.data);
+    });
+    Auth.setAuth(false);
+  };
 
   const person = (
     <React.Fragment>
-        <div className="bg-blue-200 border-light-blue-500 rounded-xl"> <AccountCircleIcon className="p-0"/></div>
-
-  </React.Fragment>
-  )
+      <div className="bg-blue-200 border-light-blue-500 rounded-xl">
+        {" "}
+        <AccountCircleIcon className="p-0" />
+      </div>
+    </React.Fragment>
+  );
 
   return (
     <Nav>
@@ -57,7 +62,7 @@ function Header() {
         <InstructorIcon src="https://cdn-icons-png.flaticon.com/512/65/65882.png"></InstructorIcon>
         <p>Trở thành giảng viên</p>
       </BecomeInstructor>
-      {Auth.auth? person:loginIcon}
+      {Auth.auth ? person : loginIcon}
     </Nav>
   );
 }

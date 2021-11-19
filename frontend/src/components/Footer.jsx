@@ -78,7 +78,7 @@ const SmallText = styled.p`
   font-weight: bold;
   font-size: 10px;
   bottom: 20px;
-  right: 20px;
+  padding-right: 20px;
   display: flex;
   justify-content: flex-end;
 `;
