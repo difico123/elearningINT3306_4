@@ -16,7 +16,7 @@ module.exports = class ApiUser {
             if (hasUser) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Email này đã có người đăng kí',
+                    msg: ['Email này đã có người đăng kí'],
                 });
             }
 
@@ -37,7 +37,7 @@ module.exports = class ApiUser {
             await User.create(user);
             res.status(201).json({
                 error: false,
-                msg: 'Đăng kí tài khoản thành công',
+                msg: ['Đăng kí tài khoản thành công'],
                 user,
             });
         } catch (error) {
@@ -56,7 +56,7 @@ module.exports = class ApiUser {
             if (!user) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Tài khoàn này không tồn tại ',
+                    msg: ['Tài khoàn này không tồn tại'],
                 });
             }
 
@@ -65,7 +65,7 @@ module.exports = class ApiUser {
             if (!isMatch) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Mật khẩu của bạn không chính xác',
+                    msg: ['Mật khẩu của bạn không chính xác'],
                 });
             }
 

@@ -11,22 +11,22 @@ function Footer() {
         <AboutUs>
           <Wrap>
             <h4>Về chúng tôi</h4>
-            <a href="#">Điều khoản và quy chế hoạt động</a>
-            <a href="#">Chính sách bảo mật</a>
+            <p>Điều khoản và quy chế hoạt động</p>
+            <p>Chính sách bảo mật</p>
           </Wrap>
         </AboutUs>
         <Community>
           <Wrap>
             <h4>Cộng đồng</h4>
-            <a href="#">Chăm sóc khách hàng</a>
-            <a href="#">Blog</a>
+            <p>Chăm sóc khách hàng</p>
+            <p>Blog</p>
           </Wrap>
         </Community>
         <ContactInfo>
           <Wrap>
             <h4>Thông tin liên lạc</h4>
-            <a href="#">Địa chỉ: INT3306 4 - Nhóm Syntax Error</a>
-            <a href="#">Nhóm trưởng: Nông Lương Đức</a>
+            <p>Địa chỉ: INT3306 4 - Nhóm Syntax Error</p>
+            <p>Nhóm trưởng: Nông Lương Đức</p>
           </Wrap>
         </ContactInfo>
         <Logos>
@@ -43,26 +43,27 @@ function Footer() {
           </Wrap>
         </Logos>
       </Section>
+      <SmallText>@ 2021 Ducmup, Inc.</SmallText>
     </BottomNav>
   );
 }
 
 export default Footer;
 const BottomNav = styled.div`
-  bottom: 0;
+  overflow: hidden;
+  bottom: 0px;
   height: 350px;
   background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   padding: 30px 0;
   border-top: 0.1px solid black;
   gap: 25px;
   text-align: center;
-  display: absolute;
 `;
 
 const Title = styled.div`
-  padding-left: 150px;
   font-size: 30px;
   font-weight: bold;
 `;
@@ -73,20 +74,28 @@ const Section = styled.div`
   justify-content: space-around;
 `;
 
+const SmallText = styled.p`
+  font-weight: bold;
+  font-size: 10px;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: flex-end;
+`;
+
 const AboutUs = styled.div``;
 const Community = styled.div``;
 const ContactInfo = styled.div``;
 const Logos = styled.div``;
 
 const Wrap = styled.div`
-  height: 250px;
   h4 {
     text-transform: uppercase;
     color: #c89f65;
     padding: 10px 0;
     font-size: 18px;
   }
-  a {
+  p {
     display: block;
     text-decoration: none;
     color: black;
@@ -95,9 +104,6 @@ const Wrap = styled.div`
     font-size: 16px;
   }
 
-  a:hover {
-    color: orangered;
-  }
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -124,8 +130,12 @@ const IconButtons = styled.div`
 `;
 
 const Icon1 = styled(FacebookIcon)`
-  color: #385898;
+  &:hover {
+    color: #385898;
+  }
 `;
 const Icon2 = styled(InstagramIcon)`
-  color: #f09433;
+  &:hover {
+    color: #f09433;
+  }
 `;

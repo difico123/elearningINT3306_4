@@ -6,17 +6,15 @@ import Category from "../service/categoryService";
 function Home() {
   return (
     <Wrap>
-      <Categories></Categories>
-      <div className="flex flex-col">
-        <div className="bg-yellow-300">abc</div>
-        <div className="bg-yellow-300">xyz</div>
-      </div>
+      <Categories>
+        Hello World
+      </Categories>
     </Wrap>
   );
 }
 
-const Wrap = styled.div`
-  min-height: calc(100vh - 435px);
+const Wrap = styled.main`
+  min-height: calc(100vh - 350px);
 `;
 
 const Categories = styled.div`

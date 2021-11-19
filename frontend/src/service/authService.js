@@ -1,42 +1,42 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/auth";
+const apiEndpoint = "/api/auth";
 
-http.setJwt(getJwt());
-
-async function login(username, password) {
-    return http.post(apiEndpoint + '/login', {
-        username,
-        password,
-    })
+function login({ email, password }) {
+  const config = { headers: { 'Content-Type': 'application/json' } };
+  return http.post(
+    apiEndpoint + '/login',
+    {
+      email,
+      password
+    },
+    config
+  );
 }
 async function register(username, password, firstName, middleName) {
-    return http.post(apiEndpoint + '/register', {
-        username,
-        password,
-        firstName,
-        middleName,
-    })
+  return http.post(apiEndpoint + "/register", {
+    username,
+    password,
+    firstName,
+    middleName,
+  });
 }
 
-
 async function loginWithJwt(jwt) {
-    localStorage.setItem("token", jwt);
+  localStorage.setItem("token", jwt);
 }
 
 function logout() {
-    localStorage.removeItem("token");
+  return http.get( apiEndpoint + '/logout' );
 }
 
-
 function getJwt() {
-    return localStorage.getItem("token");
+  return localStorage.getItem("token");
 }
 
 export default {
-    login,
-    loginWithJwt,
-    logout,
-    getJwt,
+  login,
+  loginWithJwt,
+  logout,
+  getJwt,
 };
