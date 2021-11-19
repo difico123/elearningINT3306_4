@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "./components/Header";
-import Home from "./components/Home";
+import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
-import Detail from "./components/Detail";
+import CourseDetail from "./components/CourseDetail";
 import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";
@@ -16,8 +16,8 @@ function App() {
       <Router>
         <Header />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/details" element={<Detail />} />
+          <Route path="/" element={<Homepage />} />
+          <Route path="/details" element={<CourseDetail />} />
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Signup />} />\
           <Route path="/auth/recover" element={<ForgotPassword />} />

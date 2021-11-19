@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Login from "./auth/Login";
 import Category from "../service/categoryService";
 
-function Home() {
+function Homepage() {
   return (
     <Wrap>
       <Categories></Categories>
@@ -23,4 +23,4 @@ const Categories = styled.div`
   gap: 150px;
 `;
 
-export default Home;
+export default Homepage;

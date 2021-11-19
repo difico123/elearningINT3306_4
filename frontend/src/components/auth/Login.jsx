@@ -18,7 +18,7 @@ function LoginForm() {
       .then((response) => {
         console.log(response);
       })
-      .then((error) => {
+      .catch((error) => {
         console.log(error);
       });
 
