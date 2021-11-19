@@ -7,15 +7,11 @@ function Home() {
   return (
     <Wrap>
       <Categories></Categories>
-      <div className="flex flex-col">
-        <div className="bg-yellow-300">abc</div>
-        <div className="bg-yellow-300">xyz</div>
-      </div>
     </Wrap>
   );
 }
 
-const Wrap = styled.div`
+const Wrap = styled.main`
   min-height: calc(100vh - 435px);
 `;
 

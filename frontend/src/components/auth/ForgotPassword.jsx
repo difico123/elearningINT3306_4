@@ -18,6 +18,7 @@ function ForgotPassword() {
               placeholder="Địa chỉ Email...."
             ></input>
           </Field>
+
           <SubmitButton type="submit">Lấy lại mật khẩu</SubmitButton>
           <Redirect>
             Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>

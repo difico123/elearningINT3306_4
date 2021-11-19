@@ -16,7 +16,7 @@ module.exports = class ApiUser {
             if (hasUser) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Email này đã có người đăng kí',
+                    msg: ['Email này đã có người đăng kí'],
                 });
             }
 
@@ -37,7 +37,7 @@ module.exports = class ApiUser {
             await User.create(user);
             res.status(201).json({
                 error: false,
-                msg: 'Đăng kí tài khoản thành công',
+                msg: ['Đăng kí tài khoản thành công'],
                 user,
             });
         } catch (error) {

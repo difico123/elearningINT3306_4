@@ -7,10 +7,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 function Header() {
   return (
     <Nav>
-      <Logo
-        src="
+      <Logo>
+        <Link to={`/`}>
+          <img
+            src="
     https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg"
-      ></Logo>
+          />
+        </Link>
+      </Logo>
       <Categories>
         <CustomMenu></CustomMenu>
         <p>Danh mục khóa học</p>
@@ -26,8 +30,12 @@ function Header() {
         <p>Trở thành giảng viên</p>
       </BecomeInstructor>
       <Buttons>
-        <SigninButton>Đăng nhập</SigninButton>
-        <SignupButton>Đăng ký</SignupButton>
+        <Link to={`/auth/login`}>
+          <SigninButton>Đăng nhập</SigninButton>
+        </Link>
+        <Link to={`/auth/register`}>
+          <SignupButton>Đăng ký</SignupButton>
+        </Link>
       </Buttons>
     </Nav>
   );
@@ -47,8 +55,10 @@ const Nav = styled.div`
   background-color: white;
 `;
 
-const Logo = styled.img`
-  height: 40px;
+const Logo = styled.div`
+  img {
+    height: 40px;
+  }
 `;
 
 const Categories = styled.div`
@@ -83,7 +93,6 @@ const SearchBar = styled.div`
     font-size: 15px;
     font-weight: lighter;
   }
-
   button {
     cursor: pointer;
     border: none;
@@ -111,18 +120,17 @@ const Buttons = styled.div`
   flex-flow; row nowrap;
   gap: 15px;
   align-items: center;
-  
 `;
 const SigninButton = styled.button`
   border: 0.5px solid black;
   color: black;
   font-weight: 600;
   padding: 0 20px;
-  cursor: pointer;
   font-size: 15px;
   width: 120px;
   height: 50px;
   transition: 0.5s ease 0s;
+  background-color: transparent;
   &:hover {
     border: transparent;
     color: white;

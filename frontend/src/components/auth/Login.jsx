@@ -1,8 +1,31 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import LockIcon from "@mui/icons-material/Lock";
-import PersonIcon from "@mui/icons-material/Person";
+import EmailIcon from "@mui/icons-material/Email";
+import auth from "../../service/authService";
+import Axios from "axios";
+
 function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signin = () => {
+    Axios.post(`/api/auth/login`, {
+      email: email,
+      password: password,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .then((error) => {
+        console.log(error);
+      });
+
+    let user = { email, password };
+    console.log(user);
+  };
+
   return (
     <Wrap>
       <Container>
@@ -10,32 +33,39 @@ function LoginForm() {
 
         <Form>
           <Field>
-            <UserIcon></UserIcon>
+            <MailIcon></MailIcon>
             <input
-              type="text"
-              id="username"
-              name="username"
-              placeholder="Tên đăng nhập..."
+              value={email}
+              type="email"
+              placeholder="Địa chỉ email..."
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
             ></input>
           </Field>
           <Field>
             <PasswordIcon></PasswordIcon>
             <input
+              value={password}
               type="password"
-              id="password"
-              name="password"
               placeholder="Mật khẩu..."
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
             ></input>
           </Field>
 
-          <SubmitButton type="submit">Đăng nhập</SubmitButton>
-          <RedirectForgotPassword>
-            <a href="./recover">Quên mật khẩu?</a>
-          </RedirectForgotPassword>
-          <RedirectSignUp>
-            Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
-          </RedirectSignUp>
+          <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
+        <RedirectForgotPassword>
+          <a href="./recover">Quên mật khẩu?</a>
+        </RedirectForgotPassword>
+        <RedirectSignUp>
+          Không có tài khoản? Tạo mới{" "}
+          <Link to="/auth/register">
+            <span>ở đây</span>
+          </Link>
+        </RedirectSignUp>
       </Container>
     </Wrap>
   );
@@ -68,7 +98,7 @@ const Title = styled.div`
   justify-content: space-between;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   border-top: 1px solid #878787;
   padding-top: 30px;
   display: flex;
@@ -91,7 +121,7 @@ const Field = styled.div`
 
   input {
     border: none;
-    width: 75%;
+    width: 85%;
     autocomplete: off;
     background-image: none;
     font-size: 15px;
@@ -104,7 +134,7 @@ const Field = styled.div`
   }
 `;
 
-const UserIcon = styled(PersonIcon)`
+const MailIcon = styled(EmailIcon)`
   margin: auto 6px;
 `;
 
@@ -141,12 +171,12 @@ const RedirectSignUp = styled.div`
   padding: 15px 0;
   font-size: 16px;
   color: #4caf50;
-  a {
+  span {
     font-weight: bold;
     color: #4caf50;
-    text-decoration: underline;
+    cursor: pointer;
   }
-  a:hover {
+  span:hover {
     color: #04aa6d;
   }
 `;

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
+
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
@@ -7,88 +9,159 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 
+import Axios from "axios";
+
 function SignUpForm() {
+  const [emailReg, setEmailReg] = useState("");
+  const [lastNameReg, setLastNameReg] = useState("");
+  const [firstNameReg, setFirstNameReg] = useState("");
+  const [phoneNumberReg, setphoneNumberReg] = useState("");
+  const [cityReg, setCityReg] = useState("");
+  const [addressReg, setAddressReg] = useState("");
+  const [passwordReg, setPasswordReg] = useState("");
+  const [message, setMessage] = useState([]);
+  var [successMsg, setSuccessMsg] = useState("");
+  var [isError, setIsError] = useState(false);
+
+  const register = async () => {
+    Axios.post(`/api/auth/register`, {
+      firstName: firstNameReg,
+      lastName: lastNameReg,
+      email: emailReg,
+      password: passwordReg,
+      phoneNumber: phoneNumberReg,
+      address: addressReg,
+      city: cityReg,
+    })
+      .then((response) => {
+        console.log(response);
+        setSuccessMsg(response.data.msg[0]);
+      })
+      .catch((error) => {
+        setIsError(error.response.data.error);
+        setMessage(error.response.data.msg);
+        console.log(isError);
+      });
+
+    let userReg = {
+      emailReg,
+      lastNameReg,
+      firstNameReg,
+      phoneNumberReg,
+      cityReg,
+      addressReg,
+      passwordReg,
+    };
+
+    console.log(userReg);
+  };
+
+  const errors = message.map((value) => (
+    <div>
+      <label className="text-red-300">{value}</label>
+    </div>
+  ));
+  const success = <div className="text-green-400">{successMsg}</div>;
+
   return (
     <Wrap>
       <Container>
         <Title>Gia nhập với chúng tôi!</Title>
+
         <Form>
           <Field>
             <MailIcon className="Icon"></MailIcon>
             <input
+              value={emailReg}
               type="email"
-              id="email"
-              name="email"
               placeholder="Địa chỉ Email..."
+              onChange={(e) => {
+                setEmailReg(e.target.value);
+              }}
             ></input>
+            <div></div>
           </Field>
 
           <Field>
             <UserIcon className="Icon"></UserIcon>
             <input
+              value={lastNameReg}
               type="text"
-              id="lastname"
-              name="lastname"
               placeholder="Họ..."
+              onChange={(e) => {
+                setLastNameReg(e.target.value);
+              }}
             ></input>
           </Field>
 
           <Field>
             <UserIcon className="Icon"></UserIcon>
             <input
+              value={firstNameReg}
               type="text"
-              id="firstname"
-              name="firstname"
               placeholder="Tên..."
+              onChange={(e) => {
+                setFirstNameReg(e.target.value);
+              }}
             ></input>
           </Field>
 
           <Field>
             <PhoneIcon className="Icon"></PhoneIcon>
             <input
+              value={phoneNumberReg}
               type="number"
-              id="phonenumber"
-              name="phonenumber"
               placeholder="Số điện thoại..."
+              onChange={(e) => {
+                setphoneNumberReg(e.target.value);
+              }}
             ></input>
           </Field>
 
           <Field>
             <CityIcon className="Icon"></CityIcon>
             <input
+              value={cityReg}
               type="text"
-              id="city"
-              name="city"
               placeholder="Thành phố"
+              onChange={(e) => {
+                setCityReg(e.target.value);
+              }}
             ></input>
           </Field>
 
           <Field>
             <AddressIcon className="Icon"></AddressIcon>
             <input
+              value={addressReg}
               type="text"
-              id="address"
-              name="address"
               placeholder="Địa chỉ"
+              onChange={(e) => {
+                setAddressReg(e.target.value);
+              }}
             ></input>
           </Field>
 
           <Field>
             <PasswordIcon className="Icon"></PasswordIcon>
             <input
+              value={passwordReg}
               type="password"
-              id="password"
-              name="password"
               placeholder="Mật khẩu..."
+              onChange={(e) => {
+                setPasswordReg(e.target.value);
+              }}
             ></input>
           </Field>
-
-          <SubmitButton type="submit">Đăng kí tài khoản</SubmitButton>
-
-          <RedirectLogIn>
-            Đã có tài khoản? <a href="./login">Đăng nhập</a>
-          </RedirectLogIn>
+          {isError ? errors : success}
+          <SubmitButton onClick={register}>Đăng kí tài khoản</SubmitButton>
         </Form>
+        <RedirectLogIn>
+          Đã có tài khoản?
+          <Link to="/auth/login">
+            <span> Đăng nhập</span>
+          </Link>
+        </RedirectLogIn>
       </Container>
     </Wrap>
   );
@@ -109,7 +182,7 @@ const Container = styled.div`
   justify-content: center;
   flex-flow: column wrap;
   background-color: #f9f9f9;
-  gap: 40px;
+  gap: 20px;
 `;
 
 const Title = styled.div`
@@ -120,7 +193,7 @@ const Title = styled.div`
   justify-content: space-between;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   border-top: 1px solid #878787;
   padding-top: 30px;
   display: flex;
@@ -171,6 +244,7 @@ const SubmitButton = styled.button`
   font-weight: bold;
   color: white;
   transition: 0.3s ease 0s;
+  cursor: pointer;
   &:hover {
     border: transparent;
     color: white;
@@ -183,12 +257,12 @@ const RedirectLogIn = styled.div`
   padding: 15px 0;
   font-size: 16px;
   color: #4caf50;
-  a {
+  span {
     font-weight: bold;
     color: #4caf50;
-    text-decoration: underline;
+    cursor: pointer;
   }
-  a:hover {
+  span:hover {
     color: #04aa6d;
   }
 `;
