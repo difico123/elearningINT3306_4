@@ -4,40 +4,41 @@ import styled from "styled-components";
 import LockIcon from "@mui/icons-material/Lock";
 import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
-import cookies from 'js-cookie';
-import AuthApi from '../../service/authUser';
+import cookies from "js-cookie";
+import AuthApi from "../../service/authUser";
 
 function LoginForm() {
-  let Auth = React.useContext(AuthApi)
+  let Auth = React.useContext(AuthApi);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState([]);
   const [isError, setIsError] = useState("");
 
-  const signin = () => {
+  const signin = (e) => {
+    e.preventDefault();
     let user = {
       email,
       password,
-    }
+    };
 
-   auth.login(user)
+    auth
+      .login(user)
       .then((res) => {
-        let {token,error} = res.data;
+        let { token, error } = res.data;
         console.log(res);
-        setIsError(error)
-        cookies.set('token',token)
-        Auth.setAuth(true)
+        setIsError(error);
+        cookies.set("token", token);
+        Auth.setAuth(true);
+        window.location = "/";
       })
       .catch((err) => {
-        let {error,msg} = err.response.data;
-        setIsError(error)
-        setErrorMsg(msg)
-        console.log(isError)
+        setIsError(err.response.data.error);
+        console.log(err.response.data.msg);
       });
   };
 
-  const renderErrors = errorMsg.map((value) => (
-    <div>
+  const renderErrors = errorMsg.map((value, index) => (
+    <div key={index}>
       <label className="text-red-300">{value}</label>
     </div>
   ));
@@ -68,7 +69,7 @@ function LoginForm() {
               }}
             ></input>
           </Field>
-          {isError? renderErrors:''}
+          {isError ? renderErrors : ""}
           <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
         <RedirectForgotPassword>

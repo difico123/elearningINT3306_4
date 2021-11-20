@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./components/Header";
-import Home from "./components/Home";
+import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
 import Detail from "./components/Detail";
 import Login from "./components/auth/Login";
@@ -51,7 +51,7 @@ const Routing = () => {
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Homepage />} />
       <Route
         path="/login"
         element={

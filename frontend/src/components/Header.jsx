@@ -41,7 +41,7 @@ function Header() {
   return (
     <Nav>
       <Logo>
-        <Link to={`/home`}>
+        <Link to={`/`}>
           <img
             src="
     https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg"
@@ -79,6 +79,7 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 100;
 `;
 
 const Logo = styled.div`
