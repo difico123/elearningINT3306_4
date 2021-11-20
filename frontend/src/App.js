@@ -16,17 +16,24 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { getTableSortLabelUtilityClass } from "@mui/material";
 import AuthApi from "./service/authUser";
 import auth from "./service/authService";
-import user from "./service/userService";
+import UserService from "./service/userService";
 
 function App() {
   const [auth, setAuth] = React.useState(false);
-
+  const [user, setUser] = React.useState({
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    city: "",
+    address: ""
+  });
+      
   const getUser = () => {
-    user.getUserInfo().then((res) => {
+    UserService.getUserInfo().then((res) => {
       let { error, info } = res.data;
       let success = !error;
-      console.log(info);
       setAuth(success);
+      setUser({...info});
     });
   };
 
@@ -39,7 +46,7 @@ function App() {
       <div className="App">
         <Router>
           <Header />
-          <Routing />
+          <Routing user={user}/>
           <Footer />
         </Router>
       </div>
@@ -47,7 +54,7 @@ function App() {
   );
 }
 
-const Routing = () => {
+const Routing = ({user}) => {
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
@@ -75,6 +82,14 @@ const Routing = () => {
           <ProtectedRoute auth={Auth.auth}>
             <Dashboard />
           </ProtectedRoute>
+        }
+      />
+      <Route />
+
+      <Route
+        path="/profile"
+        element={
+            <Profile user={user} />
         }
       />
       <Route />
