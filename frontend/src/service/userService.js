@@ -7,6 +7,12 @@ function getUserInfo() {
   return http.get( apiEndpoint + '/info', config);
 }
 
+function editUser(user) {
+  const config = { headers: { 'Content-Type': 'application/json' } };
+  return http.put( apiEndpoint + '/editInfo',user, config);
+}
+
 export default {
-    getUserInfo
+    getUserInfo,
+    editUser
 };

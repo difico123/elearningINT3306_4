@@ -53,9 +53,9 @@ function SignUpForm() {
       });
   };
 
-  const errors = message.map((value) => (
+  const errors = message.map((abc) => (
     <div>
-      <label className="text-red-300">{value}</label>
+      <label className="text-red-300">{abc}</label>
     </div>
   ));
   const success = <div className="text-green-400">{successMsg}</div>;
