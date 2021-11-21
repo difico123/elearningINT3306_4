@@ -13,21 +13,23 @@ function login({ email, password }) {
     config
   );
 }
-async function register(username, password, firstName, middleName) {
-  return http.post(apiEndpoint + "/register", {
-    username,
-    password,
-    firstName,
-    middleName,
-  });
+async function register(user) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.post(apiEndpoint + "/register", user, config);
 }
 
 function logout() {
   return http.get(apiEndpoint + "/logout");
 }
 
+function forgotPassword(email) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.post(apiEndpoint + "/forgotPassword", email, config);
+}
+
 export default {
   login,
   logout,
   register,
+  forgotPassword,
 };

@@ -1,8 +1,36 @@
-import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import EmailIcon from "@mui/icons-material/Email";
+import AuthService from "../../service/authService";
+import axios from "axios";
 
 function ForgotPassword() {
+  const [emailForgot, setEmailForgot] = useState("");
+
+  const submit = async (e) => {
+    e.preventDefault();
+    await axios
+      .post("/api/auth/forgotPassword", emailForgot)
+      // AuthService.forgotPassword(emailForgot)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+  console.log(emailForgot);
+  const [successMsg, setSuccessMsg] = useState([]);
+  var [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState([]);
+
+  const errors = message.map((err) => (
+    <div>
+      <label className="text-red-300">{err}</label>
+    </div>
+  ));
+  const success = <div className="text-green-400">{successMsg}</div>;
+
   return (
     <Wrap>
       <Container>
@@ -14,12 +42,17 @@ function ForgotPassword() {
             <input
               type="email"
               id="email"
-              name="email"
+              name="emailForgot"
               placeholder="Địa chỉ Email...."
+              onChange={(e) => {
+                setEmailForgot(e.target.value);
+              }}
             ></input>
           </Field>
-
-          <SubmitButton type="submit">Lấy lại mật khẩu</SubmitButton>
+          {isError ? errors : success}
+          <SubmitButton type="submit" onClick={submit}>
+            Lấy lại mật khẩu
+          </SubmitButton>
           <Redirect>
             Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
           </Redirect>
@@ -101,7 +134,7 @@ const MailIcon = styled(EmailIcon)`
   margin: auto 6px;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.input`
   background-color: #4caf50;
   height: 40px;
   font-weight: bold;

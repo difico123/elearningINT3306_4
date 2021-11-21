@@ -61,6 +61,7 @@ const Routing = ({ user }) => {
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
+      <Route path="/recover" element={<ForgotPassword />} />
       <Route path="/tmp" element={<CategoryContent />} />
       <Route path="/" element={<Homepage />} />
       <Route

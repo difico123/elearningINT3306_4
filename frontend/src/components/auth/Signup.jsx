@@ -8,8 +8,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-
-import Axios from "axios";
+import AuthService from "../../service/authService";
 
 function SignUpForm() {
   const [userReg, setUserReg] = useState({
@@ -29,19 +28,12 @@ function SignUpForm() {
   var [successMsg, setSuccessMsg] = useState("");
   var [isError, setIsError] = useState(false);
 
+
   const onChange = (e) =>
     setUserReg({ ...userReg, [e.target.name]: e.target.value });
 
   const register = () => {
-    Axios.post(`/api/auth/register`, {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password,
-      phoneNumber: phoneNumber,
-      address: address,
-      city: city,
-    })
+    AuthService.register(userReg)
       .then((response) => {
         setSuccessMsg(response.data.msg[0]);
         setIsError(response.data.error);
