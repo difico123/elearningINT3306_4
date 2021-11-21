@@ -33,7 +33,7 @@ function LoginForm() {
       })
       .catch((err) => {
         setIsError(err.response.data.error);
-        console.log(err.response.data.msg);
+        setErrorMsg(err.response.data.msg);
       });
   };
 

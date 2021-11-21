@@ -6,14 +6,14 @@ import Viewers from "./Viewers";
 
 function Homepage() {
   return (
-    <Wrap>
+    <Container>
       <Viewers />
       <Categories />
-    </Wrap>
+    </Container>
   );
 }
 
-const Wrap = styled.main`
+const Container = styled.main`
   min-height: calc(100vh - 350px);
   padding: 10vw;
   display: flex;

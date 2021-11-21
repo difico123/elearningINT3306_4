@@ -7,6 +7,7 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import Profile from "./components/Profile";
+
 import {
   ProtectedRoute,
   ProtectedLoginRoute,
@@ -17,6 +18,7 @@ import { getTableSortLabelUtilityClass } from "@mui/material";
 import AuthApi from "./service/authUser";
 import auth from "./service/authService";
 import UserService from "./service/userService";
+import CategoryContent from "./components/auth/CategoryContent";
 
 function App() {
   const [auth, setAuth] = React.useState(false);
@@ -25,15 +27,16 @@ function App() {
     firstName: "",
     phoneNumber: "",
     city: "",
-    address: ""
+    address: "",
+    role: "",
   });
-      
+
   const getUser = () => {
     UserService.getUserInfo().then((res) => {
       let { error, info } = res.data;
       let success = !error;
       setAuth(success);
-      setUser({...info});
+      setUser({ ...info });
     });
   };
 
@@ -46,7 +49,7 @@ function App() {
       <div className="App">
         <Router>
           <Header />
-          <Routing user={user}/>
+          <Routing user={user} />
           <Footer />
         </Router>
       </div>
@@ -54,10 +57,11 @@ function App() {
   );
 }
 
-const Routing = ({user}) => {
+const Routing = ({ user }) => {
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
+      <Route path="/tmp" element={<CategoryContent />} />
       <Route path="/" element={<Homepage />} />
       <Route
         path="/login"
@@ -86,12 +90,7 @@ const Routing = ({user}) => {
       />
       <Route />
 
-      <Route
-        path="/profile"
-        element={
-            <Profile user={user} />
-        }
-      />
+      <Route path="/profile" element={<Profile user={user} />} />
       <Route />
     </Routes>
   );

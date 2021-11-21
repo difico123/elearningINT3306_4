@@ -1,24 +1,26 @@
-const NotificationService = require('../dbservice/NotificationService');
-
+const {
+    Notification,
+} = require('../db/models');
 module.exports = class ApiNotification {
     // @route   GET api/notification/get
     // @desc    get notification by user
     // @access  Private
-    static getNotification(req, res) {
+    static async getNotification(req, res) {
+        let {id} = req.user;
         try {
-            NotificationService.getNotification(req.user.id).then((data) => {
-                if (data.length == 0) {
-                    return res.status(200).json({
-                        error: false,
-                        msg: 'Bạn không có thông báo nào',
-                    });
-                }
+            let notifications =  await Notification.findAll( {where: { receiverId: id}});
+            if (notifications.length === 0) {
+                return res.status(200).json({
+                    error: false,
+                    msg: ['Bạn không có thông báo nào'],
+                });
+            } else {
                 res.status(200).json({
                     error: false,
-                    notification: data,
-                    numOfNotifications: data.length,
+                    notifications: notifications,
+                    numOfNotifications: notifications.length,
                 });
-            });
+            }
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

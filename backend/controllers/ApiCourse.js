@@ -1,6 +1,10 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-const { User, Course, Category } = require('../db/models');
+const { User, Course, Category, UserCourse } = require('../db/models');
+
+const CourseService = require('../dbService/courseService');
+const UserService = require('../dbService/userService');
+const UserCourseService = require('../dbService/userCourseService');
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -25,7 +29,6 @@ module.exports = class ApiCourse {
                 res.status(201).json({
                     error: false,
                     msg: 'Tạo khoá học thành công',
-                    course: course,
                 });
             });
         } catch (error) {
@@ -130,58 +133,24 @@ module.exports = class ApiCourse {
         }
     }
 
-    // @route   GET api/course/image/:courseId
-    // @desc    show course image
-    // @access  Public
-    static showImg(req, res) {
-        CourseService.getCourseById(req.params.courseId).then((course) => {
-            if (!course[0]) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Không tìm thấy khoá học',
-                });
-            }
-
-            if (!course[0].imageUrl) {
-                return res.status(200).json({
-                    error: false,
-                    msg: 'Không có đường dẫn ảnh khoá học',
-                });
-            }
-
-            let imageUrl = course[0].imageUrl.split(' ')[0];
-            return res.status(404).json({
-                error: false,
-                link: imageUrl,
-            });
-        });
-    }
-
     // @route   PUT api/course/edit/:courseId
     // @desc    edit course
     // @access  Private
     static async delete(req, res) {
+        let { courseId } = req.params;
         try {
-            await CourseService.getCourseById(req.params.courseId).then(
-                async (course) => {
-                    if (course[0].imageUrl) {
-                        let cloudinary_id = course[0].imageUrl.split(' ')[1];
-                        await cloudinary.uploader.destroy(cloudinary_id);
-                    }
-                },
-            );
-            //get user information by id
-            CourseService.deleteCourseById(req.params.courseId).then((data) => {
-                if (!data) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Không xoá được khoá học',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    msg: 'Đã xoá khoá học ',
-                });
+            let course = await Course.findOne({ where: { id: courseId } });
+
+            if (course.imageUrl) {
+                let cloudinary_id = course.imageUrl.split(' ')[1];
+                await cloudinary.uploader.destroy(cloudinary_id);
+            }
+
+            await course.destroy();
+
+            res.status(200).json({
+                error: false,
+                msg: 'Đã xoá khoá học ',
             });
         } catch (error) {
             console.log(error.message);
@@ -199,6 +168,12 @@ module.exports = class ApiCourse {
             });
             let instructor = await User.findOne({
                 where: { id: req.user.id },
+            });
+
+            courses.map((course) => {
+                if (course.imageUrl) {
+                    course.imageUrl = course.imageUrl.split(' ')[0];
+                }
             });
             courses = courses == null ? 'Bạn chưa có khoá học nào' : courses;
             res.status(200).json({
@@ -281,15 +256,10 @@ module.exports = class ApiCourse {
         let query = {
             keyword: req.query.keyword,
             rating: req.query.rating,
+            categoryName: req.query.categoryName,
         };
         try {
             CourseService.getAll(query).then((data) => {
-                if (data.length == 0) {
-                    return res.status(200).json({
-                        error: false,
-                        msg: 'Không có khoá học nào',
-                    });
-                }
                 let page = req.query.page || 1;
                 let courses = pagination(data, page);
                 res.status(200).json({
@@ -297,6 +267,7 @@ module.exports = class ApiCourse {
                     courses,
                     filteredCourse: courses.length,
                     currentPage: req.query.page,
+                    totalCourse: data.length
                 });
             });
         } catch (error) {
@@ -309,27 +280,123 @@ module.exports = class ApiCourse {
     // @desc    Get all users in the course
     // @access  private
     static async showUsers(req, res) {
+        let { courseId } = req.params;
+        let page = parseInt(req.query.page);
         try {
-            let info = {};
-            await CourseService.getCourseInstructorByCourceId(
-                req.params.courseId,
-            ).then((instructorCourses) => {
-                info.course = instructorCourses[0];
+            let course = await Course.findOne({ where: { id: courseId } });
+
+            await UserCourseService.getUsersbyCourseId(courseId).then(data => {
+                let users = pagination(data, page);
+                return res.status(200).json({
+                    error: false,
+                    course: course,
+                    users,
+                    currentPage: page||1,
+                    filteredUsers: users.length,
+                    total: data.length,
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+    
+    // @route   PUT api/course/:courseId/kick/:userId
+    // @desc    kickUser
+    // @access  private
+    static async kickUser(req, res) {
+        let { courseId, userId } = req.params;
+        try {
+            let courseUser = await UserCourse.findOne({
+                where: { courseId: courseId, userId: userId },
             });
-            let users = [];
-            await UserCourseService.getCourseUsers(req.params.courseId).then(
-                (data) => {
-                    if (data.length == 0) {
-                        users.push('Không có học sinh nào trong khoá học');
-                    }
-                    users = [...data];
-                },
-            );
-            return res.status(200).json({
-                error: false,
-                course: info.course,
-                users,
-                total: users.length,
+
+            if (!courseUser) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Không có học sinh này trong khoá học'],
+                });
+            }
+            await courseUser
+                .destroy()
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: ['Bạn đã đuổi học sinh này ra khỏi khoá học'],
+                    });
+                })
+                .catch(() => {
+                    return res.status(400).json({
+                        error: false,
+                        msg: ['Không có user này'],
+                    });
+                });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   PUT api/course/:courseId/invite/:userId
+    // @desc    invite student
+    // @access  private
+    static async invite(req, res) {
+        let { userId, courseId } = req.params;
+
+        let userCourse = {
+            userId: userId,
+            courseId: parseInt(courseId),
+        };
+        try {
+            let user = await User.findOne({ where: { id: userId } });
+            if (!user) {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'Không có user này',
+                });
+            }
+
+            await UserCourse.create(userCourse)
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: ['Bạn đã thêm học sinh mới vào khoá học này'],
+                    });
+                })
+                .catch(() => {
+                    return res.status(400).json({
+                        error: true,
+                        msg: 'Bạn đã thêm học sinh này rồi!',
+                    });
+                });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   PUT api/course/:courseId/findUsers
+    // @desc    findUsers
+    // @access  private
+    static async findUsers(req, res) {
+        let { keyword } = req.query;
+        let { courseId } = req.params;
+        keyword = keyword || '';
+        try {
+            UserService.getUserbyEmail(keyword,courseId).then((students) => {
+                if (students.length === 0) {
+                    return res.status(200).json({
+                        error: false,
+                        msg: ['Không có user'],
+                        filteredUser: students.length,
+                    });
+                }
+                return res.status(200).json({
+                    error: false,
+                    students,
+                    filteredUser: students.length,
+                });
             });
         } catch (error) {
             console.log(error.message);

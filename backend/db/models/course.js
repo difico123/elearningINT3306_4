@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate({ Category, User, UserCourse }) {
             this.belongsTo(Category, {
-                foreignKey: 'CategoryId',
+                foreignKey: 'categoryId',
                 as: 'categories',
                 onDelete: 'cascade',
             });
@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
         toJSON() {
             return {
                 ...this.get(),
-                CategoryId: undefined,
                 instructorId: undefined,
             };
         }

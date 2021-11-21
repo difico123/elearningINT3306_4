@@ -21,7 +21,8 @@ module.exports = {
                 },
                 rating: {
                     type: DataTypes.ENUM('1', '2', '3', '4', '5'),
-                    allowNull: true,
+                    defaultValue: '1',
+                    allowNull: false,
                 },
                 isComplete: {
                     type: DataTypes.BOOLEAN,

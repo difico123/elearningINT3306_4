@@ -1,4 +1,3 @@
-const e = require('express');
 const { User, Course } = require('../../db/models');
 
 module.exports = {
@@ -15,6 +14,7 @@ module.exports = {
                 let course = await Course.findOne({
                     where: { instructorId: id, id: courseId },
                 });
+
                 if (isAlowed) {
                     if (!course) {
                         res.status(403).json({
