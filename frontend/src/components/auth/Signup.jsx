@@ -9,6 +9,7 @@ import LocationCityIcon from "@mui/icons-material/LocationCity";
 import HomeIcon from "@mui/icons-material/Home";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AuthService from "../../service/authService";
+import Button from "../universal/SubmitButton";
 
 function SignUpForm() {
   const [userReg, setUserReg] = useState({
@@ -135,7 +136,7 @@ function SignUpForm() {
             ></input>
           </Field>
           {isError ? errors : success}
-          <SubmitButton onClick={register}>Đăng kí tài khoản</SubmitButton>
+          <Button click={register} value={"Đăng ký"}></Button>
         </Form>
         <RedirectLogIn>
           Đã có tài khoản?
@@ -216,20 +217,6 @@ const Field = styled.div`
 
   .Icon {
     margin: 7px 5px 7px;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background-color: #4caf50;
-  height: 40px;
-  font-weight: bold;
-  color: white;
-  transition: 0.3s ease 0s;
-  cursor: pointer;
-  &:hover {
-    border: transparent;
-    color: white;
-    background-color: #04aa6d;
   }
 `;
 

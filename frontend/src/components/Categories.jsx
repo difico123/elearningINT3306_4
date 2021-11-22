@@ -1,66 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
+import data from "./data.json";
+import { Link } from "react-router-dom";
 
 function Categories() {
+  const hello = data.map((value) => (
+    <Link to={`/courses/${value.id}`}>
+      <Wrap>
+        <CategoryImage alt="" src={value.img}></CategoryImage>
+        <CategoryTitle>{value.title}</CategoryTitle>
+        <CategoryDescription>{value.description}</CategoryDescription>
+      </Wrap>
+    </Link>
+  ));
+
+  console.log(hello);
   return (
     <Container>
       <Title>Danh mục khóa học</Title>
-      <Content>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-design-v2.jpg"></img>
-          <CategoryTitle>Sáng tạo</CategoryTitle>
-          <CategoryDescription>
-            Kích thích sự sáng tạo trong bạn với những chương trình thực tế của
-            chúng tôi.
-          </CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-development-v2.jpg"></img>
-          <CategoryTitle>Lập trình</CategoryTitle>
-          <CategoryDescription>
-            Nơi xây những viên gạch đầu tiên để trở thành lập trình viên với mức
-            lương đáng mơ ước.
-          </CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-marketing-v2.jpg"></img>
-          <CategoryTitle>Marketing</CategoryTitle>
-          <CategoryDescription>
-            Chưa biết bắt đầu từ đâu? Học marketing online với các giảng viên
-            hàng đầu ngành marketing.
-          </CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-it-and-software-v2.jpg"></img>
-          <CategoryTitle>Sáng tạo</CategoryTitle>
-          <CategoryDescription></CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-personal-development-v2.jpg"></img>
-          <CategoryTitle>Kỹ năng cá nhân</CategoryTitle>
-          <CategoryDescription>
-            Bước ra khỏi vùng an toàn và đặt ra các mục tiêu lớn hơn để có thể
-            nhận thấy được khả năng của mình.
-          </CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-business-v2.jpg"></img>
-          <CategoryTitle>Kinh doanh</CategoryTitle>
-          <CategoryDescription>
-            Bắt đầu sự nghiệp kinh doanh bằng những{" "}
-          </CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-photography-v2.jpg"></img>
-          <CategoryTitle>Nhiếp ảnh</CategoryTitle>
-          <CategoryDescription></CategoryDescription>
-        </Wrap>
-        <Wrap>
-          <img src="https://s.udemycdn.com/home/top-categories/lohp-category-music-v2.jpg"></img>
-          <CategoryTitle>Nghệ thuật</CategoryTitle>
-          <CategoryDescription></CategoryDescription>
-        </Wrap>
-      </Content>
+      <Content>{hello}</Content>
     </Container>
   );
 }
@@ -96,12 +54,13 @@ const Wrap = styled.div`
     transform: scale(0.9875);
     border-color: rgba(5, 5, 5, 0.314);
   }
-  img {
-    width: 300px;
-    height: 250px;
-    margin: 20px 0;
-    border-radius: 10%;
-  }
+`;
+
+const CategoryImage = styled.img`
+  width: 300px;
+  height: 250px;
+  margin: 20px 0;
+  border-radius: 10%;
 `;
 
 const CategoryTitle = styled.div`

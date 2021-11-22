@@ -6,6 +6,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
 import cookies from "js-cookie";
 import AuthApi from "../../service/authUser";
+import Button from "../universal/SubmitButton";
 
 function LoginForm() {
   let Auth = React.useContext(AuthApi);
@@ -70,7 +71,7 @@ function LoginForm() {
             ></input>
           </Field>
           {isError ? renderErrors : ""}
-          <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
+          <Button click={signin} value={"Đăng nhập"}></Button>
         </Form>
         <RedirectForgotPassword>
           <a href="./recover">Quên mật khẩu?</a>
@@ -102,7 +103,7 @@ const Container = styled.div`
   justify-content: center;
   flex-flow: column wrap;
   background-color: #f9f9f9;
-  gap: 40px;
+  gap: 20px;
 `;
 
 const Title = styled.div`
@@ -155,19 +156,6 @@ const MailIcon = styled(EmailIcon)`
 
 const PasswordIcon = styled(LockIcon)`
   margin: auto 6px;
-`;
-
-const SubmitButton = styled.button`
-  background-color: #4caf50;
-  height: 40px;
-  font-weight: bold;
-  color: white;
-  transition: 0.3s ease 0s;
-  &:hover {
-    border: transparent;
-    color: white;
-    background-color: #04aa6d;
-  }
 `;
 
 const RedirectForgotPassword = styled.div`

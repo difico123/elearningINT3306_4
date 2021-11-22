@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AuthApi from "../service/authUser";
-import auth from "../service/authService";
+import AuthApi from "../../service/authUser";
+import auth from "../../service/authService";
 
 function Header() {
   let Auth = React.useContext(AuthApi);

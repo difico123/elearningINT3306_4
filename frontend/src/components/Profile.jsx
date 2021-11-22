@@ -1,21 +1,16 @@
-import { Button } from "@mui/material";
-import React, { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { Link } from "react-router-dom";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 
 import UserService from "../service/userService";
 
-import Axios from "axios";
-
-function Profile({user}) {
-
+function Profile({ user }) {
   const [message, setMessage] = useState([]);
   var [successMsg, setSuccessMsg] = useState("");
   var [isError, setIsError] = useState(false);
 
-  const [ userProfile, setUserProfile] = useState({
+  const [userProfile, setUserProfile] = useState({
     lastName: "",
     firstName: "",
     phoneNumber: "",
@@ -23,27 +18,27 @@ function Profile({user}) {
     address: "",
   });
 
-  let  { firstName, lastName, phoneNumber, city, address } = userProfile
+  let { firstName, lastName, phoneNumber, city, address } = userProfile;
 
-  React.useEffect(() => {
-      setUserProfile({...user})
+  useEffect(() => {
+    setUserProfile({ ...user });
   }, [user]);
 
   const onChange = (e) => {
-    setUserProfile({...userProfile,[e.target.name]:e.target.value})
-  }
+    setUserProfile({ ...userProfile, [e.target.name]: e.target.value });
+  };
 
   const editInfo = (e) => {
     e.preventDefault();
-    UserService.editUser({firstName, lastName, phoneNumber, city, address})
-    .then((response) => {
-      setSuccessMsg(response.data.msg);
-      console.log(response.data.msg);
-    })
-    .catch((error) => {
-      setIsError(error.response.data.error);
-      setMessage(error.response.data.msg);
-    });
+    UserService.editUser({ firstName, lastName, phoneNumber, city, address })
+      .then((response) => {
+        setSuccessMsg(response.data.msg);
+        console.log(response.data.msg);
+      })
+      .catch((error) => {
+        setIsError(error.response.data.error);
+        setMessage(error.response.data.msg);
+      });
   };
 
   const errors = message.map((abc) => (
@@ -54,87 +49,82 @@ function Profile({user}) {
 
   const success = <div className="text-green-400">{successMsg}</div>;
 
-    return (
-
-        <Wrap>
-          <Container>
-            <Title>Profile</Title>
-            <Form>
-              <FullName>
-                <Name>
-                    <span>First Name</span>
-                    <input
-                    value={firstName}
-                    type="text"
-                    name="firstName"
-                    placeholder="Enter your name"
-                    onChange={onChange}
-                    />
-                </Name>
-                <Name>
-                    <span>Last Name</span>
-                    <input
-                    value={lastName}
-                    type="text"
-                    name="lastName"
-                    placeholder="Enter your name"
-                    onChange={onChange}
-                    ></input>
-                </Name>
-              </FullName>
-              <Image>
-                  <label for="avatar">Profile Photo</label>
-                  <ProfileIcon></ProfileIcon>
-                  <input 
-                    type="file"
-                    name="avatar"
-                    accept="image/png, image/jpeg"
-                  ></input>
-              </Image>
-              <UserDetails>
-                <InputBox>
-                  <Span>Phone Number</Span>
-                  <input
-                  value={phoneNumber}
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Enter your name"
-                  onChange={onChange}
-                  ></input>
-                </InputBox>
-                <InputBox>
-                  <Span>Address</Span>
-                  <input
-                  value={address}
-                  type="text"
-                  name="address"
-                  placeholder="Enter your name"
-                  onChange={onChange}
-                  ></input>
-                </InputBox>
-                <InputBox>
-                  <Span>City</Span>
-                  <input
-                  value={city}
-                  type="text"
-                  name="city"
-                  placeholder="Enter your name"
-                  onChange={onChange}
-                  ></input>
-                </InputBox>
-                {isError ? errors : success}
-                <Confirm>
-                <input
-                  type="Submit"
-                  value="Confirm"
-                  onClick={editInfo}
-                  ></input>
-                </Confirm>
-              </UserDetails>
-            </Form>
-          </Container>
-        </Wrap>
-    );
+  return (
+    <Wrap>
+      <Container>
+        <Title>Profile</Title>
+        <Form>
+          <FullName>
+            <Name>
+              <span>First Name</span>
+              <input
+                value={firstName}
+                type="text"
+                name="firstName"
+                placeholder="Enter your name"
+                onChange={onChange}
+              />
+            </Name>
+            <Name>
+              <span>Last Name</span>
+              <input
+                value={lastName}
+                type="text"
+                name="lastName"
+                placeholder="Enter your name"
+                onChange={onChange}
+              ></input>
+            </Name>
+          </FullName>
+          <Image>
+            <label for="avatar">Profile Photo</label>
+            <ProfileIcon></ProfileIcon>
+            <input
+              type="file"
+              name="avatar"
+              accept="image/png, image/jpeg"
+            ></input>
+          </Image>
+          <UserDetails>
+            <InputBox>
+              <Span>Phone Number</Span>
+              <input
+                value={phoneNumber}
+                type="text"
+                name="phoneNumber"
+                placeholder="Enter your name"
+                onChange={onChange}
+              ></input>
+            </InputBox>
+            <InputBox>
+              <Span>Address</Span>
+              <input
+                value={address}
+                type="text"
+                name="address"
+                placeholder="Enter your name"
+                onChange={onChange}
+              ></input>
+            </InputBox>
+            <InputBox>
+              <Span>City</Span>
+              <input
+                value={city}
+                type="text"
+                name="city"
+                placeholder="Enter your name"
+                onChange={onChange}
+              ></input>
+            </InputBox>
+            {isError ? errors : success}
+            <Confirm>
+              <input type="Submit" value="Confirm" onClick={editInfo}></input>
+            </Confirm>
+          </UserDetails>
+        </Form>
+      </Container>
+    </Wrap>
+  );
 }
 
 const Wrap = styled.div`
@@ -166,13 +156,13 @@ const UserDetails = styled.div`
 const InputBox = styled.div`
   margin: 20px 0 12px 0;
   input {
-   height: 45px;
-   width: 100%;
-   outline: none;
-   border-radius: 5px;
-   border: 1px solid #ccc;
-   padding-left: 15px;
-   font-size: 16px;
+    height: 45px;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 16px;
   }
 `;
 
@@ -186,16 +176,16 @@ const Confirm = styled.button`
   height: 45px;
   margin: 45px 0;
   input {
-   height: 100%;
-   width: 100%;
-   outline: none;
-   color: #fff;
-   border:none;
-   font-size: 18px;
-   font-weight: 500;
-   border-radius: 5px;
-   letter-spacing: 1px;
-   background: linear-gradient(135deg, #71b7e6, #9b59b6)
+    height: 100%;
+    width: 100%;
+    outline: none;
+    color: #fff;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
   }
 `;
 
@@ -203,20 +193,20 @@ const FullName = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-`
+`;
 
 const Name = styled.div`
   span {
     float: left;
   }
   input {
-   height: 45px;
-   width: 100%;
-   outline: none;
-   border-radius: 5px;
-   border: 1px solid #ccc;
-   padding-left: 15px;
-   font-size: 16px;
+    height: 45px;
+    width: 100%;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    font-size: 16px;
   }
 `;
 
@@ -224,12 +214,12 @@ const Image = styled.div`
   margin: 20px 0 12px 0;
   label {
     display: block;
-    font: 1rem 'Fira Sans', sans-serif;
+    font: 1rem "Fira Sans", sans-serif;
   }
 
   input,
   label {
-    margin: .4rem 0;
+    margin: 0.4rem 0;
   }
 
   input {
