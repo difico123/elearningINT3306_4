@@ -7,11 +7,8 @@ import axios from "axios";
 function ForgotPassword() {
   const [emailForgot, setEmailForgot] = useState("");
 
-  const submit = async (e) => {
-    e.preventDefault();
-    await axios
-      .post("/api/auth/forgotPassword", emailForgot)
-      // AuthService.forgotPassword(emailForgot)
+  const submit = async () => {
+    AuthService.forgotPassword({ email: emailForgot })
       .then((response) => {
         console.log(response);
       })
@@ -50,9 +47,7 @@ function ForgotPassword() {
             ></input>
           </Field>
           {isError ? errors : success}
-          <SubmitButton type="submit" onClick={submit}>
-            Lấy lại mật khẩu
-          </SubmitButton>
+          <SubmitButton onClick={submit}>Lấy lại mật khẩu</SubmitButton>
           <Redirect>
             Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
           </Redirect>
@@ -94,7 +89,7 @@ const Title = styled.div`
   justify-content: space-between;
 `;
 
-const Form = styled.form`
+const Form = styled.div`
   border-top: 1px solid #878787;
   padding-top: 30px;
   display: flex;
@@ -134,12 +129,13 @@ const MailIcon = styled(EmailIcon)`
   margin: auto 6px;
 `;
 
-const SubmitButton = styled.input`
+const SubmitButton = styled.button`
   background-color: #4caf50;
   height: 40px;
   font-weight: bold;
   color: white;
   transition: 0.3s ease 0s;
+  cursor: pointer;
   &:hover {
     border: transparent;
     color: white;

@@ -28,7 +28,6 @@ function SignUpForm() {
   var [successMsg, setSuccessMsg] = useState("");
   var [isError, setIsError] = useState(false);
 
-
   const onChange = (e) =>
     setUserReg({ ...userReg, [e.target.name]: e.target.value });
 
