@@ -130,7 +130,7 @@ module.exports = class ApiUser {
         if (!user) {
             return res.status(400).json({
                 error: true,
-                msg: 'Email của bạn không đúng',
+                msg: ['Email của bạn không đúng'],
             });
         }
 
@@ -242,6 +242,7 @@ module.exports = class ApiUser {
             res.status(200).json({
                 error: false,
                 info: user,
+                url: req.header('x-forwarded-for')
             });
         } catch (error) {
             console.log(error.message);
