@@ -29,7 +29,7 @@ function LoginForm() {
         setIsError(error);
         cookies.set("token", token);
         Auth.setAuth(true);
-        window.location = "/";
+        window.location = "/home";
       })
       .catch((err) => {
         setIsError(err.response.data.error);

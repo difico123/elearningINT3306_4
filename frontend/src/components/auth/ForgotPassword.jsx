@@ -2,37 +2,55 @@ import { useState } from "react";
 import styled from "styled-components";
 import EmailIcon from "@mui/icons-material/Email";
 import AuthService from "../../service/authService";
-import axios from "axios";
+import Loader from "../stuff/loader"
+
 
 function ForgotPassword() {
   const [emailForgot, setEmailForgot] = useState("");
-
-  const submit = async () => {
-    AuthService.forgotPassword({ email: emailForgot })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-  console.log(emailForgot);
   const [successMsg, setSuccessMsg] = useState([]);
   var [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState([]);
+  const [errorMsg, setErrorMsg] = useState([]);
+  const [loading,setLoading] = useState(false);
 
-  const errors = message.map((err) => (
-    <div>
+  const submit = async () => {
+    setLoading(true)
+   await AuthService.forgotPassword({ email: emailForgot })
+      .then((response) => {
+        setIsError(false)
+        setSuccessMsg(response.data.message);
+      })
+      .catch((error) => {
+        setIsError(true)
+        setErrorMsg(error.response.data.msg);
+      });
+      setLoading(false)
+  };
+  const success = <div className="text-green-400">{successMsg}</div>;
+  
+  const errors = errorMsg.map((err) => (
+    <div className="flex mb-2">
       <label className="text-red-300">{err}</label>
     </div>
   ));
-  const success = <div className="text-green-400">{successMsg}</div>;
+
+ const renderMsg = isError ? errors : success;
+ 
+ const loader = (
+   <div className="flex justify-center text-green-400">
+      <Loader/>
+   </div>
+ )
+
+ const renderLoaderMsg = loading ? loader : renderMsg;
+
+
+ const renderButton = loading? '':<SubmitButton className="border-4"onClick={submit}>Lấy lại mật khẩu</SubmitButton>;
+
 
   return (
     <Wrap>
       <Container>
         <Title>Khôi phục lại mật khẩu</Title>
-
         <Form>
           <Field>
             <MailIcon></MailIcon>
@@ -46,8 +64,8 @@ function ForgotPassword() {
               }}
             ></input>
           </Field>
-          {isError ? errors : success}
-          <SubmitButton onClick={submit}>Lấy lại mật khẩu</SubmitButton>
+          {renderLoaderMsg}
+          {renderButton}
           <Redirect>
             Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
           </Redirect>
@@ -156,3 +174,4 @@ const Redirect = styled.div`
     color: #04aa6d;
   }
 `;
+

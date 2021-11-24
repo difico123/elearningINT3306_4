@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
@@ -7,8 +7,26 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AuthApi from "../service/authUser";
 import auth from "../service/authService";
 
-function Header() {
+function Header({user}) {
   let Auth = React.useContext(AuthApi);
+
+  const [userInfo,setUserInfo] = useState({
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    city: "",
+    address: "",
+    role: "",
+    imageUrl: ""
+  })
+
+  const [toggle, setToggle] = useState(false);
+
+  let {lastName, firstName,phoneNumber, city,  address,role,  imageUrl} = userInfo;
+
+  React.useEffect(() => {
+    setUserInfo(user)
+  }, [user]);
 
   const loginIcon = (
     <React.Fragment>
@@ -22,21 +40,37 @@ function Header() {
       </Buttons>
     </React.Fragment>
   );
+const abc = () => {
+  console.log("ok")
+}
+
+  const DropDown = () => (
+    <Dropdown>
+        <p onClick={abc}>Trang cá nhân</p>
+        <p>Xem khoá học</p>
+    </Dropdown>
+  )
+
+  const handleDropdown = () => {
+      setToggle(!toggle)
+  }
+
+  const person = (
+    <React.Fragment>
+      <Avt className="bg-blue-200 border-light-blue-500 rounded-xl" onClick={handleDropdown}>
+        {" "}
+        {imageUrl? <AvtImg src={imageUrl} alt="" />: <AccountCircleIcon className="p-0"/>}
+        {toggle? <DropDown/>: ''}
+      </Avt>
+    </React.Fragment>
+  );
+
   const handleLogout = () => {
     auth.logout().then((res) => {
       console.log(res.data);
     });
     Auth.setAuth(false);
   };
-
-  const person = (
-    <React.Fragment>
-      <div className="bg-blue-200 border-light-blue-500 rounded-xl">
-        {" "}
-        <AccountCircleIcon className="p-0" />
-      </div>
-    </React.Fragment>
-  );
 
   return (
     <Nav>
@@ -68,6 +102,22 @@ function Header() {
 }
 
 export default Header;
+
+const Avt = styled.div`
+  position: relative;
+  cursor:pointer;
+`
+const Dropdown = styled.div`
+    position: absolute;
+    top: 100%;
+    left: -200%;
+    background-color: white;
+    min-width: 200px;
+
+    p:hover {
+      background-color: yellow;
+    }
+`
 const Nav = styled.div`
   height: 85px;
   display: flex;
@@ -81,7 +131,10 @@ const Nav = styled.div`
   background-color: white;
   z-index: 100;
 `;
-
+const AvtImg = styled.img`
+  width:2rem;
+  border-radius: 100%;
+`
 const Logo = styled.div`
   img {
     height: 40px;

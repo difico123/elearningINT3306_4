@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Header from "./components/Header";
 import Homepage from "./components/Homepage";
 import Footer from "./components/Footer";
@@ -7,7 +7,6 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import Profile from "./components/Profile";
-
 import {
   ProtectedRoute,
   ProtectedLoginRoute,
@@ -19,6 +18,7 @@ import AuthApi from "./service/authUser";
 import auth from "./service/authService";
 import UserService from "./service/userService";
 import CategoryContent from "./components/auth/CategoryContent";
+import FindUsers from "./components/course/findUsers";
 
 function App() {
   const [auth, setAuth] = React.useState(false);
@@ -29,6 +29,7 @@ function App() {
     city: "",
     address: "",
     role: "",
+    imageUrl: ""
   });
 
   const getUser = () => {
@@ -37,6 +38,7 @@ function App() {
       let success = !error;
       setAuth(success);
       setUser({ ...info });
+      console.log(info)
     });
   };
 
@@ -48,7 +50,7 @@ function App() {
     <AuthApi.Provider value={{ auth, setAuth }}>
       <div className="App">
         <Router>
-          <Header />
+          <Header user={user}/>
           <Routing user={user} />
           <Footer />
         </Router>
@@ -58,6 +60,7 @@ function App() {
 }
 
 const Routing = ({ user }) => {
+  console.log('bb',user)
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
@@ -84,9 +87,16 @@ const Routing = ({ user }) => {
       <Route
         path="/home"
         element={
-          <ProtectedRoute auth={Auth.auth}>
-            <Dashboard />
+          <ProtectedRoute auth={Auth.auth} >
+            <Dashboard user={user} />
           </ProtectedRoute>
+        }
+      />
+      <Route />
+
+      <Route path="/course/:courseId"
+        element={
+            <FindUsers />
         }
       />
       <Route />
@@ -97,7 +107,8 @@ const Routing = ({ user }) => {
   );
 };
 
-const Dashboard = () => {
+const Dashboard = ({user}) => {
+const [role,setRole] = useState(null)
   let Auth = React.useContext(AuthApi);
   const handleLogout = () => {
     cookies.remove("user");
@@ -107,9 +118,17 @@ const Dashboard = () => {
     Auth.setAuth(false);
   };
 
+  React.useEffect(() => {
+    switch (user.role) {
+      case 1: setRole("Giáo viên"); break;
+      case 2: setRole("Admin"); break;
+      default: setRole("Học sinh")
+    }
+  }, [user]);
   return (
     <div>
-      <h1>Hello</h1>
+      <h1>Hello,{user.lastName}</h1>
+      <h1>Bạn đang là {role}</h1>
       <button onClick={handleLogout}>logout</button>
     </div>
   );

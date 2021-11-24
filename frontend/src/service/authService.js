@@ -22,9 +22,9 @@ function logout() {
   return http.get(apiEndpoint + "/logout");
 }
 
-function forgotPassword(email) {
+async function forgotPassword(email) {
   const config = { headers: { "Content-Type": "application/json" } };
-  return http.post(apiEndpoint + "/forgotPassword", email, config);
+  return await http.post(apiEndpoint + "/forgotPassword", email, config);
 }
 
 export default {
