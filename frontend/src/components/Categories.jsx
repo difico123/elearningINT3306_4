@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import data from "./data.json";
+import data from "./dummydata/data.json";
 import { Link } from "react-router-dom";
 
 function Categories() {
-  const hello = data.map((value) => (
-    <Link to={`/courses/${value.id}`}>
+  const content = data.map((value) => (
+    // <Link to={`/courses/${value.id}`}>
+    <Link to="/courses/clone">
       <Wrap>
         <CategoryImage alt="" src={value.img}></CategoryImage>
         <CategoryTitle>{value.title}</CategoryTitle>
@@ -14,11 +15,10 @@ function Categories() {
     </Link>
   ));
 
-  console.log(hello);
   return (
     <Container>
       <Title>Danh mục khóa học</Title>
-      <Content>{hello}</Content>
+      <Content>{content}</Content>
     </Container>
   );
 }
@@ -39,7 +39,9 @@ const Content = styled.div`
   gap: 50px;
   justify-content: space-around;
 `;
+
 const Wrap = styled.div`
+  height: 50vh;
   background-color: #f7f9fa;
   border-radius: 10%;
   border: 3px solid rgba(5, 5, 5, 0.1);
@@ -54,11 +56,10 @@ const Wrap = styled.div`
     transform: scale(0.9875);
     border-color: rgba(5, 5, 5, 0.314);
   }
+  padding: 0 5px;
 `;
 
 const CategoryImage = styled.img`
-  width: 300px;
-  height: 250px;
   margin: 20px 0;
   border-radius: 10%;
 `;

@@ -1,12 +1,14 @@
+import React, { Component } from "react";
+import { Navigate } from "react-router-dom";
 
-import React, { Component } from 'react'
-import {Navigate} from 'react-router-dom';
+const ProtectedRoute = ({ auth, children }) => {
+  return auth ? children : <Navigate to="/login" />;
+};
+const ProtectedLoginRoute = ({ auth, children }) => {
+  return !auth ? children : <Navigate to="/home" />;
+};
+const ProtectedCourseRoute = ({ auth, children }) => {
+  return auth ? children : <Navigate to="/login" />;
+};
 
-const ProtectedRoute  = ({auth,children}) => {
-    return auth ? children : <Navigate to='/login' />;
-}
-const ProtectedLoginRoute  = ({auth,children}) => {
-    return !auth ? children : <Navigate to='/home' />;
-}
-
-export {ProtectedRoute, ProtectedLoginRoute};
+export { ProtectedRoute, ProtectedLoginRoute, ProtectedCourseRoute };

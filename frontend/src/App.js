@@ -7,10 +7,12 @@ import Login from "./components/auth/Login";
 import Signup from "./components/auth/Signup";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import Profile from "./components/Profile";
+import CourseContent from "./components/CourseContent";
 
 import {
   ProtectedRoute,
   ProtectedLoginRoute,
+  ProtectedCourseRoute,
 } from "./components/protected.route/ProtectedRoute";
 import cookies from "js-cookie";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
@@ -19,6 +21,7 @@ import AuthApi from "./service/authUser";
 import auth from "./service/authService";
 import UserService from "./service/userService";
 import CategoryContent from "./components/auth/CategoryContent";
+import CloneCategoryCourses from "./components/CloneCategoryCourses";
 
 function App() {
   const [auth, setAuth] = React.useState(false);
@@ -61,6 +64,7 @@ const Routing = ({ user }) => {
   const Auth = React.useContext(AuthApi);
   return (
     <Routes>
+      <Route path="/courses/clone" element={<CloneCategoryCourses />} />
       <Route path="/recover" element={<ForgotPassword />} />
       <Route path="/tmp" element={<CategoryContent />} />
       <Route path="/" element={<Homepage />} />
@@ -80,6 +84,16 @@ const Routing = ({ user }) => {
           </ProtectedLoginRoute>
         }
       />
+
+      <Route
+        path="/courses/clone/web-dev/:id"
+        element={
+          <ProtectedRoute auth={Auth.auth}>
+            <CourseContent />
+          </ProtectedRoute>
+        }
+      />
+      <Route />
 
       <Route
         path="/home"

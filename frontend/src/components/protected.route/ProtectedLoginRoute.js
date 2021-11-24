@@ -1,9 +1,8 @@
+import React from "react";
+import { Navigate } from "react-router";
 
-import React, { Component } from 'react'
-import {Navigate} from 'react-router-dom';
-  
-const ProtectedLoginRoute  = ({auth,children}) => {
-    return !auth ? children : <Navigate to='/home' />;
-}
+const ProtectedLoginRoute = ({ auth, children }) => {
+  return !auth ? children : <Navigate to="/home" />;
+};
 
 export default ProtectedLoginRoute;

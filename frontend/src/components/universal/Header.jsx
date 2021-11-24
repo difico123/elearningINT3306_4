@@ -22,12 +22,6 @@ function Header() {
       </Buttons>
     </React.Fragment>
   );
-  const handleLogout = () => {
-    auth.logout().then((res) => {
-      console.log(res.data);
-    });
-    Auth.setAuth(false);
-  };
 
   const person = (
     <React.Fragment>

@@ -14,12 +14,23 @@ function Profile({ user }) {
     lastName: "",
     firstName: "",
     phoneNumber: "",
+    imageUrl: "",
     city: "",
     address: "",
   });
 
-  let { firstName, lastName, phoneNumber, city, address } = userProfile;
+  const photo = () => {
+    return (
+      <img
+        alt=""
+        src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+      ></img>
+    );
+  };
 
+  let { firstName, lastName, imageUrl, phoneNumber, city, address } =
+    userProfile;
+  console.log(imageUrl);
   useEffect(() => {
     setUserProfile({ ...user });
   }, [user]);
@@ -48,11 +59,10 @@ function Profile({ user }) {
   ));
 
   const success = <div className="text-green-400">{successMsg}</div>;
-
   return (
     <Wrap>
       <Container>
-        <Title>Profile</Title>
+        <Title>Edit Profile</Title>
         <Form>
           <FullName>
             <Name>
@@ -78,12 +88,16 @@ function Profile({ user }) {
           </FullName>
           <Image>
             <label for="avatar">Profile Photo</label>
-            <ProfileIcon></ProfileIcon>
-            <input
-              type="file"
-              name="avatar"
-              accept="image/png, image/jpeg"
-            ></input>
+            <ImageWrap>
+              <ProfileIcon />
+              <input
+                value={imageUrl}
+                type="file"
+                name="avatar"
+                accept="image/png, image/jpeg"
+                onChange={onChange}
+              ></input>
+            </ImageWrap>
           </Image>
           <UserDetails>
             <InputBox>
@@ -145,6 +159,7 @@ const Container = styled.div`
 const Title = styled.div`
   font-size: 25px;
   font-weight: 500;
+  padding-bottom: 10px;
 `;
 const Form = styled.form``;
 const UserDetails = styled.div`
@@ -225,7 +240,12 @@ const Image = styled.div`
   input {
     margin-left: 40px;
   }
+
+  img {
+    height: 80px;
+  }
 `;
+
 const ProfileIcon = styled(PersonIcon)`
   height: 100%;
   width: 100%;
@@ -234,6 +254,12 @@ const ProfileIcon = styled(PersonIcon)`
   color: white;
   background: skyblue;
   transform: scale(4);
+`;
+
+const ImageWrap = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 `;
 
 export default Profile;
