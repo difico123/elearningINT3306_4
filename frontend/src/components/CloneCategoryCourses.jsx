@@ -4,15 +4,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 function CloneCategoryCourses() {
-  const content = dummydata.map((value) => (
-    <Link to={`/courses/clone/web-dev/${value.id}`}>
+  const content = dummydata.map((course) => (
+    <Link to={`/category/web-dev/${course.id}`}>
       <Wrap>
-        <CourseImage alt="" src={value.img}></CourseImage>
-        <CourseTitle>{value.title}</CourseTitle>
-        <CourseDescription>{value.description}</CourseDescription>
+        <CourseImage alt="" src={course.img}></CourseImage>
+        <CourseTitle>{course.title}</CourseTitle>
+        <CourseDescription>{course.description}</CourseDescription>
         <CourseInfo>
-          <CourseAttendance>{value.attendance} học viên</CourseAttendance>
-          <CourseRating>Đánh giá: {value.rating}</CourseRating>
+          <CourseAttendance>{course.attendance} học viên</CourseAttendance>
+          <CourseRating>Đánh giá: {course.rating}</CourseRating>
         </CourseInfo>
       </Wrap>
     </Link>

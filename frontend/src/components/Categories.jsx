@@ -4,13 +4,12 @@ import data from "./dummydata/data.json";
 import { Link } from "react-router-dom";
 
 function Categories() {
-  const content = data.map((value) => (
-    // <Link to={`/courses/${value.id}`}>
-    <Link to="/courses/clone">
+  const content = data.map((category) => (
+    <Link to={`/category/${category.id}`}>
       <Wrap>
-        <CategoryImage alt="" src={value.img}></CategoryImage>
-        <CategoryTitle>{value.title}</CategoryTitle>
-        <CategoryDescription>{value.description}</CategoryDescription>
+        <CategoryImage alt="" src={category.img}></CategoryImage>
+        <CategoryTitle>{category.title}</CategoryTitle>
+        <CategoryDescription>{category.description}</CategoryDescription>
       </Wrap>
     </Link>
   ));

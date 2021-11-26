@@ -67,7 +67,7 @@ const Nav = styled.div`
   display: flex;
   align-items: center;
   padding: 0 30px;
-  flex-flow: row nowrap;
+  flex-flow: row-nowrap;
   justify-content: space-around;
   border-bottom: 0.5px solid black;
   position: sticky;
@@ -108,7 +108,7 @@ const SearchBar = styled.div`
   input {
     padding-left: 10px;
     border: none;
-    width: 90%;
+    width: 87%;
     autocomplete: off;
     background-image: none;
     font-size: 15px;
