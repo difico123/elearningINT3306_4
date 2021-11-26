@@ -81,19 +81,12 @@ module.exports = class ApiUser {
                 { expiresIn: 36000 },
                 (err, token) => {
                     if (err) throw err;
-                    const options = {
-                        expires: new Date(
-                            Date.now() +
-                                process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-                        ),
-                        httpOnly: true,
-                    };
+
                     if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }
                     return res
                         .status(200)
-                        .cookie('token', token, options)
                         .json({
                             error: false,
                             token,
