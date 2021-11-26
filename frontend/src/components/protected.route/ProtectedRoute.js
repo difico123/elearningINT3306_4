@@ -1,12 +1,8 @@
+import React, { Component, useEffect, useState } from "react";
+import { Navigate, Link, useNavigate } from "react-router-dom";
+import UserService from '../../service/userService';
 
-import React, { Component } from 'react'
-import {Navigate} from 'react-router-dom';
-
-const ProtectedRoute  = ({auth,children}) => {
-    return auth ? children : <Navigate to='/login' />;
-}
-const ProtectedLoginRoute  = ({auth,children}) => {
-    return !auth ? children : <Navigate to='/home' />;
-}
-
-export {ProtectedRoute, ProtectedLoginRoute};
+const ProtectedRoute = ({auth, children }) => {
+  return auth ? children : <Navigate to="/auth/login" />;
+};
+export { ProtectedRoute };

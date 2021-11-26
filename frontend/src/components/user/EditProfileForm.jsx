@@ -2,14 +2,11 @@ import { Button } from "@mui/material";
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 
-import { Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 
-import UserService from "../service/userService";
+import UserService from "../../service/userService";
 
-import Axios from "axios";
-
-function Profile({user}) {
+function EditProfile({user}) {
 
   const [message, setMessage] = useState([]);
   var [successMsg, setSuccessMsg] = useState("");
@@ -37,8 +34,8 @@ function Profile({user}) {
     e.preventDefault();
     UserService.editUser({firstName, lastName, phoneNumber, city, address})
     .then((response) => {
-      setSuccessMsg(response.data.msg);
-      console.log(response.data.msg);
+      setSuccessMsg(response.msg);
+      window.location.href ='./profile'
     })
     .catch((error) => {
       setIsError(error.response.data.error);
@@ -46,9 +43,9 @@ function Profile({user}) {
     });
   };
 
-  const errors = message.map((abc) => (
-    <div>
-      <label className="text-red-500">{abc}</label>
+  const errors = message.map((err,index) => (
+    <div key={index}>
+      <label className="text-red-500">{err}</label>
     </div>
   ));
 
@@ -58,11 +55,11 @@ function Profile({user}) {
 
         <Wrap>
           <Container>
-            <Title>Profile</Title>
+            <Title>Chỉnh sửa thông tin cá nhân</Title>
             <Form>
               <FullName>
                 <Name>
-                    <span>First Name</span>
+                    <span>Họ của bạn</span>
                     <input
                     value={firstName}
                     type="text"
@@ -72,7 +69,7 @@ function Profile({user}) {
                     />
                 </Name>
                 <Name>
-                    <span>Last Name</span>
+                    <span>Tên của bạn</span>
                     <input
                     value={lastName}
                     type="text"
@@ -83,7 +80,7 @@ function Profile({user}) {
                 </Name>
               </FullName>
               <Image>
-                  <label for="avatar">Profile Photo</label>
+                  <label for="avatar">Ảnh đại diện</label>
                   <ProfileIcon></ProfileIcon>
                   <input 
                     type="file"
@@ -93,7 +90,7 @@ function Profile({user}) {
               </Image>
               <UserDetails>
                 <InputBox>
-                  <Span>Phone Number</Span>
+                  <Span>Số điện thoại</Span>
                   <input
                   value={phoneNumber}
                   type="text"
@@ -103,7 +100,7 @@ function Profile({user}) {
                   ></input>
                 </InputBox>
                 <InputBox>
-                  <Span>Address</Span>
+                  <Span>Địa chỉ</Span>
                   <input
                   value={address}
                   type="text"
@@ -113,7 +110,7 @@ function Profile({user}) {
                   ></input>
                 </InputBox>
                 <InputBox>
-                  <Span>City</Span>
+                  <Span>Thành phố</Span>
                   <input
                   value={city}
                   type="text"
@@ -143,10 +140,10 @@ const Wrap = styled.div`
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background: linear-gradient(135deg, #71b7e6, #9b59b6);
 `;
 const Container = styled.div`
-  max-width: 700px;
+  max-width: 60%;
+  border: 1px solid black;
   width: 100%;
   background-color: #fff;
   padding: 25px 30px;
@@ -246,4 +243,4 @@ const ProfileIcon = styled(PersonIcon)`
   transform: scale(4);
 `;
 
-export default Profile;
+export default EditProfile;

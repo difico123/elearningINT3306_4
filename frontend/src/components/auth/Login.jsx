@@ -4,7 +4,6 @@ import styled from "styled-components";
 import LockIcon from "@mui/icons-material/Lock";
 import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
-import cookies from "js-cookie";
 import AuthApi from "../../service/authUser";
 
 function LoginForm() {
@@ -20,20 +19,17 @@ function LoginForm() {
       email,
       password,
     };
-
     auth
       .login(user)
-      .then((res) => {
-        let { token, error } = res.data;
-        console.log(res);
-        setIsError(error);
-        cookies.set("token", token);
+      .then((data) => {
+        setIsError(data.error);
         Auth.setAuth(true);
-        window.location = "/home";
+        window.location = '/'
       })
       .catch((err) => {
         setIsError(err.response.data.error);
         setErrorMsg(err.response.data.msg);
+        Auth.setAuth(false);
       });
   };
 

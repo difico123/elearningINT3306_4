@@ -1,85 +1,102 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PasswordIcon from "@mui/icons-material/Password";
+
 import AuthApi from "../service/authUser";
-import auth from "../service/authService";
+import AuthService from "../service/authService";
 
 function Header({user}) {
-  let Auth = React.useContext(AuthApi);
-
-  const [userInfo,setUserInfo] = useState({
+  const [info, setInfo] = useState({
+    uuid: "",
     lastName: "",
     firstName: "",
     phoneNumber: "",
+    email: "",
     city: "",
     address: "",
+    imageUrl: "",
     role: "",
-    imageUrl: ""
-  })
-
-  const [toggle, setToggle] = useState(false);
-
-  let {lastName, firstName,phoneNumber, city,  address,role,  imageUrl} = userInfo;
+    dateAdded: "",
+    lastUpdated: "",
+    auth: false,
+  });
 
   React.useEffect(() => {
-    setUserInfo(user)
+    setInfo(user)
   }, [user]);
+
+  let fakeData = {
+    logoImg : `https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg`,
+    instructorImg : `"https://cdn-icons-png.flaticon.com/512/65/65882.png"`
+  }
+
+  function menuToggle() {
+    const toggleMenu = document.querySelector(".menu");
+    toggleMenu.classList.toggle("active");
+  }
 
   const loginIcon = (
     <React.Fragment>
       <Buttons>
-        <Link to={`/login`}>
+        <Link to={`/auth/login`}>
           <SigninButton>Đăng nhập</SigninButton>
         </Link>
-        <Link to={`/register`}>
+        <Link to={`/auth/register`}>
           <SignupButton>Đăng ký</SignupButton>
         </Link>
       </Buttons>
     </React.Fragment>
   );
-const abc = () => {
-  console.log("ok")
-}
-
-  const DropDown = () => (
-    <Dropdown>
-        <p onClick={abc}>Trang cá nhân</p>
-        <p>Xem khoá học</p>
-    </Dropdown>
-  )
-
-  const handleDropdown = () => {
-      setToggle(!toggle)
-  }
-
-  const person = (
-    <React.Fragment>
-      <Avt className="bg-blue-200 border-light-blue-500 rounded-xl" onClick={handleDropdown}>
-        {" "}
-        {imageUrl? <AvtImg src={imageUrl} alt="" />: <AccountCircleIcon className="p-0"/>}
-        {toggle? <DropDown/>: ''}
-      </Avt>
-    </React.Fragment>
-  );
 
   const handleLogout = () => {
-    auth.logout().then((res) => {
-      console.log(res.data);
-    });
-    Auth.setAuth(false);
+    AuthService.logout();
+    window.location.href = '/auth/login';
   };
 
+  console.log("abc",info === null)
+  const person = (
+    <Wrap onClick={menuToggle} >
+      <div className="profile" >
+      {!info.imageUrl? <AccountCircleIcon className="p-0 font-normal" />: <img src={`${info.imageUrl}`}></img> }
+      </div>
+      <div className="menu">
+        <ul>
+          <li>
+            <Link to={'/user/profile'} >
+              <AccountBoxIcon /> Profile
+
+            </Link>
+          </li>
+          <li>
+            <Link to={`#`}>
+              <SettingsIcon  /> Setting
+            </Link>
+          </li>
+          <li>
+            <button onClick={handleLogout}>
+              <LogoutIcon /> Logout
+            </button>
+          </li>
+        </ul>
+      </div>
+    </Wrap>
+  );
+
+  console.log("abc",info)
   return (
     <Nav>
       <Logo>
         <Link to={`/`}>
-          <img
-            src="
-    https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg"
-          />
+          <img src={fakeData.logoImg} />
         </Link>
       </Logo>
       <Categories>
@@ -89,35 +106,18 @@ const abc = () => {
       <SearchBar>
         <input type="text" placeholder="Tìm kiếm khóa học..." />
         <button type="submit">
-          <CustomSearch style={{ fontSize: 30 }} />
+          <CustomSearch />
         </button>
       </SearchBar>
-      <BecomeInstructor>
-        <InstructorIcon src="https://cdn-icons-png.flaticon.com/512/65/65882.png"></InstructorIcon>
-        <p>Trở thành giảng viên</p>
-      </BecomeInstructor>
-      {Auth.auth ? person : loginIcon}
+
+      {!user.uuid? loginIcon:person}
     </Nav>
   );
+  
 }
 
 export default Header;
 
-const Avt = styled.div`
-  position: relative;
-  cursor:pointer;
-`
-const Dropdown = styled.div`
-    position: absolute;
-    top: 100%;
-    left: -200%;
-    background-color: white;
-    min-width: 200px;
-
-    p:hover {
-      background-color: yellow;
-    }
-`
 const Nav = styled.div`
   height: 85px;
   display: flex;
@@ -129,12 +129,8 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
-  z-index: 100;
 `;
-const AvtImg = styled.img`
-  width:2rem;
-  border-radius: 100%;
-`
+
 const Logo = styled.div`
   img {
     height: 40px;
@@ -195,6 +191,93 @@ const BecomeInstructor = styled.div`
   font-weight: 600;
 `;
 
+
+const Wrap = styled.div`
+  position: fixed;
+  display: flex;
+  align-items: center;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  top: 20px;
+  right: 30px;
+  .profile {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .profile img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .profile .p-0 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .menu {
+    position: absolute;
+    top: 4rem;
+    right: -10px;
+    background: #fff;
+    width: 7rem;
+    box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    background-color: #f1f2f6;
+    transition: 0.5s;
+    display:none;
+  }
+
+  .menu li:hover{
+    background-color: #ced6e0;
+  }
+
+  & .menu.active {
+    display: block;
+  }
+
+  & .menu::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    right: 28px;
+    width: 20px;
+    height: 20px;
+    background:black;
+    transform: rotate(45deg);
+    z-index: -100;
+  }
+
+  .menu ul li {
+    list-style: none;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  & .menu ul li:hover {
+    display: inline-block;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: 0.5s;
+  }
+`;
+
 const Buttons = styled.div`
   display: flex;
   flex-flow; row nowrap;
@@ -239,5 +322,5 @@ const CustomSearch = styled(SearchIcon)``;
 const CustomMenu = styled(MenuIcon)``;
 
 const InstructorIcon = styled.img`
-  height: 30px;
+  height: 10px;
 `;
