@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
 import PersonIcon from "@mui/icons-material/Person";
-
 import UserService from "../service/userService";
 
-function Profile({ user }) {
+function ProfileForm({ user }) {
   const [message, setMessage] = useState([]);
   var [successMsg, setSuccessMsg] = useState("");
   var [isError, setIsError] = useState(false);
@@ -14,24 +13,13 @@ function Profile({ user }) {
     lastName: "",
     firstName: "",
     phoneNumber: "",
-    imageUrl: "",
     city: "",
     address: "",
   });
 
-  const photo = () => {
-    return (
-      <img
-        alt=""
-        src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
-      ></img>
-    );
-  };
+  let { firstName, lastName, phoneNumber, city, address } = userProfile;
 
-  let { firstName, lastName, imageUrl, phoneNumber, city, address } =
-    userProfile;
-  console.log(imageUrl);
-  useEffect(() => {
+  React.useEffect(() => {
     setUserProfile({ ...user });
   }, [user]);
 
@@ -59,10 +47,11 @@ function Profile({ user }) {
   ));
 
   const success = <div className="text-green-400">{successMsg}</div>;
+
   return (
     <Wrap>
       <Container>
-        <Title>Edit Profile</Title>
+        <Title>Profile</Title>
         <Form>
           <FullName>
             <Name>
@@ -88,16 +77,12 @@ function Profile({ user }) {
           </FullName>
           <Image>
             <label for="avatar">Profile Photo</label>
-            <ImageWrap>
-              <ProfileIcon />
-              <input
-                value={imageUrl}
-                type="file"
-                name="avatar"
-                accept="image/png, image/jpeg"
-                onChange={onChange}
-              ></input>
-            </ImageWrap>
+            <ProfileIcon></ProfileIcon>
+            <input
+              type="file"
+              name="avatar"
+              accept="image/png, image/jpeg"
+            ></input>
           </Image>
           <UserDetails>
             <InputBox>
@@ -159,7 +144,6 @@ const Container = styled.div`
 const Title = styled.div`
   font-size: 25px;
   font-weight: 500;
-  padding-bottom: 10px;
 `;
 const Form = styled.form``;
 const UserDetails = styled.div`
@@ -231,21 +215,14 @@ const Image = styled.div`
     display: block;
     font: 1rem "Fira Sans", sans-serif;
   }
-
   input,
   label {
     margin: 0.4rem 0;
   }
-
   input {
     margin-left: 40px;
   }
-
-  img {
-    height: 80px;
-  }
 `;
-
 const ProfileIcon = styled(PersonIcon)`
   height: 100%;
   width: 100%;
@@ -256,10 +233,4 @@ const ProfileIcon = styled(PersonIcon)`
   transform: scale(4);
 `;
 
-const ImageWrap = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  align-items: center;
-`;
-
-export default Profile;
+export default ProfileForm;

@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import LockIcon from "@mui/icons-material/Lock";
-import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
-import cookies from "js-cookie";
 import AuthApi from "../../service/authUser";
-import Button from "../universal/SubmitButton";
+import { LockIcon, EmailIcon } from "../common/icons";
 
 function LoginForm() {
   let Auth = React.useContext(AuthApi);
@@ -21,15 +18,10 @@ function LoginForm() {
       email,
       password,
     };
-
     auth
       .login(user)
-      .then((res) => {
-        let { token, error } = res.data;
-        console.log(res);
-        setIsError(error);
-        cookies.set("token", token);
-        Auth.setAuth(true);
+      .then((data) => {
+        setIsError(data.error);
         window.location = "/";
       })
       .catch((err) => {
@@ -71,14 +63,14 @@ function LoginForm() {
             ></input>
           </Field>
           {isError ? renderErrors : ""}
-          <Button click={signin} value={"Đăng nhập"}></Button>
+          <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
         <RedirectForgotPassword>
           <a href="./recover">Quên mật khẩu?</a>
         </RedirectForgotPassword>
         <RedirectSignUp>
           Không có tài khoản? Tạo mới{" "}
-          <Link to="/register">
+          <Link to="/auth/signup">
             <span>ở đây</span>
           </Link>
         </RedirectSignUp>
@@ -103,7 +95,7 @@ const Container = styled.div`
   justify-content: center;
   flex-flow: column wrap;
   background-color: #f9f9f9;
-  gap: 20px;
+  gap: 40px;
 `;
 
 const Title = styled.div`
@@ -134,7 +126,6 @@ const Field = styled.div`
   min-width: 350px;
   height: 40px;
   display: flex;
-
   input {
     border: none;
     width: 85%;
@@ -156,6 +147,19 @@ const MailIcon = styled(EmailIcon)`
 
 const PasswordIcon = styled(LockIcon)`
   margin: auto 6px;
+`;
+
+const SubmitButton = styled.button`
+  background-color: #4caf50;
+  height: 40px;
+  font-weight: bold;
+  color: white;
+  transition: 0.3s ease 0s;
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: #04aa6d;
+  }
 `;
 
 const RedirectForgotPassword = styled.div`

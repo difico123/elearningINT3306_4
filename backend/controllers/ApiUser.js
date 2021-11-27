@@ -44,7 +44,6 @@ module.exports = class ApiUser {
       res.status(500).send("server error " + error.message);
     }
   }
-
   // @route   POST api/auth/login
   // @desc    login user
   // @access  Public
@@ -81,16 +80,11 @@ module.exports = class ApiUser {
         { expiresIn: 36000 },
         (err, token) => {
           if (err) throw err;
-          const options = {
-            expires: new Date(
-              Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-            ),
-            httpOnly: true,
-          };
+
           if (user.imageUrl) {
             user.imageUrl = user.imageUrl.split(" ")[0];
           }
-          return res.status(200).cookie("token", token, options).json({
+          return res.status(200).json({
             error: false,
             token,
             user: user,
@@ -101,6 +95,10 @@ module.exports = class ApiUser {
       console.log(error.message);
       res.status(500).send("Server error");
     }
+  }
+  catch(error) {
+    console.log(error.message);
+    res.status(500).send("Server error");
   }
 
   // @route   POST api/auth/logout

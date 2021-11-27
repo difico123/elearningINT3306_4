@@ -1,40 +1,58 @@
 import { useState } from "react";
 import styled from "styled-components";
-import EmailIcon from "@mui/icons-material/Email";
 import AuthService from "../../service/authService";
-import Button from "../universal/SubmitButton";
+import Loader from "../common/loader";
+import { EmailIcon } from "../common/icons";
 
 function ForgotPassword() {
   const [emailForgot, setEmailForgot] = useState("");
-
-  const submit = async () => {
-    await AuthService.forgotPassword({ email: emailForgot })
-      .then((response) => {
-        setSuccessMsg(response.data.message);
-        setIsError(response.data.error);
-      })
-      .catch((error) => {
-        setIsError(error.response.data.error);
-        setMessage(error.response.data.msg);
-      });
-  };
-
   const [successMsg, setSuccessMsg] = useState([]);
   var [isError, setIsError] = useState(false);
-  const [message, setMessage] = useState([]);
+  const [errorMsg, setErrorMsg] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const errors = message.map((err) => (
-    <div>
+  const submit = async () => {
+    setLoading(true);
+    await AuthService.forgotPassword({ email: emailForgot })
+      .then((response) => {
+        setIsError(false);
+        setSuccessMsg(response.message);
+      })
+      .catch((error) => {
+        setIsError(true);
+        setErrorMsg(error.response.data.msg);
+      });
+    setLoading(false);
+  };
+  const success = <div className="text-green-400">{successMsg}</div>;
+
+  const errors = errorMsg.map((err) => (
+    <div className="flex mb-2">
       <label className="text-red-300">{err}</label>
     </div>
   ));
-  const success = <div className="text-green-400">{successMsg}</div>;
+
+  const renderMsg = isError ? errors : success;
+
+  const loader = (
+    <div className="flex justify-center text-green-400 h-12">
+      <Loader />
+    </div>
+  );
+
+  const renderLoaderMsg = loading ? loader : renderMsg;
+  const renderButton = loading ? (
+    ""
+  ) : (
+    <SubmitButton className="border-4" onClick={submit}>
+      Lấy lại mật khẩu
+    </SubmitButton>
+  );
 
   return (
     <Wrap>
       <Container>
         <Title>Khôi phục lại mật khẩu</Title>
-
         <Form>
           <Field>
             <MailIcon></MailIcon>
@@ -48,14 +66,11 @@ function ForgotPassword() {
               }}
             ></input>
           </Field>
-
-          {isError ? errors : success}
-          <Button click={submit} value={"Quên mật khẩu"}></Button>
-          
+          {renderLoaderMsg}
+          {renderButton}
           <Redirect>
             Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
           </Redirect>
-          
           <Redirect>
             Đã có tài khoản? <a href="./login"> Đăng nhập </a>
           </Redirect>
@@ -114,7 +129,6 @@ const Field = styled.div`
   min-width: 350px;
   height: 40px;
   display: flex;
-
   input {
     border: none;
     width: 75%;
@@ -134,6 +148,19 @@ const MailIcon = styled(EmailIcon)`
   margin: auto 6px;
 `;
 
+const SubmitButton = styled.button`
+  background-color: #4caf50;
+  height: 40px;
+  font-weight: bold;
+  color: white;
+  transition: 0.3s ease 0s;
+  cursor: pointer;
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: #04aa6d;
+  }
+`;
 const Redirect = styled.div`
   text-align: center;
   padding-top: 15px;

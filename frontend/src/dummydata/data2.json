@@ -1,0 +1,66 @@
+[
+    {
+      "title": "Khóa học C++ căn bản",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-design-v2.jpg",
+      "description": "Dành cho học viên bắt đầu tiếp cận với lập trình",
+      "id": "1",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học C++ nâng cao",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-development-v2.jpg",
+      "description": "Khóa học tiếp theo của khóa C++ căn bản",
+      "id": "2",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học Web căn bản (HTML - CSS - Javascript)",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-marketing-v2.jpg",
+      "description": "Dành cho những học viên có đam mê lập trình web",
+      "id": "3",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học Front-end căn bản (ReactJS - Bootstrap)",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-it-and-software-v2.jpg",
+      "description": "Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Front-end",
+      "id": "4",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học Back-end căn bản (NodeJS - MySQL)",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-personal-development-v2.jpg",
+      "description": "Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Back-end",
+      "id": "5",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học Web Full-stack",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-business-v2.jpg",
+      "description": "Khóa học cho các học viên đã học xong hai khóa Front-end và Back-end, muốn tạo cho mình một dự án riêng",
+      "id": "6",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Khóa học Lập trình Hướng đối tượng (Java)",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-photography-v2.jpg",
+      "description": "Cho các bạn muốn tìm hiểu thêm về OOP",
+      "id": "7",
+      "attendance": 4000,
+      "rating": 4.7
+    },
+    {
+      "title": "Cấu trúc dữ liệu và giải thuật (C++)",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-music-v2.jpg",
+      "description": "Giúp các bạn hiểu rõ hơn về các thuật toán",
+      "id": "8",
+      "attendance": 4000,
+      "rating": 4.7
+    }
+  ]

@@ -1,129 +1,119 @@
-import React from "react";
-import Header from "./components/universal/Header";
-import Homepage from "./components/Homepage";
-import Footer from "./components/universal/Footer";
-import Detail from "./components/Detail";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import ForgotPassword from "./components/auth/ForgotPassword";
-import Profile from "./components/Profile";
-import CourseContent from "./components/CourseContent";
-
-import {
-  ProtectedRoute,
-  ProtectedLoginRoute,
-  ProtectedCourseRoute,
-} from "./components/protected.route/ProtectedRoute";
-import cookies from "js-cookie";
+import { ProtectedRoute } from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { getTableSortLabelUtilityClass } from "@mui/material";
-import AuthApi from "./service/authUser";
-import auth from "./service/authService";
+import Footer from "./components/layout/Footer";
+import React, { useState } from "react";
+import Header from "./components/layout/Header";
+import AuthContext from "./service/authUser";
+import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import CategoryContent from "./components/auth/CategoryContent";
-import CloneCategoryCourses from "./components/CloneCategoryCourses";
+import Categories from "./components/course/Category";
+import UserRouter from "./routes/User";
+import AuthRouter from "./routes/Auth";
+import CourseRouter from "./routes/Course";
 
 function App() {
-  const [auth, setAuth] = React.useState(false);
-  const [user, setUser] = React.useState({
+  const [auth, setAuth] = useState(() => {
+    let data = UserService.getCurrentUser();
+    return !data ? false : true;
+  });
+
+  const [user, setUser] = useState({
+    uuid: "",
     lastName: "",
     firstName: "",
     phoneNumber: "",
+    email: "",
     city: "",
     address: "",
+    imageUrl: "",
     role: "",
+    dateAdded: "",
+    lastUpdated: "",
+    auth: false,
   });
 
-  const getUser = () => {
-    UserService.getUserInfo().then((res) => {
-      let { error, info } = res.data;
-      let success = !error;
-      setAuth(success);
-      setUser({ ...info });
-    });
-  };
-
   React.useEffect(() => {
-    getUser();
+    UserService.getUserInfo()
+      .then((data) => {
+        let { info } = data;
+        setUser({ ...info, auth: true });
+        setAuth(true);
+      })
+      .catch((error) => {
+        setAuth(false);
+      });
   }, []);
 
   return (
-    <AuthApi.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
         <Router>
-          <Header />
-          <Routing user={user} />
+          <Header user={user} />
+
+          <Routes>
+            <Route exact path="/" element={<Categories />} />
+            <Route exact path="/category/:id" element={<CourseRouter />} />
+            <Route
+              path="/user/*"
+              element={
+                <ProtectedRoute auth={auth}>
+                  <UserRouter user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/auth/*" element={<AuthRouter />} />
+          </Routes>
           <Footer />
         </Router>
       </div>
-    </AuthApi.Provider>
+    </AuthContext.Provider>
   );
 }
 
 const Routing = ({ user }) => {
-  const Auth = React.useContext(AuthApi);
+  const Auth = React.useContext(AuthContext);
+  console.log("aabc", Auth.auth);
+
   return (
     <Routes>
-      <Route path="/category/:id" element={<CloneCategoryCourses />} />
-      <Route path="/recover" element={<ForgotPassword />} />
+      {/* <Route path="/recover" element={<ForgotPassword />} />
       <Route path="/tmp" element={<CategoryContent />} />
       <Route path="/" element={<Homepage />} />
-      <Route
-        path="/login"
-        element={
-          <ProtectedLoginRoute auth={Auth.auth}>
-            <Login />
-          </ProtectedLoginRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <ProtectedLoginRoute auth={Auth.auth}>
-            <Signup />
-          </ProtectedLoginRoute>
-        }
-      />
 
-      <Route
-        path="/courses/clone/web-dev/:id"
-        element={
-          <ProtectedRoute auth={Auth.auth}>
-            <CourseContent />
-          </ProtectedRoute>
-        }
-      />
-      <Route />
+      <Route path="/user" element={<UserPage user={user} />}></Route>
 
-      <Route
-        path="/home"
-        element={
-          <ProtectedRoute auth={Auth.auth}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route />
+      <Route path="/home" element={<Dashboard user={user} />} />
 
-      <Route path="/profile" element={<Profile user={user} />} />
-      <Route />
+      <Route path="/course/:courseId" element={<FindUsers />} /> */}
     </Routes>
   );
 };
 
-const Dashboard = () => {
-  let Auth = React.useContext(AuthApi);
+const Dashboard = ({ user }) => {
+  const [role, setRole] = useState(null);
+
   const handleLogout = () => {
-    cookies.remove("user");
-    auth.logout().then((res) => {
-      console.log(res.data);
-    });
-    Auth.setAuth(false);
+    AuthSerVice.logout();
+    window.location.href = "/login";
   };
+
+  // React.useEffect(() => {
+  //   switch (user.role) {
+  //     case 1:
+  //       setRole("Giáo viên");
+  //       break;
+  //     case 2:
+  //       setRole("Admin");
+  //       break;
+  //     default:
+  //       setRole("Học sinh");
+  //   }
+  // }, [user]);
 
   return (
     <div>
-      <h1>Hello</h1>
+      <h1>Hello,{user}</h1>
+      <h1>Bạn đang là {role}</h1>
       <button onClick={handleLogout}>logout</button>
     </div>
   );

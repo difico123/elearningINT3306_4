@@ -1,0 +1,50 @@
+[
+    {
+      "title": "Sáng tao",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-design-v2.jpg",
+      "description": "Kích thích sự sáng tạo trong bạn với những chương trình thực tế của chúng tôi.",
+      "id": "creativity"
+    },
+    {
+      "title": "Lập trình",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-development-v2.jpg",
+      "description": "Nơi xây những viên gạch đầu tiên để trở thành lập trình viên với mức lương đáng mơ ước.",
+      "id": "web-dev"
+    },
+    {
+      "title": "Marketing",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-marketing-v2.jpg",
+      "description": "Chưa biết bắt đầu từ đâu? Học marketing online với các giảng viên hàng đầu ngành marketing.",
+      "id": "marketing"
+    },
+    {
+      "title": "IT và phần mềm",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-it-and-software-v2.jpg",
+      "description": "Kích thích sự sáng tạo trong bạn với những chương trình thực tế của chúng tôi.",
+      "id": "software"
+    },
+    {
+      "title": "Phát triển bản thân",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-personal-development-v2.jpg",
+      "description": "Bước ra khỏi vùng an toàn và đặt ra các mục tiêu lớn hơn để có thể nhận thấy được khả năng của mình.",
+      "id": "personal-development"
+    },
+    {
+      "title": "Kinh doanh",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-business-v2.jpg",
+      "description": "Bắt đầu sự nghiệp kinh doanh bằng những",
+      "id": "business"
+    },
+    {
+      "title": "Nhiếp ảnh",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-photography-v2.jpg",
+      "description": "A lazy fox...",
+      "id": "photography"
+    },
+    {
+      "title": "Nghệ thuật",
+      "img": "https://s.udemycdn.com/home/top-categories/lohp-category-music-v2.jpg",
+      "description": "Trở thành nghệ sĩ chuyên nghiệp chỉ với những khóa học trực tuyến",
+      "id": "art"
+    }
+  ]

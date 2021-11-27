@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import LockIcon from "@mui/icons-material/Lock";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
-import HomeIcon from "@mui/icons-material/Home";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AuthService from "../../service/authService";
-import Button from "../universal/SubmitButton";
+import {
+  LockIcon,
+  PersonIcon,
+  EmailIcon,
+  LocationCityIcon,
+  HomeIcon,
+  LocalPhoneIcon,
+} from "../common/icons";
 
 function SignUpForm() {
   const [userReg, setUserReg] = useState({
@@ -35,9 +35,9 @@ function SignUpForm() {
   const register = () => {
     AuthService.register(userReg)
       .then((response) => {
-        setSuccessMsg(response.data.msg[0]);
-        setIsError(response.data.error);
-        console.log(response.data);
+        setSuccessMsg(response.msg[0]);
+        setIsError(response.error);
+        console.log(response);
       })
       .catch((error) => {
         setIsError(error.response.data.error);
@@ -136,7 +136,7 @@ function SignUpForm() {
             ></input>
           </Field>
           {isError ? errors : success}
-          <Button click={register} value={"Đăng ký"}></Button>
+          <SubmitButton onClick={register}>Đăng kí tài khoản</SubmitButton>
         </Form>
         <RedirectLogIn>
           Đã có tài khoản?
@@ -195,7 +195,6 @@ const Field = styled.div`
   min-width: 350px;
   height: 40px;
   display: flex;
-
   input {
     border: none;
     width: 85%;
@@ -214,9 +213,22 @@ const Field = styled.div`
     -webkit-appearance: none;
     margin: 0;
   }
-
   .Icon {
     margin: 7px 5px 7px;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background-color: #4caf50;
+  height: 40px;
+  font-weight: bold;
+  color: white;
+  transition: 0.3s ease 0s;
+  cursor: pointer;
+  &:hover {
+    border: transparent;
+    color: white;
+    background-color: #04aa6d;
   }
 `;
 
