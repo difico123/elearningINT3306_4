@@ -1,9 +1,18 @@
 import dummydata from "../../dummydata/data2.json";
 import React from "react";
 import styled from "styled-components";
-import { Link,useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
 
 function CloneCategoryCourses() {
+  const [getCourses, setCourses] = useState({
+    id: "",
+    name: "",
+    description: "",
+    instructorId: "",
+    categoryId: "",
+  });
+
   const { id } = useParams();
   const content = dummydata.map((course) => (
     <Link to={`/category/${id}/course/${course.id}`}>
@@ -15,7 +24,7 @@ function CloneCategoryCourses() {
           <CourseAttendance>{course.attendance} học viên</CourseAttendance>
           <CourseRating>Đánh giá: {course.rating}</CourseRating>
         </CourseInfo>
-      </Wrap> 
+      </Wrap>
     </Link>
   ));
 

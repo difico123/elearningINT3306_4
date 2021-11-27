@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import data from "../../dummydata/data.json";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
 function Categories() {
+  const courseId = useParams();
   const content = data.map((category) => (
     <Link to={`/category/${category.id}`}>
       <Wrap>

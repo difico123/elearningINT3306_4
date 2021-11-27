@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
 import {
   SearchIcon,
   MenuIcon,
   AccountCircleIcon,
   AccountBoxIcon,
-  PasswordIcon,
   LogoutIcon,
   SettingsIcon,
-  ContactsIcon,
 } from "../common/icons";
 
 function Header({ user }) {
@@ -68,7 +65,7 @@ function Header({ user }) {
         {!info.imageUrl ? (
           <AccountCircleIcon className="p-0 font-normal" />
         ) : (
-          <img src={`${info.imageUrl}`}></img>
+          <img alt="" src={`${info.imageUrl}`}></img>
         )}
       </div>
       <div className="menu">
@@ -96,7 +93,7 @@ function Header({ user }) {
     <Nav>
       <Logo>
         <Link to={`/`}>
-          <img src={fakeData.logoImg} />
+          <img alt="" src={fakeData.logoImg} />
         </Link>
       </Logo>
       <Categories>
@@ -118,14 +115,14 @@ export default Header;
 
 const Nav = styled.div`
   height: 85px;
-  display: flex;
-  align-items: center;
-  padding: 0 30px;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  border-bottom: 0.5px solid black;
   position: sticky;
   top: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 5vw;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  border-bottom: 0.5px solid black;
   background-color: white;
   z-index: 99999;
 `;
@@ -177,17 +174,6 @@ const SearchBar = styled.div`
   input:focus {
     outline: none;
   }
-`;
-
-const BecomeInstructor = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-  justify-content: space-around;
-  align-items: center;
-  cursor: pointer;
-  height: 40px;
-  font-weight: 600;
 `;
 
 const Wrap = styled.div`
@@ -317,7 +303,3 @@ const SignupButton = styled.button`
 const CustomSearch = styled(SearchIcon)``;
 
 const CustomMenu = styled(MenuIcon)``;
-
-const InstructorIcon = styled.img`
-  height: 10px;
-`;
