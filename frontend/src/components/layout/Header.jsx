@@ -1,11 +1,20 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
-import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon, PasswordIcon, LogoutIcon,SettingsIcon, ContactsIcon} from '../common/icons'
+import {
+  SearchIcon,
+  MenuIcon,
+  AccountCircleIcon,
+  AccountBoxIcon,
+  PasswordIcon,
+  LogoutIcon,
+  SettingsIcon,
+  ContactsIcon,
+} from "../common/icons";
 
-function Header({user}) {
+function Header({ user }) {
   const [info, setInfo] = useState({
     uuid: "",
     lastName: "",
@@ -22,13 +31,13 @@ function Header({user}) {
   });
 
   React.useEffect(() => {
-    setInfo(user)
+    setInfo(user);
   }, [user]);
 
   let fakeData = {
-    logoImg : `https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg`,
-    instructorImg : `"https://cdn-icons-png.flaticon.com/512/65/65882.png"`
-  }
+    logoImg: `https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg`,
+    instructorImg: `"https://cdn-icons-png.flaticon.com/512/65/65882.png"`,
+  };
 
   function menuToggle() {
     const toggleMenu = document.querySelector(".menu");
@@ -50,25 +59,28 @@ function Header({user}) {
 
   const handleLogout = () => {
     AuthService.logout();
-    window.location.href = '/auth/login';
+    window.location.href = "/auth/login";
   };
 
   const person = (
-    <Wrap onClick={menuToggle} >
-      <div className="profile" >
-      {!info.imageUrl? <AccountCircleIcon className="p-0 font-normal" />: <img src={`${info.imageUrl}`}></img> }
+    <Wrap onClick={menuToggle}>
+      <div className="profile">
+        {!info.imageUrl ? (
+          <AccountCircleIcon className="p-0 font-normal" />
+        ) : (
+          <img src={`${info.imageUrl}`}></img>
+        )}
       </div>
       <div className="menu">
         <ul>
           <li>
-            <Link to={'/user/profile'} >
+            <Link to={"/user/profile"}>
               <AccountBoxIcon /> Profile
-
             </Link>
           </li>
           <li>
             <Link to={`#`}>
-              <SettingsIcon  /> Setting
+              <SettingsIcon /> Setting
             </Link>
           </li>
           <li>
@@ -97,10 +109,9 @@ function Header({user}) {
           <CustomSearch />
         </button>
       </SearchBar>
-      {!user.uuid? loginIcon:person}
+      {!user.uuid ? loginIcon : person}
     </Nav>
   );
-  
 }
 
 export default Header;
@@ -116,6 +127,7 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
+  z-index: 99999;
 `;
 
 const Logo = styled.div`
@@ -178,16 +190,13 @@ const BecomeInstructor = styled.div`
   font-weight: 600;
 `;
 
-
 const Wrap = styled.div`
-  position: fixed;
   display: flex;
   align-items: center;
   flex-flow: row nowrap;
   justify-content: space-around;
   top: 20px;
   right: 30px;
-  z-index: 99999;
   .profile {
     position: relative;
     width: 60px;
@@ -216,8 +225,8 @@ const Wrap = styled.div`
 
   .menu {
     position: absolute;
-    top: 4rem;
-    right: -10px;
+    top: 5rem;
+    right: 5.5vw;
     background: #fff;
     width: 7rem;
     box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
@@ -225,10 +234,10 @@ const Wrap = styled.div`
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     background-color: #f1f2f6;
     transition: 0.5s;
-    display:none;
+    display: none;
   }
 
-  .menu li:hover{
+  .menu li:hover {
     background-color: #ced6e0;
   }
 
@@ -243,7 +252,7 @@ const Wrap = styled.div`
     right: 28px;
     width: 20px;
     height: 20px;
-    background:black;
+    background: black;
     transform: rotate(45deg);
     z-index: -100;
   }

@@ -24,7 +24,9 @@ function Categories() {
 
 export default Categories;
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding: 5vh 5vw;
+`;
 
 const Title = styled.div`
   font-size: 18px;
@@ -40,7 +42,7 @@ const Content = styled.div`
 `;
 
 const Wrap = styled.div`
-  height: 30rem;
+  height: 50vh;
   background-color: #f7f9fa;
   border-radius: 10%;
   border: 3px solid rgba(5, 5, 5, 0.1);

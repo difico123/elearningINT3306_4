@@ -6,7 +6,7 @@ import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import Categories from "./components/course/Category";
+import Category from "./components/course/Category";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course";
@@ -51,7 +51,7 @@ function App() {
           <Header user={user} />
 
           <Routes>
-            <Route exact path="/" element={<Categories />} />
+            <Route exact path="/" element={<Category />} />
             <Route exact path="/category/:id" element={<CourseRouter />} />
             <Route
               path="/user/*"

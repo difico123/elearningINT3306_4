@@ -1,16 +1,17 @@
-import React from 'react'
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Course from '../components/course/Course'
+import Course from "../components/course/Course";
+import CourseContent from "../components/course/CourseContent";
 
 function CourseRouter() {
-    return (
-        <React.Fragment>
-                <Course/>
-            <Routes>
-                <Route path="/course/:id" element = {<div>abc</div>}/>
-            </Routes>
-        </React.Fragment>
-    )
+  return (
+    <React.Fragment>
+      <Course />
+      <Routes>
+        <Route path="/course/:id" element={<CourseContent />} />
+      </Routes>
+    </React.Fragment>
+  );
 }
 
-export default CourseRouter
+export default CourseRouter;
