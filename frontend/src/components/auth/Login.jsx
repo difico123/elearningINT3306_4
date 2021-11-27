@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import LockIcon from "@mui/icons-material/Lock";
-import EmailIcon from "@mui/icons-material/Email";
 import auth from "../../service/authService";
 import AuthApi from "../../service/authUser";
+import {LockIcon, EmailIcon} from '../common/icons'
+
 
 function LoginForm() {
   let Auth = React.useContext(AuthApi);
@@ -23,13 +23,11 @@ function LoginForm() {
       .login(user)
       .then((data) => {
         setIsError(data.error);
-        Auth.setAuth(true);
         window.location = '/'
       })
       .catch((err) => {
         setIsError(err.response.data.error);
         setErrorMsg(err.response.data.msg);
-        Auth.setAuth(false);
       });
   };
 
@@ -73,7 +71,7 @@ function LoginForm() {
         </RedirectForgotPassword>
         <RedirectSignUp>
           Không có tài khoản? Tạo mới{" "}
-          <Link to="/register">
+          <Link to="/auth/signup">
             <span>ở đây</span>
           </Link>
         </RedirectSignUp>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import UserPage from "../pages/UserPage";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import SideBar from '../components/layout/sidebar'
 import ProfileForm from "../components/user/ProfileForm";

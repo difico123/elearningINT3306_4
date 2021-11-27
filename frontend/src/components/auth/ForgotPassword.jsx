@@ -1,9 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
-import EmailIcon from "@mui/icons-material/Email";
 import AuthService from "../../service/authService";
-import Loader from "../stuff/loader"
-
+import Loader from "../common/loader"
+import {EmailIcon} from "../common/icons"
 
 function ForgotPassword() {
   const [emailForgot, setEmailForgot] = useState("");
@@ -17,7 +16,7 @@ function ForgotPassword() {
    await AuthService.forgotPassword({ email: emailForgot })
       .then((response) => {
         setIsError(false)
-        setSuccessMsg(response.data.message);
+        setSuccessMsg(response.message);
       })
       .catch((error) => {
         setIsError(true)
@@ -36,16 +35,13 @@ function ForgotPassword() {
  const renderMsg = isError ? errors : success;
  
  const loader = (
-   <div className="flex justify-center text-green-400">
+   <div className="flex justify-center text-green-400 h-12">
       <Loader/>
    </div>
  )
 
  const renderLoaderMsg = loading ? loader : renderMsg;
-
-
  const renderButton = loading? '':<SubmitButton className="border-4"onClick={submit}>Lấy lại mật khẩu</SubmitButton>;
-
 
   return (
     <Wrap>

@@ -1,16 +1,17 @@
 import { Button } from "@mui/material";
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
-
 import PersonIcon from '@mui/icons-material/Person';
-
 import UserService from "../../service/userService";
+import Loader from '../common/loader';
 
 function EditProfile({user}) {
 
   const [message, setMessage] = useState([]);
-  var [successMsg, setSuccessMsg] = useState("");
-  var [isError, setIsError] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [isError, setIsError] = useState(false);
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [ userProfile, setUserProfile] = useState({
     lastName: "",
@@ -18,21 +19,32 @@ function EditProfile({user}) {
     phoneNumber: "",
     city: "",
     address: "",
+    imageUrl: ""
   });
 
-  let  { firstName, lastName, phoneNumber, city, address } = userProfile
+  let  { firstName, lastName, phoneNumber, city, address, imageUrl} = userProfile
 
   React.useEffect(() => {
       setUserProfile({...user})
+      setImage(user.imageUrl)
   }, [user]);
 
   const onChange = (e) => {
     setUserProfile({...userProfile,[e.target.name]:e.target.value})
   }
 
-  const editInfo = (e) => {
+  const editInfo = async(e) => {
     e.preventDefault();
-    UserService.editUser({firstName, lastName, phoneNumber, city, address})
+    setLoading(true)
+    var formData = new FormData();
+    formData.append("imageUrl",imageUrl);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("city", city);
+    formData.append("address", address);
+
+    await UserService.editUser(formData)
     .then((response) => {
       setSuccessMsg(response.msg);
       window.location.href ='./profile'
@@ -40,7 +52,9 @@ function EditProfile({user}) {
     .catch((error) => {
       setIsError(error.response.data.error);
       setMessage(error.response.data.msg);
+      console.log(error)
     });
+    setLoading(false)
   };
 
   const errors = message.map((err,index) => (
@@ -49,10 +63,21 @@ function EditProfile({user}) {
     </div>
   ));
 
+  const handleFileSelected = (e) => {
+    const files = Array.from(e.target.files)
+    setUserProfile({...userProfile,imageUrl: files[0]})
+    setImage(URL.createObjectURL(files[0]))
+  }
+
   const success = <div className="text-green-400">{successMsg}</div>;
+  const renderMsg = isError ? errors : success;
 
+  const loadIcon = <div className="relative h-8 flex justify-center"> <Loader/> </div>
+  const render = loading? loadIcon:renderMsg;
+
+  console.log(!image === true)
+  const Avt = !image? <ProfileIcon className="text-xl"></ProfileIcon>:<img src={image} alt="anh dai dien"></img>
     return (
-
         <Wrap>
           <Container>
             <Title>Chỉnh sửa thông tin cá nhân</Title>
@@ -79,13 +104,19 @@ function EditProfile({user}) {
                     ></input>
                 </Name>
               </FullName>
+              <h4 className="relative top-3 ">Ảnh đại diện</h4>
               <Image>
-                  <label for="avatar">Ảnh đại diện</label>
-                  <ProfileIcon></ProfileIcon>
+                  <div>
+                  {/* <ProfileIcon></ProfileIcon> */}
+                  {/* <img src={image} alt="anh dai dien"></img> */}
+                  {Avt}
+                  </div>
+
                   <input 
                     type="file"
                     name="avatar"
                     accept="image/png, image/jpeg"
+                    onChange={handleFileSelected}
                   ></input>
               </Image>
               <UserDetails>
@@ -119,7 +150,7 @@ function EditProfile({user}) {
                   onChange={onChange}
                   ></input>
                 </InputBox>
-                {isError ? errors : success}
+                {render}
                 <Confirm>
                 <input
                   type="Submit"
@@ -218,29 +249,29 @@ const Name = styled.div`
 `;
 
 const Image = styled.div`
-  margin: 20px 0 12px 0;
-  label {
-    display: block;
-    font: 1rem 'Fira Sans', sans-serif;
-  }
-
-  input,
-  label {
-    margin: .4rem 0;
-  }
+  margin: 1rem 0 0.1rem 0;
+  display: flex;
+  min-height: 10rem;
 
   input {
-    margin-left: 40px;
+    position: relative;
+    margin: auto 5rem;
+  }
+  img {
+    position: relative;
+    top: 1rem;
+    width: 10rem;
   }
 `;
 const ProfileIcon = styled(PersonIcon)`
   height: 100%;
   width: 100%;
   border: 1px solid skyblue;
-  margin: 50px 40px 30px;
+  position: relative;
+  margin: 4rem 3rem;
   color: white;
   background: skyblue;
-  transform: scale(4);
+  transform: scale(5);
 `;
 
 export default EditProfile;

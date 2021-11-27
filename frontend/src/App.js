@@ -1,22 +1,17 @@
-import React, { useState } from "react";
-import Header from "./components/Header";
-import Homepage from "./components/Homepage";
-import Footer from "./components/Footer";
-import Detail from "./components/Detail";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import ForgotPassword from "./components/auth/ForgotPassword";
 import { ProtectedRoute } from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Footer from "./components/layout/Footer";
+import React, { useState } from "react";
+import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import CategoryContent from "./components/auth/CategoryContent";
-import FindUsers from "./components/course/findUsers";
+import Categories from "./components/course/Category"
 import UserRouter from "./routes/User";
-import EditPassword from "./components/user/EditPwForm";
 import AuthRouter from "./routes/Auth";
-import SideBar from './components/layout/sidebar'
+import CourseRouter from "./routes/Course"
+
+
 function App() {
   const [auth, setAuth] = useState(() => {
     let data = UserService.getCurrentUser()
@@ -51,12 +46,27 @@ function App() {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
         <Router> 
           <Header user={user}/>
 
+
           <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                  <Categories />
+              }
+            />
+            <Route
+              exact
+              path="/category/:id"
+              element={
+                  <CourseRouter />
+              }
+            />
             <Route
               path="/user/*"
               element={
@@ -71,16 +81,7 @@ function App() {
                 <AuthRouter/>
               }
             />
-            <Route path="/auth/login" element={ <Login />} />
-            <Route
-              exact
-              path="/"
-              element={
-                <ProtectedRoute auth={auth}>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
+
           </Routes>
           <Footer />
         </Router>

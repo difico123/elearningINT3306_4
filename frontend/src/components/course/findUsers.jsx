@@ -1,7 +1,7 @@
 import React, { Component,useState } from 'react'
 import CourseService from '../../service/courseService'
 import { useParams } from "react-router-dom";
-import Loader from '../stuff/loader.jsx'
+import Loader from '../common/loader.jsx'
 
 function FindUsers() {
     const [students,setStudents] = useState([]);

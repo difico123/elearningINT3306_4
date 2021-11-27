@@ -1,8 +1,6 @@
-import { Button } from "@mui/material";
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
-
-import PersonIcon from '@mui/icons-material/Person';
+import { AccountBoxIcon, PersonIcon,EmailIcon,LocalPhoneIcon,LocationCityIcon,HomeIcon } from '../common/icons'
 
 import UserService from "../../service/userService";
 
@@ -27,13 +25,11 @@ function ProfileForm({user}) {
 
   let userRole;
   if({role}.role == 0) {
-    userRole = <div><label>Vai trò:</label> Học sinh</div>
-  }
-  if({role}.role == 1) {
-    userRole = <div><label>Vai trò:</label> Giảng viên</div>
-  }
-  if({role}.role == 2) {
-    userRole = <div><label>Vai trò:</label> Quản trị viên</div>
+    userRole = <div><PersonIcon/> <label>Vai trò:</label> Học sinh</div>
+  }else if({role}.role == 1) {
+    userRole = <div><PersonIcon/> <label>Vai trò:</label> Giảng viên</div>
+  }else{
+    userRole = <div><PersonIcon/> <label>Vai trò:</label> Quản trị viên</div>
   }
   
     return (
@@ -46,23 +42,24 @@ function ProfileForm({user}) {
             </Image>
             <Form>
               <UserDetails>
+             
                 <div>
-                   <div><label>Họ và tên:</label> {firstName} {lastName}</div>
+                   <div> <AccountBoxIcon/> <label>Họ và tên:</label> {firstName} {lastName}</div>
                 </div>
                 <div>
-                    <div><label>Email:</label> {email}</div>
+                    <div><EmailIcon/> <label>Email:</label> {email}</div>
                 </div>
                 <div>
-                    <div><label>Số điện thoại:</label> {phoneNumber}</div>
+                    <div><LocalPhoneIcon/> <label>Số điện thoại:</label> {phoneNumber}</div>
                 </div>
                 <div>
                     {userRole}
                 </div>
                 <div>
-                    <div><label>Nơi ở:</label> {address}</div>
+                    <div><HomeIcon/> <label>Nơi ở:</label> {address}</div>
                 </div>
                 <div>
-                    <div><label>Thành phố:</label> {city}</div>
+                    <div><LocationCityIcon/> <label>Thành phố:</label> {city}</div>
                 </div>
               </UserDetails>
             </Form>
@@ -130,8 +127,14 @@ const ProfileIcon = styled(PersonIcon)`
 const Image = styled.div`
   margin: 0 auto;
   img {
+    position: relative;
+    top: 2rem;
     width: 100%;
-    border-radius: 100%;
+  }
+  div {
+    box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+    padding: 0.3rem 0.5rem 0.5rem 0.5rem;
+    border-radius: 5px;
   }
 `;
 

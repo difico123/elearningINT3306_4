@@ -10,9 +10,9 @@ function getCurrentUser() {
   return localStorage.getItem('uuid');
 }
 
-function editUser(user) {
-  const config = { headers: { 'Content-Type': 'application/json' } };
-  return http.put( apiEndpoint + '/editInfo',user, config);
+async function editUser(user) {
+  const config = { headers: { "Content-Type": "multipart/form-data"  } };
+  return await http.put( apiEndpoint + '/editInfo',user, config);
 }
 
 function editPw(user) {

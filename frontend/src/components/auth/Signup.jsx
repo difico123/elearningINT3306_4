@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
-import LockIcon from "@mui/icons-material/Lock";
-import PersonIcon from "@mui/icons-material/Person";
-import EmailIcon from "@mui/icons-material/Email";
-import LocationCityIcon from "@mui/icons-material/LocationCity";
-import HomeIcon from "@mui/icons-material/Home";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import AuthService from "../../service/authService";
+import {LockIcon,PersonIcon,EmailIcon,LocationCityIcon, HomeIcon,LocalPhoneIcon} from '../common/icons'
 
 function SignUpForm() {
   const [userReg, setUserReg] = useState({
@@ -34,9 +28,9 @@ function SignUpForm() {
   const register = () => {
     AuthService.register(userReg)
       .then((response) => {
-        setSuccessMsg(response.data.msg[0]);
-        setIsError(response.data.error);
-        console.log(response.data);
+        setSuccessMsg(response.msg[0]);
+        setIsError(response.error);
+        console.log(response);
       })
       .catch((error) => {
         setIsError(error.response.data.error);
