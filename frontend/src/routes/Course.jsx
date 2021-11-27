@@ -6,9 +6,8 @@ import CourseContent from "../components/course/CourseContent";
 function CourseRouter() {
   return (
     <React.Fragment>
-      <Course />
       <Routes>
-        <Route path="/course/:id" element={<CourseContent />} />
+        <Route exact path="/course/:id" element={<CourseContent />} />
       </Routes>
     </React.Fragment>
   );

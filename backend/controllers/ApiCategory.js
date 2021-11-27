@@ -1,16 +1,17 @@
-const { Category } = require('../db/models');
+const { Category } = require("../db/models");
+const CategoryService = require("../dbService/categoryService");
 module.exports = class ApiNotification {
-    // @route   GET api/category/get
-    // @desc    get category
-    // @access  Public
-    static async getCategory(req, res) {
-        try {
-            let categories = await Category.findAll();
-
-            res.status(200).json({ error: false, categories });
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Server error');
-        }
+  // @route   GET api/category/get
+  // @desc    get category
+  // @access  Public
+  static getCategory(req, res) {
+    try {
+      CategoryService.getCategories().then((categories) => {
+        res.status(200).json({ error: false, categories });
+      });
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).send("Server error");
     }
+  }
 };

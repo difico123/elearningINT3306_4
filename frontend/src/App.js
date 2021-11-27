@@ -10,6 +10,8 @@ import Category from "./components/course/Category";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course";
+import Course from "./components/course/Course";
+import NotFound from "./components/common/NotFound";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -52,7 +54,8 @@ function App() {
 
           <Routes>
             <Route exact path="/" element={<Category />} />
-            <Route exact path="/category/:id" element={<CourseRouter />} />
+            <Route path="/category/:id/*" element={<CourseRouter />} />
+            <Route exact path="/category/:id/" element={<Course />} />
             <Route
               path="/user/*"
               element={
@@ -62,6 +65,7 @@ function App() {
               }
             />
             <Route path="/auth/*" element={<AuthRouter />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </Router>

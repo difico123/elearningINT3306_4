@@ -1,11 +1,9 @@
 import http from "./httpService";
 
-const apiEndpoint = "/category";
+const apiEndpoint = "/api/category";
 
 function getAll() {
   return http.get(apiEndpoint + "/get");
 }
 
-export default {
-  getAll,
-};
+export default { getAll };
