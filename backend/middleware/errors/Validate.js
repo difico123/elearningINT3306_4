@@ -46,9 +46,9 @@ module.exports = {
             .withMessage(`${name} không được có dấu cách`)
             .isLength({
               min: 1,
-              max: 50,
+              max: 30,
             })
-            .withMessage(`${name} phải chứa từ 1 - 50 kí tự`)
+            .withMessage(`${name} phải chứa từ 1 - 30 kí tự`)
             .run(req);
         } else if (fields[i] === email) {
           await check(fields[i])
@@ -61,17 +61,17 @@ module.exports = {
             .withMessage(`${name} không được có dấu cách`)
             .isLength({
               min: 6,
-              max: 50,
+              max: 30,
             })
-            .withMessage(`${name} phải chứa từ 6 - 50 kí tự`)
+            .withMessage(`${name} phải chứa từ 6 - 30 kí tự`)
             .run(req);
         } else if (address.includes(fields[i])) {
           await check(fields[i])
             .isLength({
               min: 1,
-              max: 50,
+              max: 30,
             })
-            .withMessage(`${name} phải chứa từ 1 - 50 kí tự`)
+            .withMessage(`${name} phải chứa từ 1 - 30 kí tự`)
             .run(req);
         } else if (fields[i] === phoneNumber) {
           await check(fields[i])
@@ -98,17 +98,22 @@ module.exports = {
           case "name":
             name = "Tên khoá học";
             break;
+          case "title":
+            name = "Chủ đề";
+            break;
           case "description":
             name = "Phần mô tả";
+            break;
+          case "content":
+            name = "Nội dung";
             break;
         }
         if (names.includes(fields[i])) {
           await check(fields[i])
             .isLength({
               min: 10,
-              max: 50,
             })
-            .withMessage(`${name} phải chứa từ 10-50 kí tự`)
+            .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
             .run(req);
         } else if (contents.includes(fields[i])) {
           await check(fields[i])

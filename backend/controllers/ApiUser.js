@@ -44,6 +44,7 @@ module.exports = class ApiUser {
       res.status(500).send("server error " + error.message);
     }
   }
+
   // @route   POST api/auth/login
   // @desc    login user
   // @access  Public
@@ -95,10 +96,6 @@ module.exports = class ApiUser {
       console.log(error.message);
       res.status(500).send("Server error");
     }
-  }
-  catch(error) {
-    console.log(error.message);
-    res.status(500).send("Server error");
   }
 
   // @route   POST api/auth/logout
@@ -155,7 +152,7 @@ module.exports = class ApiUser {
 
       return res.status(200).json({
         error: false,
-        message: [`Email sent to ${email} successfully`],
+        message: `Email sent to ${email} successfully`,
       });
     } catch (error) {
       user.resetPasswordToken = null;
@@ -198,7 +195,7 @@ module.exports = class ApiUser {
       if (newPassword !== confirmPassword) {
         return res.status(400).json({
           error: true,
-          msg: [["Mật khẩu mới và mật khẩu xác nhận của bạn không khớp"]],
+          msg: ["Mật khẩu mới và mật khẩu xác nhận của bạn không khớp"],
         });
       }
 
