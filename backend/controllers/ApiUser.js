@@ -85,13 +85,11 @@ module.exports = class ApiUser {
                     if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }
-                    return res
-                        .status(200)
-                        .json({
-                            error: false,
-                            token,
-                            user: user,
-                        });
+                    return res.status(200).json({
+                        error: false,
+                        token,
+                        user: user,
+                    });
                 },
             );
         } catch (error) {
@@ -235,7 +233,7 @@ module.exports = class ApiUser {
             res.status(200).json({
                 error: false,
                 info: user,
-                url: req.header('x-forwarded-for')
+                url: req.header('x-forwarded-for'),
             });
         } catch (error) {
             console.log(error.message);

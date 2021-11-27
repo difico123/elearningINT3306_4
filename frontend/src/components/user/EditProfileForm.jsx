@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
-import PersonIcon from '@mui/icons-material/Person';
 import UserService from "../../service/userService";
 import Loader from '../common/loader';
+import {PersonIcon} from '../common/icons'
 
 function EditProfile({user}) {
 
@@ -107,8 +107,6 @@ function EditProfile({user}) {
               <h4 className="relative top-3 ">Ảnh đại diện</h4>
               <Image>
                   <div>
-                  {/* <ProfileIcon></ProfileIcon> */}
-                  {/* <img src={image} alt="anh dai dien"></img> */}
                   {Avt}
                   </div>
 

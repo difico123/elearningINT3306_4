@@ -1,14 +1,14 @@
-const {
-    Notification,
-} = require('../db/models');
+const { Notification } = require('../db/models');
 module.exports = class ApiNotification {
     // @route   GET api/notification/get
     // @desc    get notification by user
     // @access  Private
     static async getNotification(req, res) {
-        let {id} = req.user;
+        let { id } = req.user;
         try {
-            let notifications =  await Notification.findAll( {where: { receiverId: id}});
+            let notifications = await Notification.findAll({
+                where: { receiverId: id },
+            });
             if (notifications.length === 0) {
                 return res.status(200).json({
                     error: false,

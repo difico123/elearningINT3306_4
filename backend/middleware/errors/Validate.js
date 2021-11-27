@@ -98,15 +98,20 @@ module.exports = {
                     case 'name':
                         name = 'Tên khoá học';
                         break;
+                    case 'title':
+                        name = 'Chủ đề';
+                        break;
                     case 'description':
                         name = 'Phần mô tả';
+                        break;
+                    case 'content':
+                        name = 'Nội dung';
                         break;
                 }
                 if (names.includes(fields[i])) {
                     await check(fields[i])
                         .isLength({
                             min: 10,
-                            max: 30,
                         })
                         .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
                         .run(req);
