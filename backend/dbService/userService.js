@@ -2,7 +2,7 @@ const { sequelize } = require('../db/models');
 const { QueryTypes } = require('sequelize');
 
 module.exports = class UserCourseService {
-    static async getUserbyEmail(keyword,courseId) {
+    static async getUserbyEmail(keyword, courseId) {
         try {
             const response = await sequelize.query(
                 `SELECT id, email, concat(firstName,' ', lastName) as fullName FROM users WHERE email like '%${keyword}%' and users.role != 2

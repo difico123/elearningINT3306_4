@@ -24,7 +24,9 @@ function Categories() {
 
 export default Categories;
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding: 5vh 2vw;
+`;
 
 const Title = styled.div`
   font-size: 18px;
@@ -35,12 +37,11 @@ const Content = styled.div`
   padding-top: 20px;
   display: flex;
   flex-flow: row wrap;
-  gap: 50px;
+  gap: 2rem;
   justify-content: space-around;
 `;
 
 const Wrap = styled.div`
-  height: 30rem;
   background-color: #f7f9fa;
   border-radius: 10%;
   border: 3px solid rgba(5, 5, 5, 0.1);
@@ -54,7 +55,6 @@ const Wrap = styled.div`
     transform: scale(0.9875);
     border-color: rgba(5, 5, 5, 0.314);
   }
-  padding: 0 5px;
 `;
 
 const CategoryImage = styled.img`

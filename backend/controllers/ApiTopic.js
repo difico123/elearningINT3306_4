@@ -1,6 +1,4 @@
-const TopicService = require('../dbservice/TopicService');
-const NotificationService = require('../dbservice/NotificationService');
-const UserCourseService = require('../dbservice/UserCourseService');
+const { User, Course, Category, UserCourse,Topic } = require('../db/models');
 
 module.exports = class ApiTopic {
     // @route   POST api/topic/create
@@ -8,47 +6,26 @@ module.exports = class ApiTopic {
     // @access  Private
     static async createTopic(req, res) {
         const topic = {
-            course: req.courseId,
-            indexOrder: req.body.indexOrder,
+            courseId: req.courseId,
             title: req.body.title,
             content: req.body.content,
         };
         try {
-            TopicService.addTopic(topic).then((created) => {
-                if (!created) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Chưa tạo được topic',
-                    });
-                }
 
-                const getUserPromise = UserCourseService.getCourseUsers(
-                    topic.course,
-                ).then(async (users) => {
-                    if (users.length === 0) {
-                        console.log({
-                            msg: 'Không học sinh nào trong khoá học này',
-                        });
-                    } else {
-                        await users.map((user) => {
-                            let notification = {
-                                user: user.userId,
-                                topic: 'Thông báo topic của khoá học',
-                                details: `${user.instructorName} vừa tạo thêm topic trong khoá học ${user.courseName} của thầy ấy`,
-                            };
-                            NotificationService.addNotification(notification);
-                        });
-                    }
-                });
+            // if (req.file !== undefined) {
+            //     const result = await cloudinary.uploader.upload(req.file.path, {
+            //         folder: 'courses',
+            //     });
+            //     course.imageUrl = `${result.secure_url} ${result.public_id}`;
+            // }
 
-                Promise.all([getUserPromise]).then((values) => {
-                    return res.status(200).json({
-                        error: false,
-                        msg: 'Tạo topic thành công',
-                        topic,
-                    });
+            await Topic.create(topic).then((topic) => {
+                res.status(201).json({
+                    error: false,
+                    msg: 'Tạo chủ đề thành công',
                 });
             });
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -60,17 +37,15 @@ module.exports = class ApiTopic {
     // @access  Private
     static async getCourseTopics(req, res) {
         try {
-            TopicService.getCourseTopics(req.courseId).then((data) => {
-                if (data.length == 0) {
-                    return res.status(200).json({
-                        error: false,
-                        msg: 'Bạn chưa có topic nào',
-                    });
-                }
-                res.status(200).json({
-                    error: false,
-                    topics: data,
-                });
+            let course = await Course.findOne({where: {id: req.courseId}})
+            let topics = await Topic.findAll({
+                where: { courseId: req.courseId }
+            });
+
+            res.status(200).json({
+                error: false,
+                course,
+                topics: topics,
             });
         } catch (error) {
             console.log(error.message);

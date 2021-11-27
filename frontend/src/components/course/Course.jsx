@@ -128,7 +128,7 @@ const FilterWrap = styled.div`
 const Courses = styled.div`
   display: flex;
   flex-flow: row wrap;
-  gap: 50px;
+  gap: 2rem;
 `;
 
 const Wrap = styled.div`

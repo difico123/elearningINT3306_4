@@ -13,8 +13,10 @@ const {
     validateInput,
 } = require('../../middleware/errors/Validate');
 
+const {coursePassport} = require('../../middleware/passport')
+
 //@route api/course/:courseId/topic
-// router.use('/:courseId/topic', coursePassport, require('./topic'));
+router.use('/:courseId/topic', coursePassport, require('./topic'));
 
 // @route   POST api/course/create/:categoryId
 // @desc    Create course

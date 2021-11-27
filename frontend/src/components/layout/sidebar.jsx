@@ -15,7 +15,7 @@ function Sidebar() {
     return (
         <SideBar>
             <Link to="/user/profile">
-                <div onClick={setStyle}  value="info" readOnly>Thông tin cá nhân</div>
+                <div onClick={setStyle} className="bg-blue-400 text-white" value="info" readOnly>Thông tin cá nhân</div>
             </Link>
             <Link to="/user/editprofile">
                 <div  onClick={setStyle} value="editInfo" readOnly>Sửa thông tin cá nhân</div>

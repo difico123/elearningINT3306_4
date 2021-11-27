@@ -267,7 +267,7 @@ module.exports = class ApiCourse {
                     courses,
                     filteredCourse: courses.length,
                     currentPage: req.query.page,
-                    totalCourse: data.length
+                    totalCourse: data.length,
                 });
             });
         } catch (error) {
@@ -285,23 +285,25 @@ module.exports = class ApiCourse {
         try {
             let course = await Course.findOne({ where: { id: courseId } });
 
-            await UserCourseService.getUsersbyCourseId(courseId).then(data => {
-                let users = pagination(data, page);
-                return res.status(200).json({
-                    error: false,
-                    course: course,
-                    users,
-                    currentPage: page||1,
-                    filteredUsers: users.length,
-                    total: data.length,
-                });
-            })
+            await UserCourseService.getUsersbyCourseId(courseId).then(
+                (data) => {
+                    let users = pagination(data, page);
+                    return res.status(200).json({
+                        error: false,
+                        course: course,
+                        users,
+                        currentPage: page || 1,
+                        filteredUsers: users.length,
+                        total: data.length,
+                    });
+                },
+            );
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
         }
     }
-    
+
     // @route   PUT api/course/:courseId/kick/:userId
     // @desc    kickUser
     // @access  private
@@ -384,7 +386,7 @@ module.exports = class ApiCourse {
         let { courseId } = req.params;
         keyword = keyword || '';
         try {
-            UserService.getUserbyEmail(keyword,courseId).then((students) => {
+            UserService.getUserbyEmail(keyword, courseId).then((students) => {
                 if (students.length === 0) {
                     return res.status(200).json({
                         error: false,

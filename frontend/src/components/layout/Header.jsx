@@ -60,17 +60,16 @@ function Header({user}) {
       </div>
       <div className="menu">
         <ul>
+        <Link to={'/user/profile'} >
           <li>
-            <Link to={'/user/profile'} >
               <AccountBoxIcon /> Profile
-
-            </Link>
           </li>
+          </Link>
+          <Link to={`#`}>
           <li>
-            <Link to={`#`}>
               <SettingsIcon  /> Setting
-            </Link>
           </li>
+          </Link>
           <li>
             <button onClick={handleLogout}>
               <LogoutIcon /> Logout
@@ -106,6 +105,7 @@ function Header({user}) {
 export default Header;
 
 const Nav = styled.div`
+  z-index: 999;
   height: 85px;
   display: flex;
   align-items: center;
@@ -180,7 +180,6 @@ const BecomeInstructor = styled.div`
 
 
 const Wrap = styled.div`
-  position: fixed;
   display: flex;
   align-items: center;
   flex-flow: row nowrap;
@@ -216,10 +215,10 @@ const Wrap = styled.div`
 
   .menu {
     position: absolute;
-    top: 4rem;
-    right: -10px;
+    top: 5rem;
+    right: 3.5vw;
     background: #fff;
-    width: 7rem;
+    width: 9rem;
     box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;

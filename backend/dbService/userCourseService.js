@@ -19,4 +19,23 @@ module.exports = class UserCourseService {
             console.log(error);
         }
     }
+    static async getUserCourses(userId) {
+        try {
+            const response = await sequelize.query(
+                `SELECT c.id as courseId, c.name, uc.isComplete, uc.marks, c.instructorId , 
+                concat(u.firstName," ", u.lastName) as fullName, u.email , 
+                DATE_FORMAT(uc.dateAdded, "ngày %d tháng %m năm %Y") as enrollDate 
+                FROM usercourses uc join courses c on c.id = uc.courseId 
+                join users u on c.instructorId = u.id
+                 WHERE uc.userId = ${userId};`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };
