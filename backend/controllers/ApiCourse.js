@@ -256,12 +256,17 @@ module.exports = class ApiCourse {
         let query = {
             keyword: req.query.keyword,
             rating: req.query.rating,
-            categoryName: req.query.categoryName,
+            categoryId: req.query.categoryId,
         };
         try {
             CourseService.getAll(query).then((data) => {
                 let page = req.query.page || 1;
                 let courses = pagination(data, page);
+                for (let i in courses) {
+                    if(courses[i].imageUrl) {
+                        courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+                    }
+                  }
                 res.status(200).json({
                     error: false,
                     courses,

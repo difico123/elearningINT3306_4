@@ -10,6 +10,7 @@ import Categories from "./components/course/Category"
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course"
+import Course from "./components/course/Course"
 
 
 function App() {
@@ -64,9 +65,16 @@ function App() {
               exact
               path="/category/:id"
               element={
+                <Course/>
+              }
+            />
+            <Route
+              path="/category/:id/*"
+              element={
                   <CourseRouter />
               }
             />
+
             <Route
               path="/user/*"
               element={

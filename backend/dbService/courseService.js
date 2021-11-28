@@ -2,23 +2,25 @@ const { sequelize } = require('../db/models');
 const { QueryTypes } = require('sequelize');
 
 module.exports = class CourseService {
-    static async getAll({ keyword, rating, categoryName }) {
+    static async getAll({ keyword, rating, categoryId }) {
         let nameQuery =
             keyword !== undefined ? `and c.name like "%${keyword}%"` : '';
         let ratingQuery = rating !== undefined ? ` rating >= ${rating} ` : '';
         let categoryQuery =
-            categoryName !== undefined
-                ? ` categoryName like "%${categoryName}%"`
+            categoryId !== undefined
+                ? ` categoryId = ${categoryId}`
                 : '';
+
         let and =
-            rating !== undefined && categoryName !== undefined ? ` and ` : ' ';
+            rating !== undefined && categoryId !== undefined ? ` and ` : ' ';
         let having =
-            rating !== undefined || categoryName !== undefined
+            rating !== undefined || categoryId !== undefined
                 ? `having `
                 : ' ';
         let query = `select c.id as courseId, c.name, c.description, c.categoryId, ca.name as categoryName,
         c.instructorId, concat(u.firstName," ", u.lastName) as instructorName,
         u.email as instructorEmail, round(avg(uc.rating),1) as rating,
+        c.imageUrl,
         count(uc.id) as register
         from courses c
         JOIN categories ca on ca.id = c.categoryId 
@@ -39,4 +41,5 @@ module.exports = class CourseService {
             console.log(error);
         }
     }
+
 };
