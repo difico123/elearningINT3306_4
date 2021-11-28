@@ -44,7 +44,7 @@ function CloneCategoryCourses() {
       <Wrap>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <CourseTitle>{course.name}</CourseTitle>
-        <CourseTitle>{course.instructorName}</CourseTitle>
+        <CourseInstructor>{course.instructorName}</CourseInstructor>
         <CourseDescription>{course.description}</CourseDescription>
         <CourseInfo>
           <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
@@ -192,12 +192,12 @@ const Wrap = styled.div`
   box-shadow: rgb(0 0 0 / 35%) 0 16px 25px -12px,
     rgb(1 1 1 / 25%) 0 9px 16px -10px;
   &:hover {
-    box-shadow: rgb(0 0 0 / 65%) 0 25px 36px -20px,
-      rgb(1 1 1 / 45%) 0 16px 25px -12px;
-    transform: scale(0.9875);
+    box-shadow: rgb(0 0 0 / 45%) 0 25px 36px -20px,
+      rgb(1 1 1 / 35%) 0 16px 25px -12px;
+    transform: scale(0.975);
     border-color: rgba(5, 5, 5, 0.314);
   }
-  padding: 0 5px;
+  padding: 0 0 5px;
 `;
 
 const CourseImage = styled.img`
@@ -210,6 +210,13 @@ const CourseTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   height: 5.7vh;
+`;
+
+const CourseInstructor = styled.div`
+  padding: 0 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5e5e5e;
 `;
 
 const CourseDescription = styled.div`
@@ -238,7 +245,6 @@ const CourseAttendance = styled.div`
 
 const Page = styled.div``;
 
-export default CloneCategoryCourses;
 const SearchBar = styled.div`
   display: flex;
   align-items: center;
@@ -272,3 +278,5 @@ const SearchBar = styled.div`
 `;
 
 const CustomSearch = styled(SearchIcon)``;
+
+export default CloneCategoryCourses;
