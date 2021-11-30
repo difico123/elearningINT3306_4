@@ -20,4 +20,22 @@ function getAll(categoryId, keyword, page, rating) {
   return http.get(apiEndpoint + `/showAll${query}`);
 }
 
-export default { findUsers, getAll };
+function getInstructorCourses() {
+  return http.get(apiEndpoint + `/instructorCourses`);
+}
+
+function suspendCourse(courseId) {
+  return http.put(apiEndpoint + `/suspend/${courseId}`);
+}
+
+function activateCourse(courseId) {
+  return http.put(apiEndpoint + `/activate/${courseId}`);
+}
+
+export default {
+  findUsers,
+  getAll,
+  getInstructorCourses,
+  suspendCourse,
+  activateCourse,
+};

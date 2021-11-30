@@ -27,8 +27,11 @@ function Header({ user }) {
     auth: false,
   });
 
+  const [loading, setLoading] = useState(true);
+
   React.useEffect(() => {
     setInfo(user);
+    setLoading(false);
   }, [user]);
 
   let fakeData = {
@@ -40,6 +43,26 @@ function Header({ user }) {
     const toggleMenu = document.querySelector(".menu");
     toggleMenu.classList.toggle("active");
   }
+
+  const showInstructorCourses = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/instructorcourses`}>
+          <SigninButton>Khóa học của tôi</SigninButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
+
+  const showUserCourses = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/usercourses`}>
+          <SigninButton>Khóa học của tôi</SigninButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
 
   const loginIcon = (
     <React.Fragment>
@@ -89,6 +112,15 @@ function Header({ user }) {
       </div>
     </Wrap>
   );
+  console.log(user);
+
+  const userRole = () => {
+    if (user.role === 1) return showInstructorCourses;
+    else if (user.role === 0) return showUserCourses;
+    else return "";
+  };
+  console.log(user.role);
+
   return (
     <Nav>
       <Logo>
@@ -106,6 +138,7 @@ function Header({ user }) {
           <CustomSearch />
         </button>
       </SearchBar>
+      {loading ? "" : userRole()}
       {!user.uuid ? loginIcon : person}
     </Nav>
   );

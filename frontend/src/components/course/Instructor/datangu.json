@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "name": "Khóa học C++ căn bản",
+    "description": "Dành cho học viên bắt đầu tiếp cận với lập trình",
+    "categoryId": 2,
+    "verified": false,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942350/courses/qabh0ih5xcywmjqaw8vh.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Khóa học C++ nâng cao",
+    "description": "Khóa học tiếp theo của khóa C++ căn bản",
+    "categoryId": 2,
+    "verified": true,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942365/courses/zqnillptfnvrqsht5wan.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Khóa học Web căn bản (HTML - CSS - Javascript)",
+    "description": "Dành cho những học viên có đam mê lập trình web",
+    "categoryId": 2,
+    "verified": false,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Khóa học Front-end căn bản (ReactJS - Bootstrap)",
+    "description": "Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Front-end",
+    "categoryId": 2,
+    "verified": true,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942622/courses/csetvbz8bxpzzlkpy9nx.png"
+  },
+  {
+    "id": 5,
+    "name": "Khóa học Back-end căn bản (NodeJS - MySQL)",
+    "description": "Khóa học tiếp theo của khóa Web căn bản, dành cho các bạn theo thiên hướng Back-end\n",
+    "categoryId": 2,
+    "verified": false,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942647/courses/zysfekblko3mlna8nyxw.png"
+  },
+  {
+    "id": 6,
+    "name": "Khóa học Web Full-stack",
+    "description": "Khóa học cho các học viên đã học xong hai khóa Front-end và Back-end, muốn tạo cho mình một dự án riêng",
+    "categoryId": 2,
+    "verified": true,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png"
+  },
+  {
+    "id": 7,
+    "name": "Khóa học Lập trình Hướng đối tượng (Java)",
+    "description": "Cho các bạn muốn tìm hiểu thêm về OOP",
+    "categoryId": 2,
+    "verified": false,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942746/courses/o55oms4bthat8wugtip1.jpg"
+  },
+  {
+    "id": 8,
+    "name": "Cấu trúc dữ liệu và giải thuật (C++)",
+    "description": "Giúp các bạn hiểu rõ hơn về các thuật toán và cấu trúc dữ liệu cơ bản",
+    "categoryId": 2,
+    "verified": true,
+    "imageUrl": "https://res.cloudinary.com/subarashis/image/upload/v1637942841/courses/fbhwewswidmiovdqq2pc.jpg"
+  }
+]

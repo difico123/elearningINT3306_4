@@ -1,4 +1,8 @@
-import { ProtectedRoute } from "./components/protected.route/ProtectedRoute";
+import {
+  ProtectedRoute,
+  ProtectedInstructorRoute,
+  ProtectedUserRoute,
+} from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Footer from "./components/layout/Footer";
 import React, { useState } from "react";
@@ -6,12 +10,14 @@ import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import Category from "./components/course/Category";
+import Category from "./components/course/Homepage";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course";
-import Course from "./components/course/Course";
+import Course from "./components/course/CategoryCourses";
 import NotFound from "./components/common/NotFound";
+import InstructorCourses from "./components/course/Instructor/Courses";
+import UserCourses from "./components/course/User/Courses";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -64,6 +70,24 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/instructorcourses"
+              element={
+                <ProtectedInstructorRoute role={user.role}>
+                  <InstructorCourses />
+                </ProtectedInstructorRoute>
+              }
+            />
+            <Route
+              path="/usercourses"
+              element={
+                <ProtectedUserRoute role={user.role}>
+                  <div>abc</div>
+                </ProtectedUserRoute>
+              }
+            />
+            <Route path="/usercourses" element={<UserCourses />} />
+            <Route path="/instructorcourses" element={<InstructorCourses />} />
             <Route path="/auth/*" element={<AuthRouter />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
