@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
 import {
   SearchIcon,
@@ -26,10 +27,9 @@ function Header({ user }) {
     lastUpdated: "",
     auth: false,
   });
-
   const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setInfo(user);
     setLoading(false);
   }, [user]);
@@ -44,6 +44,23 @@ function Header({ user }) {
     toggleMenu.classList.toggle("active");
   }
 
+  const loginIcon = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/auth/login`}>
+          <SigninButton>Đăng nhập</SigninButton>
+        </Link>
+        <Link to={`/auth/signup`}>
+          <SignupButton>Đăng ký</SignupButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
+
+  const handleLogout = () => {
+    AuthService.logout();
+    window.location.href = "/auth/login";
+  };
   const showInstructorCourses = (
     <React.Fragment>
       <Buttons>
@@ -63,23 +80,11 @@ function Header({ user }) {
       </Buttons>
     </React.Fragment>
   );
-
-  const loginIcon = (
-    <React.Fragment>
-      <Buttons>
-        <Link to={`/auth/login`}>
-          <SigninButton>Đăng nhập</SigninButton>
-        </Link>
-        <Link to={`/auth/signup`}>
-          <SignupButton>Đăng ký</SignupButton>
-        </Link>
-      </Buttons>
-    </React.Fragment>
-  );
-
-  const handleLogout = () => {
-    AuthService.logout();
-    window.location.href = "/auth/login";
+  const userRole = () => {
+    if (user.role === 1) return showInstructorCourses;
+    else if (user.role === 0) return showUserCourses;
+    else if (user.role === 2) return showUserCourses;
+    else return "";
   };
 
   const person = (
@@ -88,21 +93,21 @@ function Header({ user }) {
         {!info.imageUrl ? (
           <AccountCircleIcon className="p-0 font-normal" />
         ) : (
-          <img alt="" src={`${info.imageUrl}`}></img>
+          <img src={`${info.imageUrl}`}></img>
         )}
       </div>
       <div className="menu">
         <ul>
-          <li>
-            <Link to={"/user/profile"}>
+          <Link to={"/user/profile"}>
+            <li>
               <AccountBoxIcon /> Profile
-            </Link>
-          </li>
-          <li>
-            <Link to={`#`}>
+            </li>
+          </Link>
+          <Link to={`#`}>
+            <li>
               <SettingsIcon /> Setting
-            </Link>
-          </li>
+            </li>
+          </Link>
           <li>
             <button onClick={handleLogout}>
               <LogoutIcon /> Logout
@@ -112,18 +117,11 @@ function Header({ user }) {
       </div>
     </Wrap>
   );
-
-  const userRole = () => {
-    if (user.role === 1) return showInstructorCourses;
-    else if (user.role === 0) return showUserCourses;
-    else return "";
-  };
-
   return (
     <Nav>
       <Logo>
         <Link to={`/`}>
-          <img alt="" src={fakeData.logoImg} />
+          <img src={fakeData.logoImg} />
         </Link>
       </Logo>
       <Categories>
@@ -145,17 +143,17 @@ function Header({ user }) {
 export default Header;
 
 const Nav = styled.div`
+  z-index: 999;
   height: 85px;
-  position: sticky;
-  top: 0;
   display: flex;
   align-items: center;
-  padding: 0 5vw;
+  padding: 0 30px;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  justify-content: space-around;
   border-bottom: 0.5px solid black;
+  position: sticky;
+  top: 0;
   background-color: white;
-  z-index: 99999;
 `;
 
 const Logo = styled.div`
@@ -207,6 +205,17 @@ const SearchBar = styled.div`
   }
 `;
 
+const BecomeInstructor = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 10px;
+  justify-content: space-around;
+  align-items: center;
+  cursor: pointer;
+  height: 40px;
+  font-weight: 600;
+`;
+
 const Wrap = styled.div`
   display: flex;
   align-items: center;
@@ -214,6 +223,7 @@ const Wrap = styled.div`
   justify-content: space-around;
   top: 20px;
   right: 30px;
+  z-index: 99999;
   .profile {
     position: relative;
     width: 60px;
@@ -243,9 +253,9 @@ const Wrap = styled.div`
   .menu {
     position: absolute;
     top: 5rem;
-    right: 5.5vw;
+    right: 3.5vw;
     background: #fff;
-    width: 7rem;
+    width: 9rem;
     box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
     border-radius: 15px;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -334,3 +344,7 @@ const SignupButton = styled.button`
 const CustomSearch = styled(SearchIcon)``;
 
 const CustomMenu = styled(MenuIcon)``;
+
+const InstructorIcon = styled.img`
+  height: 10px;
+`;

@@ -7,7 +7,7 @@ function findUsers(courseId, UserEmail) {
   return http.get(apiEndpoint + `/${courseId}/findUsers?keyword=${UserEmail}`);
 }
 
-function getAll(categoryId, keyword, page, rating) {
+async function getAll(categoryId, keyword, rating, page) {
   let query;
   keyword = !keyword ? "" : `keyword=${keyword}`;
   page = !page ? "" : `&page=${page}`;
@@ -17,9 +17,8 @@ function getAll(categoryId, keyword, page, rating) {
     !keyword && !page && !rating && !categoryId
       ? ""
       : `?${keyword}${page}${rating}${categoryId}`;
-  return http.get(apiEndpoint + `/showAll${query}`);
+  return await http.get(apiEndpoint + `/showAll${query}`);
 }
-
 function getInstructorCourses() {
   return http.get(apiEndpoint + `/instructorCourses`);
 }

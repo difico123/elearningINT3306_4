@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 import Categories from "./Categories";
-import Viewers from "./Viewers";
 
 function Homepage() {
   return (
     <Container>
-      <Viewers />
       <Categories />
     </Container>
   );

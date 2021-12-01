@@ -1,7 +1,6 @@
 import {
   ProtectedRoute,
   ProtectedInstructorRoute,
-  ProtectedUserRoute,
 } from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Footer from "./components/layout/Footer";
@@ -10,14 +9,12 @@ import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import Category from "./components/course/Homepage";
+import Categories from "./components/course/Category";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course";
-import Course from "./components/course/CategoryCourses";
-import NotFound from "./components/common/NotFound";
-import InstructorCourses from "./components/course/Instructor/Courses";
-import UserCourses from "./components/course/User/Courses";
+import Course from "./components/course/Course";
+import InstructorRouter from "./routes/Instructor";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -40,16 +37,22 @@ function App() {
     auth: false,
   });
 
+  const [loading, setLoading] = useState(true);
+
   React.useEffect(() => {
-    UserService.getUserInfo()
-      .then((data) => {
-        let { info } = data;
-        setUser({ ...info, auth: true });
-        setAuth(true);
-      })
-      .catch((error) => {
-        setAuth(false);
-      });
+    async function loadApi() {
+      await UserService.getUserInfo()
+        .then((data) => {
+          let { info } = data;
+          setUser({ ...info, auth: true });
+          setAuth(true);
+        })
+        .catch((error) => {
+          setAuth(false);
+        });
+      setLoading(false);
+    }
+    loadApi();
   }, []);
 
   return (
@@ -59,9 +62,21 @@ function App() {
           <Header user={user} />
 
           <Routes>
-            <Route exact path="/" element={<Category />} />
+            <Route exact path="/" element={<Categories />} />
+            <Route exact path="/category/:id" element={<Course />} />
             <Route path="/category/:id/*" element={<CourseRouter />} />
-            <Route exact path="/category/:id/" element={<Course />} />
+
+            {!loading && (
+              <Route
+                path="/instructorcourses/*"
+                element={
+                  <ProtectedInstructorRoute role={user.role}>
+                    <InstructorRouter />
+                  </ProtectedInstructorRoute>
+                }
+              />
+            )}
+
             <Route
               path="/user/*"
               element={
@@ -70,26 +85,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/instructorcourses"
-              element={
-                <ProtectedInstructorRoute role={user.role}>
-                  <InstructorCourses />
-                </ProtectedInstructorRoute>
-              }
-            />
-            <Route
-              path="/usercourses"
-              element={
-                <ProtectedUserRoute role={user.role}>
-                  <div>abc</div>
-                </ProtectedUserRoute>
-              }
-            />
-            <Route path="/usercourses" element={<UserCourses />} />
-            <Route path="/instructorcourses" element={<InstructorCourses />} />
             <Route path="/auth/*" element={<AuthRouter />} />
-            <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </Router>

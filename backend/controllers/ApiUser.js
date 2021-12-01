@@ -62,6 +62,7 @@ module.exports = class ApiUser {
 
       const isMatch = await bcrypt.compare(password, user.password);
 
+<<<<<<< HEAD
       if (!isMatch) {
         return res.status(400).json({
           error: true,
@@ -90,6 +91,58 @@ module.exports = class ApiUser {
             token,
             user: user,
           });
+=======
+    // @route   POST api/auth/login
+    // @desc    login user
+    // @access  Public
+    static async login(req, res) {
+        let { email, password } = req.body;
+        //find user
+        try {
+            let user = await User.findOne({ where: { email } });
+            if (!user) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Tài khoàn này không tồn tại'],
+                });
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Mật khẩu của bạn không chính xác'],
+                });
+            }
+
+            const payload = {
+                user: {
+                    id: user.id,
+                },
+            };
+
+            jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                { expiresIn: 36000 },
+                (err, token) => {
+                    if (err) throw err;
+
+                    if (user.imageUrl) {
+                        user.imageUrl = user.imageUrl.split(' ')[0];
+                    }
+                    return res.status(200).json({
+                        error: false,
+                        token,
+                        user: user,
+                    });
+                },
+            );
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+>>>>>>> ducnong
         }
       );
     } catch (error) {
@@ -276,6 +329,7 @@ module.exports = class ApiUser {
       console.log(error.message);
       res.status(500).send("Server error");
     }
+<<<<<<< HEAD
   }
 
   // @route   PUT api/user/beALecturer
@@ -294,6 +348,30 @@ module.exports = class ApiUser {
     } catch (error) {
       console.log(error.message);
       res.status(500).send("Server error");
+=======
+
+    // @route   GET api/user/info
+    // @desc    Get user information
+    // @access  Private
+    static async getInfor(req, res) {
+        try {
+            //get user information by id
+            let { id } = req.user;
+            let user = await User.findOne({ where: { id } });
+            if (user.imageUrl) {
+                user.imageUrl = user.imageUrl.split(' ')[0];
+            }
+
+            res.status(200).json({
+                error: false,
+                info: user,
+                url: req.header('x-forwarded-for'),
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+>>>>>>> ducnong
     }
   }
 

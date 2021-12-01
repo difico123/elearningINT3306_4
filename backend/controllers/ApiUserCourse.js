@@ -6,9 +6,9 @@ const {
     UserCourse,
     Notification,
 } = require('../db/models');
+const UserCourseService = require('../dbService/userCourseService');
 
 module.exports = class ApiCourse {
-
     // @route   GET api/userCourse/enroll/:courseId
     // @desc    check enroll a course by student
     // @access  private
@@ -25,7 +25,9 @@ module.exports = class ApiCourse {
                 });
             }
 
-            let notification = await Notification.findOne({where: { receiverId: course.instructorId, senderId:studentId } });
+            let notification = await Notification.findOne({
+                where: { receiverId: course.instructorId, senderId: studentId },
+            });
             if (notification) {
                 return res.status(400).json({
                     error: true,
@@ -33,10 +35,10 @@ module.exports = class ApiCourse {
                 });
             } else {
                 req.instructorId = course.instructorId;
-                console.log(req.url)
-                let {url} = req;
+                console.log(req.url);
+                let { url } = req;
 
-                if(url.includes("/enroll/check/")) {
+                if (url.includes('/enroll/check/')) {
                     return res.status(200).json({
                         error: false,
                         msg: ['oke'],
@@ -89,15 +91,19 @@ module.exports = class ApiCourse {
         let rating = parseInt(req.params.rating);
         let courseId = parseInt(req.params.courseId);
         let userId = req.user.id;
-
+        
         if (rating < 1 || rating > 5) {
             return res.status(400).json({
                 error: true,
                 msg: 'Bạn phải đánh giá khoá học từ 1 - 5',
             });
         }
+     
         try {
-            let userCourse = await UserCourse.findOne({ where: { id: courseId, userId } });
+            let userCourse = await UserCourse.findOne({
+                where: { courseId: courseId, userId },
+            });
+           
             if (userCourse.rating == rating) {
                 return res.status(400).json({
                     error: true,
@@ -105,6 +111,7 @@ module.exports = class ApiCourse {
                 });
             } else {
                 userCourse.rating = `${rating}`;
+                
                 await userCourse.save();
                 return res.status(200).json({
                     error: false,
@@ -112,7 +119,6 @@ module.exports = class ApiCourse {
                     msg: 'Bạn đã đánh giá khoá học',
                 });
             }
-
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -124,15 +130,17 @@ module.exports = class ApiCourse {
     // @access  private
     static async getAll(req, res) {
         try {
+            let { page } = req.query;
             let { id } = req.user;
 
-            let userCourse = await UserCourse.findAll({
-                where: { UserId: id }
-            });
+            let userCourse = await UserCourseService.getUserCourses(id);
 
+            let courses = pagination(userCourse, page);
             res.status(200).json({
                 error: false,
-                courses: userCourse,
+                courses: courses,
+                filteredCourse: courses.length,
+                totalCourse: userCourse.length,
             });
         } catch (error) {
             console.log(error.message);

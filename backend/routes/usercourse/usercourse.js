@@ -29,7 +29,7 @@ router.get(
     '/enroll/check/:courseId',
     auth,
     courseInstructorAuth(false),
-    ApiUserCourse.checkEnrollCourse
+    ApiUserCourse.checkEnrollCourse,
 );
 
 // @route   Get api/userCourse/all
