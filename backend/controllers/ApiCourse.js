@@ -263,8 +263,12 @@ module.exports = class ApiCourse {
         let page = req.query.page || 1;
         let courses = pagination(data, page);
         for (let i in courses) {
-          courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+          if (courses[i].imageUrl) {
+            courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+          }
+          courses[i].rating = !courses[i].rating ? "0" : courses[i].rating;
         }
+
         res.status(200).json({
           error: false,
           courses,

@@ -7,14 +7,15 @@ module.exports = class CourseService {
       keyword !== undefined ? `and c.name like "%${keyword}%"` : "";
     let ratingQuery = rating !== undefined ? ` rating >= ${rating} ` : "";
     let categoryQuery =
-      categoryId !== undefined ? ` categoryId like "%${categoryId}%"` : "";
+      categoryId !== undefined ? ` categoryId = ${categoryId}` : "";
+
     let and = rating !== undefined && categoryId !== undefined ? ` and ` : " ";
     let having =
       rating !== undefined || categoryId !== undefined ? `having ` : " ";
     let query = `select c.id as courseId, c.name, c.description, c.categoryId, ca.name as categoryName,
-        c.imageUrl,
         c.instructorId, concat(u.firstName," ", u.lastName) as instructorName,
         u.email as instructorEmail, round(avg(uc.rating),1) as rating,
+        c.imageUrl,
         count(uc.id) as register
         from courses c
         JOIN categories ca on ca.id = c.categoryId 

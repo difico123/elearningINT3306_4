@@ -12,10 +12,10 @@ function CourseEnroll() {
         userCourseService
           .enrollCourse(id)
           .then((response) => {
-            alert(response);
+            console.log(response);
           })
           .catch((err) => {
-            alert(err);
+            alert(err.response.data.msg);
           });
       }}
     >
