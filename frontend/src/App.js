@@ -9,12 +9,12 @@ import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import Categories from "./components/course/Category";
+import Homepage from "./components/course/Homepage";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course";
-import Course from "./components/course/Course";
 import InstructorRouter from "./routes/Instructor";
+import DummyCourse from "./components/course/DummyCourse";
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -62,8 +62,8 @@ function App() {
           <Header user={user} />
 
           <Routes>
-            <Route exact path="/" element={<Categories />} />
-            <Route exact path="/category/:id" element={<Course />} />
+            <Route exact path="/" element={<Homepage />} />
+            <Route exact path="/category/:id" element={<DummyCourse />} />
             <Route path="/category/:id/*" element={<CourseRouter />} />
 
             {!loading && (

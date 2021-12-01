@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useParams,Navigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CourseService from "../../../service/courseService";
 
@@ -15,19 +15,21 @@ function InstructorCourses() {
       imageUrl: "",
     },
   ]);
-  const [change, setChange] = useState(false);
-  
+
+  const [change, setChange] = useState(true);
+
   useEffect(() => {
     CourseService.getInstructorCourses().then((response) => {
       setCourses(response.courses);
+      setChange(!change);
     });
-
-  },[change]);
+  });
 
   const suspendCourse = (id) => (
     <SuspendButton
       onClick={() => {
         CourseService.suspendCourse(id).then((response) => {
+          console.log(response);
           setChange(!change);
         });
       }}
@@ -49,10 +51,10 @@ function InstructorCourses() {
     </ActivateButton>
   );
 
-  const content = getCourses.map((course ,index) => (
-    <Wrap key={index}>
+  const content = getCourses.map((course) => (
+    <Wrap>
       {course.verified ? suspendCourse(course.id) : activateCourse(course.id)}
-      <Link to={`/instructorcourses/edit/${course.id}`}>
+      {/* <Link to={`/category/${id}/course/${course.courseId}`}> */}
       <CourseImage alt="" src={course.imageUrl}></CourseImage>
       <CourseTitle>{course.name}</CourseTitle>
       <CourseDescription>{course.description}</CourseDescription>
@@ -62,11 +64,11 @@ function InstructorCourses() {
           Đánh giá: {course.rating ? course.rating : 0}
         </CourseRating>
       </CourseInfo>
-      </Link>
+      {/* </Link> */}
     </Wrap>
   ));
 
-  const CreateCourse = <Link to={`/instructorcourses/create`}><CreateButton>Tạo mới khóa học</CreateButton></Link>;
+  const CreateCourse = <CreateButton>Tạo mới khóa học</CreateButton>;
 
   return (
     <React.Fragment>
@@ -89,7 +91,6 @@ const Container = styled.div`
   flex-direction: column;
   gap: 30px;
   align-items: center;
-  margin-bottom: 5rem;
 `;
 
 const Content = styled.div`
@@ -173,8 +174,8 @@ const CreateButton = styled.button`
   padding: 5px 20px;
   cursor: pointer;
   font-size: 15px;
-  width: clamp(10rem,12rem,12rem);;
-  height: clamp(2rem,3rem,3rem);
+  width: 10vw;
+  height: 5vh;
   transition: 0.3s ease 0s;
   &:hover {
     border: transparent;
