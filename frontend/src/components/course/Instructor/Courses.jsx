@@ -16,9 +16,12 @@ function InstructorCourses() {
     },
   ]);
 
+  const [change, setChange] = useState(true);
+
   useEffect(() => {
     CourseService.getInstructorCourses().then((response) => {
       setCourses(response.courses);
+      setChange(!change);
     });
   });
 
@@ -27,6 +30,7 @@ function InstructorCourses() {
       onClick={() => {
         CourseService.suspendCourse(id).then((response) => {
           console.log(response);
+          setChange(!change);
         });
       }}
     >
@@ -39,6 +43,7 @@ function InstructorCourses() {
       onClick={() => {
         CourseService.activateCourse(id).then((response) => {
           console.log(response);
+          setChange(!change);
         });
       }}
     >

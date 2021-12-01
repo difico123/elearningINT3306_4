@@ -1,7 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import userCourseService from "../../../service/userCourseService";
+import { useParams } from "react-router";
 
 function CourseEnroll() {
+  const { id } = useParams();
+
+  const enroll = (id) => (
+    <EnrollButton
+      onClick={() => {
+        userCourseService
+          .enrollCourse(id)
+          .then((response) => {
+            alert(response);
+          })
+          .catch((err) => {
+            alert(err);
+          });
+      }}
+    >
+      Tham gia
+    </EnrollButton>
+  );
+
   return (
     <Container>
       <CourseInfos>
@@ -24,7 +45,7 @@ function CourseEnroll() {
         </InfoWrap>
         <EnrollSection>
           <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
-          <EnrollButton>Tham gia</EnrollButton>
+          {enroll(id)}
         </EnrollSection>
       </CourseInfos>
       <Title>Nội dung khóa học</Title>
@@ -193,7 +214,7 @@ const BackgroundImage = styled.img`
   width: 100%;
 `;
 
-const EnrollButton = styled.div`
+const EnrollButton = styled.button`
   text-align: center;
   cursor: pointer;
   color: white;

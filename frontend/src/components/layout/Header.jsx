@@ -112,14 +112,12 @@ function Header({ user }) {
       </div>
     </Wrap>
   );
-  console.log(user);
 
   const userRole = () => {
     if (user.role === 1) return showInstructorCourses;
     else if (user.role === 0) return showUserCourses;
     else return "";
   };
-  console.log(user.role);
 
   return (
     <Nav>
