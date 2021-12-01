@@ -5,5 +5,8 @@ const apiEndpoint = "/api/category";
 function getAll() {
   return http.get(apiEndpoint + "/get");
 }
+function getAllName() {
+  return http.get(apiEndpoint + "/getName");
+}
 
-export default { getAll };
+export default { getAll,getAllName };

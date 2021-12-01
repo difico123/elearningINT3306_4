@@ -91,17 +91,19 @@ module.exports = class ApiCourse {
         let rating = parseInt(req.params.rating);
         let courseId = parseInt(req.params.courseId);
         let userId = req.user.id;
-
+        
         if (rating < 1 || rating > 5) {
             return res.status(400).json({
                 error: true,
                 msg: 'Bạn phải đánh giá khoá học từ 1 - 5',
             });
         }
+     
         try {
             let userCourse = await UserCourse.findOne({
-                where: { id: courseId, userId },
+                where: { courseId: courseId, userId },
             });
+           
             if (userCourse.rating == rating) {
                 return res.status(400).json({
                     error: true,
@@ -109,6 +111,7 @@ module.exports = class ApiCourse {
                 });
             } else {
                 userCourse.rating = `${rating}`;
+                
                 await userCourse.save();
                 return res.status(200).json({
                     error: false,

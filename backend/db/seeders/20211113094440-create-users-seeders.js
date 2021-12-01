@@ -34,7 +34,7 @@ module.exports = {
                     phoneNumber: 12345678,
                     address: 'Hoang Cuong Thanh Ba Phu Tho',
                     city: 'Phu Tho',
-                    role: 1,
+                    role: 0,
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
                 },
@@ -46,7 +46,7 @@ module.exports = {
                     phoneNumber: 12345678,
                     address: 'Hoang Cuong Thanh Ba Phu Tho',
                     city: 'Phu Tho',
-                    role: 0,
+                    role: 1,
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
                 },

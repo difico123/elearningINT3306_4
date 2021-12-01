@@ -1,4 +1,4 @@
-import { ProtectedRoute } from "./components/protected.route/ProtectedRoute";
+import { ProtectedRoute,ProtectedInstructorRoute } from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Footer from "./components/layout/Footer";
 import React, { useState } from "react";
@@ -11,7 +11,7 @@ import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course"
 import Course from "./components/course/Course"
-
+import InstructorRouter from "./routes/Instructor"
 
 function App() {
   const [auth, setAuth] = useState(() => {
@@ -34,16 +34,22 @@ function App() {
     auth: false,
   });
 
+  const [loading, setLoading] = useState(true)
+
   React.useEffect(() => {
-    UserService.getUserInfo()
+    async function loadApi()  {
+      await UserService.getUserInfo()
       .then((data) => {
         let { info } = data;
         setUser({ ...info, auth: true });
-        setAuth(true);
+        setAuth(true);  
       })
       .catch((error) => {
         setAuth(false);
       });
+      setLoading(false)
+    } 
+    loadApi()
   }, []);
 
   return (
@@ -51,7 +57,6 @@ function App() {
       <div className="App">
         <Router> 
           <Header user={user}/>
-
 
           <Routes>
             <Route
@@ -74,6 +79,16 @@ function App() {
                   <CourseRouter />
               }
             />
+            
+            {!loading && 
+            <Route
+              path="/instructorcourses/*"
+              element={
+                <ProtectedInstructorRoute role={user.role}>
+                  <InstructorRouter />
+                </ProtectedInstructorRoute>
+              }
+            />}
 
             <Route
               path="/user/*"

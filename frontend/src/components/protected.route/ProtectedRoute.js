@@ -5,4 +5,13 @@ import UserService from '../../service/userService';
 const ProtectedRoute = ({auth, children }) => {
   return auth ? children : <Navigate to="/auth/login" />;
 };
-export { ProtectedRoute };
+
+const ProtectedInstructorRoute = ({ role, children }) => {
+  return role === 1 ? children : <Navigate to="/" />;
+};
+
+const ProtectedUserRoute = ({ role, children }) => {
+  return role === 0 ? children : <Navigate to="/auth/login" />;
+};
+
+export { ProtectedRoute, ProtectedInstructorRoute, ProtectedUserRoute };

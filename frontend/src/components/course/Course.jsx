@@ -1,18 +1,22 @@
 import dummydata from "../../dummydata/data2.json";
+import categoryDumy from "../../dummydata/category.ratio.json";
 import React from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CourseService from "../../service/courseService";
+import CategoryService from "../../service/categoryService";
 import { SearchIcon } from "../common/icons";
+import Loader from "../common/loader";
 
-function CloneCategoryCourses() {
+function Course() {
   const { id } = useParams();
   const [CategoryParam,setCategoryParam] = useState(id);
-  const [searchKeyword, setSearchKeyword] = useState("");
 
   const [category, setCategory] = useState(id);
   const [keyword, setKeyword] = useState("");
+  const [rating, setRating] = useState("");
+  const [isLoading, setLoading] = useState(true);
 
   const [getCourses, setCourses] = useState([
     {
@@ -26,23 +30,39 @@ function CloneCategoryCourses() {
       register: "",
     },
   ]);
+  const [getCategoryName, SetCategoryName] = useState([
+    {
+      id: "",
+      name: "",
+    },
+  ]);
 
   useEffect(() => {
-    CourseService.getAll(id).then((response) => {
-      setCourses(response.courses);
+    let couserData = CourseService.getAll(id)
+    .then((response) => {
+          setCourses(response.courses);
+          setLoading(false);
     });
+    let categoryData = CategoryService.getAllName()
+    .then((response) => {
+      SetCategoryName(response.categories)
+    })
+    Promise.all([couserData, categoryData])
   }, []);
 
-  const searchByKeyword = (e) => {
-    CourseService.getAll(category, e.target.value).then((data) => {
+  const searchByKeyword = async (e) => {
+    setRating("")
+    setLoading(true);
+    await CourseService.getAll(category, e.target.value).then((data) => {
       setCourses(data.courses);
       setKeyword(e.target.value);
+      setLoading(false);
     });
   };
 
-  const content = getCourses.map((course) => (
+  const content = getCourses.map((course,index) => (
     <Link to={`/category/${CategoryParam}/course/${course.courseId}`}>
-      <Wrap>
+      <Wrap key={index}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <CourseTitle>{course.name}</CourseTitle>
         <CourseTitle>{course.instructorName}</CourseTitle>
@@ -57,8 +77,67 @@ function CloneCategoryCourses() {
     </Link>
   ));
 
+  const loading = (
+    <div className="flex content-center justify-start ml-20 ">
+      <Loader />
+    </div>
+  );
+
+  const loaded = (
+    < >
+        <Courses>{content}</Courses>
+    </>
+  );
+
+  const categoryRatio = async(e) => {
+    setLoading(true);
+    setRating("")
+    await CourseService.getAll(e.target.value,keyword).then((data) => {
+      setCategory(e.target.value);
+      setCourses(data.courses);
+      setLoading(false);
+    });
+  }
+
+  const ratingRatio = async(e) => {
+    setLoading(true);
+    await CourseService.getAll(category,keyword,e.target.value).then((data) => {
+      setRating(e.target.value);
+      setCourses(data.courses);
+      setLoading(false);
+    });
+  }
+
+  const renderCategoryRatio = getCategoryName.map((element,index) => {
+    return (<>
+    <FilterWrap key={index}>
+      <input value={element.id} type="radio" checked={element.id === Number(category)} name="category" onChange={categoryRatio} />
+      <label for={element.name}>{element.name}</label>
+    </FilterWrap>
+    </>)
+  })
+
+  const [page,setPage] = useState(1);
+  const pageClick = (e) => {
+    if (page === 1 && e.target.value <= 3) {
+      setPage(1);
+      return;
+    };
+    if(e.target.value > (page + 2)) {
+      setPage(page + 1);
+    } else if (e.target.value < (page + 2)) {
+      setPage(page - 1);
+    }
+  }
   return (
     <Container>
+      <div>
+        <Btn value={page} onClick={pageClick}>{page}</Btn>
+        <Btn value={page+1} onClick={pageClick}>{page+1}</Btn>
+        <Btn value={page+2} onClick={pageClick}>{page+2}</Btn>
+        <Btn value={page+3} onClick={pageClick}>{page+3}</Btn>
+        <Btn value={page+4} onClick={pageClick}>{page+4}</Btn>
+      </div>
       <Title>Các khóa học nổi bật về Lập trình</Title>
       <SearchBar>
         <input
@@ -75,54 +154,49 @@ function CloneCategoryCourses() {
         <LeftNav>
           <Filter>
             <FilterTitle>Ngôn ngữ</FilterTitle>
-            <FilterWrap>
-              <input value="" type="radio" id="javascript" name="z" />
-              <label for="javascript">Javascript</label>
+            <FilterWrap className="mb-2" >
+              <input value="" type="radio" checked={!category} name="category" onChange={categoryRatio} />
+              <label for="tất cả">Tất cả</label>
             </FilterWrap>
-            <FilterWrap>
-              <input value="" type="radio" id="php" name="z" />
-              <label for="php">PHP</label>
-            </FilterWrap>
-            <FilterWrap>
-              <input value="" type="radio" id="cpp" name="z" />
-              <label for="cpp">C++</label>
-            </FilterWrap>
-            <FilterWrap>
-              <input value="" type="radio" id="java" name="z"></input>
-              <label for="java">Java</label>
-            </FilterWrap>
+            {renderCategoryRatio}
           </Filter>
+          
           <Filter>
             <FilterTitle>Đánh giá</FilterTitle>
             <FilterWrap>
-              <input value="" type="radio" id="fourhalf" name="x" />
+              <input value="" type="radio" name="rating" checked={!rating}  onChange={ratingRatio} />
+              <label for="other">Tất cả</label>
+            </FilterWrap>
+            <FilterWrap>
+              <input value="4.5" type="radio" name="rating" checked={rating === "4.5"} onChange={ratingRatio} />
               <label for="fourhalf">4.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="" type="radio" id="four" name="x" />
+              <input value="4" type="radio" name="rating" checked={rating === "4"} onChange={ratingRatio} />
               <label for="four">4 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="" type="radio" id="threehalf" name="x" />
+              <input value="3.5" type="radio" name="rating" checked={rating === "3.5"} onChange={ratingRatio} />
               <label for="threehalf">3.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="" type="radio" id="three" name="x"></input>
+              <input value="3" type="radio" name="rating" checked={rating === "3"} onChange={ratingRatio} />
               <label for="three">3 sao trở lên</label>
             </FilterWrap>
-            <FilterWrap>
-              <input value="" type="radio" id="three" name="x"></input>
-              <label for="other">Tất cả</label>
-            </FilterWrap>
+
           </Filter>
         </LeftNav>
-        <Courses>{content}</Courses>
+        {isLoading? loading : loaded}
       </Content>
       <Page></Page>
     </Container>
   );
 }
-
+const Btn = styled.button`
+  margin: 0.1rem;
+  padding:10px;
+  border: 1px solid black;
+`
 const Container = styled.div`
   min-height: 100vh;
   padding: 40px 3vw 50px;
@@ -147,17 +221,15 @@ const Content = styled.div`
 const LeftNav = styled.div`
   padding: 30px;
   display: flex;
-  height: 50vh;
   flex-direction: column;
   background-color: #f7f9fa;
   justify-content: space-between;
   border: 4px solid black;
+  height:fit-content;
+  gap: 2rem;
 `;
 
 const Filter = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
 `;
 
 const FilterTitle = styled.div`
@@ -179,9 +251,9 @@ const FilterWrap = styled.div`
 `;
 
 const Courses = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  gap: 50px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
 `;
 
 const Wrap = styled.div`
@@ -239,7 +311,7 @@ const CourseAttendance = styled.div`
 
 const Page = styled.div``;
 
-export default CloneCategoryCourses;
+export default Course;
 const SearchBar = styled.div`
   display: flex;
   align-items: center;

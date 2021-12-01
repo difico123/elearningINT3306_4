@@ -16,11 +16,20 @@ function Categories() {
       rating: "",
     },
   ]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    CategoryService.getAll().then((response) => {
-      setCategoryData(response.categories);
-    });
+
+    async function fetchMyAPI() {
+
+     await CategoryService.getAll().then((response) => {
+        setCategoryData(response.categories);
+        setLoading(false);
+      });
+
+    }
+
+    fetchMyAPI()
   }, []);
 
   const content = categoryData.map((category, index) => (
@@ -56,7 +65,7 @@ function Categories() {
   );
 
   return (
-    <Container>{!categoryData[0].categoryId ? loading : loaded}</Container>
+    <Container>{isLoading ? loading : loaded}</Container>
   );
 }
 
@@ -74,8 +83,8 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding-top: 20px;
-  display: flex;
-  flex-flow: row wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 50px;
   justify-content: space-around;
 `;

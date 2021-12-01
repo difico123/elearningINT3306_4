@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
-import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon, PasswordIcon, LogoutIcon,SettingsIcon, ContactsIcon} from '../common/icons'
+import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon,  LogoutIcon,SettingsIcon} from '../common/icons'
 
 function Header({user}) {
   const [info, setInfo] = useState({
@@ -20,9 +20,11 @@ function Header({user}) {
     lastUpdated: "",
     auth: false,
   });
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+ useEffect(() => {
     setInfo(user)
+    setLoading(false)
   }, [user]);
 
   let fakeData = {
@@ -51,6 +53,31 @@ function Header({user}) {
   const handleLogout = () => {
     AuthService.logout();
     window.location.href = '/auth/login';
+  };
+  const showInstructorCourses = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/instructorcourses`}>
+          <SigninButton>Khóa học của tôi</SigninButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
+
+  const showUserCourses = (
+    <React.Fragment>
+      <Buttons>
+        <Link to={`/usercourses`}>
+          <SigninButton>Khóa học của tôi</SigninButton>
+        </Link>
+      </Buttons>
+    </React.Fragment>
+  );
+  const userRole = () => {
+    if (user.role === 1) return showInstructorCourses;
+    else if (user.role === 0) return showUserCourses;
+    else if (user.role === 2) return showUserCourses;
+    else return "";
   };
 
   const person = (
@@ -96,6 +123,7 @@ function Header({user}) {
           <CustomSearch />
         </button>
       </SearchBar>
+      {loading ? "" : userRole()}
       {!user.uuid? loginIcon:person}
     </Nav>
   );

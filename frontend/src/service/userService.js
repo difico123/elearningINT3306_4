@@ -2,9 +2,9 @@ import http from "./httpService";
 
 const apiEndpoint ="/api/user";
 
-function getUserInfo() {
+async function getUserInfo() {
   const config = { headers: { 'Content-Type': 'application/json' } };
-  return http.get( apiEndpoint + '/info', config);
+  return await http.get( apiEndpoint + '/info', config);
 }
 function getCurrentUser() {
   return localStorage.getItem('uuid');

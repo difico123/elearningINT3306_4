@@ -20,4 +20,18 @@ module.exports = class CategoryService {
             console.log(error);
         }
     }
+    static async getCategoriesName() {
+        try {
+            const response = await sequelize.query(
+                `select id, name from categories;`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };
