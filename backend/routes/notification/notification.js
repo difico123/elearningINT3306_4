@@ -8,9 +8,10 @@ const auth = require('../../middleware/auth/auth');
 // @access  Private
 Router.get('/get', auth, ApiNotification.getNotification);
 
-// @route   PUT api/notification/setViewed/:notificationId
-// @desc    Set viewed user
-// @access  Public
-Router.put('/setViewed/:notificationId', ApiNotification.setViewed);
+// @route   GET api/notification/get
+// @desc    get notification by user
+// @access  Private
+Router.get('/getNotSeenMsgs', auth, ApiNotification.getNotSeenMsgs);
+
 
 module.exports = Router;

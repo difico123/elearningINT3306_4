@@ -7,17 +7,18 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ User }) {
+        static associate({ User,Course }) {
             // define association here
-            this.belongsTo(User, { foreignKey: 'receiverId' });
+            this.belongsTo(Course, { foreignKey: 'courseId' });
             this.belongsTo(User, { foreignKey: 'senderId' });
         }
     }
+    
     Notification.init(
         {
-            receiverId: {
+            courseId: {
                 type: DataTypes.INTEGER,
-                references: { model: 'users', key: 'id' },
+                references: { model: 'courses', key: 'id' },
                 allowNull: false,
             },
             senderId: {

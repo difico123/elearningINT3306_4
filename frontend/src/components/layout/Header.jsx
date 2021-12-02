@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
-import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon,  LogoutIcon,SettingsIcon} from '../common/icons'
+import NotificationService from "../../service/notificationService";
+import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon,  LogoutIcon,SettingsIcon, NotificationsIcon} from '../common/icons'
 
 function Header({user}) {
   const [info, setInfo] = useState({
@@ -20,11 +21,19 @@ function Header({user}) {
     lastUpdated: "",
     auth: false,
   });
+  const [notifications, setNotifications] = useState(null);
+
   const [loading, setLoading] = useState(true);
+  const [notificationNum,setNotificationNum] = useState(0);
 
  useEffect(() => {
-    setInfo(user)
-    setLoading(false)
+    (async () => {
+      setInfo(user)
+      await NotificationService.getNotSeenNotifications().then(data => {
+        setNotificationNum(data.num)
+      })
+      setLoading(false)
+    })()
   }, [user]);
 
   let fakeData = {
@@ -80,6 +89,7 @@ function Header({user}) {
     else return "";
   };
 
+
   const person = (
     <Wrap onClick={menuToggle} >
       <div className="profile" >
@@ -88,14 +98,14 @@ function Header({user}) {
       <div className="menu">
         <ul>
         <Link to={'/user/profile'} >
-          <li>
-              <AccountBoxIcon /> Profile
-          </li>
+            <li>
+                <AccountBoxIcon /> Profile
+            </li>
           </Link>
           <Link to={`#`}>
-          <li>
-              <SettingsIcon  /> Setting
-          </li>
+            <li>
+                <SettingsIcon  /> Setting
+            </li>
           </Link>
           <li>
             <button onClick={handleLogout}>
@@ -106,6 +116,43 @@ function Header({user}) {
       </div>
     </Wrap>
   );
+  const showNotification = () => {
+    NotificationService.getNotifications().then(data => {
+      setNotifications(data.notifications)
+    })
+  }
+  const renderNotify = (<BellWrap>
+      <div className="NotifiNum">{notificationNum}</div>
+      <NotificationIcon onClick={showNotification}/>
+      <Wrapper>
+      <h2>Thông báo</h2>
+        <NotifiItem>
+          <Title>Đăng ký khoá học</Title>
+          <Des><span>user1@gmail.com vừa đăng kí khoá học của bạn</span> - <span>Khóa học C++ nâng cao</span></Des>
+          <Time><p>07:05:23' 02/12/2021</p></Time>
+          <Btns><button className="bg-green-500 text-white">Chấp nhận</button><button className="bg-gray-200">Từ Chối</button></Btns>
+        </NotifiItem>
+        <NotifiItem>
+          <Title>Đăng ký khoá học</Title>
+          <Des><span>user1@gmail.com vừa đăng kí khoá học của bạn</span> - <span>Khóa học C++ nâng cao</span></Des>
+          <Time><p>07:05:23' 02/12/2021</p></Time>
+          <Btns><button className="bg-green-500 text-white">Chấp nhận</button><button className="bg-gray-200">Từ Chối</button></Btns>
+        </NotifiItem>
+        <NotifiItem>
+          <Title>Đăng ký khoá học</Title>
+          <Des><span>user1@gmail.com vừa đăng kí khoá học của bạn</span> - <span>Khóa học C++ nâng cao</span></Des>
+          <Time><p>07:05:23' 02/12/2021</p></Time>
+          <Btns><button className="bg-green-500 text-white">Chấp nhận</button><button className="bg-gray-200">Từ Chối</button></Btns>
+        </NotifiItem>
+        <NotifiItem>
+          <Title>Đăng ký khoá học</Title>
+          <Des><span>user1@gmail.com vừa đăng kí khoá học của bạn</span> - <span>Khóa học C++ nâng cao</span></Des>
+          <Time><p>07:05:23' 02/12/2021</p></Time>
+          <Btns><button className="bg-green-500 text-white">Chấp nhận</button><button className="bg-gray-200">Từ Chối</button></Btns>
+        </NotifiItem>
+      </Wrapper>
+  </BellWrap>)
+
   return (
     <Nav>
       <Logo>
@@ -114,7 +161,7 @@ function Header({user}) {
         </Link>
       </Logo>
       <Categories>
-        <CustomMenu></CustomMenu>
+        <CustomMenu ></CustomMenu>
         <p>Danh mục khóa học</p>
       </Categories>
       <SearchBar>
@@ -123,14 +170,76 @@ function Header({user}) {
           <CustomSearch />
         </button>
       </SearchBar>
+      {user.uuid && renderNotify}
       {loading ? "" : userRole()}
       {!user.uuid? loginIcon:person}
     </Nav>
   );
-  
 }
 
 export default Header;
+const Wrapper = styled.div`
+  height: 25rem;
+  width: 20rem;
+  position: absolute;
+  top: 100%;
+  right: -30%;
+  border: 1px solid black;
+  background:white;
+  padding: 1rem;
+  overflow-y: auto;
+  h2{
+    font-weight: 700;
+  }
+`
+const NotifiItem = styled.div`
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+`
+
+const Title = styled.div`
+  font-size : 1.1rem;
+  font-weight: 500;
+`
+const Des = styled.div`
+
+`
+const Time = styled.div`
+  text-align: end;
+  font-size:0.6rem;
+`
+const Btns = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 0.2rem 0;
+  button {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    padding: 0 0.5rem;
+    transition: 0.5s ease 0s;
+  }
+`
+const NotificationIcon = styled(NotificationsIcon)`
+  font-size:3rem!important;
+  cursor:pointer;
+`
+
+
+const BellWrap = styled.div`
+  position: relative;
+
+  .NotifiNum {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    text-align: center;
+    background: red;
+    color:white;
+    border-radius:50%;
+  }
+`
 
 const Nav = styled.div`
   z-index: 999;

@@ -1,7 +1,7 @@
 const { sequelize } = require('../db/models');
 const { QueryTypes } = require('sequelize');
 
-module.exports = class UserCourseService {
+module.exports = class UserService {
     static async getUserbyEmail(keyword, courseId) {
         try {
             const response = await sequelize.query(

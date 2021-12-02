@@ -31,10 +31,20 @@ function activateCourse(courseId) {
   return http.put(apiEndpoint + `/activate/${courseId}`);
 }
 
+function editCourse(courseId) {
+  return http.put(apiEndpoint + `/edit/${courseId}`);
+}
+
+function deleteCourse(courseId) {
+  return http.put(apiEndpoint + `/delete/${courseId}`);
+}
+
 export default {
   findUsers,
   getAll,
   getInstructorCourses,
   suspendCourse,
   activateCourse,
+  editCourse,
+  deleteCourse
 };

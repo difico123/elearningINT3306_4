@@ -14,7 +14,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-
+import NotificationsIcon from '@mui/icons-material/NotificationsNone';
 
 export {
     SearchIcon, 
@@ -32,5 +32,6 @@ export {
     HomeIcon,
     LocalPhoneIcon,
     FacebookIcon,
-    InstagramIcon
+    InstagramIcon,
+    NotificationsIcon
 }

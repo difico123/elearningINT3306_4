@@ -26,7 +26,7 @@ module.exports = class ApiCourse {
             }
 
             let notification = await Notification.findOne({
-                where: { receiverId: course.instructorId, senderId: studentId },
+                where: { courseId: courseId, senderId: studentId },
             });
             if (notification) {
                 return res.status(400).json({
@@ -35,7 +35,6 @@ module.exports = class ApiCourse {
                 });
             } else {
                 req.instructorId = course.instructorId;
-                console.log(req.url);
                 let { url } = req;
 
                 if (url.includes('/enroll/check/')) {
@@ -58,6 +57,7 @@ module.exports = class ApiCourse {
     // @access  private
     static async enroll(req, res) {
         let instructorId = req.instructorId;
+        let { courseId} = req.params;
         let studentId = req.user.id;
         try {
             let user = await User.findOne({ where: { id: studentId } });
@@ -66,7 +66,7 @@ module.exports = class ApiCourse {
             let details = `${user.email} vừa đăng kí khoá học của bạn`;
 
             let notification = {
-                receiverId: instructorId,
+                courseId: courseId,
                 senderId: studentId,
                 topic,
                 details,

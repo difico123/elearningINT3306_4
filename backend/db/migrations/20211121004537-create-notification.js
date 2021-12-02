@@ -8,9 +8,9 @@ module.exports = {
                 primaryKey: true,
                 type: DataTypes.INTEGER,
             },
-            receiverId: {
+            courseId: {
                 type: DataTypes.INTEGER,
-                references: { model: 'users', key: 'id' },
+                references: { model: 'courses', key: 'id' },
                 allowNull: false,
             },
             senderId: {

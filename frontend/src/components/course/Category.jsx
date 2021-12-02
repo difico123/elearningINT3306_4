@@ -21,14 +21,11 @@ function Categories() {
   useEffect(() => {
 
     async function fetchMyAPI() {
-
      await CategoryService.getAll().then((response) => {
         setCategoryData(response.categories);
         setLoading(false);
       });
-
     }
-
     fetchMyAPI()
   }, []);
 
