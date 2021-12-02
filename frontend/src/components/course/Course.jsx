@@ -11,7 +11,7 @@ import Loader from "../common/loader";
 
 function Course() {
   const { id } = useParams();
-  const [CategoryParam,setCategoryParam] = useState(id);
+  const [CategoryParam, setCategoryParam] = useState(id);
 
   const [category, setCategory] = useState(id);
   const [keyword, setKeyword] = useState("");
@@ -118,6 +118,7 @@ function Course() {
   })
 
   const [page,setPage] = useState(1);
+
   const pageClick = (e) => {
     if (page === 1 && e.target.value <= 3) {
       setPage(1);
@@ -129,6 +130,7 @@ function Course() {
       setPage(page - 1);
     }
   }
+
   return (
     <Container>
       <div>
