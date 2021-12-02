@@ -19,17 +19,14 @@ function Categories() {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-
     async function fetchMyAPI() {
-
-     await CategoryService.getAll().then((response) => {
+      await CategoryService.getAll().then((response) => {
         setCategoryData(response.categories);
         setLoading(false);
       });
-
     }
 
-    fetchMyAPI()
+    fetchMyAPI();
   }, []);
 
   const content = categoryData.map((category, index) => (
@@ -64,9 +61,7 @@ function Categories() {
     </>
   );
 
-  return (
-    <Container>{isLoading ? loading : loaded}</Container>
-  );
+  return <Container>{isLoading ? loading : loaded}</Container>;
 }
 
 export default Categories;
@@ -83,8 +78,8 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding-top: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-flow: row wrap;
   gap: 50px;
   justify-content: space-around;
 `;

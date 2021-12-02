@@ -38,20 +38,18 @@ function Course() {
   ]);
 
   useEffect(() => {
-    let couserData = CourseService.getAll(id)
-    .then((response) => {
-          setCourses(response.courses);
-          setLoading(false);
+    let couserData = CourseService.getAll(id).then((response) => {
+      setCourses(response.courses);
+      setLoading(false);
     });
-    let categoryData = CategoryService.getAllName()
-    .then((response) => {
-      SetCategoryName(response.categories)
-    })
-    Promise.all([couserData, categoryData])
+    let categoryData = CategoryService.getAllName().then((response) => {
+      SetCategoryName(response.categories);
+    });
+    Promise.all([couserData, categoryData]);
   }, []);
 
   const searchByKeyword = async (e) => {
-    setRating("")
+    setRating("");
     setLoading(true);
     await CourseService.getAll(category, e.target.value).then((data) => {
       setCourses(data.courses);
@@ -60,7 +58,7 @@ function Course() {
     });
   };
 
-  const content = getCourses.map((course,index) => (
+  const content = getCourses.map((course, index) => (
     <Link to={`/category/${CategoryParam}/course/${course.courseId}`}>
       <Wrap key={index}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
@@ -84,61 +82,81 @@ function Course() {
   );
 
   const loaded = (
-    < >
-        <Courses>{content}</Courses>
+    <>
+      <Courses>{content}</Courses>
     </>
   );
 
-  const categoryRatio = async(e) => {
+  const categoryRatio = async (e) => {
     setLoading(true);
-    setRating("")
-    await CourseService.getAll(e.target.value,keyword).then((data) => {
+    setRating("");
+    await CourseService.getAll(e.target.value, keyword).then((data) => {
       setCategory(e.target.value);
       setCourses(data.courses);
       setLoading(false);
     });
-  }
+  };
 
-  const ratingRatio = async(e) => {
+  const ratingRatio = async (e) => {
     setLoading(true);
-    await CourseService.getAll(category,keyword,e.target.value).then((data) => {
-      setRating(e.target.value);
-      setCourses(data.courses);
-      setLoading(false);
-    });
-  }
+    await CourseService.getAll(category, keyword, e.target.value).then(
+      (data) => {
+        setRating(e.target.value);
+        setCourses(data.courses);
+        setLoading(false);
+      }
+    );
+  };
 
-  const renderCategoryRatio = getCategoryName.map((element,index) => {
-    return (<>
-    <FilterWrap key={index}>
-      <input value={element.id} type="radio" checked={element.id === Number(category)} name="category" onChange={categoryRatio} />
-      <label for={element.name}>{element.name}</label>
-    </FilterWrap>
-    </>)
-  })
+  const renderCategoryRatio = getCategoryName.map((element, index) => {
+    return (
+      <>
+        <FilterWrap key={index}>
+          <input
+            value={element.id}
+            type="radio"
+            checked={element.id === Number(category)}
+            name="category"
+            onChange={categoryRatio}
+          />
+          <label for={element.name}>{element.name}</label>
+        </FilterWrap>
+      </>
+    );
+  });
 
-  const [page,setPage] = useState(1);
+  const [page, setPage] = useState(1);
 
   const pageClick = (e) => {
     if (page === 1 && e.target.value <= 3) {
       setPage(1);
       return;
-    };
-    if(e.target.value > (page + 2)) {
+    }
+    if (e.target.value > page + 2) {
       setPage(page + 1);
-    } else if (e.target.value < (page + 2)) {
+    } else if (e.target.value < page + 2) {
       setPage(page - 1);
     }
-  }
+  };
 
   return (
     <Container>
       <div>
-        <Btn value={page} onClick={pageClick}>{page}</Btn>
-        <Btn value={page+1} onClick={pageClick}>{page+1}</Btn>
-        <Btn value={page+2} onClick={pageClick}>{page+2}</Btn>
-        <Btn value={page+3} onClick={pageClick}>{page+3}</Btn>
-        <Btn value={page+4} onClick={pageClick}>{page+4}</Btn>
+        <Btn value={page} onClick={pageClick}>
+          {page}
+        </Btn>
+        <Btn value={page + 1} onClick={pageClick}>
+          {page + 1}
+        </Btn>
+        <Btn value={page + 2} onClick={pageClick}>
+          {page + 2}
+        </Btn>
+        <Btn value={page + 3} onClick={pageClick}>
+          {page + 3}
+        </Btn>
+        <Btn value={page + 4} onClick={pageClick}>
+          {page + 4}
+        </Btn>
       </div>
       <Title>Các khóa học nổi bật về Lập trình</Title>
       <SearchBar>
@@ -156,39 +174,74 @@ function Course() {
         <LeftNav>
           <Filter>
             <FilterTitle>Ngôn ngữ</FilterTitle>
-            <FilterWrap className="mb-2" >
-              <input value="" type="radio" checked={!category} name="category" onChange={categoryRatio} />
+            <FilterWrap className="mb-2">
+              <input
+                value=""
+                type="radio"
+                checked={!category}
+                name="category"
+                onChange={categoryRatio}
+              />
               <label for="tất cả">Tất cả</label>
             </FilterWrap>
             {renderCategoryRatio}
           </Filter>
-          
+
           <Filter>
             <FilterTitle>Đánh giá</FilterTitle>
             <FilterWrap>
-              <input value="" type="radio" name="rating" checked={!rating}  onChange={ratingRatio} />
+              <input
+                value=""
+                type="radio"
+                name="rating"
+                checked={!rating}
+                onChange={ratingRatio}
+              />
               <label for="other">Tất cả</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="4.5" type="radio" name="rating" checked={rating === "4.5"} onChange={ratingRatio} />
+              <input
+                value="4.5"
+                type="radio"
+                name="rating"
+                checked={rating === "4.5"}
+                onChange={ratingRatio}
+              />
               <label for="fourhalf">4.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="4" type="radio" name="rating" checked={rating === "4"} onChange={ratingRatio} />
+              <input
+                value="4"
+                type="radio"
+                name="rating"
+                checked={rating === "4"}
+                onChange={ratingRatio}
+              />
               <label for="four">4 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="3.5" type="radio" name="rating" checked={rating === "3.5"} onChange={ratingRatio} />
+              <input
+                value="3.5"
+                type="radio"
+                name="rating"
+                checked={rating === "3.5"}
+                onChange={ratingRatio}
+              />
               <label for="threehalf">3.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="3" type="radio" name="rating" checked={rating === "3"} onChange={ratingRatio} />
+              <input
+                value="3"
+                type="radio"
+                name="rating"
+                checked={rating === "3"}
+                onChange={ratingRatio}
+              />
               <label for="three">3 sao trở lên</label>
             </FilterWrap>
-
           </Filter>
         </LeftNav>
-        {isLoading? loading : loaded}
+        {isLoading ? loading : loaded}
       </Content>
       <Page></Page>
     </Container>
@@ -196,9 +249,9 @@ function Course() {
 }
 const Btn = styled.button`
   margin: 0.1rem;
-  padding:10px;
+  padding: 10px;
   border: 1px solid black;
-`
+`;
 const Container = styled.div`
   min-height: 100vh;
   padding: 40px 3vw 50px;
@@ -227,12 +280,11 @@ const LeftNav = styled.div`
   background-color: #f7f9fa;
   justify-content: space-between;
   border: 4px solid black;
-  height:fit-content;
+  height: fit-content;
   gap: 2rem;
 `;
 
-const Filter = styled.div`
-`;
+const Filter = styled.div``;
 
 const FilterTitle = styled.div`
   font-size: 17px;
@@ -253,8 +305,8 @@ const FilterWrap = styled.div`
 `;
 
 const Courses = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-flow: row wrap;
   gap: 2rem;
 `;
 

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import CourseService from "../../../service/courseService";
 
 function InstructorCourses() {
+  const { id } = useParams();
   const [getCourses, setCourses] = useState([
     {
       id: "",
@@ -54,17 +55,17 @@ function InstructorCourses() {
   const content = getCourses.map((course) => (
     <Wrap>
       {course.verified ? suspendCourse(course.id) : activateCourse(course.id)}
-      {/* <Link to={`/category/${id}/course/${course.courseId}`}> */}
-      <CourseImage alt="" src={course.imageUrl}></CourseImage>
-      <CourseTitle>{course.name}</CourseTitle>
-      <CourseDescription>{course.description}</CourseDescription>
-      <CourseInfo>
-        <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
-        <CourseRating>
-          Đánh giá: {course.rating ? course.rating : 0}
-        </CourseRating>
-      </CourseInfo>
-      {/* </Link> */}
+      <Link to={`/category/${id}/course/${course.courseId}`}>
+        <CourseImage alt="" src={course.imageUrl}></CourseImage>
+        <CourseTitle>{course.name}</CourseTitle>
+        <CourseDescription>{course.description}</CourseDescription>
+        <CourseInfo>
+          <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
+          <CourseRating>
+            Đánh giá: {course.rating ? course.rating : 0}
+          </CourseRating>
+        </CourseInfo>
+      </Link>
     </Wrap>
   ));
 
@@ -89,8 +90,9 @@ const Container = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 50px;
   align-items: center;
+  padding: 0 10vw;
 `;
 
 const Content = styled.div`
@@ -100,8 +102,8 @@ const Content = styled.div`
 `;
 
 const Courses = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-flow: row wrap;
   gap: 50px;
 `;
 
@@ -132,13 +134,6 @@ const CourseTitle = styled.div`
   font-size: 16px;
   font-weight: 600;
   height: 5.7vh;
-`;
-
-const CourseInstructor = styled.div`
-  padding: 0 20px;
-  font-size: 16px;
-  font-weight: 600;
-  color: #5e5e5e;
 `;
 
 const CourseDescription = styled.div`
