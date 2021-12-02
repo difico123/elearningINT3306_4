@@ -7,11 +7,14 @@ http.setJwt(getJwt());
 async function login({ email, password }) {
   const config = { headers: { "Content-Type": "application/json" } };
 
-  const data = await http.post(apiEndpoint +'/login', {
-    email,
-    password,
-  },
-  config);
+  const data = await http.post(
+    apiEndpoint + "/login",
+    {
+      email,
+      password,
+    },
+    config
+  );
   localStorage.setItem("token", data.token);
   localStorage.setItem("uuid", data.user.uuid);
 

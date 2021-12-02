@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import auth from "../../service/authService";
 import AuthApi from "../../service/authUser";
-import {LockIcon, EmailIcon} from '../common/icons'
-
+import { LockIcon, EmailIcon } from "../common/icons";
 
 function LoginForm() {
   let Auth = React.useContext(AuthApi);
@@ -23,7 +22,7 @@ function LoginForm() {
       .login(user)
       .then((data) => {
         setIsError(data.error);
-        window.location = '/'
+        window.location = "/";
       })
       .catch((err) => {
         setIsError(err.response.data.error);
@@ -127,7 +126,6 @@ const Field = styled.div`
   min-width: 350px;
   height: 40px;
   display: flex;
-
   input {
     border: none;
     width: 85%;

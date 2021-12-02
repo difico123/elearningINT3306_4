@@ -1,4 +1,7 @@
-import { ProtectedRoute,ProtectedInstructorRoute } from "./components/protected.route/ProtectedRoute";
+import {
+  ProtectedRoute,
+  ProtectedInstructorRoute,
+} from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Footer from "./components/layout/Footer";
 import React, { useState } from "react";
@@ -6,16 +9,16 @@ import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
 import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
-import Categories from "./components/course/Category"
+import Categories from "./components/course/Category";
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
-import CourseRouter from "./routes/Course"
-import Course from "./components/course/Course"
-import InstructorRouter from "./routes/Instructor"
+import CourseRouter from "./routes/Course";
+import Course from "./components/course/Course";
+import InstructorRouter from "./routes/Instructor";
 
 function App() {
   const [auth, setAuth] = useState(() => {
-    let data = UserService.getCurrentUser()
+    let data = UserService.getCurrentUser();
     return !data ? false : true;
   });
 
@@ -34,77 +37,55 @@ function App() {
     auth: false,
   });
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
-    async function loadApi()  {
+    async function loadApi() {
       await UserService.getUserInfo()
-      .then((data) => {
-        let { info } = data;
-        setUser({ ...info, auth: true });
-        setAuth(true);  
-      })
-      .catch((error) => {
-        setAuth(false);
-      });
-      setLoading(false)
-    } 
-    loadApi()
+        .then((data) => {
+          let { info } = data;
+          setUser({ ...info, auth: true });
+          setAuth(true);
+        })
+        .catch((error) => {
+          setAuth(false);
+        });
+      setLoading(false);
+    }
+    loadApi();
   }, []);
 
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
-        <Router> 
-          <Header user={user}/>
+        <Router>
+          <Header user={user} />
 
           <Routes>
-            <Route
-              exact
-              path="/"
-              element={
-                  <Categories />
-              }
-            />
-            <Route
-              exact
-              path="/category/:id"
-              element={
-                <Course/>
-              }
-            />
-            <Route
-              path="/category/:id/*"
-              element={
-                  <CourseRouter />
-              }
-            />
-            
-            {!loading && 
-            <Route
-              path="/instructorcourses/*"
-              element={
-                <ProtectedInstructorRoute role={user.role}>
-                  <InstructorRouter />
-                </ProtectedInstructorRoute>
-              }
-            />}
+            <Route exact path="/" element={<Categories />} />
+            <Route exact path="/category/:id" element={<Course />} />
+            <Route path="/category/:id/*" element={<CourseRouter />} />
+
+            {!loading && (
+              <Route
+                path="/instructorcourses/*"
+                element={
+                  <ProtectedInstructorRoute role={user.role}>
+                    <InstructorRouter />
+                  </ProtectedInstructorRoute>
+                }
+              />
+            )}
 
             <Route
               path="/user/*"
               element={
                 <ProtectedRoute auth={auth}>
-                  <UserRouter user={user}/>
+                  <UserRouter user={user} />
                 </ProtectedRoute>
               }
             />
-            <Route
-              path="/auth/*"
-              element={
-                <AuthRouter/>
-              }
-            />
-
+            <Route path="/auth/*" element={<AuthRouter />} />
           </Routes>
           <Footer />
         </Router>
@@ -122,11 +103,8 @@ const Routing = ({ user }) => {
       {/* <Route path="/recover" element={<ForgotPassword />} />
       <Route path="/tmp" element={<CategoryContent />} />
       <Route path="/" element={<Homepage />} />
-
       <Route path="/user" element={<UserPage user={user} />}></Route>
-
       <Route path="/home" element={<Dashboard user={user} />} />
-
       <Route path="/course/:courseId" element={<FindUsers />} /> */}
     </Routes>
   );
@@ -136,8 +114,8 @@ const Dashboard = ({ user }) => {
   const [role, setRole] = useState(null);
 
   const handleLogout = () => {
-    AuthSerVice.logout()
-    window.location.href ='/login'
+    AuthSerVice.logout();
+    window.location.href = "/login";
   };
 
   // React.useEffect(() => {

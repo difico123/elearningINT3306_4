@@ -1,23 +1,18 @@
-const { sequelize } = require('../db/models');
-const { QueryTypes } = require('sequelize');
+const { sequelize } = require("../db/models");
+const { QueryTypes } = require("sequelize");
 
 module.exports = class CourseService {
-    static async getAll({ keyword, rating, categoryId }) {
-        let nameQuery =
-            keyword !== undefined ? `and c.name like "%${keyword}%"` : '';
-        let ratingQuery = rating !== undefined ? ` rating >= ${rating} ` : '';
-        let categoryQuery =
-            categoryId !== undefined
-                ? ` categoryId = ${categoryId}`
-                : '';
+  static async getAll({ keyword, rating, categoryId }) {
+    let nameQuery =
+      keyword !== undefined ? `and c.name like "%${keyword}%"` : "";
+    let ratingQuery = rating !== undefined ? ` rating >= ${rating} ` : "";
+    let categoryQuery =
+      categoryId !== undefined ? ` categoryId = ${categoryId}` : "";
 
-        let and =
-            rating !== undefined && categoryId !== undefined ? ` and ` : ' ';
-        let having =
-            rating !== undefined || categoryId !== undefined
-                ? `having `
-                : ' ';
-        let query = `select c.id as courseId, c.name, c.description, c.categoryId, ca.name as categoryName,
+    let and = rating !== undefined && categoryId !== undefined ? ` and ` : " ";
+    let having =
+      rating !== undefined || categoryId !== undefined ? `having ` : " ";
+    let query = `select c.id as courseId, c.name, c.description, c.categoryId, ca.name as categoryName,
         c.instructorId, concat(u.firstName," ", u.lastName) as instructorName,
         u.email as instructorEmail, round(avg(uc.rating),1) as rating,
         c.imageUrl,
@@ -30,16 +25,15 @@ module.exports = class CourseService {
         ${nameQuery} group by c.id
         ${having} ${ratingQuery} ${and} ${categoryQuery}`;
 
-        try {
-            const response = await sequelize.query(query, {
-                replacements: [],
-                type: QueryTypes.SELECT,
-            });
+    try {
+      const response = await sequelize.query(query, {
+        replacements: [],
+        type: QueryTypes.SELECT,
+      });
 
-            return response;
-        } catch (error) {
-            console.log(error);
-        }
+      return response;
+    } catch (error) {
+      console.log(error);
     }
-
+  }
 };

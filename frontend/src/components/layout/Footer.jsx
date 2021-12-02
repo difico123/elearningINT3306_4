@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {FacebookIcon, InstagramIcon} from '../common/icons'
+import { FacebookIcon, InstagramIcon } from "../common/icons";
 
 function Footer() {
   return (
@@ -102,7 +102,6 @@ const Wrap = styled.div`
     font-weight: 400;
     font-size: 16px;
   }
-
   display: flex;
   flex-direction: column;
   text-align: left;
