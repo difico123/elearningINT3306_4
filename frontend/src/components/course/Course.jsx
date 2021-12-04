@@ -3,7 +3,7 @@ import categoryDumy from "../../dummydata/category.ratio.json";
 import React from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import CourseService from "../../service/courseService";
 import CategoryService from "../../service/categoryService";
 import { SearchIcon, ArrowBackIosIcon, ArrowForwardIosIcon, StarIcon, PersonIcon } from "../common/icons";
@@ -11,14 +11,14 @@ import Loader from "../common/loader";
 
 function Course() {
   const { id } = useParams();
-  const [CategoryParam,setCategoryParam] = useState(id);
+  const [CategoryParam, setCategoryParam] = useState(id);
 
   const [category, setCategory] = useState(id);
   const [keyword, setKeyword] = useState("");
   const [rating, setRating] = useState("");
   const [isLoading, setLoading] = useState(true);
-  const [page,setPage] = useState(1);
-  const [currentPage,setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [getCourses, setCourses] = useState([
     {
       imageUrl: "",
@@ -40,14 +40,14 @@ function Course() {
 
   useEffect(() => {
     let couserData = CourseService.getAll(id)
-    .then((response) => {
-          setCourses(response.courses);
-          setLoading(false);
-    });
+      .then((response) => {
+        setCourses(response.courses);
+        setLoading(false);
+      });
     let categoryData = CategoryService.getAllName()
-    .then((response) => {
-      SetCategoryName(response.categories)
-    })
+      .then((response) => {
+        SetCategoryName(response.categories)
+      })
     Promise.all([couserData, categoryData])
   }, []);
 
@@ -61,7 +61,7 @@ function Course() {
     });
   };
 
-  const content = getCourses.map((course,index) => (
+  const content = getCourses.map((course, index) => (
     <Link to={`/category/${CategoryParam}/course/${course.courseId}`}>
       <Wrap key={index}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
@@ -69,9 +69,9 @@ function Course() {
         <CourseInstructor><span className="bg-blue-500 px-1 rounded-sm text-white">Giảng viên</span> {course.instructorName}</CourseInstructor>
         <CourseDescription>{course.description}</CourseDescription>
         <CourseInfo>
-          <CourseAttendance>Số học viên: {course.register}<PersonIcon/></CourseAttendance>
+          <CourseAttendance>Số học viên: {course.register}<PersonIcon /></CourseAttendance>
           <CourseRating>
-            Đánh giá: {course.rating ? course.rating : 0}<StarIcon className="text-yellow-400 pb-1"/>
+            Đánh giá: {course.rating ? course.rating : 0}<StarIcon className="text-yellow-400 pb-1" />
           </CourseRating>
         </CourseInfo>
       </Wrap>
@@ -84,47 +84,47 @@ function Course() {
     </WrapLoader>
   );
 
-  const loaded = (getCourses.length === 0? <div className="absolute top-1/3 left-1/2 w-48">Không có khoá học nào</div>:
+  const loaded = (getCourses.length === 0 ? <div className="absolute top-1/3 left-1/2 w-48">Không có khoá học nào</div> :
     < >
-        <Courses>{content}</Courses>
+      <Courses>{content}</Courses>
     </>
   );
 
-  const categoryRatio = async(e) => {
+  const categoryRatio = async (e) => {
     setCurrentPage(1);
     setLoading(true);
     setRating("")
-    await CourseService.getAll(e.target.value,keyword).then((data) => {
+    await CourseService.getAll(e.target.value, keyword).then((data) => {
       setCategory(e.target.value);
       setCourses(data.courses);
       setLoading(false);
     });
   }
 
-  const ratingRatio = async(e) => {
+  const ratingRatio = async (e) => {
     setCurrentPage(1);
     setLoading(true);
-    await CourseService.getAll(category,keyword,e.target.value).then((data) => {
+    await CourseService.getAll(category, keyword, e.target.value).then((data) => {
       setRating(e.target.value);
       setCourses(data.courses);
       setLoading(false);
     });
   }
 
-  const renderCategoryRatio = getCategoryName.map((element,index) => {
+  const renderCategoryRatio = getCategoryName.map((element, index) => {
     return (<>
-    <FilterWrap key={index}>
-      <input value={element.id} type="radio" checked={element.id === Number(category)} name="category" onChange={categoryRatio} />
-      <label for={element.name}>{element.name}</label>
-    </FilterWrap>
+      <FilterWrap key={index}>
+        <input value={element.id} type="radio" checked={element.id === Number(category)} name="category" onChange={categoryRatio} />
+        <label for={element.name}>{element.name}</label>
+      </FilterWrap>
     </>)
   })
 
-  const pageClick = async(e) => {
+  const pageClick = async (e) => {
     setLoading(true);
     let page = Number(e.target.value)
     setCurrentPage(page);
-    await CourseService.getAll(category,keyword,rating,page).then((data) => {
+    await CourseService.getAll(category, keyword, rating, page).then((data) => {
       setCourses(data.courses);
       setLoading(false);
     });
@@ -145,14 +145,14 @@ function Course() {
           </button>
         </SearchBar>
         <Pagination>
-            <ArrowBackIosIcon className="page" onClick={() => {if(page > 1){setPage(page - 1)}}}/>
-            <button className={currentPage === page? "bg-blue-300": "" } value={page} onClick={pageClick}>{page}</button>
-            <button className={currentPage === page+1? "bg-blue-300": ""} value={page+1} onClick={pageClick}>{page+1}</button>
-            <button className={currentPage === page+2? "bg-blue-300": ""} value={page+2} onClick={pageClick}>{page+2}</button>
-            <button className={currentPage === page+3? "bg-blue-300": ""} value={page+3} onClick={pageClick}>{page+3}</button>
-            <button className={currentPage === page+4? "bg-blue-300": ""} value={page+4} onClick={pageClick}>{page+4}</button>
-            <ArrowForwardIosIcon className="page" onClick={() => {setPage(page + 1);}}/>
-        </Pagination>  
+          <ArrowBackIosIcon className="page" onClick={() => { if (page > 1) { setPage(page - 1) } }} />
+          <button className={currentPage === page ? "bg-blue-300" : ""} value={page} onClick={pageClick}>{page}</button>
+          <button className={currentPage === page + 1 ? "bg-blue-300" : ""} value={page + 1} onClick={pageClick}>{page + 1}</button>
+          <button className={currentPage === page + 2 ? "bg-blue-300" : ""} value={page + 2} onClick={pageClick}>{page + 2}</button>
+          <button className={currentPage === page + 3 ? "bg-blue-300" : ""} value={page + 3} onClick={pageClick}>{page + 3}</button>
+          <button className={currentPage === page + 4 ? "bg-blue-300" : ""} value={page + 4} onClick={pageClick}>{page + 4}</button>
+          <ArrowForwardIosIcon className="page" onClick={() => { setPage(page + 1); }} />
+        </Pagination>
       </SP>
       <hr></hr>
       <Content>
@@ -165,11 +165,11 @@ function Course() {
             </FilterWrap>
             {renderCategoryRatio}
           </Filter>
-          
+
           <Filter>
             <FilterTitle>Đánh giá</FilterTitle>
             <FilterWrap>
-              <input value="" type="radio" name="rating" checked={!rating}  onChange={ratingRatio} />
+              <input value="" type="radio" name="rating" checked={!rating} onChange={ratingRatio} />
               <label for="other">Tất cả</label>
             </FilterWrap>
             <FilterWrap>
@@ -191,7 +191,7 @@ function Course() {
 
           </Filter>
         </LeftNav>
-        {isLoading? loading : loaded}
+        {isLoading ? loading : loaded}
       </Content>
       <Page></Page>
     </Container>

@@ -27,16 +27,17 @@ import Warning from '../../asset/warning.svg'
 import Error from '../../asset/error.svg'
 import Info from '../../asset/info.svg'
 import CourseImgIcon from '@mui/icons-material/ArtTrack';
+import CheckIcon from '@mui/icons-material/Check';
 
 export {
-    SearchIcon, 
+    SearchIcon,
     MenuIcon,
     AccountCircleIcon,
-    ContactsIcon, 
-    AccountBoxIcon, 
-    SettingsIcon, 
-    LogoutIcon, 
-    PasswordIcon, 
+    ContactsIcon,
+    AccountBoxIcon,
+    SettingsIcon,
+    LogoutIcon,
+    PasswordIcon,
     PersonIcon,
     EmailIcon,
     LockIcon,
@@ -57,5 +58,6 @@ export {
     Warning,
     Error,
     Info,
-    CourseImgIcon
+    CourseImgIcon,
+    CheckIcon
 }

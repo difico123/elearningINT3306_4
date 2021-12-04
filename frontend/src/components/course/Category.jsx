@@ -4,7 +4,7 @@ import data from "../../dummydata/data.json";
 import { Link } from "react-router-dom";
 import CategoryService from "../../service/categoryService";
 import Loader from "../common/loader";
-import {StarIcon, PersonIcon,BooksIcon} from '../common/icons'
+import { StarIcon, PersonIcon, BooksIcon } from '../common/icons'
 
 function Categories() {
   const [categoryData, setCategoryData] = useState([
@@ -21,7 +21,7 @@ function Categories() {
 
   useEffect(() => {
     async function fetchMyAPI() {
-     await CategoryService.getAll().then((response) => {
+      await CategoryService.getAll().then((response) => {
         setCategoryData(response.categories);
         setLoading(false);
       });
@@ -32,15 +32,15 @@ function Categories() {
   const content = categoryData.map((category, index) => (
     <Link to={`/category/${category.categoryId}`}>
       <Wrap key={index}>
-        <CategoryRating><span>Đánh giá: {category.rating? category.rating: "0"}</span> <span><StarIcon/></span></CategoryRating>
+        <CategoryRating><span>Đánh giá: {category.rating ? category.rating : "0"}</span> <span><StarIcon /></span></CategoryRating>
         <CategoryImage alt="" src={category.imageUrl}></CategoryImage>
         <CategoryTitle>{category.categoryName}</CategoryTitle>
-        <CategoryDescription>{}</CategoryDescription>
+        <CategoryDescription>{ }</CategoryDescription>
         <CategoryInfos>
           <CategoryCourseTotal>
-          <span>Số khóa học: {category.courseNum? category.courseNum:"0"}</span><span><BooksIcon/></span>
+            <span>Số khóa học: {category.courseNum ? category.courseNum : "0"}</span><span><BooksIcon /></span>
           </CategoryCourseTotal>
-          <CategoryRegister><span>Số học viên: {category.register? category.register:"0"}</span> <span><PersonIcon/></span></CategoryRegister>
+          <CategoryRegister><span>Số học viên: {category.register ? category.register : "0"}</span> <span><PersonIcon /></span></CategoryRegister>
         </CategoryInfos>
         {/* <CategoryRating>
           Đánh giá: {category.rating ? category.rating : 0}

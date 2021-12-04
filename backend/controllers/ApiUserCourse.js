@@ -57,7 +57,7 @@ module.exports = class ApiCourse {
     // @access  private
     static async enroll(req, res) {
         let instructorId = req.instructorId;
-        let { courseId} = req.params;
+        let { courseId } = req.params;
         let studentId = req.user.id;
         try {
             let user = await User.findOne({ where: { id: studentId } });
@@ -91,19 +91,19 @@ module.exports = class ApiCourse {
         let rating = parseInt(req.params.rating);
         let courseId = parseInt(req.params.courseId);
         let userId = req.user.id;
-        
+
         if (rating < 1 || rating > 5) {
             return res.status(400).json({
                 error: true,
                 msg: 'Bạn phải đánh giá khoá học từ 1 - 5',
             });
         }
-     
+
         try {
             let userCourse = await UserCourse.findOne({
                 where: { courseId: courseId, userId },
             });
-           
+
             if (userCourse.rating == rating) {
                 return res.status(400).json({
                     error: true,
@@ -111,7 +111,7 @@ module.exports = class ApiCourse {
                 });
             } else {
                 userCourse.rating = `${rating}`;
-                
+
                 await userCourse.save();
                 return res.status(200).json({
                     error: false,
@@ -136,6 +136,11 @@ module.exports = class ApiCourse {
             let userCourse = await UserCourseService.getUserCourses(id);
 
             let courses = pagination(userCourse, page);
+            for (let i in courses) {
+                if (courses[i].imageUrl) {
+                    courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+                }
+            }
             res.status(200).json({
                 error: false,
                 courses: courses,

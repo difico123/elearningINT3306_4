@@ -6,4 +6,13 @@ function enrollCourse(courseId) {
   return http.put(apiEndpoint + `/enroll/${courseId}`);
 }
 
-export default { enrollCourse };
+function getAll(page = 1) {
+  console.log(page)
+  return http.get(apiEndpoint + `/all?page=${page}`);
+
+}
+
+export default {
+  enrollCourse,
+  getAll
+};
