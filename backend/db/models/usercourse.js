@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'courseId',
                 onDelete: 'cascade',
             });
-            this.belongsTo(User, { foreignKey: 'UserId', onDelete: 'cascade' });
+            this.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
         }
     }
     UserCourse.init(
@@ -28,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
             },
             rating: {
                 type: DataTypes.ENUM('1', '2', '3', '4', '5'),
-                allowNull: true,
+                defaultValue: '1',
+                allowNull: false,
             },
             isComplete: {
                 type: DataTypes.BOOLEAN,

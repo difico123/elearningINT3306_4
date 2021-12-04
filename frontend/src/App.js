@@ -1,30 +1,125 @@
-import React from "react";
-import "./App.css";
-import Header from "./components/Header";
-import Home from "./components/Home";
-import Footer from "./components/Footer";
-import Detail from "./components/Detail";
-import Login from "./components/auth/Login";
-import Signup from "./components/auth/Signup";
-import ForgotPassword from "./components/auth/ForgotPassword";
-
+import { ProtectedRoute,ProtectedInstructorRoute,ProtectedUserRoute } from "./components/protected.route/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Footer from "./components/layout/Footer";
+import React, { useState } from "react";
+import Header from "./components/layout/Header";
+import AuthContext from "./service/authUser";
+import AuthSerVice from "./service/authService";
+import UserService from "./service/userService";
+import Categories from "./components/course/Category"
+import UserRouter from "./routes/User";
+import AuthRouter from "./routes/Auth";
+import CourseRouter from "./routes/Course"
+import UserCourseRouter from "./routes/UserCourse"
+import Course from "./components/course/Course"
+import InstructorRouter from "./routes/Instructor"
 
 function App() {
+  const [auth, setAuth] = useState(() => {
+    let data = UserService.getCurrentUser()
+    return !data ? false : true;
+  });
+
+  const [user, setUser] = useState({
+    uuid: "",
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    email: "",
+    city: "",
+    address: "",
+    imageUrl: "",
+    role: "",
+    dateAdded: "",
+    lastUpdated: "",
+    auth: false,
+  });
+
+  const [loading, setLoading] = useState(true)
+
+  React.useEffect(() => {
+    async function loadApi()  {
+      await UserService.getUserInfo()
+      .then((data) => {
+        let { info } = data;
+        setUser({ ...info, auth: true });
+        setAuth(true);  
+      })
+      .catch((error) => {
+        setAuth(false);
+      });
+      setLoading(false)
+    } 
+    loadApi()
+  }, []);
+
   return (
-    <div className="App">
-      <Router>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/details" element={<Detail />} />
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/signup" element={<Signup />} />\
-          <Route path="/auth/recover" element={<ForgotPassword />} />
-        </Routes>
-        <Footer />
-      </Router>
-    </div>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <div className="App">
+        <Router> 
+          <Header user={user}/>
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                  <Categories />
+              }
+            />
+            <Route
+              exact
+              path="/category/:id"
+              element={
+                <Course/>
+              }
+            />
+            <Route
+              path="/category/:id/*"
+              element={
+                  <CourseRouter />
+              }
+            />
+            
+            {!loading && 
+            <Route
+              path="/instructorcourses/*"
+              element={
+                <ProtectedInstructorRoute role={user.role}>
+                  <InstructorRouter />
+                </ProtectedInstructorRoute>
+              }
+            />}
+
+            {!loading && 
+            <Route
+              path="/userCourses/*"
+              element={
+                <ProtectedUserRoute role={user.role}>
+                  <UserCourseRouter />
+                </ProtectedUserRoute>
+              }
+            />}
+
+            <Route
+              path="/user/*"
+              element={
+                <ProtectedRoute auth={auth}>
+                  <UserRouter user={user}/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/auth/*"
+              element={
+                <AuthRouter/>
+              }
+            />
+
+          </Routes>
+          <Footer />
+        </Router>
+      </div>
+    </AuthContext.Provider>
   );
 }
 

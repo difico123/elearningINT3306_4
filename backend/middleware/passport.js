@@ -16,20 +16,20 @@ module.exports = {
         }
     },
 
-    coursePassport: function (req, res, next) {
+    coursePassport: async (req, res, next) => {
         let courseId = req.params.courseId;
 
-        CourseService.getCourseById(courseId).then((courses) => {
-            if (courses.length === 0) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Không có khoá học',
-                });
-            } else {
-                req.courseId = courseId;
-                next();
-            }
-        });
+        let course = await Course.findOne({ where: { id: courseId } });
+
+        if (!course) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có khoá học',
+            });
+        } else {
+            req.courseId = courseId;
+            next();
+        }
     },
 
     topicPassport: function (req, res, next) {

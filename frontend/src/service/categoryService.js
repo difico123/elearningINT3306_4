@@ -1,12 +1,12 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
-const apiEndpoint = apiUrl + "/category";
+const apiEndpoint = "/api/category";
 
 function getAll() {
-    return http.get(apiEndpoint + "/get");
+  return http.get(apiEndpoint + "/get");
+}
+function getAllName() {
+  return http.get(apiEndpoint + "/getName");
 }
 
-export default {
-    getAll
-}
+export default { getAll,getAllName };

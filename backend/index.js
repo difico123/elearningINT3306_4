@@ -1,5 +1,4 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
 const { sequelize } = require('./db/models');
@@ -22,7 +21,6 @@ const corsOptions = {
 
 app.use(express.json());
 app.use(cors(corsOptions));
-app.use(cookieParser());
 
 app.use(
     express.urlencoded({
@@ -35,6 +33,7 @@ app.use('/api/user', require('./routes/user/user'));
 app.use('/api/category', require('./routes/course/category'));
 app.use('/api/course', require('./routes/course/course'));
 app.use('/api/usercourse', require('./routes/usercourse/usercourse'));
+app.use('/api/notification', require('./routes/notification/notification'));
 
 app.use((req, res) => {
     res.status(404).json({

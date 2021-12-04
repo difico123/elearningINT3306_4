@@ -5,6 +5,7 @@ const ApiUserCourse = require('../../controllers/ApiUserCourse');
 const {
     courseInstructorAuth,
 } = require('../../middleware/auth/courseInstructor.auth');
+const userCourseAuth = require('../../middleware/auth/userCourse.auth');
 const {
     checkCourseInput,
     validateInput,
@@ -17,7 +18,18 @@ router.put(
     '/enroll/:courseId',
     auth,
     courseInstructorAuth(false),
+    ApiUserCourse.checkEnrollCourse,
     ApiUserCourse.enroll,
+);
+
+// @route   GET api/userCourse/enroll/check/:courseId
+// @desc    check enroll a course by student
+// @access  private
+router.get(
+    '/enroll/check/:courseId',
+    auth,
+    courseInstructorAuth(false),
+    ApiUserCourse.checkEnrollCourse,
 );
 
 // @route   Get api/userCourse/all
@@ -28,11 +40,13 @@ router.get('/all', auth, ApiUserCourse.getAll);
 // @route   POST api/userCourse/rate/:courseId
 // @desc    rate the course
 // @access  private
-router.post(
-    '/rate/:courseId',
+router.put(
+    '/rate/:courseId/:rating',
     [checkCourseInput(['rating'])],
-    auth,
     validateInput,
+    auth,
+    courseInstructorAuth(false),
+    userCourseAuth,
     ApiUserCourse.rate,
 );
 

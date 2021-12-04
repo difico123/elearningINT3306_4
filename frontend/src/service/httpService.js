@@ -1,21 +1,27 @@
 import axios from "axios";
 
-axios.interceptors.response.use(null, (error) => {
-  const expectedError =
-    error.response &&
-    error.response.status >= 400 &&
-    error.response.status < 500;
+axios.defaults.withCredentials = true;
 
-  if (!expectedError) {
-    console.log(error);
+axios.interceptors.response.use(
+  (response) => {
+    if (response && response.data) {
+      return response.data;
+    }
+    return response;
+  },
+  (error) => {
+    // Handle errors
+    throw error;
   }
-
-  return Promise.reject(error);
-});
+);
+function setJwt(jwt) {
+  axios.defaults.headers.common["authorization"] = jwt;
+}
 
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setJwt,
 };

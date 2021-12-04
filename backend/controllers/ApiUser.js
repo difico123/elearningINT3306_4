@@ -16,7 +16,7 @@ module.exports = class ApiUser {
             if (hasUser) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Email này đã có người đăng kí',
+                    msg: ['Email này đã có người đăng kí'],
                 });
             }
 
@@ -37,7 +37,7 @@ module.exports = class ApiUser {
             await User.create(user);
             res.status(201).json({
                 error: false,
-                msg: 'Đăng kí tài khoản thành công',
+                msg: ['Đăng kí tài khoản thành công'],
                 user,
             });
         } catch (error) {
@@ -56,7 +56,7 @@ module.exports = class ApiUser {
             if (!user) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Tài khoàn này không tồn tại ',
+                    msg: ['Tài khoàn này không tồn tại'],
                 });
             }
 
@@ -65,7 +65,7 @@ module.exports = class ApiUser {
             if (!isMatch) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Mật khẩu của bạn không chính xác',
+                    msg: ['Mật khẩu của bạn không chính xác'],
                 });
             }
 
@@ -81,24 +81,15 @@ module.exports = class ApiUser {
                 { expiresIn: 36000 },
                 (err, token) => {
                     if (err) throw err;
-                    const options = {
-                        expires: new Date(
-                            Date.now() +
-                                process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000,
-                        ),
-                        httpOnly: true,
-                    };
+
                     if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }
-                    return res
-                        .status(200)
-                        .cookie('token', token, options)
-                        .json({
-                            error: false,
-                            token,
-                            user: user,
-                        });
+                    return res.status(200).json({
+                        error: false,
+                        token,
+                        user: user,
+                    });
                 },
             );
         } catch (error) {
@@ -130,7 +121,7 @@ module.exports = class ApiUser {
         if (!user) {
             return res.status(400).json({
                 error: true,
-                msg: 'Email của bạn không đúng',
+                msg: ['Email của bạn không đúng'],
             });
         }
 
@@ -190,21 +181,23 @@ module.exports = class ApiUser {
             if (!user) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'token của bạn không đúng',
+                    msg: ['token của bạn không đúng'],
                 });
             }
             let dat = new Date();
             if (user.resetPasswordExpire < dat) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'token đã hết hạn',
+                    msg: ['token đã hết hạn'],
                 });
             }
 
             if (newPassword !== confirmPassword) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Mật khẩu mới và mật khẩu xác nhận của bạn không khớp',
+                    msg: [
+                        'Mật khẩu mới và mật khẩu xác nhận của bạn không khớp',
+                    ],
                 });
             }
 
@@ -217,7 +210,7 @@ module.exports = class ApiUser {
 
             return res.status(200).json({
                 error: false,
-                msg: 'mật khẩu của bạn đã được đổi thành công',
+                msg: ['mật khẩu của bạn đã được đổi thành công'],
             });
         } catch (err) {
             console.log(err.message);
@@ -240,6 +233,7 @@ module.exports = class ApiUser {
             res.status(200).json({
                 error: false,
                 info: user,
+                url: req.header('x-forwarded-for'),
             });
         } catch (error) {
             console.log(error.message);
@@ -278,7 +272,7 @@ module.exports = class ApiUser {
             await user.save().then((info) => {
                 res.status(200).json({
                     error: false,
-                    msg: 'Đã sửa thông tin của bạn',
+                    msg: ['Đã sửa thông tin của bạn'],
                     info: info,
                 });
             });
@@ -299,7 +293,7 @@ module.exports = class ApiUser {
 
             res.status(200).json({
                 error: false,
-                msg: 'Bạn đã trở thành giảng viên',
+                msg: ['Bạn đã trở thành giảng viên'],
             });
         } catch (error) {
             console.log(error.message);
@@ -319,7 +313,7 @@ module.exports = class ApiUser {
             if (!isMatch) {
                 return res.status(404).json({
                     error: true,
-                    msg: 'Mật khẩu của bạn không chính xác',
+                    msg: ['Mật khẩu của bạn không chính xác'],
                 });
             } else {
                 req.user.password = password;
@@ -343,13 +337,13 @@ module.exports = class ApiUser {
             if (confirmPassword !== newPassword) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Mật khẩu xác nhận không khớp',
+                    msg: ['Mật khẩu xác nhận không khớp'],
                 });
             }
             if (newPassword === password) {
                 return res.status(400).json({
                     error: true,
-                    msg: 'Mật khẩu mới phải khác mật khẩu cũ',
+                    msg: ['Mật khẩu mới phải khác mật khẩu cũ'],
                 });
             }
 
@@ -361,7 +355,7 @@ module.exports = class ApiUser {
             await user.save().then(() => {
                 res.status(200).json({
                     error: false,
-                    msg: 'Mật khẩu của bạn đã được cập nhật',
+                    msg: ['Mật khẩu của bạn đã được cập nhật'],
                 });
             });
         } catch (error) {
