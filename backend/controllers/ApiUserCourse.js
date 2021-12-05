@@ -31,7 +31,7 @@ module.exports = class ApiCourse {
             if (notification) {
                 return res.status(400).json({
                     error: true,
-                    msg: ['Bạn đã đăng kí khoá học này rồi!'],
+                    msg: ['Bạn đã đăng kí, chờ giảng viên của bản chấp thuận!'],
                 });
             } else {
                 req.instructorId = course.instructorId;
@@ -45,6 +45,41 @@ module.exports = class ApiCourse {
                 } else {
                     next();
                 }
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+    // @route   GET api/userCourse/:courseId
+    // @desc    check enroll a course
+    // @access  private
+    static async checkCourse(req, res, next) {
+        let courseId = req.params.courseId;
+        let userId = req.user.id;
+        try {
+            let course = await Course.findOne({ where: { id: courseId } });
+
+            if (!course || !course.verified) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Bạn không thể đăng kí khoá học này'],
+                });
+            }
+
+            let userCourse = await UserCourse.findOne({
+                where: { courseId: courseId, userId: userId },
+            });
+            if (userCourse || course.instructorId == userId) {
+                return res.status(200).json({
+                    error: false,
+                    msg: ['oke!'],
+                });
+            } else {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Bạn phải đăng kí khoá học này trước đã'],
+                });
             }
         } catch (error) {
             console.log(error.message);
@@ -136,6 +171,13 @@ module.exports = class ApiCourse {
             let userCourse = await UserCourseService.getUserCourses(id);
 
             let courses = pagination(userCourse, page);
+
+            for (let i in courses) {
+                if(courses[i].imageUrl) {
+                    courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+                }
+            }
+
             res.status(200).json({
                 error: false,
                 courses: courses,

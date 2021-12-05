@@ -31,6 +31,11 @@ module.exports = {
                 defaultValue: false,
                 allowNull: false,
             },
+            isConfirmed: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+                allowNull: false,
+            },
             createdAt: {
                 type: 'TIMESTAMP',
                 defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),

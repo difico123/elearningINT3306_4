@@ -6,4 +6,12 @@ function enrollCourse(courseId) {
   return http.put(apiEndpoint + `/enroll/${courseId}`);
 }
 
-export default { enrollCourse };
+function checkEnrollCourse(courseId) {
+  return http.get(apiEndpoint + `/enroll/check/${courseId}`);
+}
+
+function checkCourse(courseId) {
+  return http.get(apiEndpoint + `/check/${courseId}`);
+}
+
+export default { enrollCourse, checkEnrollCourse,checkCourse };

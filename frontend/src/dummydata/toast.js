@@ -35,13 +35,7 @@ const showToast = (type, title, description) => {
         backgroundColor: '#f0ad4e',
         icon: Warning
       }
-      default: return {
-        id,
-        title: title,
-        description: description,
-        backgroundColor: '#5cb85c',
-        icon: Check
-      }
+      default: return {}
   }
 }
 

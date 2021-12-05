@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate({ User,Course }) {
             // define association here
-            this.belongsTo(Course, { foreignKey: 'courseId' });
-            this.belongsTo(User, { foreignKey: 'senderId' });
+            this.belongsTo(Course, { foreignKey: 'courseId', onDelete: 'cascade' });
+            this.belongsTo(User, { foreignKey: 'senderId', onDelete: 'cascade' });
         }
     }
     
@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             viewed: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+                allowNull: false,
+            },
+            isConfirmed: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false,
                 allowNull: false,

@@ -1,11 +1,50 @@
-import React from "react";
+import React,{useRef, useState} from "react";
 import styled from "styled-components";
+import userCourseService from "../../service/userCourseService";
+import {ArrowBackIosIcon} from '../common/icons'
+import { useParams, Link } from "react-router-dom";
+import Toast from '../common/toast'
+import showToast from '../../dummydata/toast'
 
-function CourseEnroll() {
+function CourseEnroll({checkEnroll}) {
+  const { id } = useParams();
+  const [styleEnrollBtn, setStyleEnrollBtn] = useState(() => checkEnroll? "bg-green-600 hover:bg-green-500": "bg-gray-500 cursor-not-allowed")
+  const [enrolled, setEnrolled] = useState(checkEnroll);
+  const notification = useRef([])
+
+  const [msg, setMsg] = useState(() => 
+    !enrolled? "Chờ giảng viên của bạn chấp nhận...": "Tham gia"
+  )
+  const enroll = (id) => (
+    <>
+      <EnrollButton className={styleEnrollBtn} 
+        type="submit" 
+        onClick={() => {
+          userCourseService
+            .enrollCourse(id)
+            .then((response) => {
+              notification.current = [showToast("success","Thông báo",response.msg)]
+              setStyleEnrollBtn('bg-gray-400 cursor-not-allowed')
+              setEnrolled(true)
+              setMsg('Chờ giảng viên của bạn chấp nhận...')
+            })
+            .catch((err) => {
+              notification.current = [showToast("danger","Thông báo",err.response.data.msg)]
+            });
+
+        }}
+        disabled={!enrolled}
+        value={msg}
+      />
+        <Toast toastList={notification.current} />
+    </>
+  );
+
   return (
     <Container>
       <CourseInfos>
         <InfoWrap>
+          <Back><Link to="/category/3"><ArrowBackIosIcon/> Trở về</Link></Back>
           <Breadcrumb>abc - def - ghi</Breadcrumb>
           <CourseTitle>
             Khóa học gì gì gì gì đấy rất rất rất căn bản
@@ -24,7 +63,7 @@ function CourseEnroll() {
         </InfoWrap>
         <EnrollSection>
           <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
-          <EnrollButton>Tham gia</EnrollButton>
+          {enroll(id)}
         </EnrollSection>
       </CourseInfos>
       <Title>Nội dung khóa học</Title>
@@ -115,12 +154,20 @@ function CourseEnroll() {
     </Container>
   );
 }
+const Back = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 5rem;
+  color:white!important;
+  cursor: pointer;
+`
 
 const Container = styled.div`
   min-height: calc(100vh - 435px);
   display: flex;
   flex-flow: column nowrap;
   padding: 0;
+  position: relative;
 `;
 const CourseInfos = styled.div`
   background-color: #1c1d1f;
@@ -193,19 +240,18 @@ const BackgroundImage = styled.img`
   width: 100%;
 `;
 
-const EnrollButton = styled.div`
+const EnrollButton = styled.input`
   text-align: center;
-  cursor: pointer;
   color: white;
   font-weight: 600;
   padding: 12px 0;
   font-size: 15px;
   height: 50px;
   transition: 0.5s ease 0s;
-  background-color: #b266ff;
-  &:hover {
-    background-color: #a435f0;
-  }
+  // background-color: #b266ff;
+  // &:hover {
+  //   background-color: #a435f0;
+  // }
 `;
 
 const Body = styled.div`

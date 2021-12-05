@@ -14,7 +14,6 @@ async function login({ email, password }) {
   config);
   localStorage.setItem("token", data.token);
   localStorage.setItem("uuid", data.user.uuid);
-
   return data;
 }
 

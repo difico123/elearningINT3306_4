@@ -1,11 +1,13 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
 import NotificationService from "../../service/notificationService";
 import CourseService from "../../service/courseService";
-import {SearchIcon,MenuIcon,AccountCircleIcon,AccountBoxIcon,  LogoutIcon,SettingsIcon, NotificationsIcon} from '../common/icons'
+import {SearchIcon,MenuIcon, AccountCircleIcon, AccountBoxIcon,  LogoutIcon,SettingsIcon, NotificationsIcon} from '../common/icons'
+import Toast from '../common/toast'
+import showToast from '../../dummydata/toast'
 
 function Header({user}) {
   const [info, setInfo] = useState({
@@ -23,10 +25,10 @@ function Header({user}) {
     auth: false,
   });
   const [notifications, setNotifications] = useState(null);
-
   const [loading, setLoading] = useState(true);
   const [notificationNum,setNotificationNum] = useState(0);
   const [toggleNotification, setToggleNotification] = useState(false);
+  const [notificationList,setNotificationList] = useState([])
 
  useEffect(() => {
     (async () => {
@@ -133,7 +135,6 @@ function Header({user}) {
     setToggleNotification(!toggleNotification);
   }
 
-
   const renderNotify = (<BellWrap >
       <div className="NotifiNum">{notificationNum}</div>
       <NotificationIcon onClick={showNotification}/>
@@ -145,11 +146,27 @@ function Header({user}) {
           <Title>{v.topic}</Title>
           <Des><span>{v.details}</span> - <span>{v.name}</span></Des>
           <Time><p>{v.sendAt}</p></Time>
-          <Btns><button value={v.courseId} className="bg-green-500 text-white" onClick={() => {
+          <Btns className={v.isConfirmed == 1 ? "hidden" : "flex"} ><button value={v.courseId} className="bg-green-500 text-white" onClick={(e) => {
             CourseService.inviteStudent(v.courseId,v.senderId).then(data => {
-              console.log(data);
-            }).catch(error => {console.log(error.response);})
-          }}>Chấp nhận</button><button className="bg-gray-200">Từ Chối</button></Btns>
+                NotificationService.setConfirm(v.id).then(() => {
+                  e.target.parentElement.style.display = 'none';
+                  setNotificationList([showToast("success","Thông báo",data.msg.toString())])
+                }).catch(error => {
+                  setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
+                })
+              }).catch(error => {
+                setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
+              })
+
+          }}>Chấp nhận</button>
+          <button className="bg-gray-200" onClick={(e) => {
+            NotificationService.delNotification(v.id).then((data) => {
+              e.target.parentElement.parentElement.style.display = 'none';
+              setNotificationList([showToast("success","Thông báo",data.msg.toString())])
+            }).catch(error => {
+              setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
+            })
+          }}>Từ Chối</button></Btns>
         </NotifiItem>
         )))}
     </NotificationItems>
@@ -176,6 +193,7 @@ function Header({user}) {
       {user.uuid && renderNotify}
       {loading ? "" : userRole()}
       {!user.uuid? loginIcon:person}
+      <Toast toastList={notificationList}/>
     </Nav>
   );
 }
@@ -229,7 +247,6 @@ const Time = styled.div`
   font-size:0.6rem;
 `
 const Btns = styled.div`
-  display: flex;
   justify-content: space-around;
   margin: 0.2rem 0;
   button {

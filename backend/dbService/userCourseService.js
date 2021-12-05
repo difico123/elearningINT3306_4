@@ -22,7 +22,7 @@ module.exports = class UserCourseService {
     static async getUserCourses(userId) {
         try {
             const response = await sequelize.query(
-                `SELECT c.id as courseId, c.name, uc.isComplete, uc.marks, c.instructorId , 
+                `SELECT c.id as courseId, c.name, uc.isComplete, uc.marks, c.instructorId , c.imageUrl,
                 concat(u.firstName," ", u.lastName) as fullName, u.email , 
                 DATE_FORMAT(uc.dateAdded, "ngày %d tháng %m năm %Y") as enrollDate 
                 FROM usercourses uc join courses c on c.id = uc.courseId 

@@ -6,10 +6,10 @@ module.exports = class NotificationService {
         try {
             const response = await sequelize.query(
                 `select n.id, n.courseId,n.senderId, n.topic,n.details,c.name,
-                n.viewed,
+                n.viewed, n.isConfirmed,
                 DATE_FORMAT(n.createdAt, "%h:%i:%s' %d/%m/%Y") as sendAt from notifications n
                 join courses c on c.id = n.courseId
-                where c.instructorId = ?;`,
+                where c.instructorId = ? order by n.createdAt desc`,
                 {
                     replacements: [instructorId],
                     type: QueryTypes.SELECT,

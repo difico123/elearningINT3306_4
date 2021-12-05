@@ -5,8 +5,17 @@ const apiEndpoint = "/api/notification";
 function getNotSeenNotifications() {
   return http.get(apiEndpoint + "/getNotSeenMsgs");
 }
+
 function getNotifications() {
   return http.get(apiEndpoint + "/get");
 }
 
-export default { getNotSeenNotifications, getNotifications };
+function delNotification(notificationId) {
+  return http.delete(apiEndpoint + `/delete/${notificationId}`);
+}
+
+function setConfirm(notificationId) {
+  return http.put(apiEndpoint + `/setConfirm/${notificationId}`);
+}
+
+export default { getNotSeenNotifications, getNotifications, delNotification, setConfirm };

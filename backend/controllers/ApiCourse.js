@@ -270,7 +270,7 @@ module.exports = class ApiCourse {
                         courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
                     }
                     courses[i].rating = !courses[i].rating ? "0" : courses[i].rating;
-                  }
+                }
 
                 res.status(200).json({
                     error: false,

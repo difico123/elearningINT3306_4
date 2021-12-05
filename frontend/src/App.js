@@ -4,14 +4,12 @@ import Footer from "./components/layout/Footer";
 import React, { useState } from "react";
 import Header from "./components/layout/Header";
 import AuthContext from "./service/authUser";
-import AuthSerVice from "./service/authService";
 import UserService from "./service/userService";
 import Categories from "./components/course/Category"
 import UserRouter from "./routes/User";
 import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course"
 import UserCourseRouter from "./routes/UserCourse"
-import Course from "./components/course/Course"
 import InstructorRouter from "./routes/Instructor"
 
 function App() {
@@ -45,7 +43,7 @@ function App() {
         setUser({ ...info, auth: true });
         setAuth(true);  
       })
-      .catch((error) => {
+      .catch(() => {
         setAuth(false);
       });
       setLoading(false)
@@ -64,13 +62,6 @@ function App() {
               path="/"
               element={
                   <Categories />
-              }
-            />
-            <Route
-              exact
-              path="/category/:id"
-              element={
-                <Course/>
               }
             />
             <Route
@@ -100,6 +91,7 @@ function App() {
               }
             />}
 
+            {!loading &&
             <Route
               path="/user/*"
               element={
@@ -107,7 +99,8 @@ function App() {
                   <UserRouter user={user}/>
                 </ProtectedRoute>
               }
-            />
+            />}
+            
             <Route
               path="/auth/*"
               element={

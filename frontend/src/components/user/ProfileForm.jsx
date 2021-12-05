@@ -1,8 +1,6 @@
 import React, { useState,useEffect } from "react";
 import styled from "styled-components";
-import { AccountBoxIcon, PersonIcon,EmailIcon,LocalPhoneIcon,LocationCityIcon,HomeIcon } from '../common/icons'
-
-import UserService from "../../service/userService";
+import { AccountBoxIcon, PersonIcon, EmailIcon, LocalPhoneIcon, LocationCityIcon, HomeIcon } from '../common/icons'
 
 function ProfileForm({user}) {
 

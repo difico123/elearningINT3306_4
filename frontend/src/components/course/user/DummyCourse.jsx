@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import CourseEnroll from "./CourseEnroll";
-import CourseContent from "./CourseContent";
+import CourseEnroll from "../CourseEnroll";
+import CourseContent from "../CourseContent";
 
 function DummyCourse() {
   const [checkEnroll, setCheckEnroll] = useState(false);

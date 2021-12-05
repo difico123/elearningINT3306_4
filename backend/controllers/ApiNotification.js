@@ -40,7 +40,7 @@ module.exports = class ApiNotification {
 
     // @route   GET api/notification/getNotSeenMsg
     // @desc    get msg not seen
-    // @access  Public
+    // @access  Private
      static async getNotSeenMsgs(req, res) {
          let {id} = req.user;
         try {
@@ -49,6 +49,48 @@ module.exports = class ApiNotification {
                 error: false,
                 num: notifications[0].NotSeen,
             });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   DELETE api/notification/delete/:notificationId
+    // @desc    Delete notification by user
+    // @access  Private
+     static async delNotification(req, res) {
+         let {notificationId} = req.params;
+        try {
+            let notifications = await Notification.findOne({ where: { id: notificationId } })
+            await notifications.destroy();
+            res.status(200).json({
+                error: false,
+                msg: ["Bạn đã xoá thông báo này"],
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+    // @route   PUT api/notification/setConfirm/:notificationId
+    // @desc    set confirm notification by user
+    // @access  Private
+     static async setConfirm(req, res) {
+         let {notificationId} = req.params;
+        try {
+            await Notification.findOne({ where: { id: notificationId } }).then(async(notification) =>{
+                if (notification) {
+                    await notification.update({
+                        isConfirmed: 1
+                    }).then(() => {
+                        res.status(200).json({
+                            error: false,
+                            msg: ["Bạn thông báo này đã xác nhận"],
+                        });
+                    })
+                }
+            })
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
