@@ -28,6 +28,7 @@ import Error from '../../asset/error.svg'
 import Info from '../../asset/info.svg'
 import CourseImgIcon from '@mui/icons-material/ArtTrack';
 import CheckIcon from '@mui/icons-material/Check';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export {
     SearchIcon,
@@ -59,5 +60,6 @@ export {
     Error,
     Info,
     CourseImgIcon,
-    CheckIcon
+    CheckIcon,
+    MoreVertIcon
 }

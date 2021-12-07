@@ -20,7 +20,7 @@ async function getAll(categoryId, keyword, rating, page) {
   return await http.get(apiEndpoint + `/showAll${query}`);
 }
 
-function getInstructorCourses(page=1) {
+function getInstructorCourses(page = 1) {
   return http.get(apiEndpoint + `/instructorCourses?page=${page}`);
 }
 
@@ -39,12 +39,15 @@ function editCourse(courseId) {
 function deleteCourse(courseId) {
   return http.put(apiEndpoint + `/delete/${courseId}`);
 }
-function inviteStudent(courseId,studentId) {
+function inviteStudent(courseId, studentId) {
   return http.post(apiEndpoint + `/${courseId}/invite/${studentId}`);
 }
 async function createCourse(categoryId, body) {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
   return await http.post(apiEndpoint + `/create/${categoryId}`, body, config);
+}
+function getCourseUser(courseId, page = 1) {
+  return http.get(apiEndpoint + `/getUsers/${courseId}?page=${page}`);
 }
 export default {
   findUsers,
@@ -55,5 +58,6 @@ export default {
   editCourse,
   deleteCourse,
   inviteStudent,
-  createCourse
+  createCourse,
+  getCourseUser
 };

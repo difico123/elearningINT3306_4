@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Link, useParams,Navigate } from "react-router-dom";
+import { Link, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CourseService from "../../../service/courseService";
-import {ArrowBackIosIcon,ArrowForwardIosIcon} from '../../common/icons'
+import { ArrowBackIosIcon, ArrowForwardIosIcon } from '../../common/icons'
 
 function InstructorCourses() {
   const [getCourses, setCourses] = useState([
@@ -19,15 +19,15 @@ function InstructorCourses() {
     },
   ]);
   const [change, setChange] = useState(false);
-  
-  const [page,setPage] = useState(1);
-  const [currentPage,setCurrentPage] = useState(1);
+
+  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     CourseService.getInstructorCourses().then((response) => {
       setCourses(response.courses);
     });
 
-  },[change]);
+  }, [change]);
 
   const suspendCourse = (id) => (
     <SuspendButton
@@ -54,27 +54,27 @@ function InstructorCourses() {
     </ActivateButton>
   );
 
-  const content = getCourses.map((course ,index) => (
+  const content = getCourses.map((course, index) => (
     <Wrap key={index}>
       {course.verified ? suspendCourse(course.id) : activateCourse(course.id)}
-      <Link to={`/instructorcourses/edit/${course.id}`}>
-      <CourseImage alt="" src={course.imageUrl}></CourseImage>
-      <WrapItems>
-        <CourseTitle>{course.name}</CourseTitle>
-        <CourseCategory>
-        <span className="bg-blue-400 rounded-full px-2 text-white">Loại:</span> {course.categoryName}
+      <Link to={`/instructorcourses/getuser/${course.id}`}>
+        <CourseImage alt="" src={course.imageUrl}></CourseImage>
+        <WrapItems>
+          <CourseTitle>{course.name}</CourseTitle>
+          <CourseCategory>
+            <span className="bg-blue-400 rounded-full px-2 text-white">Loại:</span> {course.categoryName}
           </CourseCategory>
-        <CourseDescription>{course.description}</CourseDescription>
-        <CourseInfo>
-          <CourseDateAdded>Thời gian tạo: {course.dateAdded}</CourseDateAdded>
-        </CourseInfo>
-      </WrapItems>
+          <CourseDescription>{course.description}</CourseDescription>
+          <CourseInfo>
+            <CourseDateAdded>Thời gian tạo: {course.dateAdded}</CourseDateAdded>
+          </CourseInfo>
+        </WrapItems>
       </Link>
     </Wrap>
   ));
 
   const CreateCourse = <Link to={`/instructorcourses/create`}><CreateButton>Tạo mới khóa học</CreateButton></Link>;
-  const pageClick = async(e) => {
+  const pageClick = async (e) => {
     let page = Number(e.target.value)
     setCurrentPage(page);
     CourseService.getInstructorCourses(page).then((response) => {
@@ -90,17 +90,17 @@ function InstructorCourses() {
 
       <Container>
         <Pagination>
-            <div></div>
-              <div>
-                <ArrowBackIosIcon className="page" onClick={() => {if(page > 1){setPage(page - 1)}}}/>
-                <button className={currentPage === page? "bg-blue-300": "" } value={page} onClick={pageClick}>{page}</button>
-                <button className={currentPage === page+1? "bg-blue-300": ""} value={page+1} onClick={pageClick}>{page+1}</button>
-                <button className={currentPage === page+2? "bg-blue-300": ""} value={page+2} onClick={pageClick}>{page+2}</button>
-                <button className={currentPage === page+3? "bg-blue-300": ""} value={page+3} onClick={pageClick}>{page+3}</button>
-                <button className={currentPage === page+4? "bg-blue-300": ""} value={page+4} onClick={pageClick}>{page+4}</button>
-                <ArrowForwardIosIcon className="page" onClick={() => {setPage(page + 1);}}/>
-              </div>
-        </Pagination> 
+          <div></div>
+          <div>
+            <ArrowBackIosIcon className="page" onClick={() => { if (page > 1) { setPage(page - 1) } }} />
+            <button className={currentPage === page ? "bg-blue-300" : ""} value={page} onClick={pageClick}>{page}</button>
+            <button className={currentPage === page + 1 ? "bg-blue-300" : ""} value={page + 1} onClick={pageClick}>{page + 1}</button>
+            <button className={currentPage === page + 2 ? "bg-blue-300" : ""} value={page + 2} onClick={pageClick}>{page + 2}</button>
+            <button className={currentPage === page + 3 ? "bg-blue-300" : ""} value={page + 3} onClick={pageClick}>{page + 3}</button>
+            <button className={currentPage === page + 4 ? "bg-blue-300" : ""} value={page + 4} onClick={pageClick}>{page + 4}</button>
+            <ArrowForwardIosIcon className="page" onClick={() => { setPage(page + 1); }} />
+          </div>
+        </Pagination>
         <Content>
           <Courses>{content}</Courses>
         </Content>

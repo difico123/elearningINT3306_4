@@ -6,7 +6,7 @@ module.exports = class UserCourseService {
         try {
             const response = await sequelize.query(
                 `select uc.userId, concat(u.firstName," ",u.lastName) as studentName , uc.rating, uc.marks,
-                u.email, u.phoneNumber from usercourses uc 
+                u.email, u.phoneNumber, u.address from usercourses uc 
                 join users u on u.id = uc.userId 
                 where uc.courseId = ?`,
                 {

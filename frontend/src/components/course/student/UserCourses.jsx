@@ -26,7 +26,6 @@ function UserCourses() {
   useEffect(() => {
     UserCourseService.getAll().then((response) => {
       setCourses(response.courses);
-      console.log(response);
     });
 
   }, [change]);
