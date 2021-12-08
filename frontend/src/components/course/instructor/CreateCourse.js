@@ -1,16 +1,16 @@
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import courseService from "../../../service/courseService";
 import categoryService from "../../../service/categoryService";
-import {CourseImgIcon} from '../../common/icons'
+import { CourseImgIcon } from "../../common/icons";
 import Loader from "../../common/loader";
-import Toast from '../../common/toast'
-import toastList from '../../../dummydata/toast'
+import Toast from "../../common/toast";
+import toastList from "../../../dummydata/toast";
 
 function CreateCourse() {
   const [image, setImage] = useState(null);
-  const isSuccess = useRef('');
-  const [msg,setMsg] = useState(null);
+  const isSuccess = useRef("");
+  const [msg, setMsg] = useState(null);
   const [content, setContent] = useState({
     name: "",
     description: "",
@@ -43,8 +43,10 @@ function CreateCourse() {
       .then((response) => {
         console.log(response.msg);
         isSuccess.current = true;
-        setMsg(response.msg)
-        setTimeout(() => {window.location.href = "./"}, 3000);
+        setMsg(response.msg);
+        setTimeout(() => {
+          window.location.href = "./";
+        }, 3000);
       })
       .catch((error) => {
         isSuccess.current = false;
@@ -59,8 +61,10 @@ function CreateCourse() {
     <img src={image} alt="cover"></img>
   );
 
-  const chooseCategory = category.map((v,index) => (
-    <option value={v.id} key={index}>{v.name}</option>
+  const chooseCategory = category.map((v, index) => (
+    <option value={v.id} key={index}>
+      {v.name}
+    </option>
   ));
 
   const selectCategory = (
@@ -69,7 +73,7 @@ function CreateCourse() {
         setSelectedCategory(e.target.value);
       }}
     >
-      <option disabled selected={true} defaultValue=''>
+      <option disabled selected={true} defaultValue="">
         Chọn danh mục
       </option>
       {category ? chooseCategory : ""}
@@ -86,16 +90,30 @@ function CreateCourse() {
     setContent({ ...content, [e.target.name]: e.target.value });
   };
 
-  const errors =(
+  const errors = (
     <div className="text-center">
       <label className="text-red-500">{msg}</label>
     </div>
   );
 
-  const success = <><div className="text-green-400 text-center">{msg}</div>{isSuccess.current? <Toast toastList={[toastList("success","Thông báo",msg)]}/>: ""}</>;
+  const success = (
+    <>
+      <div className="text-green-400 text-center">{msg}</div>
+      {isSuccess.current ? (
+        <Toast toastList={[toastList("success", "Thông báo", msg)]} />
+      ) : (
+        ""
+      )}
+    </>
+  );
   const renderMsg = !isSuccess.current ? errors : success;
-  const loadIcon = <div className="relative h-8 flex justify-center"> <Loader/> </div>
-  const render = loading? loadIcon:renderMsg;
+  const loadIcon = (
+    <div className="relative h-8 flex justify-center">
+      {" "}
+      <Loader />{" "}
+    </div>
+  );
+  const render = loading ? loadIcon : renderMsg;
   return (
     <Container>
       <Title>Tạo khóa học mới</Title>
@@ -133,7 +151,7 @@ function CreateCourse() {
           ></textarea>
         </Wrap>
         {render}
-        <Confirm type='submit' value="Tạo khóa học" onClick={create}/>
+        <Confirm type="submit" value="Tạo khóa học" onClick={create} />
       </CreateCourseForm>
     </Container>
   );
@@ -143,13 +161,13 @@ export default CreateCourse;
 
 const Container = styled.div`
   padding: 5vh 5vw;
-  min-height: calc(100vh - 425px);
+  min-height: 100vh;
 `;
 
 const CourseImage = styled(CourseImgIcon)`
-  font-size: 10rem!important;
+  font-size: 10rem !important;
   border: 1px solid green;
-`
+`;
 
 const Title = styled.div`
   font-size: 1.75rem;
@@ -164,7 +182,7 @@ const CreateCourseForm = styled.form`
   display: flex;
   flex-flow: column nowrap;
   gap: 20px;
-  background-color: rgba(255, 255, 255, 0.2)
+  background-color: rgba(255, 255, 255, 0.2);
 `;
 
 const CategoryWrap = styled.div`

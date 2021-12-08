@@ -3,22 +3,28 @@ import categoryDumy from "../../dummydata/category.ratio.json";
 import React from "react";
 import styled from "styled-components";
 import { Link, useParams } from "react-router-dom";
-import { useState, useEffect,useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import CourseService from "../../service/courseService";
 import CategoryService from "../../service/categoryService";
-import { SearchIcon, ArrowBackIosIcon, ArrowForwardIosIcon, StarIcon, PersonIcon } from "../common/icons";
+import {
+  SearchIcon,
+  ArrowBackIosIcon,
+  ArrowForwardIosIcon,
+  StarIcon,
+  PersonIcon,
+} from "../common/icons";
 import Loader from "../common/loader";
 
 function Course() {
   const { id } = useParams();
-  const [CategoryParam,setCategoryParam] = useState(id);
+  const [CategoryParam, setCategoryParam] = useState(id);
 
   const [category, setCategory] = useState(id);
   const [keyword, setKeyword] = useState("");
   const [rating, setRating] = useState("");
   const [isLoading, setLoading] = useState(true);
-  const [page,setPage] = useState(1);
-  const [currentPage,setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [getCourses, setCourses] = useState([
     {
       imageUrl: "",
@@ -39,20 +45,18 @@ function Course() {
   ]);
 
   useEffect(() => {
-    let couserData = CourseService.getAll(id)
-    .then((response) => {
-          setCourses(response.courses);
-          setLoading(false);
+    let couserData = CourseService.getAll(id).then((response) => {
+      setCourses(response.courses);
+      setLoading(false);
     });
-    let categoryData = CategoryService.getAllName()
-    .then((response) => {
-      SetCategoryName(response.categories)
-    })
-    Promise.all([couserData, categoryData])
+    let categoryData = CategoryService.getAllName().then((response) => {
+      SetCategoryName(response.categories);
+    });
+    Promise.all([couserData, categoryData]);
   }, []);
 
   const searchByKeyword = async (e) => {
-    setRating("")
+    setRating("");
     setLoading(true);
     await CourseService.getAll(category, e.target.value).then((data) => {
       setCourses(data.courses);
@@ -61,17 +65,26 @@ function Course() {
     });
   };
 
-  const content = getCourses.map((course,index) => (
+  const content = getCourses.map((course, index) => (
     <Link to={`/category/${CategoryParam}/course/${course.courseId}`}>
       <Wrap key={index}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <CourseTitle>{course.name}</CourseTitle>
-        <CourseInstructor><span className="bg-blue-500 px-1 rounded-sm text-white">Giảng viên</span> {course.instructorName}</CourseInstructor>
+        <CourseInstructor>
+          <span className="bg-blue-500 px-1 rounded-sm text-white">
+            Giảng viên
+          </span>{" "}
+          {course.instructorName}
+        </CourseInstructor>
         <CourseDescription>{course.description}</CourseDescription>
         <CourseInfo>
-          <CourseAttendance>Số học viên: {course.register}<PersonIcon/></CourseAttendance>
+          <CourseAttendance>
+            Số học viên: {course.register}
+            <PersonIcon />
+          </CourseAttendance>
           <CourseRating>
-            Đánh giá: {course.rating ? course.rating : 0}<StarIcon className="text-yellow-400 pb-1"/>
+            Đánh giá: {course.rating ? course.rating : 0}
+            <StarIcon className="text-yellow-400 pb-1" />
           </CourseRating>
         </CourseInfo>
       </Wrap>
@@ -84,51 +97,66 @@ function Course() {
     </WrapLoader>
   );
 
-  const loaded = (getCourses.length === 0? <div className="absolute top-1/3 left-1/2 w-48">Không có khoá học nào</div>:
-    < >
+  const loaded =
+    getCourses.length === 0 ? (
+      <div className="absolute top-1/3 left-1/2 w-48">
+        Không có khoá học nào
+      </div>
+    ) : (
+      <>
         <Courses>{content}</Courses>
-    </>
-  );
+      </>
+    );
 
-  const categoryRatio = async(e) => {
+  const categoryRatio = async (e) => {
     setCurrentPage(1);
     setLoading(true);
-    setRating("")
-    await CourseService.getAll(e.target.value,keyword).then((data) => {
+    setRating("");
+    await CourseService.getAll(e.target.value, keyword).then((data) => {
       setCategory(e.target.value);
       setCourses(data.courses);
       setLoading(false);
     });
-  }
+  };
 
-  const ratingRatio = async(e) => {
+  const ratingRatio = async (e) => {
     setCurrentPage(1);
     setLoading(true);
-    await CourseService.getAll(category,keyword,e.target.value).then((data) => {
-      setRating(e.target.value);
-      setCourses(data.courses);
-      setLoading(false);
-    });
-  }
+    await CourseService.getAll(category, keyword, e.target.value).then(
+      (data) => {
+        setRating(e.target.value);
+        setCourses(data.courses);
+        setLoading(false);
+      }
+    );
+  };
 
-  const renderCategoryRatio = getCategoryName.map((element,index) => {
-    return (<>
-    <FilterWrap key={index}>
-      <input value={element.id} type="radio" checked={element.id === Number(category)} name="category" onChange={categoryRatio} />
-      <label for={element.name}>{element.name}</label>
-    </FilterWrap>
-    </>)
-  })
+  const renderCategoryRatio = getCategoryName.map((element, index) => {
+    return (
+      <>
+        <FilterWrap key={index}>
+          <input
+            value={element.id}
+            type="radio"
+            checked={element.id === Number(category)}
+            name="category"
+            onChange={categoryRatio}
+          />
+          <label for={element.name}>{element.name}</label>
+        </FilterWrap>
+      </>
+    );
+  });
 
-  const pageClick = async(e) => {
+  const pageClick = async (e) => {
     setLoading(true);
-    let page = Number(e.target.value)
+    let page = Number(e.target.value);
     setCurrentPage(page);
-    await CourseService.getAll(category,keyword,rating,page).then((data) => {
+    await CourseService.getAll(category, keyword, rating, page).then((data) => {
       setCourses(data.courses);
       setLoading(false);
     });
-  }
+  };
 
   return (
     <Container>
@@ -145,74 +173,151 @@ function Course() {
           </button>
         </SearchBar>
         <Pagination>
-            <ArrowBackIosIcon className="page" onClick={() => {if(page > 1){setPage(page - 1)}}}/>
-            <button className={currentPage === page? "bg-blue-300": "" } value={page} onClick={pageClick}>{page}</button>
-            <button className={currentPage === page+1? "bg-blue-300": ""} value={page+1} onClick={pageClick}>{page+1}</button>
-            <button className={currentPage === page+2? "bg-blue-300": ""} value={page+2} onClick={pageClick}>{page+2}</button>
-            <button className={currentPage === page+3? "bg-blue-300": ""} value={page+3} onClick={pageClick}>{page+3}</button>
-            <button className={currentPage === page+4? "bg-blue-300": ""} value={page+4} onClick={pageClick}>{page+4}</button>
-            <ArrowForwardIosIcon className="page" onClick={() => {setPage(page + 1);}}/>
-        </Pagination>  
+          <ArrowBackIosIcon
+            className="page"
+            onClick={() => {
+              if (page > 1) {
+                setPage(page - 1);
+              }
+            }}
+          />
+          <button
+            className={currentPage === page ? "bg-blue-300" : ""}
+            value={page}
+            onClick={pageClick}
+          >
+            {page}
+          </button>
+          <button
+            className={currentPage === page + 1 ? "bg-blue-300" : ""}
+            value={page + 1}
+            onClick={pageClick}
+          >
+            {page + 1}
+          </button>
+          <button
+            className={currentPage === page + 2 ? "bg-blue-300" : ""}
+            value={page + 2}
+            onClick={pageClick}
+          >
+            {page + 2}
+          </button>
+          <button
+            className={currentPage === page + 3 ? "bg-blue-300" : ""}
+            value={page + 3}
+            onClick={pageClick}
+          >
+            {page + 3}
+          </button>
+          <button
+            className={currentPage === page + 4 ? "bg-blue-300" : ""}
+            value={page + 4}
+            onClick={pageClick}
+          >
+            {page + 4}
+          </button>
+          <ArrowForwardIosIcon
+            className="page"
+            onClick={() => {
+              setPage(page + 1);
+            }}
+          />
+        </Pagination>
       </SP>
       <hr></hr>
       <Content>
         <LeftNav>
           <Filter>
             <FilterTitle>Danh mục khoá học</FilterTitle>
-            <FilterWrap className="mb-2" >
-              <input value="" type="radio" checked={!category} name="category" onChange={categoryRatio} />
+            <FilterWrap className="mb-2">
+              <input
+                value=""
+                type="radio"
+                checked={!category}
+                name="category"
+                onChange={categoryRatio}
+              />
               <label for="tất cả">Tất cả</label>
             </FilterWrap>
             {renderCategoryRatio}
           </Filter>
-          
+
           <Filter>
             <FilterTitle>Đánh giá</FilterTitle>
             <FilterWrap>
-              <input value="" type="radio" name="rating" checked={!rating}  onChange={ratingRatio} />
+              <input
+                value=""
+                type="radio"
+                name="rating"
+                checked={!rating}
+                onChange={ratingRatio}
+              />
               <label for="other">Tất cả</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="4.5" type="radio" name="rating" checked={rating === "4.5"} onChange={ratingRatio} />
+              <input
+                value="4.5"
+                type="radio"
+                name="rating"
+                checked={rating === "4.5"}
+                onChange={ratingRatio}
+              />
               <label for="fourhalf">4.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="4" type="radio" name="rating" checked={rating === "4"} onChange={ratingRatio} />
+              <input
+                value="4"
+                type="radio"
+                name="rating"
+                checked={rating === "4"}
+                onChange={ratingRatio}
+              />
               <label for="four">4 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="3.5" type="radio" name="rating" checked={rating === "3.5"} onChange={ratingRatio} />
+              <input
+                value="3.5"
+                type="radio"
+                name="rating"
+                checked={rating === "3.5"}
+                onChange={ratingRatio}
+              />
               <label for="threehalf">3.5 sao trở lên</label>
             </FilterWrap>
             <FilterWrap>
-              <input value="3" type="radio" name="rating" checked={rating === "3"} onChange={ratingRatio} />
+              <input
+                value="3"
+                type="radio"
+                name="rating"
+                checked={rating === "3"}
+                onChange={ratingRatio}
+              />
               <label for="three">3 sao trở lên</label>
             </FilterWrap>
-
           </Filter>
         </LeftNav>
-        {isLoading? loading : loaded}
+        {isLoading ? loading : loaded}
       </Content>
       <Page></Page>
     </Container>
   );
 }
 const SP = styled.div`
-display: flex;
-justify-content: space-around;
-`
+  display: flex;
+  justify-content: space-around;
+`;
 
 const WrapLoader = styled.div`
   position: absolute;
   top: 40%;
   left: 52%;
-  transform: translate(-50%,-50%);
-`
+  transform: translate(-50%, -50%);
+`;
 const Pagination = styled.div`
-  margin-left:30vw;
-  display: flex;                  
-  flex-direction: row;            
-  flex-wrap: nowrap;              
+  margin-left: 30vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   position: relative;
   button {
     width: 40px;
@@ -223,16 +328,16 @@ const Pagination = styled.div`
     border-radius: 5px;
   }
   & button:hover {
-    background: #7FFFD4;
+    background: #7fffd4;
   }
   .page {
     margin-top: 0.9rem;
     cursor: pointer;
   }
   .page:active {
-    background-color:lightblue;
+    background-color: lightblue;
   }
-`
+`;
 
 const Container = styled.div`
   min-height: 100vh;
@@ -263,12 +368,11 @@ const LeftNav = styled.div`
   background-color: #f7f9fa;
   justify-content: space-between;
   border: 4px solid black;
-  height:fit-content;
+  height: fit-content;
   gap: 2rem;
 `;
 
-const Filter = styled.div`
-`;
+const Filter = styled.div``;
 
 const FilterTitle = styled.div`
   font-size: 17px;
@@ -367,12 +471,12 @@ const SearchBar = styled.div`
   padding: 8px 25px;
   cursor: text;
   font-weight: lighter;
+  background-color: white;
   input {
     padding-left: 10px;
     border: none;
     width: 90%;
     autocomplete: off;
-    background-image: none;
     font-size: 15px;
     font-weight: lighter;
   }

@@ -1,46 +1,54 @@
 import React from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { LockIcon, PersonIcon, EditIcon } from "../common/icons";
+import { GroupsIcon, EditIcon, BooksIcon, ErrorIcon } from "../../common/icons";
 
 function Sidebar() {
   return (
     <SideBar>
-      <NavLink to="/user/profile" activeClassName="active">
+      <NavLink to="./infos" activeClassName="active">
         <Wrap>
-          <PersonIcon />
-          <p>Thông tin cá nhân</p>
+          <BooksIcon />
+          <p>Thông tin khóa học</p>
         </Wrap>
       </NavLink>
-      <NavLink to="/user/editprofile" activeClassName="active">
+      <NavLink to="./edit" activeClassName="active">
         <Wrap>
           <EditIcon />
-          <p>Chỉnh sửa thông tin</p>
+          <p>Chỉnh sửa nội dung</p>
         </Wrap>
       </NavLink>
-      <NavLink to="/user/editpw" activeClassName="active">
+      <NavLink to="./students" activeClassName="active">
         <Wrap>
-          <LockIcon />
-          <p>Thay đổi mật khẩu</p>
+          <GroupsIcon />
+          <p>Danh sách học viên</p>
         </Wrap>
       </NavLink>
+
+      <DeleteButton>
+        <Wrap>
+          <ErrorIcon />
+          <p>Xóa khóa học</p>
+        </Wrap>
+      </DeleteButton>
     </SideBar>
   );
 }
+
 const SideBar = styled.div`
   display: flex;
   flex-flow: column nowrap;
   background-color: #969eaa;
-  height: 100%;
+  height: 90vh;
   a {
     width: 100%;
-    padding: 10px 1.5rem;
+    padding: 10px 1rem;
     background: linear-gradient(to left, #969eaa 50%, #3a3e47 50%) right;
     background-size: 200%;
     transition: 0.471s ease-out;
+    cursor: pointer;
   }
   a:hover {
-    cursor: pointer;
     background-color: #3a3e47;
     color: white;
     background-position: left;
@@ -53,7 +61,7 @@ const SideBar = styled.div`
   @media only screen and (min-width: 1900px) {
     min-width: 15vw;
     p {
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       text-align: center;
     }
   }
@@ -61,14 +69,30 @@ const SideBar = styled.div`
     width: 20px;
     min-width: 15vw;
     p {
-      font-size: 1rem;
+      font-size: 1.1rem;
+      flex-flow: row nowrap;
     }
   }
-  @media only screen and (max-width: 1000px) {
+  @media only screen and (max-width: 500px) {
     width: 100%;
     p {
       display: none;
     }
+  }
+`;
+
+const DeleteButton = styled.button`
+  bottom: 0;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  font-size: 15px;
+  width: 100%;
+  transition: 0.5s ease 0s;
+  &:hover {
+    color: white;
+    background-color: crimson;
   }
 `;
 
@@ -78,4 +102,5 @@ const Wrap = styled.div`
   gap: 10px;
   align-items: center;
 `;
+
 export default Sidebar;

@@ -9,16 +9,9 @@ module.exports = class ApiTopic {
             courseId: req.courseId,
             title: req.body.title,
             content: req.body.content,
+            description: req.body.description,
         };
         try {
-
-            // if (req.file !== undefined) {
-            //     const result = await cloudinary.uploader.upload(req.file.path, {
-            //         folder: 'courses',
-            //     });
-            //     course.imageUrl = `${result.secure_url} ${result.public_id}`;
-            // }
-
             await Topic.create(topic).then((topic) => {
                 res.status(201).json({
                     error: false,
@@ -52,6 +45,28 @@ module.exports = class ApiTopic {
             res.status(500).send('Server error');
         }
     }
+
+    // @route   GET api/topic/getSingleTopic/:topicId
+    // @desc    getSingleTopic
+    // @access  Private
+    static async getSingleTopics(req, res) {
+        try {
+            let topic = await Topic.findOne({
+                where: { id: req.params.topicId }
+            });
+
+            res.status(200).json({
+                error: false,
+                topic: topic,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+
+
     // @route   GET api/course/:courseId/topic/edit/:topicId
     // @desc    edit Topics
     // @access  Private

@@ -1,20 +1,48 @@
-import React,{useRef, useState} from "react";
+import React,{useRef, useState, useEffect} from "react";
 import styled from "styled-components";
 import userCourseService from "../../service/userCourseService";
 import {ArrowBackIosIcon} from '../common/icons'
 import { useParams, Link } from "react-router-dom";
 import Toast from '../common/toast'
 import showToast from '../../dummydata/toast'
+import CourseService from '../../service/courseService'
+import Loader from '../../components/common/loader'
 
 function CourseEnroll({checkEnroll}) {
   const { id } = useParams();
   const [styleEnrollBtn, setStyleEnrollBtn] = useState(() => checkEnroll? "bg-green-600 hover:bg-green-500": "bg-gray-500 cursor-not-allowed")
   const [enrolled, setEnrolled] = useState(checkEnroll);
   const notification = useRef([])
+  const [isLoading,setLoading] = useState(true);
 
   const [msg, setMsg] = useState(() => 
     !enrolled? "Chờ giảng viên của bạn chấp nhận...": "Tham gia"
   )
+
+  const [course, setCourses] = useState({
+    name: '',
+    description: '',
+    instructorName: '',
+    rating: '',
+    register: ''
+  })
+
+  const [topics, setTopics] = useState([
+    {
+      id: '',
+      title: '',
+      description: '',
+    }
+  ]);
+
+  useEffect(() => {
+    CourseService.getEnrollTopics(id).then(response => {
+      setCourses({...response.course})
+      setTopics([...response.topics])
+      setLoading(false)
+    })
+  },[])
+
   const enroll = (id) => (
     <>
       <EnrollButton className={styleEnrollBtn} 
@@ -40,26 +68,39 @@ function CourseEnroll({checkEnroll}) {
     </>
   );
 
+
+const topicContent = topics.map((topic,index) =>
+      <Wrap key={index}>
+          <Topic>Chủ đề {index + 1}: {topic.title}</Topic>
+          <TopicContent className="noblur">
+            <Slide>{topic.description}</Slide>
+          </TopicContent>
+        </Wrap>
+    )
+
+  const loading = (<WrapLoader>
+        <Loader/>
+      </WrapLoader>)
+
+  const loaded = topics.length === 0 ? (<><p className="text-center">Không có Topic nào</p></>) : topicContent
+ 
   return (
     <Container>
       <CourseInfos>
         <InfoWrap>
           <Back><Link to="/category/3"><ArrowBackIosIcon/> Trở về</Link></Back>
-          <Breadcrumb>abc - def - ghi</Breadcrumb>
+          <Breadcrumb>Đăng ký khoá học</Breadcrumb>
           <CourseTitle>
-            Khóa học gì gì gì gì đấy rất rất rất căn bản
+            {course.name}
           </CourseTitle>
           <CourseDescription>
-            Hôm nay là một ngày hết sức đẹp trời để đi học nhưng tôi lại không
-            thấy trời đẹp lắm nên là thôi tôi không học Hôm nay là một ngày hết
-            sức đẹp trời để đi học nhưng tôi lại không thấy trời đẹp lắm nên là
-            thôi tôi không học
+            {course.description}
           </CourseDescription>
           <ARWrap>
-            <CourseAttendance>Số học viên: 123123</CourseAttendance>
-            <CourseRating>Đánh giá: 4 sao;</CourseRating>
+            <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
+            <CourseRating>Đánh giá: {course.rating? course.rating:'0'} sao</CourseRating>
           </ARWrap>
-          <CourseInstructor>Giảng viên: Đức múp rụp</CourseInstructor>
+          <CourseInstructor>Giảng viên:  {course.instructorName}</CourseInstructor>
         </InfoWrap>
         <EnrollSection>
           <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
@@ -68,43 +109,9 @@ function CourseEnroll({checkEnroll}) {
       </CourseInfos>
       <Title>Nội dung khóa học</Title>
       <Body>
-        <Content>
-          <Wrap>
-            <Topic>Chủ đề 1: Giới thiệu về Web</Topic>
-            <TopicContent className="noblur">
-              <Slide>Có gì cứ nhét vào đây</Slide>
-              <Quiz>Nhét quiz vào đây</Quiz>
-            </TopicContent>
-          </Wrap>
-          <Wrap>
-            <Topic>Chủ đề 2: Xác định mục tiêu</Topic>
-            <TopicContent>
-              <Slide>Có gì cứ nhét vào đây</Slide>
-              <Quiz>Nhét quiz vào đây</Quiz>
-            </TopicContent>
-          </Wrap>
-          <Wrap>
-            <Topic>Chủ đề 3: Đi sâu vào HTML</Topic>
-            <TopicContent>
-              <Slide>Có gì cứ nhét vào đây</Slide>
-              <Quiz>Nhét quiz vào đây</Quiz>
-            </TopicContent>
-          </Wrap>
-          <Wrap>
-            <Topic>Chủ đề 4: Đá qua CSS</Topic>
-            <TopicContent>
-              <Slide>Có gì cứ nhét vào đây</Slide>
-              <Quiz>Nhét quiz vào đây</Quiz>
-            </TopicContent>
-          </Wrap>
-          <Wrap>
-            <Topic>Chủ đề 5: Sử dụng Javascript</Topic>
-            <TopicContent>
-              <Slide>Có gì cứ nhét vào đây</Slide>
-              <Quiz>Nhét quiz vào đây</Quiz>
-            </TopicContent>
-          </Wrap>
-        </Content>
+       <Content>
+        {isLoading? loading: loaded}
+      </Content>
         <Leaderboard>
           <LBTitle>Đại lộ danh vọng</LBTitle>
           <LBContent>
@@ -154,6 +161,13 @@ function CourseEnroll({checkEnroll}) {
     </Container>
   );
 }
+
+const WrapLoader = styled.div`
+position: absolute;
+top: 10%;
+left: 50%;
+transform: translate(-50%,-50%)
+`
 const Back = styled.span`
   position: absolute;
   top: 1rem;
@@ -163,7 +177,7 @@ const Back = styled.span`
 `
 
 const Container = styled.div`
-  min-height: calc(100vh - 435px);
+  height: 90vh;
   display: flex;
   flex-flow: column nowrap;
   padding: 0;
@@ -248,10 +262,6 @@ const EnrollButton = styled.input`
   font-size: 15px;
   height: 50px;
   transition: 0.5s ease 0s;
-  // background-color: #b266ff;
-  // &:hover {
-  //   background-color: #a435f0;
-  // }
 `;
 
 const Body = styled.div`
@@ -268,6 +278,7 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
+  position: relative;
   display: flex;
   padding-top: 1.5rem;
   flex-flow: column nowrap;
@@ -293,7 +304,6 @@ const TopicContent = styled.div`
   flex-flow: column nowrap;
   gap: 1rem;
   padding: 3vh 1vw 0;
-  filter: blur(4px);
 `;
 
 const Slide = styled.div``;

@@ -49,7 +49,7 @@
 .notification-message {
 	margin: 0;
 	text-align: left;
-    height: 18px;
+    height: 2rem;
     margin-left: -1px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -67,7 +67,7 @@
 }
 
 .toast {
-    height: 80px;
+    height: 5.5rem;
     width: 365px;
 	color: #fff;
 	padding: 20px 15px 10px 10px;

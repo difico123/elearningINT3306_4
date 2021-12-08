@@ -40,7 +40,6 @@ const ProtectedCourseRoute = () => {
     Promise.all([checkCourse,checkErrorCourse]).then(() => {
       setLoading(false)
     })
-
   },[])
 
   const renderLoader = <WrapLoader><Loader/></WrapLoader>;

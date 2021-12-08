@@ -5,6 +5,7 @@ const { User, Course, Category, UserCourse } = require('../db/models');
 const CourseService = require('../dbService/courseService');
 const UserService = require('../dbService/userService');
 const UserCourseService = require('../dbService/userCourseService');
+const TopicService = require('../dbService/topicService');
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -189,6 +190,29 @@ module.exports = class ApiCourse {
             res.status(500).send('Server error');
         }
     }
+    // @route   GET api/course/instructorCourses/:courseId
+    // @desc    show instructor'course details
+    // @access  Private
+    static async getCourseDetails(req, res) {
+        let {courseId} = req.params
+        try {
+            let course = (await CourseService.getSingleCourse(courseId))[0]
+
+            if (course.imageUrl) {
+                course.imageUrl = course.imageUrl.split(' ')[0];
+            }
+
+            let topics = await TopicService.getTopicNames(courseId);
+            res.status(200).json({
+                error: false,
+                course: course,
+                topics
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
 
     // @route   GET api/course/instructorCourse/:courseId
     // @desc    show single instructor'course
@@ -279,6 +303,33 @@ module.exports = class ApiCourse {
                     currentPage: req.query.page,
                     totalCourse: data.length,
                 });
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   GET api/course/showDetail/:courseId
+    // @desc    show all courses
+    // @access  public
+    static async showDetail(req, res) {
+        const {courseId} = req.params
+        try {
+            CourseService.getSingleCourse(courseId).then((data) => {
+                let course = data[0];
+
+                if(course.imageUrl) {
+                    course.imageUrl = course.imageUrl.split(" ")[0];
+                }
+
+                TopicService.getShortTopic(courseId).then(topics => {
+                    res.status(200).json({
+                        error: false,
+                        course,
+                        topics,
+                    });
+                })
             });
         } catch (error) {
             console.log(error.message);
@@ -397,13 +448,6 @@ module.exports = class ApiCourse {
         keyword = keyword || '';
         try {
             UserService.getUserbyEmail(keyword, courseId).then((students) => {
-                if (students.length === 0) {
-                    return res.status(200).json({
-                        error: false,
-                        msg: ['Không có user'],
-                        filteredUser: students.length,
-                    });
-                }
                 return res.status(200).json({
                     error: false,
                     students,

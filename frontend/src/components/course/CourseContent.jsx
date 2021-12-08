@@ -4,86 +4,75 @@ import styled from "styled-components";
 function CourseContent() {
   return (
     <Container>
-      <TopicNav>
-        <Wrap>
-          <NavTitle>Khóa học HTML</NavTitle>
-          <TopicTitle>
-            <a target="_self" href="#">
-              Chủ đề 1: Giới thiệu về HTML
-            </a>
-          </TopicTitle>
-        </Wrap>
-        <Wrap>
-          <TopicTitle>
-            <a target="_self" href="#">
-              Chủ đề 1: Giới thiệu về HTML
-            </a>
-          </TopicTitle>
-        </Wrap>
-        <Wrap>
-          <TopicTitle>
-            <a target="_self" href="/z">
-              Chủ đề 1: Giới thiệu về HTML
-            </a>
-          </TopicTitle>
-        </Wrap>
-        <Wrap>
-          <TopicTitle>
-            <a target="_self" href="#">
-              Chủ đề 1: Giới thiệu về HTML
-            </a>
-          </TopicTitle>
-        </Wrap>
-        <Wrap>
-          <TopicTitle>
-            <a target="_self" href="#">
-              Chủ đề 1: Giới thiệu về HTML
-            </a>
-          </TopicTitle>
-        </Wrap>
-      </TopicNav>
-      <TopicContent>def</TopicContent>
+      <TopicWrap>
+        <Title>Chủ đề 1: Một chủ đề nào đó</Title>
+        <Title>Chủ đề 2: Một chủ đề nào đó hết sức đần độn</Title>
+        <Title>Chủ đề 3: Một chủ đề nào đó không đần độn cho lắmzzzzz</Title>
+        <Title>Chủ đề 4: Một chủ đề nào đó của đức múp</Title>
+      </TopicWrap>
+      <Content>def</Content>
     </Container>
   );
 }
 
 const Container = styled.div`
-  min-height: calc(100vh - 435px);
+  height: 90vh;
   display: flex;
   flex-flow: row nowrap;
-  gap: 3vw;
-`;
-
-const TopicNav = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  gap: 2vh;
-  background-color: #e0e0e0;
-`;
-
-const Wrap = styled.div`
-  inline-size: 15vw;
-  overflow-wrap: break-word;
 `;
 
 const NavTitle = styled.div`
-  font-size: 21px;
-  padding-left: 1vw;
-  padding-top: 2vh;
-  margin: -4px 0 4px 0;
+  background-color: #f0f0f0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding: 0.7rem 1rem;
+  border-left: 5px solid #3d4450;
+  color: #1c1d1f;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  button {
+    background-color: #dddddd;
+    padding: 3px 8px;
+  }
 `;
 
-const TopicTitle = styled.div`
-  font-size: 1.25rem;
-  padding: 2px 1vw 1px;
-  color: white;
-  background-color: #04aa6d;
+const TopicWrap = styled.div`
+  display: flex;
+  width: 20%;
+  flex-flow: column nowrap;
+  overflow-y: auto;
+  height: 16rem;
+  position: sticky;
+  background-color: #f0f0f0;
+  right: 0px;
+  height: 90vh;
 `;
 
-const NavContent = styled.div`
-  padding: 2px 1px 1px 1vw;
+const Title = styled.div`
+  padding: 1.5rem 0.75vw;
+  font-weight: 500;
+  word-wrap: break-word;
+  font-size: 1.15rem;
+  cursor: pointer;
+  background: linear-gradient(to left, #f0f0f0 50%, white 50%) right;
+  background-size: 200%;
+  transition: 0.471s ease-out;
+  &:hover {
+    background-color: white;
+    color: black;
+    background-position: left;
+  }
+  &.active {
+    background-color: black;
+    background-position: 0 0;
+    color: #fff;
+  }
 `;
 
-const TopicContent = styled.div``;
+const Content = styled.div`
+  background-color: white;
+  width: 100%;
+`;
 
 export default CourseContent;

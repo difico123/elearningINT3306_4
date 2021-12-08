@@ -1,20 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Toast from '../components/common/toast'
-import toast from '../dummydata/toast'
+import UserCourses from "../components/course/user/UserCourses";
 
 function InstructorRouter() {
-  const [trigger, setTrigger] = React.useState(false);
 
   return (
     <React.Fragment>
       <Routes>
-        <Route exact path="/" element={<><button onClick={() => {setTrigger(!trigger)}}>trigger</button>
-          {trigger&&<Toast toastList={[toast('warning','đây là title', 'day la description')]}/>}
-        </>} />
+        <Route exact path="/" element={<UserCourses />} />
       </Routes>
     </React.Fragment>
   );
 }
+
 
 export default InstructorRouter;

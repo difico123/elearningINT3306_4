@@ -14,4 +14,8 @@ function checkCourse(courseId) {
   return http.get(apiEndpoint + `/check/${courseId}`);
 }
 
-export default { enrollCourse, checkEnrollCourse,checkCourse };
+function getAll(page = 1) {
+  return http.get(apiEndpoint + `/all?page=${page}`);
+
+}
+export default { enrollCourse, checkEnrollCourse,checkCourse,getAll };

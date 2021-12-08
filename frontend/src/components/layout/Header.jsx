@@ -161,7 +161,7 @@ function Header({user}) {
           }}>Chấp nhận</button>
           <button className="bg-gray-200" onClick={(e) => {
             NotificationService.delNotification(v.id).then((data) => {
-              e.target.parentElement.parentElement.style.display = 'none';
+              e.target.parentElement.parentElement.remove();
               setNotificationList([showToast("success","Thông báo",data.msg.toString())])
             }).catch(error => {
               setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
@@ -279,16 +279,16 @@ const BellWrap = styled.div`
 
 const Nav = styled.div`
   z-index: 999;
-  height: 85px;
+  height: 10vh;
   display: flex;
   align-items: center;
   padding: 0 30px;
   flex-flow: row nowrap;
   justify-content: space-around;
-  border-bottom: 0.5px solid black;
   position: sticky;
   top: 0;
   background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
 
 const Logo = styled.div`
@@ -438,10 +438,10 @@ const Wrap = styled.div`
     }
   }
   & div.wrap {
-    border: 1px solid black;
     border-radius: 35px;
-    background-color: rgba(200, 200, 200, 0.1);
+    background-color: rgba(236, 240, 241,1.0);
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
   }
 `;
 

@@ -45,9 +45,31 @@ module.exports = class CourseService {
         try {
             const response = await sequelize.query(
                 `select c.id,c.categoryId,c.name,c.description,ca.name as categoryName,c.imageUrl,c.verified,DATE_FORMAT(c.dateAdded, "%h:%i:%s' %d/%m/%Y") as dateAdded from courses c
-                join categories ca on c.categoryId = ca.id where c.instructorId = ?;`,
+                join categories ca on c.categoryId = ca.id where c.instructorId = ? order by c.dateAdded desc`,
                 {
                     replacements: [userId],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    static async getSingleCourse(courseId) {
+        try {
+            const response = await sequelize.query(
+                `select c.id, c.name, c.description,c.instructorId, 
+                concat(u.firstName,' ', u.lastName) as instructorName, 
+                c.imageUrl, COUNT(uc.id) as register,
+                round(avg(uc.rating),1) as rating
+                from courses c
+                left join usercourses uc on uc.courseId = c.id 
+                join users u on u.id = c.instructorId 
+                where c.id = ?
+                group by c.id;`,
+                {
+                    replacements: [courseId],
                     type: QueryTypes.SELECT,
                 },
             );

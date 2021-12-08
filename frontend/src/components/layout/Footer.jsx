@@ -5,7 +5,7 @@ import {FacebookIcon, InstagramIcon} from '../common/icons'
 function Footer() {
   return (
     <BottomNav>
-      <Title>Công ty trách nhiệm hữu hạn nhiều thành viên Nông Lương Đức</Title>
+      <Title>Công ty trách nhiệm hữu hạn nhiều thành viên Syntax Error</Title>
       <Section>
         <AboutUs>
           <Wrap>

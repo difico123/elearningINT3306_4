@@ -17,12 +17,13 @@ module.exports = {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             content: {
                 type: DataTypes.TEXT,
                 allowNull: false,
-            },
-            imageUrl: {
-                type: DataTypes.STRING,
             },
             createdAt: {
                 type: 'TIMESTAMP',

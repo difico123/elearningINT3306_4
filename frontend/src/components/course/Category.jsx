@@ -4,7 +4,7 @@ import data from "../../dummydata/data.json";
 import { Link } from "react-router-dom";
 import CategoryService from "../../service/categoryService";
 import Loader from "../common/loader";
-import {StarIcon, PersonIcon,BooksIcon} from '../common/icons'
+import { StarIcon, PersonIcon, BooksIcon } from "../common/icons";
 
 function Categories() {
   const [categoryData, setCategoryData] = useState([
@@ -21,38 +21,52 @@ function Categories() {
 
   useEffect(() => {
     async function fetchMyAPI() {
-     await CategoryService.getAll().then((response) => {
+      await CategoryService.getAll().then((response) => {
         setCategoryData(response.categories);
         setLoading(false);
       });
     }
-    fetchMyAPI()
+    fetchMyAPI();
   }, []);
 
   const content = categoryData.map((category, index) => (
     <Link to={`/category/${category.categoryId}`}>
       <Wrap key={index}>
-        <CategoryRating><span>Đánh giá: {category.rating? category.rating: "0"}</span> <span><StarIcon/></span></CategoryRating>
+        <CategoryRating>
+          <span>Đánh giá: {category.rating ? category.rating : "0"}</span>{" "}
+          <span>
+            <StarIcon />
+          </span>
+        </CategoryRating>
         <CategoryImage alt="" src={category.imageUrl}></CategoryImage>
         <CategoryTitle>{category.categoryName}</CategoryTitle>
         <CategoryDescription>{}</CategoryDescription>
         <CategoryInfos>
           <CategoryCourseTotal>
-          <span>Số khóa học: {category.courseNum? category.courseNum:"0"}</span><span><BooksIcon/></span>
+            <span>
+              Số khóa học: {category.courseNum ? category.courseNum : "0"}
+            </span>
+            <span>
+              <BooksIcon />
+            </span>
           </CategoryCourseTotal>
-          <CategoryRegister><span>Số học viên: {category.register? category.register:"0"}</span> <span><PersonIcon/></span></CategoryRegister>
+          <CategoryRegister>
+            <span>
+              Số học viên: {category.register ? category.register : "0"}
+            </span>{" "}
+            <span>
+              <PersonIcon />
+            </span>
+          </CategoryRegister>
         </CategoryInfos>
-        {/* <CategoryRating>
-          Đánh giá: {category.rating ? category.rating : 0}
-        </CategoryRating> */}
       </Wrap>
     </Link>
   ));
 
   const loading = (
-    <div className="flex justify-center">
+    <WrapLoader>
       <Loader />
-    </div>
+    </WrapLoader>
   );
 
   const loaded = (
@@ -62,16 +76,14 @@ function Categories() {
     </>
   );
 
-  return (
-    <Container>{isLoading ? loading : loaded}</Container>
-  );
+  return <Container>{isLoading ? loading : loaded}</Container>;
 }
 
 export default Categories;
 
 const Container = styled.div`
   padding: 5vh 5vw;
-  min-height: calc(100vh - 425px);
+  min-height: 100vh;
 `;
 
 const Title = styled.div`
@@ -85,7 +97,6 @@ const Content = styled.div`
   grid-template-columns: repeat(4, 1fr);
   gap: 50px;
   justify-content: space-around;
-
   @media (max-width: 1000px) {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -93,7 +104,12 @@ const Content = styled.div`
     grid-template-columns: repeat(1, 1fr);
   }
 `;
-
+const WrapLoader = styled.div `
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 const Wrap = styled.div`
   position: relative;
   background-color: #f7f9fa;
@@ -140,14 +156,14 @@ const CategoryInfos = styled.div`
   padding-bottom: 16px;
 `;
 const CategoryRegister = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
 `;
 const CategoryCourseTotal = styled.div`
-display:flex;
-flex-direction: row;
-align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 const CategoryRating = styled.div`
   position: absolute;
@@ -159,10 +175,10 @@ const CategoryRating = styled.div`
   text-align: center;
   font-weight: bold;
   padding-bottom: 10px;
-  svg{
+  svg {
     text-align: center;
-    color: #ffb142!important;
+    color: #ffb142 !important;
     font-weight: bold;
-    font-size:2rem;
+    font-size: 2rem;
   }
 `;

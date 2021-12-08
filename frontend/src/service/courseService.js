@@ -1,10 +1,9 @@
 import http from "./httpService";
-import { apiUrl } from "../config.json";
 
 const apiEndpoint = "/api/course";
 
-function findUsers(courseId, UserEmail) {
-  return http.get(apiEndpoint + `/${courseId}/findUsers?keyword=${UserEmail}`);
+async function findUsers(courseId, UserEmail) {
+  return await http.get(apiEndpoint + `/${courseId}/findUsers?keyword=${UserEmail}`);
 }
 
 async function getAll(categoryId, keyword, rating, page) {
@@ -24,6 +23,10 @@ function getInstructorCourses(page=1) {
   return http.get(apiEndpoint + `/instructorCourses?page=${page}`);
 }
 
+function getEnrollTopics(courseId) {
+  return http.get(apiEndpoint + `/showDetail/${courseId}`);
+}
+
 function suspendCourse(courseId) {
   return http.put(apiEndpoint + `/suspend/${courseId}`);
 }
@@ -39,13 +42,33 @@ function editCourse(courseId) {
 function deleteCourse(courseId) {
   return http.put(apiEndpoint + `/delete/${courseId}`);
 }
+
 function inviteStudent(courseId,studentId) {
   return http.post(apiEndpoint + `/${courseId}/invite/${studentId}`);
 }
+
 async function createCourse(categoryId, body) {
   const config = { headers: { "Content-Type": "multipart/form-data" } };
   return await http.post(apiEndpoint + `/create/${categoryId}`, body, config);
 }
+
+async function createTopic(courseId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return await http.post(apiEndpoint + `/${courseId}/topic/create`, body, config);
+}
+
+function getCourseUsers(courseId, page = 1) {
+  return http.get(apiEndpoint + `/getUsers/${courseId}?page=${page}`);
+}
+
+function getInstructorCourseDetails(courseId) {
+  return http.get(apiEndpoint + `/instructorCourses/${courseId}`);
+}
+
+async function getTopicDetails(courseId, topicId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/getSingleTopic/${topicId}`);
+}
+
 export default {
   findUsers,
   getAll,
@@ -55,5 +78,10 @@ export default {
   editCourse,
   deleteCourse,
   inviteStudent,
-  createCourse
+  createCourse,
+  createTopic,
+  getEnrollTopics,
+  getCourseUsers,
+  getInstructorCourseDetails,
+  getTopicDetails
 };

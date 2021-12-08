@@ -27,7 +27,9 @@ import Warning from '../../asset/warning.svg'
 import Error from '../../asset/error.svg'
 import Info from '../../asset/info.svg'
 import CourseImgIcon from '@mui/icons-material/ArtTrack';
-
+import GroupsIcon from "@mui/icons-material/Groups";
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 export {
     SearchIcon, 
     MenuIcon,
@@ -57,5 +59,8 @@ export {
     Warning,
     Error,
     Info,
-    CourseImgIcon
+    CourseImgIcon,
+    GroupsIcon,
+    EditIcon,
+    MoreVertIcon
 }

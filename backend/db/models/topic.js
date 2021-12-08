@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
+            description: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
             content: {
                 type: DataTypes.TEXT,
                 allowNull: false,
@@ -25,10 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 references: { model: 'courses', key: 'id' },
                 allowNull: false,
-            },
-            imageUrl: {
-                type: DataTypes.STRING,
-            },
+            }
         },
         {
             sequelize,

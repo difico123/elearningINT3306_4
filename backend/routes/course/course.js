@@ -37,6 +37,11 @@ router.post(
 // @access  Private
 router.get('/instructorCourses', auth, instructorAuth, ApiCourse.getCourses);
 
+// @route   GET api/course/instructorCourses/:courseId
+// @desc    show instructor'courses details
+// @access  Private
+router.get('/instructorCourses/:courseId', auth, courseInstructorAuth(true), ApiCourse.getCourseDetails);
+
 // @route   PUT api/course/activate/:courseId
 // @desc    Activate course
 // @access  Private
@@ -124,4 +129,9 @@ router.get(
 // @desc    Show all courses
 // @access  public
 router.get('/showAll', ApiCourse.showAll);
+
+// @route   GET api/course/showDetail/:courseId
+// @desc    Show all courses
+// @access  public
+router.get('/showDetail/:courseId', ApiCourse.showDetail);
 module.exports = router;
