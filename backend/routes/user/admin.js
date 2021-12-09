@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const ApiAdmin = require('../controllers/ApiAdmin');
-const auth = require('../middleware/auth/auth');
-const admin = require('../middleware/auth/admin.auth');
+const ApiAdmin = require('../../controllers/ApiAdmin');
+const auth = require('../../middleware/auth/auth');
+const admin = require('../../middleware/auth/admin.auth');
 
 // @route   DELETE api/user/deleteUser/:userId
 // @desc    Delete user by admin

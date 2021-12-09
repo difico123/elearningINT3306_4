@@ -29,6 +29,7 @@ app.use(
 );
 
 app.use('/api/auth', require('./routes/user/auth'));
+app.use('/api/admin', require('./routes/user/admin'));
 app.use('/api/user', require('./routes/user/user'));
 app.use('/api/category', require('./routes/course/category'));
 app.use('/api/course', require('./routes/course/course'));

@@ -1,6 +1,7 @@
-const UserService = require('../dbservice/UserService');
-const CourseService = require('../dbservice/CourseService');
 const cloudinary = require('cloudinary');
+const AdminService = require('../dbService/adminService');
+const { User } = require('../db/models');
+const { pagination } = require('../utils/feature');
 
 module.exports = class ApiAdmin {
     // @route   DELETE api/admin/delete/:userId
@@ -65,6 +66,8 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async deleteCourse(req, res) {
         try {
+            return res.status(200).json({ error: true });
+            
             //get user information by id
             let { courseId } = req.params;
             let coursePromise = CourseService.getCourseById(courseId).then(
@@ -103,19 +106,20 @@ module.exports = class ApiAdmin {
         }
     }
 
-    // @route   GET api/user/listUsers
+    // @route   GET api/admin/listUsers
     // @desc    get users by admin
     // @access  Private
     static async listUsers(req, res) {
+        let {page}  = req.query;
         try {
-            UserService.listUsers().then((data) => {
-                if (data.length == 0) {
-                    return res
-                        .status(400)
-                        .json({ error: true, msg: 'Không có user nào' });
+            let users = await AdminService.getUsers()
+            users.map((user) => {
+                if (user.imageUrl) {
+                    user.imageUrl = user.imageUrl.split(' ')[0];
                 }
-                return res.status(200).json({ error: true, data });
             });
+            users = pagination(users, page)
+            return res.status(200).json({ error: true, users });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -127,14 +131,17 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async listCourses(req, res) {
         try {
-            CourseService.getAll().then((data) => {
-                if (data.length == 0) {
-                    return res
-                        .status(400)
-                        .json({ error: true, msg: 'Không có khoá học nào' });
+            let courses = await AdminService.getCourses()
+            courses.map((course) => {
+                if (course.courseImg) {
+                    course.courseImg = course.courseImg.split(' ')[0];
                 }
-                return res.status(200).json({ error: true, data });
+                if (course.avt) {
+                    course.avt = course.avt.split(' ')[0];
+                }
             });
+            courses = pagination(courses, page);
+            return res.status(200).json({ error: true, courses });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

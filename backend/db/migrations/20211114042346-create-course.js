@@ -29,7 +29,7 @@ module.exports = {
             verified: {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
-                defaultValue: true,
+                defaultValue: false,
             },
             imageUrl: {
                 type: DataTypes.STRING,

@@ -1,7 +1,6 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
 const { User, Course, Category, UserCourse } = require('../db/models');
-
 const CourseService = require('../dbService/courseService');
 const UserService = require('../dbService/userService');
 const UserCourseService = require('../dbService/userCourseService');
