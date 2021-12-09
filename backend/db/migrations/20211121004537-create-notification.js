@@ -12,11 +12,15 @@ module.exports = {
                 type: DataTypes.INTEGER,
                 references: { model: 'courses', key: 'id' },
                 allowNull: false,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
             },
             senderId: {
                 type: DataTypes.INTEGER,
                 references: { model: 'users', key: 'id' },
                 allowNull: false,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
             },
             topic: {
                 type: DataTypes.STRING,

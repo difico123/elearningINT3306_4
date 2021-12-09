@@ -1,6 +1,6 @@
 const cloudinary = require('cloudinary');
 const AdminService = require('../dbService/adminService');
-const { User } = require('../db/models');
+const { User,Course } = require('../db/models');
 const { pagination } = require('../utils/feature');
 
 module.exports = class ApiAdmin {
@@ -66,40 +66,29 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async deleteCourse(req, res) {
         try {
-            return res.status(200).json({ error: true });
-            
             //get user information by id
             let { courseId } = req.params;
-            let coursePromise = CourseService.getCourseById(courseId).then(
-                async (data) => {
-                    if (!data[0]) {
-                        return res.status(400).json({
-                            error: true,
-                            msg: 'Không tìm thấy course',
-                        });
-                    }
-                    if (data[0].imageUrl) {
-                        await cloudinary.uploader.destroy(
-                            data[0].imageUrl.split(' ')[1],
-                        );
-                    }
-                },
-            );
-            let deletePromise = CourseService.deleteCourseById(courseId).then(
-                (data) => {
-                    if (!data) {
-                        return res.status(400).json({
-                            error: 'Không xoá được khoá học',
-                        });
-                    }
-                    return res.status(200).json({
-                        error: false,
-                        msg: 'Đã xoá khoá học',
-                    });
-                },
-            );
 
-            Promise.all([coursePromise, deletePromise]);
+            let course = await Course.findOne({ where: { id: courseId } });
+
+            if (course.imageUrl) {
+                let cloudinary_id = course.imageUrl.split(' ')[1];
+                await cloudinary.uploader.destroy(cloudinary_id);
+            }
+            let instructor = await User.findOne({where: { id: course.instructorId }})
+
+            if (instructor.imageUrl) {
+                let cloudinary_id = instructor.imageUrl.split(' ')[1];
+                await cloudinary.uploader.destroy(cloudinary_id);
+            }
+
+            await course.destroy();
+
+            res.status(200).json({
+                error: false,
+                msg: 'Đã xoá khoá học ',
+            });
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

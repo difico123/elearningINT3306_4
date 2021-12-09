@@ -20,11 +20,15 @@ module.exports = {
                 type: DataTypes.INTEGER,
                 references: { model: 'users', key: 'id' },
                 allowNull: false,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
             },
             categoryId: {
                 type: DataTypes.INTEGER,
                 references: { model: 'categories', key: 'id' },
                 allowNull: false,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
             },
             verified: {
                 type: DataTypes.BOOLEAN,

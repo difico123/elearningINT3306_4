@@ -18,6 +18,8 @@ module.exports = {
                     type: DataTypes.INTEGER,
                     references: { model: 'courses', key: 'id' },
                     allowNull: false,
+                    onUpdate: 'cascade',
+                    onDelete: 'cascade'
                 },
                 rating: {
                     type: DataTypes.ENUM('1', '2', '3', '4', '5'),
@@ -50,6 +52,7 @@ module.exports = {
                     unique: true,
                 });
             });
+           
     },
     down: async (queryInterface, DataTypes) => {
         await queryInterface.dropTable('UserCourses');

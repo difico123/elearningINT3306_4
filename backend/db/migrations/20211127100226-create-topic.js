@@ -12,6 +12,8 @@ module.exports = {
                 type: DataTypes.INTEGER,
                 references: { model: 'courses', key: 'id' },
                 allowNull: false,
+                onUpdate: 'cascade',
+                onDelete: 'cascade'
             },
             title: {
                 type: DataTypes.STRING,
