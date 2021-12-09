@@ -5,6 +5,8 @@ import CourseService from "../../../service/courseService";
 import Loader from "../../common/loader";
 import { MoreVertIcon, SearchIcon } from "../../common/icons";
 import Popup from "../../common/popup";
+import Toast from "../../common/toast"
+import showToast from "../../../dummydata/toast"
 
 function ViewStudents() {
 
@@ -24,9 +26,7 @@ function ViewStudents() {
     const [page, setPage] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setLoading] = useState(true);
-
     const [toggleSearch, setToggleSearch] = useState(false);
-
 
     useEffect(() => {
         CourseService.getCourseUsers(id, page).then((response) => {
@@ -35,19 +35,44 @@ function ViewStudents() {
         });
     }, [change]);
 
+    const handleDropDown = (e) => {
+        let dropdown = e.target.nextElementSibling;
+        if(dropdown) {
+            if(dropdown.style.display === 'none') {
+                dropdown.style.display = 'inline';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        } else {
+            return;
+        }
+    }
+    
+    const handleKick = (e, userId) => {
+        CourseService.kickUser(id, userId).then(() => {
+            setToastList([showToast('success','Thông báo','Bạn đã đuổi học sinh này!')])
+            setChange(!change)
+            if(e.target.parentElement) {
+                e.target.parentElement.style.display = 'none'
+            }
+        }).catch(() => {
+            setToastList([showToast('danger','Thông báo','Bạn chưa đuổi học sinh này!')])
+        })
 
-    const content = getUsers.length == 0 ? <p className='text-center mt-1'>Không có học viên nào</p> : getUsers.map((course, index) => (
+    }
+
+    const content = getUsers.length == 0 ? <p className='text-center mt-1'>Không có học viên nào</p> : getUsers.map((user, index) => (
         <Wrap key={index}>
             <div>{index + 1}</div>
-            <div>{course.studentName}</div>
-            <div>{course.email}</div>
-            <div>{course.phoneNumber}</div>
-            <div>{course.address}</div>
-            <div>{course.marks}</div>
-            <div className="dropdown">
-                <MoreVertIcon />
+            <div>{user.studentName}</div>
+            <div>{user.email}</div>
+            <div>{user.phoneNumber}</div>
+            <div>{user.address}</div>
+            <div>{user.marks}</div>
+            <div className="dropdown" >
+                <MoreVertIcon onClick={handleDropDown}/>
                 <span className="dropdown-content">
-                    <button>Kick</button>
+                    <button onClick={(e) => handleKick(e,user.userId)}>Kick</button>
                 </span>
             </div>
         </Wrap>
@@ -61,7 +86,6 @@ function ViewStudents() {
         });
     }
 
-
     const loading = <div className="flex justify-center mt-12"> <Loader/></div>
 
     const handleToggleSearch = () => {
@@ -69,32 +93,48 @@ function ViewStudents() {
     }
 
     const [studentList, setStudentList] = useState([{
-        id: null,
-        email: "",
-        fullName: ""
     }]);
+    const [selectedUser, setSelectedUser] = useState('');
+    const [toastList, setToastList] = useState([]);
 
-    const handleSearchStudent = async (e) => {
+    const onChangeStudentSearch = async (e) => {
         await CourseService.findUsers(id,e.target.value).then((users) => {
             setStudentList(users.students)
         })
     }
 
-    console.log(studentList.length === 0);
+    const handleAddSelectedUser = (e) => {
+        if(!selectedUser) {
+            e.target.previousElementSibling.innerHTML = "Bạn chưa chọn học sinh"
+        } else {
+            CourseService.inviteStudent(id, selectedUser).then(() => {
+                setToastList([showToast('success','Thông báo','Bạn đã thêm học sinh mới!')])
+                setToggleSearch(false);
+                setChange(!change)
+                setStudentList([])
+            }).catch(() => {
+                setToastList([showToast('danger','Thông báo','Bạn chưa thêm được học sinh mới!')])
+            })
+        }
+    }
 
     const bodyPopup = <div>
         <SearchBar>
-            <input type="text" placeholder="Tìm kiếm học sinh..." onChange={handleSearchStudent}/>
+            <input type="text" placeholder="Tìm kiếm học sinh..." onChange={onChangeStudentSearch}/>
             <CustomSearch />
         </SearchBar>
-        <UserList>
-            {studentList.length === 0?  "Không có học sinh" : studentList.map((student, index) => (<Student key={index}>{student.email}</Student>))}
+        <UserList >
+            {studentList.length === 0?  "Không có học sinh" : studentList.map((student, index) => 
+            (<Student key={index} className={student.id === selectedUser ? "bg-green-400": ''} onClick={() => {setSelectedUser(student.id)}}>
+                {student.email}
+            </Student>))}
         </UserList>
     </div>
 
     const footerPopup = <div>
         <Wrapper>
-            <button>Thêm</button>
+            <p className="text-red-400"></p>
+            <button onClick={handleAddSelectedUser}>Thêm</button>
         </Wrapper>
     </div>
 
@@ -125,6 +165,7 @@ function ViewStudents() {
                 </Page>
             </Content>
             <Popup toggle={toggleSearch} setToggle={setToggleSearch} header={<h2>Thêm học sinh mới</h2>} body={bodyPopup}  footer={footerPopup}/>
+            <Toast toastList={toastList}/>
         </Container>
     );
 }
@@ -149,6 +190,7 @@ const Wrapper = styled.div`
 `
 
 const Container = styled.div`
+  z-index: 0;
   height: 90vh;
   width: 85vw;
   overflow: auto;
@@ -168,6 +210,11 @@ const Content = styled.div`
     margin-top: -2px;
 `
 
+const FullScreen = styled.div`
+    width: 100vw;
+    height: 100vh;
+`
+
 const Div = styled.div`
     display: flex; 
     flex-nowrap: wrap;
@@ -177,6 +224,7 @@ const Div = styled.div`
     border-top-left-radius: 5px;
     div{
         padding: 1rem;
+        font-weight: 700;
     }
     div:nth-child(1) {
         width: 5%;
@@ -232,10 +280,14 @@ const Wrap = styled.div`
     .dropdown {
         position: relative;
         display: inline-block;
+        svg {
+            cursor: pointer;
+        }
     }
       
     .dropdown-content {
         position: absolute;
+        display:none;
         top: 50%;
         text-align: center;
         padding: 0.5rem;
@@ -279,6 +331,7 @@ const Headers = styled.div`
 `
 
 const SearchBar = styled.div`
+background-color: white;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -312,12 +365,15 @@ const SearchBar = styled.div`
   }
 `;
 const UserList = styled.div`
-  height: 20rem;
+  height: 15rem;
   width: 100%;
-
+  margin-top: 1rem;
 `
+
 const Student = styled.div`
-  margin: 1rem 0;
+  padding: 0.7rem 0.5rem;
+  cursor:pointer;
+  font-weight: 500;
 `
 
 

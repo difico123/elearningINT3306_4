@@ -35,12 +35,17 @@ function activateCourse(courseId) {
   return http.put(apiEndpoint + `/activate/${courseId}`);
 }
 
-function editCourse(courseId) {
-  return http.put(apiEndpoint + `/edit/${courseId}`);
+async function editCourse(courseId, body) {
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  return await http.put(apiEndpoint + `/edit/${courseId}`, body, config);
 }
 
-function deleteCourse(courseId) {
-  return http.put(apiEndpoint + `/delete/${courseId}`);
+async function deleteCourse(courseId) {
+  return await http.delete(apiEndpoint + `/delete/${courseId}`);
+}
+
+function kickUser(courseId, userId) {
+  return http.put(apiEndpoint + `/${courseId}/kick/${userId}`);
 }
 
 function inviteStudent(courseId,studentId) {
@@ -83,5 +88,6 @@ export default {
   getEnrollTopics,
   getCourseUsers,
   getInstructorCourseDetails,
-  getTopicDetails
+  getTopicDetails,
+  kickUser
 };

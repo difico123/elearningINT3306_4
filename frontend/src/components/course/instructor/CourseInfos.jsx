@@ -2,68 +2,82 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
-import TopicContent from './TopicContent'
+import TopicContent from "./TopicContent";
 
 function EditCourseInfos() {
   let { id } = useParams();
+  console.log(id);
 
   const [course, setCourse] = useState({
-    id: id ,
+    id: id,
     name: "",
     description: "",
     instructorName: "Văn Anh",
     imageUrl: "",
     register: 0,
-    rating: ''
+    rating: "",
   });
 
-  const [topicId,setTopicId] = useState()
-  const [isLoading,setLoading] = useState(true);
+  const [topicId, setTopicId] = useState();
+  const [isLoading, setLoading] = useState(true);
 
-  const [topics, setTopics] = useState([{ 
-    id: 0,
-    title: ""
-  }]);
+  const [topics, setTopics] = useState([
+    {
+      id: 0,
+      title: "",
+    },
+  ]);
 
-  const [topicDetails, setTopicDetails] = useState([{ 
-    id: 0,
-    title: ""
-  }]);
+  const [topicDetails, setTopicDetails] = useState([
+    {
+      id: 0,
+      title: "",
+    },
+  ]);
 
   useEffect(() => {
-      let course = CourseService.getInstructorCourseDetails(id).then((response) => {
-        setCourse({...response.course})
-        setTopics(response.topics)
-      })
+    let course = CourseService.getInstructorCourseDetails(id).then(
+      (response) => {
+        setCourse({ ...response.course });
+        setTopics(response.topics);
+      }
+    );
 
-      Promise.all([course]).then(() => {
-        setLoading(false)
-      })
+    Promise.all([course]).then(() => {
+      setLoading(false);
+    });
+  }, []);
 
-    }, [])
-
-  const renderTopics = topics.map((topic, index) =><> 
-    <Title key={index} onClick={() => setTopicId(topic.id)}>Chủ đề {index + 1}: {topic.title}</Title>
-  </> )
+  const renderTopics = topics.map((topic, index) => (
+    <>
+      <Title key={index} onClick={() => setTopicId(topic.id)}>
+        Chủ đề {index + 1}: {topic.title}
+      </Title>
+    </>
+  ));
 
   return (
     <Container>
       <Body>
         <CourseInfos>
           <InfoWrap>
-            <CourseTitle>
-              {course.name}
-            </CourseTitle>
-            <CourseDescription>
-            {course.description}
-            </CourseDescription>
+            <CourseTitle>{course.name}</CourseTitle>
+            <CourseDescription>{course.description}</CourseDescription>
             <ARWrap>
-              <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
+              <CourseAttendance>
+                Số học viên: {course.register}
+              </CourseAttendance>
               <CourseRating>Đánh giá: {course.rating} sao;</CourseRating>
             </ARWrap>
           </InfoWrap>
           <CourseCover>
-            <BackgroundImage src={course.imageUrl ? course.imageUrl: 'https://www.optionabroad.com/wp-content/uploads/2021/03/Study-in-USA.jpg'}></BackgroundImage>
+            <BackgroundImage
+              src={
+                course.imageUrl
+                  ? course.imageUrl
+                  : "https://www.optionabroad.com/wp-content/uploads/2021/03/Study-in-USA.jpg"
+              }
+            ></BackgroundImage>
           </CourseCover>
         </CourseInfos>
         <Topic>
@@ -72,12 +86,12 @@ function EditCourseInfos() {
               <span>Nội dung khóa học</span>
               <button>+</button>
             </NavTitle>
-            <TopicWrap>
-                {renderTopics}
-            </TopicWrap>
+            <TopicWrap>{renderTopics}</TopicWrap>
           </TopicNav>
-          {!isLoading&& <TopicContent courseId={course.id} topicId={topicId}/>}
-            {/* <TopicTitle>Chủ đề 1: Một chủ đề nào đó của Đức múp</TopicTitle>
+          {!isLoading && (
+            <TopicContent courseId={course.id} topicId={topicId} />
+          )}
+          {/* <TopicTitle>Chủ đề 1: Một chủ đề nào đó của Đức múp</TopicTitle>
             <Content>
               Đây là nội dung chủ đề 1 của khóa học dummy hết sức ngu xuẩn của
               Đức múp. Trong khóa học này, ta sẽ học cách trở nên ngu xuẩn
@@ -164,20 +178,21 @@ const Topic = styled.div`
   gap: 0;
 `;
 
-const TopicNav = styled.div`
-`;
+const TopicNav = styled.div``;
 
 const NavTitle = styled.div`
-  background-color: #f0f0f0;
-  font-size: 1.3rem;
+  background-color: #e0e0e0;
+  font-size: 1.2rem;
+  padding: 0.5vh 0.5vw;
+  align-items: center;
   font-weight: bold;
   border-left: 5px solid #3d4450;
   color: #1c1d1f;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-between;
+  gap: 10px;
   button {
-    background-color: #dddddd;
+    background-color: #d0d0d0;
     padding: 3px 8px;
   }
 `;
@@ -187,7 +202,6 @@ const TopicWrap = styled.div`
   flex-flow: column nowrap;
   overflow-y: auto;
   height: 16rem;
-  position: sticky;
   background-color: #f0f0f0;
   right: 0px;
   min-height: 55vh;
@@ -214,7 +228,6 @@ const Title = styled.div`
     color: #fff;
   }
 `;
-
 
 const TopicTitle = styled.div`
   font-size: 1.25rem;

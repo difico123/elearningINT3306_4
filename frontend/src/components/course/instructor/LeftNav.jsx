@@ -1,37 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { GroupsIcon, EditIcon, BooksIcon, ErrorIcon } from "../../common/icons";
+import courseService from "../../../service/courseService";
+import Popup from "../../common/popup";
+import { useParams } from "react-router-dom";
+import Toast from "../../common/toast";
+import showToast from "../../../dummydata/toast";
 
 function Sidebar() {
-  return (
-    <SideBar>
-      <NavLink to="./infos" activeClassName="active">
-        <Wrap>
-          <BooksIcon />
-          <p>Thông tin khóa học</p>
-        </Wrap>
-      </NavLink>
-      <NavLink to="./edit" activeClassName="active">
-        <Wrap>
-          <EditIcon />
-          <p>Chỉnh sửa nội dung</p>
-        </Wrap>
-      </NavLink>
-      <NavLink to="./students" activeClassName="active">
-        <Wrap>
-          <GroupsIcon />
-          <p>Danh sách học viên</p>
-        </Wrap>
-      </NavLink>
+  const [toggleDelete, setToggleDelete] = useState(false);
+  const [toastList, setToastList] = useState([]);
+  let { id } = useParams();
+  console.log(id);
+  const handleDelete = async () => {
+    await courseService
+      .deleteCourse(id)
+      .then((response) => {
+        setToastList([showToast("success", "Thông báo", response.msg)]);
+        setTimeout(() => {
+          window.location.href = "../";
+        }, 3000);
+      })
+      .catch((error) => {
+        setToastList([
+          showToast("danger", "Thông báo", error.response.data.msg),
+        ]);
+      });
+    setToggleDelete(false);
+  };
 
-      <DeleteButton>
-        <Wrap>
-          <ErrorIcon />
-          <p>Xóa khóa học</p>
-        </Wrap>
-      </DeleteButton>
-    </SideBar>
+  const bodyPopup = <div>Bạn có thực sự muốn xóa khóa học này không?</div>;
+  const footerPopup = (
+    <DeleteButton onClick={handleDelete}>Tôi muốn xóa!</DeleteButton>
+  );
+  console.log();
+  return (
+    <React.Fragment>
+      <SideBar>
+        <NavLink to="./infos" activeClassName="active">
+          <Wrap>
+            <BooksIcon />
+            <p>Thông tin khóa học</p>
+          </Wrap>
+        </NavLink>
+        <NavLink to="./edit" activeClassName="active">
+          <Wrap>
+            <EditIcon />
+            <p>Chỉnh sửa nội dung</p>
+          </Wrap>
+        </NavLink>
+        <NavLink to="./students" activeClassName="active">
+          <Wrap>
+            <GroupsIcon />
+            <p>Danh sách học viên</p>
+          </Wrap>
+        </NavLink>
+
+        <DeleteButton
+          onClick={() => {
+            setToggleDelete(true);
+          }}
+        >
+          <Wrap>
+            <ErrorIcon />
+            <p>Xóa khóa học</p>
+          </Wrap>
+        </DeleteButton>
+      </SideBar>
+      <Popup
+        toggle={toggleDelete}
+        setToggle={setToggleDelete}
+        header={<h2 className="text-red-400">Cảnh báo!</h2>}
+        body={bodyPopup}
+        footer={footerPopup}
+      />
+      <Toast toastList={toastList} />
+    </React.Fragment>
   );
 }
 

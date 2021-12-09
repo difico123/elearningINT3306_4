@@ -41,14 +41,20 @@
     top: 10px;
     right: 10px;
     padding: 5px 7px;
+    background-color: #bdc3c7;
+    font-weight: 500;
+    border-radius: 5px;
 }
 
 .modal-header {
     font-weight: 500;
+    padding-bottom: 0.5rem;
+    border-bottom: 0.1px solid black;
 }
 .modal-body {
     margin: 1rem 0;
 }
 .modal-footer {
     font-weight: 500;
+    border-top: 0.1px solid black;
 }

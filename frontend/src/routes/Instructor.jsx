@@ -24,16 +24,17 @@ function InstructorRouter() {
 function CourseRouter() {
   return (
     <Flexin>
+
       <div className="relative">
-        <LeftNav />
-      </div>
-      <div>
         <Routes>
           <Route exact path="/infos" element={<CourseInfos />} />
           <Route exact path="/edit" element={<EditCourse />} />
           <Route exact path="/students" element={<ViewStudents />} />
           <Route exact path="/createTopic" element={<CreateTopic />} />
         </Routes>
+      </div>
+      <div className="relative">
+        <LeftNav />
       </div>
     </Flexin>
   );
@@ -44,6 +45,7 @@ export default InstructorRouter;
 const Flexin = styled.div`
   display: flex;
   flex-flow: row nowrap;
+  flex-direction: row-reverse;
   gap: 0;
   overflow: hidden;
 `;

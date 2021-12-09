@@ -67,7 +67,7 @@ router.put(
 // @access  Private
 router.put(
     '/edit/:courseId',
-    upload.single('courseImage'),
+    upload.single('courseImageUrl'),
     checkCourseInput(['name', 'description']),
     validateInput,
     auth,

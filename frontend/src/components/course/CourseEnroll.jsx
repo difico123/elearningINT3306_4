@@ -1,106 +1,128 @@
-import React,{useRef, useState, useEffect} from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import userCourseService from "../../service/userCourseService";
-import {ArrowBackIosIcon} from '../common/icons'
+import { ArrowBackIosIcon } from "../common/icons";
 import { useParams, Link } from "react-router-dom";
-import Toast from '../common/toast'
-import showToast from '../../dummydata/toast'
-import CourseService from '../../service/courseService'
-import Loader from '../../components/common/loader'
+import Toast from "../common/toast";
+import showToast from "../../dummydata/toast";
+import CourseService from "../../service/courseService";
+import Loader from "../../components/common/loader";
 
-function CourseEnroll({checkEnroll}) {
+function CourseEnroll({ checkEnroll }) {
   const { id } = useParams();
-  const [styleEnrollBtn, setStyleEnrollBtn] = useState(() => checkEnroll? "bg-green-600 hover:bg-green-500": "bg-gray-500 cursor-not-allowed")
+  const [styleEnrollBtn, setStyleEnrollBtn] = useState(() =>
+    checkEnroll
+      ? "bg-green-600 hover:bg-green-500"
+      : "bg-gray-500 cursor-not-allowed"
+  );
   const [enrolled, setEnrolled] = useState(checkEnroll);
-  const notification = useRef([])
-  const [isLoading,setLoading] = useState(true);
+  const notification = useRef([]);
+  const [isLoading, setLoading] = useState(true);
 
-  const [msg, setMsg] = useState(() => 
-    !enrolled? "Chờ giảng viên của bạn chấp nhận...": "Tham gia"
-  )
+  const [msg, setMsg] = useState(() =>
+    !enrolled ? "Chờ giảng viên của bạn chấp nhận..." : "Tham gia"
+  );
 
   const [course, setCourses] = useState({
-    name: '',
-    description: '',
-    instructorName: '',
-    rating: '',
-    register: ''
-  })
+    name: "",
+    description: "",
+    instructorName: "",
+    rating: "",
+    register: "",
+  });
 
   const [topics, setTopics] = useState([
     {
-      id: '',
-      title: '',
-      description: '',
-    }
+      id: "",
+      title: "",
+      description: "",
+    },
   ]);
 
   useEffect(() => {
-    CourseService.getEnrollTopics(id).then(response => {
-      setCourses({...response.course})
-      setTopics([...response.topics])
-      setLoading(false)
-    })
-  },[])
+    CourseService.getEnrollTopics(id).then((response) => {
+      setCourses({ ...response.course });
+      setTopics([...response.topics]);
+      setLoading(false);
+    });
+  }, []);
 
   const enroll = (id) => (
     <>
-      <EnrollButton className={styleEnrollBtn} 
-        type="submit" 
+      <EnrollButton
+        className={styleEnrollBtn}
+        type="submit"
         onClick={() => {
           userCourseService
             .enrollCourse(id)
             .then((response) => {
-              notification.current = [showToast("success","Thông báo",response.msg)]
-              setStyleEnrollBtn('bg-gray-400 cursor-not-allowed')
-              setEnrolled(true)
-              setMsg('Chờ giảng viên của bạn chấp nhận...')
+              notification.current = [
+                showToast("success", "Thông báo", response.msg),
+              ];
+              setStyleEnrollBtn("bg-gray-400 cursor-not-allowed");
+              setEnrolled(true);
+              setMsg("Chờ giảng viên của bạn chấp nhận...");
             })
             .catch((err) => {
-              notification.current = [showToast("danger","Thông báo",err.response.data.msg)]
+              notification.current = [
+                showToast("danger", "Thông báo", err.response.data.msg),
+              ];
             });
-
         }}
         disabled={!enrolled}
         value={msg}
       />
-        <Toast toastList={notification.current} />
+      <Toast toastList={notification.current} />
     </>
   );
 
+  const topicContent = topics.map((topic, index) => (
+    <Wrap key={index}>
+      <Topic>
+        Chủ đề {index + 1}: {topic.title}
+      </Topic>
+      <TopicContent className="noblur">
+        <Slide>{topic.description}</Slide>
+      </TopicContent>
+    </Wrap>
+  ));
 
-const topicContent = topics.map((topic,index) =>
-      <Wrap key={index}>
-          <Topic>Chủ đề {index + 1}: {topic.title}</Topic>
-          <TopicContent className="noblur">
-            <Slide>{topic.description}</Slide>
-          </TopicContent>
-        </Wrap>
-    )
+  const loading = (
+    <WrapLoader>
+      <Loader />
+    </WrapLoader>
+  );
 
-  const loading = (<WrapLoader>
-        <Loader/>
-      </WrapLoader>)
+  const loaded =
+    topics.length === 0 ? (
+      <>
+        <p className="text-center">Không có Topic nào</p>
+      </>
+    ) : (
+      topicContent
+    );
 
-  const loaded = topics.length === 0 ? (<><p className="text-center">Không có Topic nào</p></>) : topicContent
- 
   return (
     <Container>
       <CourseInfos>
         <InfoWrap>
-          <Back><Link to="/category/3"><ArrowBackIosIcon/> Trở về</Link></Back>
+          <Back>
+            <Link to="../">
+              <ArrowBackIosIcon /> Trở về
+            </Link>
+          </Back>
           <Breadcrumb>Đăng ký khoá học</Breadcrumb>
-          <CourseTitle>
-            {course.name}
-          </CourseTitle>
-          <CourseDescription>
-            {course.description}
-          </CourseDescription>
+          <CourseTitle>{course.name}</CourseTitle>
+          <CourseDescription>{course.description}</CourseDescription>
           <ARWrap>
             <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
-            <CourseRating>Đánh giá: {course.rating? course.rating:'0'} sao</CourseRating>
+            <CourseRating>
+              Đánh giá: {course.rating ? course.rating : "0"} sao
+            </CourseRating>
           </ARWrap>
-          <CourseInstructor>Giảng viên:  {course.instructorName}</CourseInstructor>
+          <CourseInstructor>
+            Giảng viên: {course.instructorName}
+          </CourseInstructor>
         </InfoWrap>
         <EnrollSection>
           <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
@@ -109,9 +131,7 @@ const topicContent = topics.map((topic,index) =>
       </CourseInfos>
       <Title>Nội dung khóa học</Title>
       <Body>
-       <Content>
-        {isLoading? loading: loaded}
-      </Content>
+        <Content>{isLoading ? loading : loaded}</Content>
         <Leaderboard>
           <LBTitle>Đại lộ danh vọng</LBTitle>
           <LBContent>
@@ -163,18 +183,18 @@ const topicContent = topics.map((topic,index) =>
 }
 
 const WrapLoader = styled.div`
-position: absolute;
-top: 10%;
-left: 50%;
-transform: translate(-50%,-50%)
-`
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 const Back = styled.span`
   position: absolute;
   top: 1rem;
   right: 5rem;
-  color:white!important;
+  color: white !important;
   cursor: pointer;
-`
+`;
 
 const Container = styled.div`
   height: 90vh;
