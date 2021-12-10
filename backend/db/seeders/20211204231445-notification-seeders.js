@@ -16,31 +16,31 @@ module.exports = {
       [
           {
               courseId: '2',
-              senderId: '2',
+              userId: '2',
               topic: 'Đăng ký khoá học',
               details: 'user1@gmail.com vừa đăng kí khoá học của bạn',
           },
           {
               courseId: '3',
-              senderId: '2',
+              userId: '2',
               topic: 'Đăng ký khoá học',
               details: 'user1@gmail.com vừa đăng kí khoá học của bạn',
           },
           {
               courseId: '4',
-              senderId: '2',
+              userId: '2',
               topic: 'Đăng ký khoá học',
               details: 'user1@gmail.com vừa đăng kí khoá học của bạn',
           },
           {
               courseId: '5',
-              senderId: '2',
+              userId: '2',
               topic: 'Đăng ký khoá học',
               details: 'user1@gmail.com vừa đăng kí khoá học của bạn',
           },
           {
               courseId: '6',
-              senderId: '2',
+              userId: '2',
               topic: 'Đăng ký khoá học',
               details: 'user1@gmail.com vừa đăng kí khoá học của bạn',
           },

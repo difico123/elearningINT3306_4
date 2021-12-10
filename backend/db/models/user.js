@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'userId',
             });
            
-            this.hasMany(Notification, { foreignKey: 'senderId' });
+            this.hasMany(Notification, { foreignKey: 'userId' });
         }
         toJSON() {
             return {

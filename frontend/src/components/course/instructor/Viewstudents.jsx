@@ -7,6 +7,7 @@ import { MoreVertIcon, SearchIcon } from "../../common/icons";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast"
 import showToast from "../../../dummydata/toast"
+import {ArrowBackIosIcon, ArrowForwardIosIcon} from '../../common/icons'
 
 function ViewStudents() {
 
@@ -63,7 +64,7 @@ function ViewStudents() {
 
     const content = getUsers.length == 0 ? <p className='text-center mt-1'>Không có học viên nào</p> : getUsers.map((user, index) => (
         <Wrap key={index}>
-            <div>{index + 1}</div>
+            <div>{(6 * (currentPage - 1)) + (index + 1)}</div>
             <div>{user.studentName}</div>
             <div>{user.email}</div>
             <div>{user.phoneNumber}</div>
@@ -79,10 +80,12 @@ function ViewStudents() {
     ))
 
     const pageClick = async (e) => {
+        setLoading(true);
         let page = Number(e.target.value)
         setCurrentPage(page);
         CourseService.getCourseUsers(id, page).then((response) => {
             setUsers(response.users);
+            setLoading(false);
         });
     }
 
@@ -143,6 +146,7 @@ function ViewStudents() {
             <Content>
                 <Wrapper>
                     <button onClick={handleToggleSearch}>Thêm học sinh mới</button>
+
                 </Wrapper>
                
                 <Div>
@@ -157,11 +161,25 @@ function ViewStudents() {
                 {isLoading? loading : content}
 
                 <Page>
+                <ArrowBackIosIcon
+                        className="page"
+                        onClick={() => {
+                        if (page > 1) {
+                            setPage(page - 1);
+                        }
+                        }}
+                    />
                     <button className={currentPage === page ? "bg-blue-300" : ""} value={page} onClick={pageClick}>{page}</button>
                     <button className={currentPage === page + 1 ? "bg-blue-300" : ""} value={page + 1} onClick={pageClick}>{page + 1}</button>
                     <button className={currentPage === page + 2 ? "bg-blue-300" : ""} value={page + 2} onClick={pageClick}>{page + 2}</button>
                     <button className={currentPage === page + 3 ? "bg-blue-300" : ""} value={page + 3} onClick={pageClick}>{page + 3}</button>
                     <button className={currentPage === page + 4 ? "bg-blue-300" : ""} value={page + 4} onClick={pageClick}>{page + 4}</button>
+                    <ArrowForwardIosIcon
+                        className="page"
+                        onClick={() => {
+                        setPage(page + 1);
+                        }}
+                    />
                 </Page>
             </Content>
             <Popup toggle={toggleSearch} setToggle={setToggleSearch} header={<h2>Thêm học sinh mới</h2>} body={bodyPopup}  footer={footerPopup}/>
@@ -202,11 +220,7 @@ const Content = styled.div`
     height: 90vh;
     width: 100%;
     padding: 30px;
-    background: skyblue;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border: solid;
+    background: transparent;
     margin-top: -2px;
 `
 
@@ -308,22 +322,24 @@ const Page = styled.div`
     left: calc(50% - 53px);
     button {
         width: 40px;
+        text-align: center;
+        margin: 0.1rem;
         padding: 10px;
-        background: white;
-        border-radius: 3px;
-        border: solid 0.5px;
-        margin: 1px;
-    }
-    & button:hover {
+        border: 1px solid black;
+        border-radius: 5px;
+      }
+      & button:hover {
         background: #7fffd4;
       }
-      div svg {
+      .page {
+        margin-top: 0.9rem;
         cursor: pointer;
       }
-      div svg:active {
+      .page:active {
         background-color: lightblue;
       }
 `
+
 const Headers = styled.div`
     display: flex;
     justify-content: space-between;

@@ -15,7 +15,7 @@ module.exports = {
                 onUpdate: 'cascade',
                 onDelete: 'cascade'
             },
-            senderId: {
+            userId: {
                 type: DataTypes.INTEGER,
                 references: { model: 'users', key: 'id' },
                 allowNull: false,

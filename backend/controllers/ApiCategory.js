@@ -14,6 +14,7 @@ module.exports = class ApiNotification {
             res.status(500).send('Server error');
         }
     }
+    
     static getName(req, res) {
         try {
             CategoryService.getCategoriesName().then((categories) => {

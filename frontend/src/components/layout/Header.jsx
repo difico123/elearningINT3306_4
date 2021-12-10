@@ -1,15 +1,24 @@
-import React,{useState,useEffect,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthApi from "../../service/authUser";
 import AuthService from "../../service/authService";
 import NotificationService from "../../service/notificationService";
 import CourseService from "../../service/courseService";
-import {SearchIcon,MenuIcon, AccountCircleIcon, AccountBoxIcon,  LogoutIcon,SettingsIcon, NotificationsIcon} from '../common/icons'
-import Toast from '../common/toast'
-import showToast from '../../dummydata/toast'
+import {
+  SearchIcon,
+  MenuIcon,
+  AccountCircleIcon,
+  AccountBoxIcon,
+  LogoutIcon,
+  SettingsIcon,
+  NotificationsIcon,
+  HomeIcon,
+} from "../common/icons";
+import Toast from "../common/toast";
+import showToast from "../../dummydata/toast";
 
-function Header({user}) {
+function Header({ user }) {
   const [info, setInfo] = useState({
     uuid: "",
     lastName: "",
@@ -26,24 +35,24 @@ function Header({user}) {
   });
   const [notifications, setNotifications] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [notificationNum,setNotificationNum] = useState(0);
+  const [notificationNum, setNotificationNum] = useState(0);
   const [toggleNotification, setToggleNotification] = useState(false);
-  const [notificationList,setNotificationList] = useState([])
+  const [notificationList, setNotificationList] = useState([]);
 
- useEffect(() => {
+  useEffect(() => {
     (async () => {
-      setInfo(user)
-      await NotificationService.getNotSeenNotifications().then(data => {
-        setNotificationNum(data.num)
-      })
-      setLoading(false)
-    })()
+      setInfo(user);
+      await NotificationService.getNotSeenNotifications().then((data) => {
+        setNotificationNum(data.num);
+      });
+      setLoading(false);
+    })();
   }, [user]);
 
   let fakeData = {
-    logoImg : `https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg`,
-    instructorImg : `"https://cdn-icons-png.flaticon.com/512/65/65882.png"`
-  }
+    logoImg: `https://image.freepik.com/free-vector/course-e-learning-from-home-online-studying-logo-icon-sticker-vector-distant-education-e-books-online-education-distance-exam-banner-vector-isolated-background-eps-10_399089-1104.jpg`,
+    instructorImg: `"https://cdn-icons-png.flaticon.com/512/65/65882.png"`,
+  };
 
   function menuToggle() {
     const toggleMenu = document.querySelector(".menu");
@@ -65,14 +74,14 @@ function Header({user}) {
 
   const handleLogout = () => {
     AuthService.logout();
-    window.location.href = '/auth/login';
+    window.location.href = "/auth/login";
   };
 
   const showInstructorCourses = (
     <React.Fragment>
       <Buttons>
         <Link to={`/instructorcourses`}>
-          <SigninButton>Khóa học của tôi</SigninButton>
+          <MyCourses>Khóa học của tôi</MyCourses>
         </Link>
       </Buttons>
     </React.Fragment>
@@ -82,7 +91,7 @@ function Header({user}) {
     <React.Fragment>
       <Buttons>
         <Link to={`/usercourses`}>
-          <SigninButton>Khóa học của tôi</SigninButton>
+          <MyCourses>Khóa học của tôi</MyCourses>
         </Link>
       </Buttons>
     </React.Fragment>
@@ -96,104 +105,155 @@ function Header({user}) {
   };
 
   const person = (
-    <Wrap onClick={menuToggle} >
+    <Wrap onClick={menuToggle}>
       <div className="wrap">
-        <div className="profile" >
-          {!info.imageUrl ? <AccountCircleIcon className="p-0 font-normal" /> : <img src={`${info.imageUrl}`}></img>}
+        <div className="profile">
+          {!info.imageUrl ? (
+            <AccountCircleIcon className="p-0 font-normal" />
+          ) : (
+            <img src={`${info.imageUrl}`}></img>
+          )}
         </div>
         <div className="full-name">
           {info.firstName} {info.lastName}
-        </div>
-        <div className="menu">
-          <ul>
-            <Link to={'/user/profile'} >
+          <div className="menu">
+            <ul>
+              <Link to={"/user/profile"}>
+                <li>
+                  <AccountBoxIcon /> Profile
+                </li>
+              </Link>
+              <Link to={`#`}>
+                <li>
+                  <SettingsIcon /> Setting
+                </li>
+              </Link>
               <li>
-                <AccountBoxIcon /> Profile
+                <button onClick={handleLogout}>
+                  <LogoutIcon /> Logout
+                </button>
               </li>
-            </Link>
-            <Link to={`#`}>
-              <li>
-                <SettingsIcon /> Setting
-              </li>
-            </Link>
-            <li>
-              <button onClick={handleLogout}>
-                <LogoutIcon /> Logout
-              </button>
-            </li>
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </Wrap>
   );
 
   const showNotification = () => {
-    NotificationService.getNotifications().then(data => {
-      setNotifications(data.notifications)
-    })
+    NotificationService.getNotifications().then((data) => {
+      setNotifications(data.notifications);
+    });
     setNotificationNum(0);
     setToggleNotification(!toggleNotification);
-  }
+  };
 
-  const renderNotify = (<BellWrap >
+  const renderNotify = (
+    <BellWrap>
       <div className="NotifiNum">{notificationNum}</div>
-      <NotificationIcon onClick={showNotification}/>
-      <Wrapper style={{display: !toggleNotification? 'none' : 'block'}}>
-      <h2>Thông báo</h2>
-      <NotificationItems >
-      {!notifications? "Không có thông báo": (notifications.map((v,index) => (
-          <NotifiItem key={index}>
-          <Title>{v.topic}</Title>
-          <Des><span>{v.details}</span> - <span>{v.name}</span></Des>
-          <Time><p>{v.sendAt}</p></Time>
-          <Btns className={v.isConfirmed == 1 ? "hidden" : "flex"} ><button value={v.courseId} className="bg-green-500 text-white" onClick={(e) => {
-            CourseService.inviteStudent(v.courseId,v.senderId).then(data => {
-                NotificationService.setConfirm(v.id).then(() => {
-                  e.target.parentElement.style.display = 'none';
-                  setNotificationList([showToast("success","Thông báo",data.msg.toString())])
-                }).catch(error => {
-                  setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
-                })
-              }).catch(error => {
-                setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
-              })
-
-          }}>Chấp nhận</button>
-          <button className="bg-gray-200" onClick={(e) => {
-            NotificationService.delNotification(v.id).then((data) => {
-              e.target.parentElement.parentElement.remove();
-              setNotificationList([showToast("success","Thông báo",data.msg.toString())])
-            }).catch(error => {
-              setNotificationList([showToast("danger","Thông báo",error.response.data.msg.toString())])
-            })
-          }}>Từ Chối</button></Btns>
-        </NotifiItem>
-        )))}
-    </NotificationItems>
+      <NotificationIcon onClick={showNotification} />
+      <Wrapper style={{ display: !toggleNotification ? "none" : "block" }}>
+        <h2>Thông báo</h2>
+        <NotificationItems>
+          {!notifications
+            ? "Không có thông báo"
+            : notifications.map((v, index) => (
+                <NotifiItem key={index}>
+                  <Title>{v.topic}</Title>
+                  <Des>
+                    <span>{v.details}</span> - <span>{v.name}</span>
+                  </Des>
+                  <Time>
+                    <p>{v.sendAt}</p>
+                  </Time>
+                  <Btns className={v.isConfirmed == 1 ? "hidden" : "flex"}>
+                    <button
+                      value={v.courseId}
+                      className="bg-green-500 text-white"
+                      onClick={(e) => {
+                        CourseService.inviteStudent(v.courseId, v.userId)
+                          .then((data) => {
+                            NotificationService.setConfirm(v.id)
+                              .then(() => {
+                                e.target.parentElement.style.display = "none";
+                                setNotificationList([
+                                  showToast(
+                                    "success",
+                                    "Thông báo",
+                                    data.msg.toString()
+                                  ),
+                                ]);
+                              })
+                              .catch((error) => {
+                                setNotificationList([
+                                  showToast(
+                                    "danger",
+                                    "Thông báo",
+                                    error.response.data.msg.toString()
+                                  ),
+                                ]);
+                              });
+                          })
+                          .catch((error) => {
+                            setNotificationList([
+                              showToast(
+                                "danger",
+                                "Thông báo",
+                                error.response.data.msg.toString()
+                              ),
+                            ]);
+                          });
+                      }}
+                    >
+                      Chấp nhận
+                    </button>
+                    <button
+                      className="bg-gray-200"
+                      onClick={(e) => {
+                        NotificationService.delNotification(v.id)
+                          .then((data) => {
+                            e.target.parentElement.parentElement.remove();
+                            setNotificationList([
+                              showToast(
+                                "success",
+                                "Thông báo",
+                                data.msg.toString()
+                              ),
+                            ]);
+                          })
+                          .catch((error) => {
+                            setNotificationList([
+                              showToast(
+                                "danger",
+                                "Thông báo",
+                                error.response.data.msg.toString()
+                              ),
+                            ]);
+                          });
+                      }}
+                    >
+                      Từ Chối
+                    </button>
+                  </Btns>
+                </NotifiItem>
+              ))}
+        </NotificationItems>
       </Wrapper>
-  </BellWrap>)
+    </BellWrap>
+  );
 
   return (
     <Nav>
-      <Logo>
+      <Home>
         <Link to={`/`}>
-          <img src={fakeData.logoImg} />
+          <HomeIcon />
+          <div>Trang chủ</div>
         </Link>
-      </Logo>
-      <Categories>
-        <CustomMenu ></CustomMenu>
-        <p>Danh mục khóa học</p>
-      </Categories>
-      <SearchBar>
-        <input type="text" placeholder="Tìm kiếm khóa học..." />
-        <button type="submit">
-          <CustomSearch />
-        </button>
-      </SearchBar>
+      </Home>
       {user.uuid && renderNotify}
       {loading ? "" : userRole()}
-      {!user.uuid? loginIcon:person}
-      <Toast toastList={notificationList}/>
+      {!user.uuid ? loginIcon : person}
+      <Toast toastList={notificationList} />
     </Nav>
   );
 }
@@ -204,9 +264,9 @@ const Wrapper = styled.div`
   position: absolute;
   top: 115%;
   right: -25%;
-  border: 1px solid #38CC77;
-  background:white;
-  h2{
+  border: 1px solid #38cc77;
+  background: white;
+  h2 {
     padding: 0.5rem;
     font-weight: 700;
   }
@@ -221,45 +281,44 @@ const Wrapper = styled.div`
     transform: rotate(45deg);
     z-index: -100;
   }
-`
+`;
 
 const NotificationItems = styled.div`
   height: 25rem;
   width: 20rem;
   overflow-y: auto;
   padding: 0 1rem 1rem 1rem;
-`
+`;
 const NotifiItem = styled.div`
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+    rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
   padding: 0.5rem;
   margin: 0.5rem 0;
-`
+`;
 
 const Title = styled.div`
-  font-size : 1.1rem;
+  font-size: 1.1rem;
   font-weight: 500;
-`
-const Des = styled.div`
-
-`
+`;
+const Des = styled.div``;
 const Time = styled.div`
   text-align: end;
-  font-size:0.6rem;
-`
+  font-size: 0.6rem;
+`;
 const Btns = styled.div`
   justify-content: space-around;
   margin: 0.2rem 0;
   button {
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
+      rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
     padding: 0 0.5rem;
     transition: 0.5s ease 0s;
   }
-`
+`;
 const NotificationIcon = styled(NotificationsIcon)`
-  font-size:3rem!important;
-  cursor:pointer;
-`
-
+  font-size: 3rem !important;
+  cursor: pointer;
+`;
 
 const BellWrap = styled.div`
   position: relative;
@@ -271,11 +330,10 @@ const BellWrap = styled.div`
     height: 1.5rem;
     text-align: center;
     background: red;
-    color:white;
-    border-radius:50%;
+    color: white;
+    border-radius: 50%;
   }
-
-`
+`;
 
 const Nav = styled.div`
   z-index: 999;
@@ -288,13 +346,9 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em, rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em, rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-`;
-
-const Logo = styled.div`
-  img {
-    height: 40px;
-  }
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
 `;
 
 const Categories = styled.div`
@@ -314,12 +368,10 @@ const SearchBar = styled.div`
   width: 900px;
   border: 2px solid black;
   border-radius: 100px;
-
   cursor: pointer;
   padding: 8px 25px;
   cursor: text;
   font-weight: lighter;
-
   input {
     padding-left: 10px;
     border: none;
@@ -350,7 +402,6 @@ const BecomeInstructor = styled.div`
   height: 40px;
   font-weight: 600;
 `;
-
 
 const Wrap = styled.div`
   div.wrap {
@@ -385,63 +436,86 @@ const Wrap = styled.div`
       height: 100%;
     }
     .full-name {
+      position: relative;
       margin-left: 0.5rem;
       margin-right: 0.7rem;
       font-size: 1rem;
       padding: 2px;
-    }
-    .menu {
-      position: absolute;
-      top: 5.25rem;
-      right: 4.5vw;
-      background: #fff;
-      width: 9rem;
-      box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
-      border-radius: 15px;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      background-color: #f1f2f6;
-      transition: 0.5s;
-      display:none;
-    }
-    .menu li:hover{
-      background-color: #ced6e0;
-      border-radius: 15px;
-    }
-    & .menu.active {
-      display: block;
-    }
-    & .menu::before {
-      content: "";
-      position: absolute;
-      top: -5px;
-      right: 28px;
-      width: 20px;
-      height: 20px;
-      background:black;
-      transform: rotate(45deg);
-      z-index: -100;
-    }
-    .menu ul li {
-      list-style: none;
-      padding: 0.5rem 1rem;
-      border-top: 1px solid rgba(0, 0, 0, 0.05);
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-    & .menu ul li:hover {
-      display: inline-block;
-      text-decoration: none;
-      color: #555;
-      font-weight: 500;
-      transition: 0.5s;
+      .menu {
+        position: absolute;
+        top: 200%;
+        right: 0;
+        background: #fff;
+        width: 9rem;
+        box-sizing: 0 5px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        background-color: #f1f2f6;
+        transition: 0.5s;
+        display: none;
+      }
+      .menu li:hover {
+        background-color: #ced6e0;
+        border-radius: 15px;
+      }
+      & .menu.active {
+        display: block;
+      }
+      & .menu::before {
+        content: "";
+        position: absolute;
+        top: -5px;
+        right: 28px;
+        width: 20px;
+        height: 20px;
+        background: black;
+        transform: rotate(45deg);
+        z-index: -100;
+      }
+      .menu ul li {
+        list-style: none;
+        padding: 0.5rem 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      & .menu ul li:hover {
+        display: inline-block;
+        text-decoration: none;
+        color: #555;
+        font-weight: 500;
+        transition: 0.5s;
+      }
     }
   }
   & div.wrap {
     border-radius: 35px;
-    background-color: rgba(236, 240, 241,1.0);
+    background-color: rgba(236, 240, 241, 1);
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+  }
+`;
+
+const Home = styled.div`
+  a {
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 1vh 1vw;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    gap: 10px;
+    align-items: center;
+    transition: 0.25s ease;
+  }
+  a:hover {
+    background-color: grey;
+    color: white;
+  }
+  div {
+    font-weight: 500;
+    font-size: 1.25rem;
+    display: flex;
   }
 `;
 
@@ -467,6 +541,11 @@ const SigninButton = styled.button`
     background-color: #04aa6d;
   }
 `;
+
+const MyCourses = styled(SigninButton)`
+  width: 10vw;
+`;
+
 const SignupButton = styled.button`
   color: white;
   background-color: black;

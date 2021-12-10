@@ -8,7 +8,8 @@ import Toast from "../../common/toast";
 import toastList from "../../../dummydata/toast";
 import { useParams } from "react-router";
 
-function EditCourseContent() {
+function EditCourseContent({ courseParam }) {
+  console.log(courseParam);
   const [image, setImage] = useState(null);
   const isSuccess = useRef("");
   const [msg, setMsg] = useState(null);
@@ -17,11 +18,14 @@ function EditCourseContent() {
     description: "",
     courseImageUrl: null,
   });
+
   const [loading, setLoading] = useState(false);
 
   let { id } = useParams();
-  console.log(id);
-
+  useEffect(() => {
+    setContent({ ...courseParam });
+    setImage(courseParam.imageUrl);
+  }, [courseParam]);
   const edit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -36,13 +40,12 @@ function EditCourseContent() {
         isSuccess.current = true;
         setMsg(response.msg);
         setTimeout(() => {
-          window.location.href = "./infos";
+          window.location.href = "./edit";
         }, 3000);
       })
       .catch((error) => {
         isSuccess.current = false;
-        console.log(error.response)
-        // setMsg(error.response.data.msg.toString());  
+        console.log(error.response);
       });
     setLoading(false);
   };
@@ -133,7 +136,7 @@ export default EditCourseContent;
 const Container = styled.div`
   padding: 5vh 5vw;
   position: relative;
-  width:85vw;
+  width: 85vw;
 `;
 
 const CourseImage = styled(CourseImgIcon)`

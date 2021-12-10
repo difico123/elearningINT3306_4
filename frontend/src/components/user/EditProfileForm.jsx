@@ -154,10 +154,11 @@ function EditProfile({ user }) {
                 onChange={onChange}
               ></input>
             </InputBox>
-            {render}
+
             <Confirm>
               <input type="Submit" value="Confirm" onClick={editInfo}></input>
             </Confirm>
+            {render}
           </UserDetails>
         </Form>
       </Container>
@@ -166,7 +167,7 @@ function EditProfile({ user }) {
 }
 
 const Wrap = styled.div`
-  height: 90vh;
+  height: 100vh;
   display: flex;
   width: 100%;
 `;

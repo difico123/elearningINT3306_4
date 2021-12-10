@@ -5,7 +5,7 @@ module.exports = class NotificationService {
     static async getNotification(instructorId) {
         try {
             const response = await sequelize.query(
-                `select n.id, n.courseId,n.senderId, n.topic,n.details,c.name,
+                `select n.id, n.courseId,n.userId, n.topic,n.details,c.name,
                 n.viewed, n.isConfirmed,
                 DATE_FORMAT(n.createdAt, "%h:%i:%s' %d/%m/%Y") as sendAt from notifications n
                 join courses c on c.id = n.courseId

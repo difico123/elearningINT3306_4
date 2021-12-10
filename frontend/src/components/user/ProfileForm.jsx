@@ -125,6 +125,7 @@ const UserDetails = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: 1.2rem;
 `;
 
 const ProfileIcon = styled(PersonIcon)`

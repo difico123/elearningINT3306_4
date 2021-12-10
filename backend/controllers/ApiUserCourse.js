@@ -102,7 +102,7 @@ module.exports = class ApiCourse {
 
             let notification = {
                 courseId: courseId,
-                senderId: studentId,
+                userId: studentId,
                 topic,
                 details,
             };

@@ -6,6 +6,7 @@ import { CourseImgIcon } from "../../common/icons";
 import Loader from "../../common/loader";
 import Toast from "../../common/toast";
 import toastList from "../../../dummydata/toast";
+import {Link} from 'react-router-dom'
 
 function CreateCourse() {
   const [image, setImage] = useState(null);
@@ -116,7 +117,7 @@ function CreateCourse() {
   const render = loading ? loadIcon : renderMsg;
   return (
     <Container>
-      <Title>Tạo khóa học mới</Title>
+      <Title><span>Tạo khóa học mới</span><Link to='../'><span>Quay lại</span></Link></Title>
       <CreateCourseForm>
         <CategoryWrap>
           <FormTitle>Danh mục khóa học</FormTitle>
@@ -172,6 +173,20 @@ const CourseImage = styled(CourseImgIcon)`
 const Title = styled.div`
   font-size: 1.75rem;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  a span{
+    border: 1px solid green;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    &:hover {
+      background: green;
+      color:white;
+    }
+  }
 `;
 
 const CreateCourseForm = styled.form`

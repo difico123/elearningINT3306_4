@@ -54,7 +54,8 @@ function CreateTopic() {
       }
       setLoading(true);
       await CourseService.createTopic(id, topic).then((res) => {
-      setListNotifications([showToast('success','Thông báo', res.msg.toString())])
+        setListNotifications([showToast('success','Thông báo', res.msg.toString())])
+        window.location.href = "./infos";
       }).catch((err) => {
         setListNotifications([showToast('danger','Thông báo', err.response.msg.toString())])
       })
@@ -64,7 +65,7 @@ function CreateTopic() {
 return ( 
 <>
     <Container>
-      <Title>Tạo Topic mới</Title>
+      <Title><span>Tạo Topic mới</span> </Title>
       <CreateCourseForm>
         <Wrap>
         <div className="App">
@@ -137,7 +138,9 @@ const Editor = styled(ReactQuill) `
  
 const Container = styled.div`
   padding: 5vh 5vw;
-  min-height: calc(100vh - 425px);
+  height: 90vh;
+  width: 85vw;
+  overflow: auto;
 `;
 
 const Title = styled.div`

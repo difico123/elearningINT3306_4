@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate({ User,Course }) {
             // define association here
             this.belongsTo(Course, { foreignKey: 'courseId', onDelete: 'cascade' });
-            this.belongsTo(User, { foreignKey: 'senderId', onDelete: 'cascade' });
+            this.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
         }
     }
     
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
                 references: { model: 'courses', key: 'id' },
                 allowNull: false,
             },
-            senderId: {
+            userId: {
                 type: DataTypes.INTEGER,
                 references: { model: 'users', key: 'id' },
                 allowNull: false,

@@ -1,6 +1,6 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-const { User, Course, Category, UserCourse } = require('../db/models');
+const { User, Course, Category, UserCourse, Notification } = require('../db/models');
 const CourseService = require('../dbService/courseService');
 const UserService = require('../dbService/userService');
 const UserCourseService = require('../dbService/userCourseService');
@@ -347,7 +347,7 @@ module.exports = class ApiCourse {
 
             await UserCourseService.getUsersbyCourseId(courseId).then(
                 (data) => {
-                    let users = pagination(data, page);
+                    let users = pagination(data, page, 6);
                     return res.status(200).json({
                         error: false,
                         course: course,
@@ -418,6 +418,19 @@ module.exports = class ApiCourse {
                     msg: 'Không có user này',
                 });
             }
+
+            let course = Course.findOne({ where: { id: courseId }})
+            let topic = 'Đăng ký khoá học';
+            let details = `Bạn vừa được giảng viên mời vào khoá học ${course.name}`;
+
+            let notification = {
+                courseId: courseId,
+                userId: userId,
+                topic,
+                details,
+            };
+
+            await Notification.create(notification)
 
             await UserCourse.create(userCourse)
                 .then(() => {

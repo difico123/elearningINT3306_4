@@ -12,7 +12,6 @@ function UserRouter({ user }) {
       <div className="relative">
         <LSideBar />
       </div>
-
       <Routes>
         <Route path="/profile" element={<ProfileForm user={user} />} />
         <Route path="/editprofile" element={<EditProfileForm user={user} />} />

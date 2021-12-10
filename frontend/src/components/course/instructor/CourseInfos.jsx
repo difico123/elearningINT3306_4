@@ -4,10 +4,10 @@ import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import TopicContent from "./TopicContent";
 
-function EditCourseInfos() {
+function EditCourseInfos({ courseParam, topicsParam }) {
   let { id } = useParams();
   console.log(id);
-
+  console.log("abc", courseParam, topicsParam);
   const [course, setCourse] = useState({
     id: id,
     name: "",
@@ -36,17 +36,10 @@ function EditCourseInfos() {
   ]);
 
   useEffect(() => {
-    let course = CourseService.getInstructorCourseDetails(id).then(
-      (response) => {
-        setCourse({ ...response.course });
-        setTopics(response.topics);
-      }
-    );
-
-    Promise.all([course]).then(() => {
-      setLoading(false);
-    });
-  }, []);
+    setCourse({ ...courseParam });
+    setTopics(topicsParam);
+    setLoading(false);
+  }, [courseParam, topicsParam]);
 
   const renderTopics = topics.map((topic, index) => (
     <>
@@ -84,7 +77,9 @@ function EditCourseInfos() {
           <TopicNav>
             <NavTitle>
               <span>Nội dung khóa học</span>
+              <Link to="../createTopic">
               <button>+</button>
+              </Link>
             </NavTitle>
             <TopicWrap>{renderTopics}</TopicWrap>
           </TopicNav>
@@ -107,9 +102,11 @@ export default EditCourseInfos;
 const Container = styled.div`
   height: 90vh;
   display: flex;
+  width: 85vw;
   justify-content: flex-start;
   align-items: flex-start;
   flex-flow: row nowrap;
+  overflow: auto;
 `;
 
 const Body = styled.div`
@@ -121,6 +118,7 @@ const Body = styled.div`
 `;
 
 const CourseInfos = styled.div`
+  position: relative;
   display: flex;
   flex-flow: row nowrap;
   gap: 1rem;
@@ -172,13 +170,18 @@ const CourseCover = styled.div`
 const BackgroundImage = styled.img``;
 
 const Topic = styled.div`
+  position: relative;
   background-color: white;
   display: flex;
   flex-flow: row nowrap;
   gap: 0;
 `;
 
-const TopicNav = styled.div``;
+const TopicNav = styled.div`
+  position: sticky;
+  top: 0;
+  position: -webkit-sticky;
+`;
 
 const NavTitle = styled.div`
   background-color: #e0e0e0;

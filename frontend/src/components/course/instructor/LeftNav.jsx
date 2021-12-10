@@ -12,15 +12,13 @@ function Sidebar() {
   const [toggleDelete, setToggleDelete] = useState(false);
   const [toastList, setToastList] = useState([]);
   let { id } = useParams();
-  console.log(id);
+
   const handleDelete = async () => {
     await courseService
       .deleteCourse(id)
       .then((response) => {
         setToastList([showToast("success", "Thông báo", response.msg)]);
-        setTimeout(() => {
-          window.location.href = "../";
-        }, 3000);
+        window.location.href = "../";
       })
       .catch((error) => {
         setToastList([
@@ -34,7 +32,6 @@ function Sidebar() {
   const footerPopup = (
     <DeleteButton onClick={handleDelete}>Tôi muốn xóa!</DeleteButton>
   );
-  console.log();
   return (
     <React.Fragment>
       <SideBar>
@@ -57,7 +54,7 @@ function Sidebar() {
           </Wrap>
         </NavLink>
 
-        <DeleteButton
+        <DeleteButton className="popup-delete"
           onClick={() => {
             setToggleDelete(true);
           }}
@@ -81,6 +78,7 @@ function Sidebar() {
 }
 
 const SideBar = styled.div`
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   background-color: #969eaa;
@@ -102,6 +100,9 @@ const SideBar = styled.div`
     background-color: #3a3e47;
     background-position: 0 0;
     color: #fff;
+  }
+  .popup-delete{
+    position: absolute;
   }
   @media only screen and (min-width: 1900px) {
     min-width: 15vw;
@@ -127,7 +128,7 @@ const SideBar = styled.div`
 `;
 
 const DeleteButton = styled.button`
-  bottom: 0;
+  bottom: 0.5rem;
   background-color: white;
   color: black;
   font-weight: 600;
