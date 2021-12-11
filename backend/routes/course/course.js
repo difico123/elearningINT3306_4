@@ -13,7 +13,7 @@ const {
     validateInput,
 } = require('../../middleware/errors/Validate');
 
-const {coursePassport} = require('../../middleware/passport')
+const { coursePassport } = require('../../middleware/passport');
 
 //@route api/course/:courseId/topic
 router.use('/:courseId/topic', coursePassport, require('./topic'));
@@ -40,7 +40,12 @@ router.get('/instructorCourses', auth, instructorAuth, ApiCourse.getCourses);
 // @route   GET api/course/instructorCourses/:courseId
 // @desc    show instructor'courses details
 // @access  Private
-router.get('/instructorCourses/:courseId', auth, courseInstructorAuth(true), ApiCourse.getCourseDetails);
+router.get(
+    '/instructorCourses/:courseId',
+    auth,
+    courseInstructorAuth(true),
+    ApiCourse.getCourseDetails,
+);
 
 // @route   PUT api/course/activate/:courseId
 // @desc    Activate course
@@ -134,4 +139,6 @@ router.get('/showAll', ApiCourse.showAll);
 // @desc    Show all courses
 // @access  public
 router.get('/showDetail/:courseId', ApiCourse.showDetail);
+
+
 module.exports = router;

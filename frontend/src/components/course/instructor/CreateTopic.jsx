@@ -44,8 +44,8 @@ function CreateTopic() {
         setError('Tiêu đề bắt buộc phải có ít nhất 10 ký tự');
         return;
       }
-      if(topic.description.length < 10){
-        setError('Phần mô tả bắt buộc phải có ít nhất 10 ký tự');
+      if(topic.description.length < 20){
+        setError('Phần mô tả bắt buộc phải có ít nhất 20 ký tự');
         return;
       }
       if(topic.content.length < 30){
@@ -57,7 +57,7 @@ function CreateTopic() {
         setListNotifications([showToast('success','Thông báo', res.msg.toString())])
         window.location.href = "./infos";
       }).catch((err) => {
-        setListNotifications([showToast('danger','Thông báo', err.response.msg.toString())])
+        setListNotifications([showToast('danger','Thông báo', err.response.data.msg.toString())])
       })
       setLoading(false);
   } 

@@ -23,7 +23,7 @@ function CourseEnroll({ checkEnroll }) {
     !enrolled ? "Chờ giảng viên của bạn chấp nhận..." : "Tham gia"
   );
 
-  const [course, setCourses] = useState({
+  const [course, setCourse] = useState({
     name: "",
     description: "",
     instructorName: "",
@@ -41,7 +41,7 @@ function CourseEnroll({ checkEnroll }) {
 
   useEffect(() => {
     CourseService.getEnrollTopics(id).then((response) => {
-      setCourses({ ...response.course });
+      setCourse({ ...response.course });
       setTopics([...response.topics]);
       setLoading(false);
     });

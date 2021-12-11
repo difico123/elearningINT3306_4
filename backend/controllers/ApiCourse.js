@@ -1,6 +1,12 @@
 const cloudinary = require('../config/cloud/cloudinary');
 const { pagination } = require('../utils/feature');
-const { User, Course, Category, UserCourse, Notification } = require('../db/models');
+const {
+    User,
+    Course,
+    Category,
+    UserCourse,
+    Notification,
+} = require('../db/models');
 const CourseService = require('../dbService/courseService');
 const UserService = require('../dbService/userService');
 const UserCourseService = require('../dbService/userCourseService');
@@ -166,8 +172,8 @@ module.exports = class ApiCourse {
             // let courses = await Course.findAll({
             //     where: { instructorId: req.user.id },
             // });
-            let {page} = req.query;
-            let courses = await CourseService.getInstructorCourses(req.user.id)
+            let { page } = req.query;
+            let courses = await CourseService.getInstructorCourses(req.user.id);
             let instructor = await User.findOne({
                 where: { id: req.user.id },
             });
@@ -193,9 +199,9 @@ module.exports = class ApiCourse {
     // @desc    show instructor'course details
     // @access  Private
     static async getCourseDetails(req, res) {
-        let {courseId} = req.params
+        let { courseId } = req.params;
         try {
-            let course = (await CourseService.getSingleCourse(courseId))[0]
+            let course = (await CourseService.getSingleCourse(courseId))[0];
 
             if (course.imageUrl) {
                 course.imageUrl = course.imageUrl.split(' ')[0];
@@ -205,7 +211,7 @@ module.exports = class ApiCourse {
             res.status(200).json({
                 error: false,
                 course: course,
-                topics
+                topics,
             });
         } catch (error) {
             console.log(error.message);
@@ -289,10 +295,12 @@ module.exports = class ApiCourse {
                 let page = req.query.page || 1;
                 let courses = pagination(data, page);
                 for (let i in courses) {
-                    if(courses[i].imageUrl) {
-                        courses[i].imageUrl = courses[i].imageUrl.split(" ")[0];
+                    if (courses[i].imageUrl) {
+                        courses[i].imageUrl = courses[i].imageUrl.split(' ')[0];
                     }
-                    courses[i].rating = !courses[i].rating ? "0" : courses[i].rating;
+                    courses[i].rating = !courses[i].rating
+                        ? '0'
+                        : courses[i].rating;
                 }
 
                 res.status(200).json({
@@ -313,22 +321,22 @@ module.exports = class ApiCourse {
     // @desc    show all courses
     // @access  public
     static async showDetail(req, res) {
-        const {courseId} = req.params
+        const { courseId } = req.params;
         try {
             CourseService.getSingleCourse(courseId).then((data) => {
                 let course = data[0];
 
-                if(course.imageUrl) {
-                    course.imageUrl = course.imageUrl.split(" ")[0];
+                if (course.imageUrl) {
+                    course.imageUrl = course.imageUrl.split(' ')[0];
                 }
 
-                TopicService.getShortTopic(courseId).then(topics => {
+                TopicService.getShortTopic(courseId).then((topics) => {
                     res.status(200).json({
                         error: false,
                         course,
                         topics,
                     });
-                })
+                });
             });
         } catch (error) {
             console.log(error.message);
@@ -419,18 +427,19 @@ module.exports = class ApiCourse {
                 });
             }
 
-            let course = Course.findOne({ where: { id: courseId }})
-            let topic = 'Đăng ký khoá học';
-            let details = `Bạn vừa được giảng viên mời vào khoá học ${course.name}`;
+            // let course = await Course.findOne({ where: { id: courseId }})
+            // let topic = 'Đăng ký khoá học';
+            // let details = `Bạn vừa được giảng viên mời vào ${course.name}`;
+            // console.log(course)
 
-            let notification = {
-                courseId: courseId,
-                userId: userId,
-                topic,
-                details,
-            };
+            // let notification = {
+            //     courseId: courseId,
+            //     userId: userId,
+            //     topic,
+            //     details,
+            // };
 
-            await Notification.create(notification)
+            // await Notification.create(notification)
 
             await UserCourse.create(userCourse)
                 .then(() => {

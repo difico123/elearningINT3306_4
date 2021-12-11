@@ -1,4 +1,4 @@
-const { Notification } = require('../db/models');
+const { Notification, User } = require('../db/models');
 const NotificationService = require('../dbService/notificationService');
 
 module.exports = class ApiNotification {
@@ -8,21 +8,34 @@ module.exports = class ApiNotification {
     static async getNotification(req, res) {
         let { id } = req.user;
         try {
-            let notifications = await NotificationService.getNotification(id);
+            // let user = await User.findOne({where: {id: id}});
+            let notifications = {};
+
+            notifications = await NotificationService.getInstructorNotification(
+                id,
+            );
+
+            // if(user.role === 1) {
+            // } else {
+            //     notifications = await NotificationService.getStudentNotification(id);
+            // }
+
             if (notifications.length === 0) {
                 return res.status(200).json({
                     error: false,
                     msg: ['Bạn không có thông báo nào'],
                 });
             } else {
-                for(let i = 0; i < notifications.length; i++) {
-                    await Notification.findOne({ where: { id: notifications[i].id } }).then(async(notification) =>{
+                for (let i = 0; i < notifications.length; i++) {
+                    await Notification.findOne({
+                        where: { id: notifications[i].id },
+                    }).then(async (notification) => {
                         if (notification) {
                             await notification.update({
-                                viewed: 1
-                            })
+                                viewed: 1,
+                            });
                         }
-                    })
+                    });
                 }
 
                 res.status(200).json({
@@ -37,14 +50,13 @@ module.exports = class ApiNotification {
         }
     }
 
-
     // @route   GET api/notification/getNotSeenMsg
     // @desc    get msg not seen
     // @access  Private
-     static async getNotSeenMsgs(req, res) {
-         let {id} = req.user;
+    static async getNotSeenMsgs(req, res) {
+        let { id } = req.user;
         try {
-            let notifications = await NotificationService.getWatch(id)
+            let notifications = await NotificationService.getWatch(id);
             res.status(200).json({
                 error: false,
                 num: notifications[0].NotSeen,
@@ -58,14 +70,16 @@ module.exports = class ApiNotification {
     // @route   DELETE api/notification/delete/:notificationId
     // @desc    Delete notification by user
     // @access  Private
-     static async delNotification(req, res) {
-         let {notificationId} = req.params;
+    static async delNotification(req, res) {
+        let { notificationId } = req.params;
         try {
-            let notifications = await Notification.findOne({ where: { id: notificationId } })
+            let notifications = await Notification.findOne({
+                where: { id: notificationId },
+            });
             await notifications.destroy();
             res.status(200).json({
                 error: false,
-                msg: ["Bạn đã xoá thông báo này"],
+                msg: ['Bạn đã xoá thông báo này'],
             });
         } catch (error) {
             console.log(error.message);
@@ -75,22 +89,25 @@ module.exports = class ApiNotification {
     // @route   PUT api/notification/setConfirm/:notificationId
     // @desc    set confirm notification by user
     // @access  Private
-     static async setConfirm(req, res) {
-         let {notificationId} = req.params;
+    static async setConfirm(req, res) {
+        let { notificationId } = req.params;
         try {
-            await Notification.findOne({ where: { id: notificationId } }).then(async(notification) =>{
-                if (notification) {
-                    await notification.update({
-                        isConfirmed: 1
-                    }).then(() => {
-                        res.status(200).json({
-                            error: false,
-                            msg: ["Bạn thông báo này đã xác nhận"],
-                        });
-                    })
-                }
-            })
-
+            await Notification.findOne({ where: { id: notificationId } }).then(
+                async (notification) => {
+                    if (notification) {
+                        await notification
+                            .update({
+                                isConfirmed: 1,
+                            })
+                            .then(() => {
+                                res.status(200).json({
+                                    error: false,
+                                    msg: ['Bạn thông báo này đã xác nhận'],
+                                });
+                            });
+                    }
+                },
+            );
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

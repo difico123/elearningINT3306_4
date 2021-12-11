@@ -32,15 +32,10 @@ router.get(
     ApiUserCourse.checkEnrollCourse,
 );
 
-
 // @route   GET api/userCourse/check/:courseId
 // @desc    check enroll a course
 // @access  private
-router.get(
-    '/check/:courseId',
-    auth,
-    ApiUserCourse.checkCourse,
-);
+router.get('/check/:courseId', auth, ApiUserCourse.checkCourse);
 
 // @route   Get api/userCourse/all
 // @desc    get the list of user courses

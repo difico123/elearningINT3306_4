@@ -23,5 +23,4 @@ Router.put('/setConfirm/:notificationId', auth, ApiNotification.setConfirm);
 // @access  Private
 Router.get('/getNotSeenMsgs', auth, ApiNotification.getNotSeenMsgs);
 
-
 module.exports = Router;

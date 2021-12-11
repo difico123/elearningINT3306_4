@@ -15,7 +15,6 @@ module.exports = async function (req, res, next) {
         let course = await Course.findOne({
             where: { instructorId: id },
         });
-
         if (!userCourse && !course) {
             return res.status(403).json({
                 error: true,

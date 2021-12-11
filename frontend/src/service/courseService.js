@@ -74,6 +74,10 @@ async function getTopicDetails(courseId, topicId) {
   return await http.get(apiEndpoint + `/${courseId}/topic/getSingleTopic/${topicId}`);
 }
 
+async function getCourseTopics(courseId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/getCourseTopics`);
+}
+
 export default {
   findUsers,
   getAll,
@@ -89,5 +93,6 @@ export default {
   getCourseUsers,
   getInstructorCourseDetails,
   getTopicDetails,
-  kickUser
+  kickUser,
+  getCourseTopics
 };

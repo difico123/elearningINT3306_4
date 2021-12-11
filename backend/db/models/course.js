@@ -25,8 +25,15 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'courseId',
                 onDelete: 'CASCADE',
             });
-            this.hasMany(Topic, { foreignKey: 'courseId', onDelete: 'CASCADE', hooks: true});
-            this.hasMany(Notification, { foreignKey: 'courseId', onDelete: 'cascade' });
+            this.hasMany(Topic, {
+                foreignKey: 'courseId',
+                onDelete: 'CASCADE',
+                hooks: true,
+            });
+            this.hasMany(Notification, {
+                foreignKey: 'courseId',
+                onDelete: 'cascade',
+            });
         }
 
         toJSON() {

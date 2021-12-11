@@ -6,13 +6,12 @@ import TopicContent from "./TopicContent";
 
 function EditCourseInfos({ courseParam, topicsParam }) {
   let { id } = useParams();
-  console.log(id);
-  console.log("abc", courseParam, topicsParam);
+
   const [course, setCourse] = useState({
     id: id,
     name: "",
     description: "",
-    instructorName: "Văn Anh",
+    instructorName: "",
     imageUrl: "",
     register: 0,
     rating: "",
@@ -23,7 +22,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
 
   const [topics, setTopics] = useState([
     {
-      id: 0,
+      id: "",
       title: "",
     },
   ]);
@@ -34,16 +33,18 @@ function EditCourseInfos({ courseParam, topicsParam }) {
       title: "",
     },
   ]);
-
+  
   useEffect(() => {
+    setTopicId(topicsParam[0]? topicsParam[0].id:null)
     setCourse({ ...courseParam });
     setTopics(topicsParam);
     setLoading(false);
   }, [courseParam, topicsParam]);
 
+
   const renderTopics = topics.map((topic, index) => (
     <>
-      <Title key={index} onClick={() => setTopicId(topic.id)}>
+      <Title className='bg-green-300' key={index} onClick={() => setTopicId(topic.id)} >
         Chủ đề {index + 1}: {topic.title}
       </Title>
     </>
@@ -81,16 +82,11 @@ function EditCourseInfos({ courseParam, topicsParam }) {
               <button>+</button>
               </Link>
             </NavTitle>
-            <TopicWrap>{renderTopics}</TopicWrap>
+            <TopicWrap>{!topics[0]? <NoContent>Chưa có chủ đề</NoContent>: renderTopics}</TopicWrap>
           </TopicNav>
           {!isLoading && (
             <TopicContent courseId={course.id} topicId={topicId} />
           )}
-          {/* <TopicTitle>Chủ đề 1: Một chủ đề nào đó của Đức múp</TopicTitle>
-            <Content>
-              Đây là nội dung chủ đề 1 của khóa học dummy hết sức ngu xuẩn của
-              Đức múp. Trong khóa học này, ta sẽ học cách trở nên ngu xuẩn
-            </Content> */}
         </Topic>
       </Body>
     </Container>
@@ -98,7 +94,9 @@ function EditCourseInfos({ courseParam, topicsParam }) {
 }
 
 export default EditCourseInfos;
-
+const NoContent = styled.div`
+  text-align:center;
+`
 const Container = styled.div`
   height: 90vh;
   display: flex;

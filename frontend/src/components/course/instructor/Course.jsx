@@ -4,6 +4,8 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CourseService from "../../../service/courseService";
 import { ArrowBackIosIcon, ArrowForwardIosIcon } from "../../common/icons";
+import Toast from "../../common/toast"
+import showToast from "../../../dummydata/toast"
 
 function InstructorCourses() {
   const [getCourses, setCourses] = useState([
@@ -22,6 +24,7 @@ function InstructorCourses() {
 
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [toastList, setToastList] = useState([]);
   useEffect(() => {
     CourseService.getInstructorCourses().then((response) => {
       setCourses(response.courses);
@@ -33,6 +36,7 @@ function InstructorCourses() {
       onClick={() => {
         CourseService.suspendCourse(id).then((response) => {
           setChange(!change);
+          setToastList([...toastList,showToast('warning','Thông báo', 'khoá học đã được tạm dừng!')])
         });
       }}
     >
@@ -46,6 +50,7 @@ function InstructorCourses() {
         CourseService.activateCourse(id).then((response) => {
           console.log(response);
           setChange(!change);
+          setToastList([...toastList, showToast('info','Thông báo', 'khoá học đã được kích hoạt!')])
         });
       }}
     >
@@ -151,6 +156,7 @@ function InstructorCourses() {
           />
         </div>
       </Pagination>
+      <Toast toastList={toastList}/>
     </React.Fragment>
   );
 }

@@ -1,4 +1,4 @@
-const { User, Course, Category, UserCourse,Topic } = require('../db/models');
+const { User, Course, Category, UserCourse, Topic } = require('../db/models');
 
 module.exports = class ApiTopic {
     // @route   POST api/topic/create
@@ -18,7 +18,6 @@ module.exports = class ApiTopic {
                     msg: 'Tạo chủ đề thành công',
                 });
             });
-
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -30,9 +29,9 @@ module.exports = class ApiTopic {
     // @access  Private
     static async getCourseTopics(req, res) {
         try {
-            let course = await Course.findOne({where: {id: req.courseId}})
+            let course = await Course.findOne({ where: { id: req.courseId } });
             let topics = await Topic.findAll({
-                where: { courseId: req.courseId }
+                where: { courseId: req.courseId },
             });
 
             res.status(200).json({
@@ -52,7 +51,7 @@ module.exports = class ApiTopic {
     static async getSingleTopics(req, res) {
         try {
             let topic = await Topic.findOne({
-                where: { id: req.params.topicId }
+                where: { id: req.params.topicId },
             });
 
             res.status(200).json({
@@ -64,8 +63,6 @@ module.exports = class ApiTopic {
             res.status(500).send('Server error');
         }
     }
-
-
 
     // @route   GET api/course/:courseId/topic/edit/:topicId
     // @desc    edit Topics

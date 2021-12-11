@@ -1,49 +1,46 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-    class Topic extends Model {
+    class Question extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ Course, Quiz }) {
-            this.belongsTo(Course, {
-                foreignKey: 'courseId',
-                onDelete: 'cascade',
-            });
-            this.hasMany(Quiz, {
-                foreignKey: 'quizId',
+        static associate({ Quiz, Choice }) {
+            // define association here
+            this.belongsTo(Quiz, { foreignKey: 'quizId', onDelete: 'cascade' });
+            this.hasMany(Choice, {
+                foreignKey: 'QuestionId',
                 onDelete: 'CASCADE',
                 hooks: true,
             });
         }
     }
-    Topic.init(
+    Question.init(
         {
-            title: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            description: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             content: {
-                type: DataTypes.TEXT,
+                type: DataTypes.STRING,
                 allowNull: false,
             },
-            courseId: {
+            quizId: {
                 type: DataTypes.INTEGER,
-                references: { model: 'courses', key: 'id' },
+                allowNull: false,
+                references: { model: 'quizzes', key: 'id' },
+                onUpdate: 'cascade',
+                onDelete: 'cascade',
+            },
+            marks: {
+                type: DataTypes.INTEGER,
+                defaultValue: 5,
                 allowNull: false,
             },
         },
         {
             sequelize,
-            tableName: 'topics',
-            modelName: 'Topic',
+            tableName: 'questions',
+            modelName: 'Question',
         },
     );
-    return Topic;
+    return Question;
 };

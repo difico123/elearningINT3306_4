@@ -13,7 +13,7 @@ module.exports = {
                 references: { model: 'courses', key: 'id' },
                 allowNull: false,
                 onUpdate: 'cascade',
-                onDelete: 'cascade'
+                onDelete: 'cascade',
             },
             title: {
                 type: DataTypes.STRING,

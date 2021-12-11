@@ -25,7 +25,8 @@ module.exports = {
                     role: 2,
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
-                    imageUrl: 'https://res.cloudinary.com/subarashis/image/upload/v1638664872/avatars/lf8g0pyi6obzotjkf1ps.png avatars/lf8g0pyi6obzotjkf1ps'
+                    imageUrl:
+                        'https://res.cloudinary.com/subarashis/image/upload/v1638664872/avatars/lf8g0pyi6obzotjkf1ps.png avatars/lf8g0pyi6obzotjkf1ps',
                 },
                 {
                     uuid: 'd18cdc82-0941-48a8-940f-7c2e588qe914',
@@ -38,7 +39,8 @@ module.exports = {
                     role: 0,
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
-                    imageUrl: 'https://res.cloudinary.com/subarashis/image/upload/v1638665232/avatars/ug2ebsvof6y3qpt69slw.png avatars/ug2ebsvof6y3qpt69slw'
+                    imageUrl:
+                        'https://res.cloudinary.com/subarashis/image/upload/v1638665232/avatars/ug2ebsvof6y3qpt69slw.png avatars/ug2ebsvof6y3qpt69slw',
                 },
                 {
                     uuid: 'd18cdc82-0941-48a8-940f-7c2e5882w914',
@@ -51,7 +53,8 @@ module.exports = {
                     role: 1,
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
-                    imageUrl: 'https://res.cloudinary.com/subarashis/image/upload/v1638665119/avatars/nzpmlcyumbdl9llkryyq.jpg avatars/nzpmlcyumbdl9llkryyq'
+                    imageUrl:
+                        'https://res.cloudinary.com/subarashis/image/upload/v1638665119/avatars/nzpmlcyumbdl9llkryyq.jpg avatars/nzpmlcyumbdl9llkryyq',
                 },
             ],
             {},

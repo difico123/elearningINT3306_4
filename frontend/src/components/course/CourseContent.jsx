@@ -1,19 +1,105 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import styled from "styled-components";
+import {useParams} from 'react-router-dom'
+import CourseService from '../../service/courseService'
+import Loader from '../common/loader'
 
 function CourseContent() {
+  let {id} = useParams()
+  const [isLoading, setLoading] = useState(true);
+
+  const [course, setCourse] = useState({
+    name: "",
+    description: "",
+    instructorName: "",
+    rating: "",
+    register: "",
+  });
+  const [topics, setTopics] = useState([{
+    id: '',
+    title: '',
+    description: '',
+    content: '', 
+    imageUrl: '',
+  }])
+
+  const [topicId,setTopicId] = useState(null)
+
+useEffect(() => {
+  (async () => {
+    await CourseService.getEnrollTopics(id).then(res => {
+      setCourse({...res.course})
+      setTopics([...res.topics])
+      setTopicId(res.topics[0]? res.topics[0].id: '')
+      setLoading(false)
+    })
+  })()
+},[])
+
+  const Loading = <LoaderWrap><Loader/></LoaderWrap>
+  const renderTopics = topics.map((topic, index) => (
+    <Title key ={index} onClick={() =>{setTopicId(topic.id)}}>Chủ đề {index+1}: {topic.title}</Title>
+  ))
+
+  const Loaded = <TopicContent courseId={id} topicId={topicId}/>
+
   return (
     <Container>
       <TopicWrap>
-        <Title>Chủ đề 1: Một chủ đề nào đó</Title>
-        <Title>Chủ đề 2: Một chủ đề nào đó hết sức đần độn</Title>
-        <Title>Chủ đề 3: Một chủ đề nào đó không đần độn cho lắmzzzzz</Title>
-        <Title>Chủ đề 4: Một chủ đề nào đó của đức múp</Title>
+        {renderTopics}
       </TopicWrap>
-      <Content>def</Content>
+      <Content>
+      {isLoading? Loading : Loaded}
+      </Content>
     </Container>
   );
 }
+
+
+function TopicContent({topicId, courseId}) {
+
+  const [topic,setTopic] = useState({
+    content: "",
+    courseId: '',
+    createdAt: "",
+    description: "",
+    id: '',
+    title: ""
+  })
+  const [isLoading, setLoading] = useState(true);
+
+  const Loading = <LoaderWrap><Loader/></LoaderWrap>
+
+  useEffect(()=> {
+    (async () => {
+      setLoading(true)
+      await CourseService.getTopicDetails(courseId,topicId).then(res => {
+        console.log(res)
+        setTopic({...res.topic})
+        setLoading(false)
+      })
+    })()
+  },[topicId])
+  const Loaded =  <div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
+  return (
+    <>
+      {isLoading? Loading : Loaded}
+    </>
+  )
+}
+
+const WrapDescription = styled.span`
+    font-size:1.2rem;
+    font-weight:500;
+    text-decoration: underline;
+    margin-right: 1rem;
+`
+const LoaderWrap = styled.div`
+  position: absolute;
+  top:20%;
+  left:50%;
+  transform: translate(-50%, -50%);
+`
 
 const Container = styled.div`
   height: 90vh;
@@ -71,6 +157,8 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
+  position: relative;
+  overflow: auto;
   background-color: white;
   width: 100%;
 `;

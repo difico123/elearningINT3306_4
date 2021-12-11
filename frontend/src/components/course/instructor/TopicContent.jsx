@@ -1,22 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import CourseService from "../../../service/courseService";
 import styled from 'styled-components';
+import Loader from '../../common/loader';
 
 function TopicContent(props) {
     const {courseId, topicId} = props;
 
-    console.log(props)
     const [topic,setTopic] = useState({
         id: '',
-        title: "đây là tiêu đề của topic",
-        description: "đây là tiêu đề của topicđây là tiêu đề của topicđây là tiêu đề của topicđây là tiêu đề của topic",
+        title: "",
+        description: "",
         content: "",
     })
     const [isLoading,setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         let topic = CourseService.getTopicDetails(courseId, topicId).then((response) => {
             setTopic({...response.topic})
+        }).catch(err => {
+            setLoading(false);
         })
 
         Promise.all([topic]).then(() => {
@@ -24,19 +27,37 @@ function TopicContent(props) {
         })
     },[courseId,topicId])
 
+    const Loading = <WrapLoader><Loader/></WrapLoader>
+    const Loaded =  !topic.id ? <NoContent>Chưa có nội dung</NoContent>:<div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
 
     return (
         <WrapperContent>
-            {!isLoading && 
-            <div>
-                <div> {topic.description}</div>
-                <div dangerouslySetInnerHTML={{ __html: topic.content}}  />
-            </div>}
+            {isLoading ?  Loading: Loaded }
         </WrapperContent>
     )
 }
 
 export default TopicContent
+
+const NoContent = styled.div`
+    position: absolute;
+    top:10%;
+    left:50%;
+    transform: translateX(-50%);
+    font-size: 1.2rem;
+`
 const WrapperContent = styled.div`
     padding: 1rem;
+`
+const WrapLoader = styled.div`
+    position: absolute;
+    top:20%;
+    left:50%;
+    transform: translate(-50%, -50%);
+`
+const WrapDescription = styled.span`
+    font-size:1.2rem;
+    font-weight:500;
+    text-decoration: underline;
+    margin-right: 1rem;
 `

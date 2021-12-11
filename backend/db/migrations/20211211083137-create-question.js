@@ -1,43 +1,27 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, DataTypes) => {
-        await queryInterface.createTable('Notifications', {
+        await queryInterface.createTable('Questions', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: DataTypes.INTEGER,
             },
-            courseId: {
-                type: DataTypes.INTEGER,
-                references: { model: 'courses', key: 'id' },
-                allowNull: false,
-                onUpdate: 'cascade',
-                onDelete: 'cascade',
-            },
-            userId: {
-                type: DataTypes.INTEGER,
-                references: { model: 'users', key: 'id' },
-                allowNull: false,
-                onUpdate: 'cascade',
-                onDelete: 'cascade',
-            },
-            topic: {
+            content: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
-            details: {
-                type: DataTypes.TEXT,
+            quizId: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
+                references: { model: 'quizzes', key: 'id' },
+                onUpdate: 'cascade',
+                onDelete: 'cascade',
             },
-            viewed: {
-                type: DataTypes.BOOLEAN,
-                defaultValue: false,
-                allowNull: false,
-            },
-            isConfirmed: {
-                type: DataTypes.BOOLEAN,
-                defaultValue: false,
+            marks: {
+                type: DataTypes.INTEGER,
+                defaultValue: 5,
                 allowNull: false,
             },
             createdAt: {
@@ -53,6 +37,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, DataTypes) => {
-        await queryInterface.dropTable('Notifications');
+        await queryInterface.dropTable('Questions');
     },
 };

@@ -14,12 +14,12 @@ module.exports = class ApiNotification {
             res.status(500).send('Server error');
         }
     }
-    
+
     static getName(req, res) {
         try {
             CategoryService.getCategoriesName().then((categories) => {
                 res.status(200).json({ error: false, categories });
-            })
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

@@ -7,16 +7,12 @@ module.exports = class CourseService {
             keyword !== undefined ? `and c.name like "%${keyword}%"` : '';
         let ratingQuery = rating !== undefined ? ` rating >= ${rating} ` : '';
         let categoryQuery =
-            categoryId !== undefined
-                ? ` categoryId = ${categoryId}`
-                : '';
+            categoryId !== undefined ? ` categoryId = ${categoryId}` : '';
 
         let and =
             rating !== undefined && categoryId !== undefined ? ` and ` : ' ';
         let having =
-            rating !== undefined || categoryId !== undefined
-                ? `having `
-                : ' ';
+            rating !== undefined || categoryId !== undefined ? `having ` : ' ';
         let query = `select c.id as courseId, c.name, c.description, c.categoryId, ca.name as categoryName,
         c.instructorId, concat(u.firstName," ", u.lastName) as instructorName,
         u.email as instructorEmail, round(avg(uc.rating),1) as rating,
@@ -79,5 +75,3 @@ module.exports = class CourseService {
         }
     }
 };
-
-

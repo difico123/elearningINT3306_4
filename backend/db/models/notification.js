@@ -7,13 +7,16 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate({ User,Course }) {
+        static associate({ User, Course }) {
             // define association here
-            this.belongsTo(Course, { foreignKey: 'courseId', onDelete: 'cascade' });
+            this.belongsTo(Course, {
+                foreignKey: 'courseId',
+                onDelete: 'cascade',
+            });
             this.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
         }
     }
-    
+
     Notification.init(
         {
             courseId: {

@@ -1,5 +1,4 @@
-
-const { User, Course, Category, UserCourse,Topic } = require('../db/models');
+const { User, Course, Category, UserCourse, Topic } = require('../db/models');
 module.exports = {
     topicCourseAuth: async function (req, res, next) {
         let courseId =
@@ -9,7 +8,9 @@ module.exports = {
         let topicId =
             req.params.topicId === undefined ? req.topicId : req.params.topicId;
         try {
-            let check = await Topic.findOne({where: { id: topicId, courseId: courseId } });
+            let check = await Topic.findOne({
+                where: { id: topicId, courseId: courseId },
+            });
             if (!check) {
                 return res.status(403).json({
                     error: true,
@@ -48,5 +49,5 @@ module.exports = {
             console.log(error.message);
             res.status(500).send('Server Error');
         }
-    }
+    },
 };

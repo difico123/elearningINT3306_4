@@ -1,6 +1,6 @@
 const cloudinary = require('cloudinary');
 const AdminService = require('../dbService/adminService');
-const { User,Course } = require('../db/models');
+const { User, Course } = require('../db/models');
 const { pagination } = require('../utils/feature');
 
 module.exports = class ApiAdmin {
@@ -75,7 +75,9 @@ module.exports = class ApiAdmin {
                 let cloudinary_id = course.imageUrl.split(' ')[1];
                 await cloudinary.uploader.destroy(cloudinary_id);
             }
-            let instructor = await User.findOne({where: { id: course.instructorId }})
+            let instructor = await User.findOne({
+                where: { id: course.instructorId },
+            });
 
             if (instructor.imageUrl) {
                 let cloudinary_id = instructor.imageUrl.split(' ')[1];
@@ -88,7 +90,6 @@ module.exports = class ApiAdmin {
                 error: false,
                 msg: 'Đã xoá khoá học ',
             });
-
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -99,15 +100,15 @@ module.exports = class ApiAdmin {
     // @desc    get users by admin
     // @access  Private
     static async listUsers(req, res) {
-        let {page}  = req.query;
+        let { page } = req.query;
         try {
-            let users = await AdminService.getUsers()
+            let users = await AdminService.getUsers();
             users.map((user) => {
                 if (user.imageUrl) {
                     user.imageUrl = user.imageUrl.split(' ')[0];
                 }
             });
-            users = pagination(users, page)
+            users = pagination(users, page);
             return res.status(200).json({ error: true, users });
         } catch (error) {
             console.log(error.message);
@@ -120,7 +121,7 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async listCourses(req, res) {
         try {
-            let courses = await AdminService.getCourses()
+            let courses = await AdminService.getCourses();
             courses.map((course) => {
                 if (course.courseImg) {
                     course.courseImg = course.courseImg.split(' ')[0];
