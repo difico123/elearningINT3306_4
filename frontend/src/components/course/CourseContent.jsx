@@ -77,10 +77,12 @@ function TopicContent({topicId, courseId}) {
         console.log(res)
         setTopic({...res.topic})
         setLoading(false)
+      }).catch(err => {
+        setLoading(false)
       })
     })()
   },[topicId])
-  const Loaded =  <div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
+  const Loaded = !topic.id ? <NoContent>Không có nội dung</NoContent>:<div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
   return (
     <>
       {isLoading? Loading : Loaded}
@@ -88,6 +90,10 @@ function TopicContent({topicId, courseId}) {
   )
 }
 
+const NoContent = styled.div`
+  margin: 2rem 0;
+  text-align: center;
+`
 const WrapDescription = styled.span`
     font-size:1.2rem;
     font-weight:500;
