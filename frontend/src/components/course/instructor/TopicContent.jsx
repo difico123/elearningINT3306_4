@@ -14,12 +14,20 @@ function TopicContent(props) {
     })
     const [isLoading,setLoading] = useState(true);
 
+    console.log("abc",topicId)
     useEffect(() => {
         setLoading(true);
         let topic = CourseService.getTopicDetails(courseId, topicId).then((response) => {
             setTopic({...response.topic})
         }).catch(err => {
             setLoading(false);
+            let obj = {
+                id: '',
+                title: "",
+                description: "",
+                content: "",
+            }
+            setTopic({...obj})
         })
 
         Promise.all([topic]).then(() => {

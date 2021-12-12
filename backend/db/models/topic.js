@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'cascade',
             });
             this.hasMany(Quiz, {
-                foreignKey: 'quizId',
+                foreignKey: 'topicId',
                 onDelete: 'CASCADE',
                 hooks: true,
             });

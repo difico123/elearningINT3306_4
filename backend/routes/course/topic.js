@@ -58,9 +58,10 @@ router.get(
 router.put(
     '/edit/:topicId',
     auth,
-    instructorAuth,
-    courseInstructorAuth,
-    // topicCourseAuth,
+    courseInstructorAuth(true),
+    topicCourseAuth,
+    checkCourseInput(['title', 'content', 'description']),
+    validateInput,
     ApiTopic.editTopic,
 );
 
@@ -83,9 +84,8 @@ router.put(
 router.delete(
     '/delete/:topicId',
     auth,
-    instructorAuth,
-    courseInstructorAuth,
-    // topicCourseAuth,
+    courseInstructorAuth(true),
+    topicCourseAuth,
     ApiTopic.deleteTopic,
 );
 

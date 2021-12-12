@@ -83,6 +83,7 @@ const SideBar = styled.div`
   flex-flow: column nowrap;
   background-color: #969eaa;
   height: 90vh;
+  box-shadow: 0px 0px 10px #232931;
   a {
     width: 100%;
     padding: 10px 1rem;

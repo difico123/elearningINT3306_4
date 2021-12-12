@@ -30,6 +30,7 @@ import CourseImgIcon from '@mui/icons-material/ArtTrack';
 import GroupsIcon from "@mui/icons-material/Groups";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ClearIcon from '@mui/icons-material/Clear';
 export {
     SearchIcon, 
     MenuIcon,
@@ -62,5 +63,6 @@ export {
     CourseImgIcon,
     GroupsIcon,
     EditIcon,
-    MoreVertIcon
+    MoreVertIcon,
+    ClearIcon
 }

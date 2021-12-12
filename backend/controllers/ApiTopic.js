@@ -68,25 +68,19 @@ module.exports = class ApiTopic {
     // @desc    edit Topics
     // @access  Private
     static async editTopic(req, res) {
-        let topic = {
-            id: req.params.topicId,
+        let newTopic = {
             title: req.body.title,
+            description: req.body.description,
             content: req.body.content,
         };
         try {
-            TopicService.editTopic(topic).then((updated) => {
-                if (!updated) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Bạn chưa cập nhật được topic',
-                    });
-                }
-                res.status(200).json({
+            Topic.update({...newTopic}, {where: {id: req.params.topicId}}).then(() => {
+                return res.status(200).json({
                     error: false,
                     msg: 'cập nhật topic thành công',
-                    topic,
+                    newTopic,
                 });
-            });
+            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -123,18 +117,15 @@ module.exports = class ApiTopic {
     // @access  Private
     static async deleteTopic(req, res) {
         try {
-            TopicService.deleteTopic(req.params.topicId).then((deleted) => {
-                if (!deleted) {
-                    return res.status(400).json({
+            await Topic.destroy({where: {id: req.params.topicId}}).then((value) => {
+                if(value === 1) {
+                    res.status(200).json({
                         error: true,
-                        msg: 'Bạn chưa xoá được topic',
-                    });
-                }
-                res.status(200).json({
-                    error: true,
-                    msg: 'Bạn đã xoá topic',
-                });
-            });
+                        msg: ['Xoá topic thành công'],
+                    })
+                }}
+            );
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

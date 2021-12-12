@@ -3,7 +3,7 @@ import "./popup.css";
 
 export default function Popup(props) {
   const [modal, setModal] = useState(false);
-  const {toggle, setToggle,header, body, footer} = props;
+  const {toggle, setToggle, header, body, footer} = props;
 
 
   const toggleModal = () => {
@@ -20,10 +20,6 @@ export default function Popup(props) {
 
   return (
     <>
-      {/* <button onClick={toggleModal} className="btn-modal">
-        Open
-      </button> */}
-
       {toggle && (
         <div className="modal">
           <div onClick={toggleModal} className="overlay"></div>

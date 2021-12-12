@@ -151,15 +151,20 @@ function Header({ user }) {
   const renderNotify = (
     <BellWrap>
       <div className="NotifiNum">{notificationNum}</div>
+
       <NotificationIcon onClick={showNotification} />
       <Wrapper style={{ display: !toggleNotification ? "none" : "block" }}>
         <h2>Thông báo</h2>
+        <OverLay onClick={() => {
+          setToggleNotification(false);
+        }}></OverLay>
         <NotificationItems>
           {!notifications
             ? "Không có thông báo"
             : notifications.map((v, index) => (
                 <NotifiItem key={index}>
                   <Title>{v.topic}</Title>
+
                   <Des>
                     <span>{v.details}</span> - <span>{v.name}</span>
                   </Des>
@@ -235,6 +240,7 @@ function Header({ user }) {
                       Từ Chối
                     </button>
                   </Btns>
+
                 </NotifiItem>
               ))}
         </NotificationItems>
@@ -284,10 +290,21 @@ const Wrapper = styled.div`
 `;
 
 const NotificationItems = styled.div`
+  position:relative;
   height: 25rem;
   width: 20rem;
   overflow-y: auto;
   padding: 0 1rem 1rem 1rem;
+  z-index: 99999999;
+`;
+const OverLay = styled.div`
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  width:100vw;
+  height:100vh;
 `;
 const NotifiItem = styled.div`
   box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,

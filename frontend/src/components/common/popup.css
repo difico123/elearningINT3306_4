@@ -23,6 +23,7 @@
     background: rgba(49,49,49,0.8);
 }
 .modal-content {
+    transition: visibility 0s, opacity 1.5s linear;
     position: absolute;
     top: 45%;
     left: 50%;

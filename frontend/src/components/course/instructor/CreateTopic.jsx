@@ -92,7 +92,7 @@ return (
                           ></textarea>
                         </div>
 
-                        <div className="clearfix"></div>
+                        {/* <div className="clearfix"></div> */}
                         <div className="form-group col-md-12 editor">
                             <br />  
                             <div className="mb-3">

@@ -3,6 +3,11 @@ import styled from "styled-components";
 import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import TopicContent from "./TopicContent";
+import {MoreVertIcon,EditIcon, ClearIcon, Warning} from '../../common/icons'
+import Popup from "../../common/popup";
+import Toast from "../../common/toast";
+import showToast from "../../../dummydata/toast";
+import EditTopic from "./EditTopic";
 
 function EditCourseInfos({ courseParam, topicsParam }) {
   let { id } = useParams();
@@ -19,7 +24,9 @@ function EditCourseInfos({ courseParam, topicsParam }) {
 
   const [topicId, setTopicId] = useState();
   const [isLoading, setLoading] = useState(true);
-
+  const [toastList,setToastList] = useState([]);
+  const [toggle, setToggle]  = useState(-1);
+  let [modelToggle,setModelToggle] = useState(false);
   const [topics, setTopics] = useState([
     {
       id: "",
@@ -27,13 +34,6 @@ function EditCourseInfos({ courseParam, topicsParam }) {
     },
   ]);
 
-  const [topicDetails, setTopicDetails] = useState([
-    {
-      id: 0,
-      title: "",
-    },
-  ]);
-  
   useEffect(() => {
     setTopicId(topicsParam[0]? topicsParam[0].id:null)
     setCourse({ ...courseParam });
@@ -41,14 +41,63 @@ function EditCourseInfos({ courseParam, topicsParam }) {
     setLoading(false);
   }, [courseParam, topicsParam]);
 
+  const handleDropDown = (e, index) => {
+    e.stopPropagation();
+    setToggle(index)
+  }
 
+  const handleOverLayDropdown = (e) => {
+    e.stopPropagation();
+    setToggle(-1)
+  }
+
+  const handleDeletePopup = (e) => {
+    e.stopPropagation();
+    setModelToggle(true)
+  }
+
+  const handleDelete = (e) => {
+    (async () => await CourseService.deleteTopic(id,toggle).then(() => {
+      setToastList([showToast('success','Thông báo!','Xoá thành công!')])
+      setToggle(-1)
+      setModelToggle(false);
+
+      setTopics(topics.filter(item => item.id !== toggle));
+      setTopicId( topics[0]? topics[0].id: -1)
+    }).catch(() => {
+      setToastList([showToast('danger','Thông báo!','Xoá thất bại!')])
+    }))()
+  }
+
+  const [editToggle,setEditToggle] = useState(false)
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    setEditToggle(true)
+  }
+
+  const handleSelectedTopic = (id) => {
+    setTopicId(id)
+  }
   const renderTopics = topics.map((topic, index) => (
-    <>
-      <Title className='bg-green-300' key={index} onClick={() => setTopicId(topic.id)} >
-        Chủ đề {index + 1}: {topic.title}
+    <>  
+      <Title className={topicId === topic.id? 'active' : ''} key={index} onClick={() => handleSelectedTopic(topic.id)}>
+        <span className="font-bold">Chủ đề {index + 1}:</span> {topic.title}
+        <WrapDrop onClick={(e) => handleDropDown(e,topic.id)}>
+          {toggle !== topic.id ? <MoreVertIcon />: (<><EditTopicBtn onClick={handleEdit}></EditTopicBtn><DelTopicBtn onClick={handleDeletePopup}></DelTopicBtn></>)}
+            <div className={toggle !== topic.id ? "hidden": ""}>
+              <OverLay onClick={(e) => handleOverLayDropdown(e)}></OverLay>
+            </div>
+          </WrapDrop>
       </Title>
     </>
   ));
+
+  const bodyPopup = <div>Bạn có thực sự muốn xóa topic này không?</div>;
+  const headerPopup = <HeaderPopupWapper><img src={Warning} alt="" /><span>Cảnh báo!</span></HeaderPopupWapper>;
+  const footerPopup = (
+    <DeleteButton onClick={handleDelete}>Tôi muốn xóa!</DeleteButton>
+  );
 
   return (
     <Container>
@@ -75,7 +124,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
           </CourseCover>
         </CourseInfos>
         <Topic>
-          <TopicNav>
+          <TopicNav >
             <NavTitle>
               <span>Nội dung khóa học</span>
               <Link to="../createTopic">
@@ -84,18 +133,104 @@ function EditCourseInfos({ courseParam, topicsParam }) {
             </NavTitle>
             <TopicWrap>{!topics[0]? <NoContent>Chưa có chủ đề</NoContent>: renderTopics}</TopicWrap>
           </TopicNav>
-          {!isLoading && (
-            <TopicContent courseId={course.id} topicId={topicId} />
-          )}
+          <ContentWrapper>
+            {!isLoading && (
+              editToggle? <EditTopic topicId={topicId} setEditToggle={setEditToggle} setTopics={setTopics} topics={topics}/>:
+              <TopicContent courseId={course.id} topicId={topicId ? topicId : -1} />
+            )}
+          </ContentWrapper>
         </Topic>
       </Body>
+      <Popup toggle={modelToggle} setToggle={setModelToggle} header={headerPopup} body={bodyPopup} footer={footerPopup}/>
+      <Toast toastList={toastList}/>
     </Container>
   );
 }
 
 export default EditCourseInfos;
+
+
 const NoContent = styled.div`
   text-align:center;
+`
+const ContentWrapper = styled.div`
+  width:85vw;
+ overflow:auto;
+`
+const HeaderPopupWapper = styled.div`
+  text-align:center;
+  img{
+    width: 2rem;
+    background-color: red;
+    border-radius: 5px;
+  }
+  display: flex;
+  justify-content: start;
+  gap:1rem;
+  align-items: center;
+`
+
+const DeleteButton = styled.div`
+text-align:center;
+bottom: 0.5rem;
+background-color: white;
+color: black;
+font-weight: 600;
+padding: 1rem 2rem;
+font-size: 15px;
+width: 100%;
+transition: 0.5s ease 0s;
+cursor:pointer;
+&:hover {
+  color: white;
+  background-color: crimson;
+}
+
+`
+
+const DelTopicBtn = styled(ClearIcon)`
+  position:relative;
+  z-index: 99;
+  &:hover {
+    color: red;
+    background-color: #CAD5E2;
+    border-radius: 3px;
+    transition: all 0.5s ease;
+  }
+`
+const EditTopicBtn = styled(EditIcon)`
+  position:relative;
+  z-index: 99;
+  &:hover {
+    color: #120E43;
+    background-color: #CAD5E2;
+    border-radius: 3px;
+    transition: all 0.5s ease;
+  }
+`
+const WrapDrop = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+`
+const OverLay = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw
+  height: 100vh;
+  z-index: 1;
+  div {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
 `
 const Container = styled.div`
   height: 90vh;
@@ -137,6 +272,7 @@ const CourseTitle = styled.div`
   overflow-wrap: break-word;
 `;
 
+
 const CourseDescription = styled.div`
   color: white;
   font-size: 1.2rem;
@@ -172,6 +308,7 @@ const Topic = styled.div`
   background-color: white;
   display: flex;
   flex-flow: row nowrap;
+  height:90vh;
   gap: 0;
 `;
 
@@ -179,6 +316,10 @@ const TopicNav = styled.div`
   position: sticky;
   top: 0;
   position: -webkit-sticky;
+  min-width: 12.5vw;
+  height:90vh;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px #232931;
 `;
 
 const NavTitle = styled.div`
@@ -192,6 +333,7 @@ const NavTitle = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
+  width: 100%;
   button {
     background-color: #d0d0d0;
     padding: 3px 8px;
@@ -202,31 +344,30 @@ const TopicWrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
   overflow-y: auto;
-  height: 16rem;
-  background-color: #f0f0f0;
+  overflow-x: hidden;
   right: 0px;
-  min-height: 55vh;
 `;
 
 const Title = styled.div`
+  position: relative;
   padding: 1.5rem 0.75vw;
   font-weight: 500;
   word-wrap: break-word;
   width: 15rem;
   font-size: 1.15rem;
   cursor: pointer;
-  background: linear-gradient(to left, #f0f0f0 50%, white 50%) right;
-  background-size: 200%;
   transition: 0.471s ease-out;
+  border-bottom:1px solid rgba(59, 130, 246, 0.7);
   &:hover {
-    background-color: white;
-    color: black;
+    background-color:rgba(59, 130, 246, 0.7);
+    border-radius:5px;
+    color: white;
     background-position: left;
   }
   &.active {
-    background-color: black;
-    background-position: 0 0;
-    color: #fff;
+    background-color:rgba(59, 130, 246, 0.7);
+    border-radius:5px;
+    color: white;
   }
 `;
 
