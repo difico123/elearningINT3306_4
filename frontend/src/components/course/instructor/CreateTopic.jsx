@@ -182,7 +182,7 @@ const Wrap = styled.div`
     border: 1px solid #ccc;
   }
   textarea {
-    padding: 0.35rem 5vw 0.35rem 1vw;
+    padding: 0.35rem 0.5vw;
     height: 10rem;
     width: 100%;
     autocomplete: off;

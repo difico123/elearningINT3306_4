@@ -77,6 +77,9 @@ async function getTopicDetails(courseId, topicId) {
 async function getCourseTopics(courseId) {
   return await http.get(apiEndpoint + `/${courseId}/topic/getCourseTopics`);
 }
+async function getTopicNames(courseId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/getTopicNames`);
+}
 async function deleteTopic(courseId,topicId) {
   return await http.delete(apiEndpoint + `/${courseId}/topic/delete/${topicId}`);
 }
@@ -98,5 +101,6 @@ export default {
   getTopicDetails,
   kickUser,
   getCourseTopics,
-  deleteTopic
+  deleteTopic,
+  getTopicNames
 };

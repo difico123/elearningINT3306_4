@@ -13,9 +13,11 @@ import CreateCourse from "../components/course/instructor/CreateCourse";
 import EditCourse from "../components/course/instructor/EditCourse";
 import CreateTopic from "../components/course/instructor/CreateTopic";
 import ViewStudents from "../components/course/instructor/Viewstudents";
+import CreateQuestion from "../components/course/instructor/CreateQuestion";
 import LeftNav from "../components/course/instructor/LeftNav";
 import courseService from "../service/courseService";
 import Loader from "../components/common/loader";
+import ViewQuiz from "../components/course/instructor/ViewQuiz";
 
 function InstructorRouter() {
   return (
@@ -69,6 +71,12 @@ function CourseRouter() {
               />
               <Route exact path="/students" element={<ViewStudents />} />
               <Route exact path="/createTopic" element={<CreateTopic />} />
+              <Route
+                exact
+                path="/createquestion"
+                element={<CreateQuestion />}
+              />
+              <Route exact path="/viewquiz" element={<ViewQuiz />} />
             </Routes>
           </div>
           <div className="relative">

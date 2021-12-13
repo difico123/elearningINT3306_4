@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { GroupsIcon, EditIcon, BooksIcon, ErrorIcon } from "../../common/icons";
+import {
+  GroupsIcon,
+  EditIcon,
+  BooksIcon,
+  ErrorIcon,
+  QuizIcon,
+} from "../../common/icons";
 import courseService from "../../../service/courseService";
 import Popup from "../../common/popup";
 import { useParams } from "react-router-dom";
@@ -53,8 +59,21 @@ function Sidebar() {
             <p>Danh sách học viên</p>
           </Wrap>
         </NavLink>
+        <NavLink to="./viewquiz" activeClassName="active">
+          <Wrap>
+            <QuizIcon />
+            <p>Xem danh sách quiz</p>
+          </Wrap>
+        </NavLink>
+        <NavLink to="./createquestion" activeClassName="active">
+          <Wrap>
+            <GroupsIcon />
+            <p>Tạo quiz mới</p>
+          </Wrap>
+        </NavLink>
 
-        <DeleteButton className="popup-delete"
+        <DeleteButton
+          className="popup-delete"
           onClick={() => {
             setToggleDelete(true);
           }}
@@ -102,7 +121,7 @@ const SideBar = styled.div`
     background-position: 0 0;
     color: #fff;
   }
-  .popup-delete{
+  .popup-delete {
     position: absolute;
   }
   @media only screen and (min-width: 1900px) {

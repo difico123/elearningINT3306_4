@@ -25,8 +25,9 @@ function InstructorCourses() {
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [toastList, setToastList] = useState([]);
+
   useEffect(() => {
-    CourseService.getInstructorCourses().then((response) => {
+    CourseService.getInstructorCourses(currentPage).then((response) => {
       setCourses(response.courses);
     });
   }, [change]);
