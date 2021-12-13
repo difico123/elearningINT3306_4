@@ -1,7 +1,5 @@
-const QuizService = require('../dbservice/QuizService');
-const QuestionService = require('../dbservice/QuestionService');
-const ChoiceService = require('../dbservice/ChoiceService');
-
+const { Question } = require('../db/models');
+const QuizService = require('../dbService/quizService')
 module.exports = class ApiQuestion {
     // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/create
     // @desc    create question by instructor
@@ -9,23 +7,15 @@ module.exports = class ApiQuestion {
     static async createQuestion(req, res) {
         const question = {
             content: req.body.content,
-            quiz: req.quizId,
+            quizId: req.quizId,
             marks: req.body.marks,
         };
         try {
-            QuestionService.createQuestion(question).then((created) => {
-                if (!created) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Chưa tạo được câu hỏi',
-                    });
-                }
-
-                return res.status(200).json({
-                    error: false,
-                    msg: 'tạo câu hỏi thành công',
-                    question,
-                });
+            let newQuestion = await Question.create(question)
+            return res.status(200).json({
+                error: false,
+                msg: 'tạo câu hỏi thành công',
+                newQuestion
             });
         } catch (error) {
             console.log(error.message);
@@ -64,6 +54,10 @@ module.exports = class ApiQuestion {
             quizId: req.quizId,
         };
         try {
+            return res.status(200).json({
+                error: false,
+                quiz,
+            });
             await QuizService.getQuizById(req.quizId).then((quizes) => {
                 quiz.quizContent = quizes[0].title;
             });

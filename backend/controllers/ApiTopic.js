@@ -1,4 +1,5 @@
 const { User, Course, Category, UserCourse, Topic } = require('../db/models');
+const TopicService = require('../dbService/topicService');
 
 module.exports = class ApiTopic {
     // @route   POST api/topic/create
@@ -37,6 +38,21 @@ module.exports = class ApiTopic {
             res.status(200).json({
                 error: false,
                 course,
+                topics: topics,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+    // @route   GET api/topic/getTopicNames
+    // @desc    get topic names
+    // @access  Private
+    static async getTopicNames(req, res) {
+        try {
+            let topics = await TopicService.getTopicName(req.courseId);
+            res.status(200).json({
+                error: false,
                 topics: topics,
             });
         } catch (error) {

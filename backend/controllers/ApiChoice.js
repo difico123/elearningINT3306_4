@@ -1,32 +1,21 @@
-const QuizService = require('../dbservice/QuizService');
-const ChoiceService = require('../dbservice/ChoiceService');
-const QuestionService = require('../dbservice/QuestionService');
 
+const { Choice } = require('../db/models');
 module.exports = class ApiChoice {
     // @route   POST api/question/:courseId/:quizId/:questionId/createchoice
     // @desc    create question by instructor
     // @access  Private
     static async createChoice(req, res) {
         const choice = {
-            question: req.questionId,
+            questionId: req.questionId,
             content: req.body.content,
             isAnswer: req.body.isAnswer,
         };
-
         try {
-            ChoiceService.create(choice).then((created) => {
-                if (!created) {
-                    return res.status(400).json({
-                        error: true,
-                        msg: 'Chưa tạo được câu trả lời',
-                    });
-                }
-
-                return res.status(200).json({
-                    error: false,
-                    msg: 'tạo câu trả lời thành công',
-                    choices: choice,
-                });
+            let newChoice = await Choice.create(choice)
+            return res.status(200).json({
+                error: false,
+                msg: 'tạo câu trả lời thành công',
+                newChoice
             });
         } catch (error) {
             console.log(error.message);

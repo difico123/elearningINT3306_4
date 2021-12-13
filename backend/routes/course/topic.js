@@ -7,7 +7,7 @@ const {
 const instructorAuth = require('../../middleware/auth/instructor.auth');
 const ApiTopic = require('../../controllers/ApiTopic');
 const upload = require('../../utils/multer');
-const { categoryPassport } = require('../../middleware/passport');
+const { categoryPassport, topicPassport } = require('../../middleware/passport');
 const { topicCourseAuth } = require('../../middleware/course.auth');
 const {
     checkCourseInput,
@@ -17,12 +17,12 @@ const {
 const userCourseAuth = require('../../middleware/auth/userCourse.auth');
 
 // @route api/course/:courseId/topic/:topicId/quiz
-// router.use(
-//     '/:topicId/quiz',
-//     topicPassport,
-//     topicCourseAuth,
-//     require('./quizes'),
-// );
+router.use(
+    '/:topicId/quiz',
+    topicPassport,
+    topicCourseAuth,
+    require('./quizes'),
+);
 
 // @route   POST api/course/:courseId/topic/create
 // @desc    create topic by instructor
@@ -40,6 +40,11 @@ router.post(
 // @desc    get All course topic
 // @access  Private
 router.get('/getCourseTopics', auth, userCourseAuth, ApiTopic.getCourseTopics);
+
+// @route   GET api/course/:courseId/topic/getCourseTopics
+// @desc    get All course topic
+// @access  Private
+router.get('/getTopicNames', auth, userCourseAuth, ApiTopic.getTopicNames);
 
 // @route   GET api/course/:courseId/topic/getSingleTopic/:topicId
 // @desc    getSingleTopic

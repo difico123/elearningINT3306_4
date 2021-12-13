@@ -1,16 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth/auth');
-const instructorAuth = require('../middleware/auth/instructor.auth');
-const courseInstructorAuth = require('../middleware/auth/courseInstructor.auth');
-const ApiQuizes = require('../controllers/ApiQuizes');
-const ApiUserQuestion = require('../controllers/ApiUserQuestion');
-const userCourseAuth = require('../middleware/auth/userCourse.auth');
-const { check } = require('express-validator');
-const validateInput = require('../middleware/errors/validateInput');
-
-const { quizPassport } = require('../middleware/passport');
-const { quizTopicAuth } = require('../middleware/course.auth');
+const auth = require('../../middleware/auth/auth');
+const {
+    courseInstructorAuth,
+} = require('../../middleware/auth/courseInstructor.auth');
+const instructorAuth = require('../../middleware/auth/instructor.auth');
+const ApiQuizes = require('../../controllers/ApiQuizes');
+const {
+    checkCourseInput,
+    validateInput,
+} = require('../../middleware/errors/Validate');
+const { quizTopicAuth } = require('../../middleware/course.auth');
+const userCourseAuth = require('../../middleware/auth/userCourse.auth');
+const { quizPassport } = require('../../middleware/passport');
 
 // @route api/course/:courseId/topic/:topicId/quiz/:quizId/question
 router.use(
@@ -25,22 +27,47 @@ router.use(
 // @access  Private
 router.post(
     '/create',
-    [
-        check('title', 'Tiêu đề phải nhiều hơn 6 ký tự').isLength({
-            min: 6,
-        }),
-    ],
-    validateInput,
     auth,
     instructorAuth,
-    courseInstructorAuth,
+    checkCourseInput(["title"]),
+    validateInput,
+    courseInstructorAuth(true),
     ApiQuizes.createQuiz,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/active/:quizId
+// @desc    active quiz by instructor
+// @access  Private
+router.put(
+    '/active/:quizId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    quizTopicAuth,
+    ApiQuizes.showQuiz,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/hide/:quizId
+// @desc    active quiz by instructor
+// @access  Private
+router.put(
+    '/hide/:quizId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    quizTopicAuth,
+    ApiQuizes.hideQuiz,
 );
 
 // @route   GET api/course/:courseId/topic/:topicId/quiz/getQuizes
 // @desc    get quizzes by instructor and student
 // @access  Private
 router.get('/getQuizes', auth, userCourseAuth, ApiQuizes.getquizes);
+
+// @route   GET api/course/:courseId/topic/:topicId/quiz/getQuizeNames
+// @desc    get quizzes by instructor and student
+// @access  Private
+router.get('/getQuizeNames', auth, userCourseAuth, ApiQuizes.getQuizNames);
 
 // @route   GET /api/course/:courseId/topic/:topicId/quiz/getQuizScore/:quizId
 // @desc    rank quiz
@@ -50,7 +77,7 @@ router.get(
     quizPassport,
     auth,
     userCourseAuth,
-    ApiUserQuestion.getQuizScore,
+    // ApiUserQuestion.getQuizScore,
 );
 
 module.exports = router;

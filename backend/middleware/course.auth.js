@@ -1,4 +1,4 @@
-const { User, Course, Category, UserCourse, Topic } = require('../db/models');
+const { User, Course, Category, UserCourse, Topic, Quiz, Choice, Question } = require('../db/models');
 module.exports = {
     topicCourseAuth: async function (req, res, next) {
         let courseId =
@@ -16,16 +16,42 @@ module.exports = {
                     error: true,
                     msg: 'Topic không nằm trong khoá học',
                 });
+            } else {
+                next();
             }
-
-            next();
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server Error');
         }
     },
 
-    questionQuizAuth: function (req, res, next) {
+    quizTopicAuth: async function (req, res, next) {
+        let quizId =
+            req.params.quizId === undefined
+                ? req.quizId
+                : req.params.quizId;
+        let topicId =
+            req.params.topicId === undefined ? req.topicId : req.params.topicId;
+
+        try {
+            let check = await Quiz.findOne({
+                where: { id: quizId, topicId: topicId },
+            });
+            if (!check) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Quiz không nằm trong topic',
+                });
+            }else {
+                next();
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server Error');
+        }
+    },
+
+    questionQuizAuth: async (req, res, next) =>  {
         let questionId =
             req.params.questionId === undefined
                 ? req.questionId
@@ -33,18 +59,18 @@ module.exports = {
         let quizId =
             req.params.quizId === undefined ? req.quizId : req.params.quizId;
         try {
-            QuestionService.checkQuestionQuiz(questionId, quizId).then(
-                (data) => {
-                    if (data.length === 0) {
-                        return res.status(403).json({
-                            error: true,
-                            msg: 'Question không nằm trong quiz',
-                        });
-                    }
 
-                    next();
-                },
-            );
+            let check = await Question.findOne({
+                where: { id: questionId, quizId },
+            });
+            if (!check) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Quiz không nằm trong topic',
+                });
+            } else {
+                next();
+            }
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server Error');

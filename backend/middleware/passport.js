@@ -1,4 +1,4 @@
-const { User, Category, Course } = require('../db/models');
+const { User, Category, Course, Topic, Quiz, Question} = require('../db/models');
 
 module.exports = {
     categoryPassport: async (req, res, next) => {
@@ -32,51 +32,47 @@ module.exports = {
         }
     },
 
-    topicPassport: function (req, res, next) {
+    topicPassport: async (req, res, next) => {
         let topicId = req.params.topicId;
-        TopicService.getCourseTopicById(topicId).then((topics) => {
-            if (topics.length === 0) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Không có Topic',
-                });
-            } else {
-                req.topicId = topicId;
-                next();
-            }
-        });
+
+        let topic = await Topic.findOne({ where: { id: topicId } });
+
+        if (!topic) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có topic',
+            });
+        } else {
+            req.topicId = topicId;
+            next();
+        }
     },
 
-    quizPassport: function (req, res, next) {
+    quizPassport: async (req, res, next) => {
         let quizId = req.params.quizId;
-        QuizService.getQuizById(quizId).then((quizes) => {
-            if (quizes.length === 0) {
-                return res.status(404).json({
-                    error: true,
-                    msg: 'Không có Quiz',
-                });
-            } else {
-                req.quizId = quizId;
-                next();
-            }
-        });
+        let quiz = await Quiz.findOne({ where: { id: quizId } });
+        if (!quiz) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có quiz',
+            });
+        } else {
+            req.quizId = quizId;
+            next();
+        }
     },
 
-    questionPassport: function (req, res, next) {
+    questionPassport: async (req, res, next) => {
         let questionId = req.params.questionId;
-        QuestionService.getQuestionByQuestionId(questionId).then(
-            (questions) => {
-                if (questions.length === 0) {
-                    return res.status(404).json({
-                        error: true,
-                        msg: 'Không có câu hỏi',
-                    });
-                } else {
-                    req.questionId = questionId;
-
-                    next();
-                }
-            },
-        );
+        let question = await Question.findOne({ where: { id: questionId } });
+        if (!question) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có câu hỏi',
+            });
+        } else {
+            req.questionId = questionId;
+            next();
+        }
     },
 };
