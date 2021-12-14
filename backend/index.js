@@ -6,8 +6,9 @@ const { sequelize } = require('./db/models');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
-const allowlist = ['http://localhost:3000'];
+const allowlist = ['http://localhost:3000','http://localhost:3001'];
 const corsOptions = {
+    credentials:true,
     origin: (origin, callback) => {
         var corsOptions;
         if (allowlist.indexOf(origin) !== -1) {

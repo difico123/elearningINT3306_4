@@ -2,9 +2,9 @@ import http from "./httpService";
 
 const apiEndpoint = "/api/course";
 
-function createQuiz(courseId,topicId) {
+function createQuiz(courseId, topicId, body) {
 const config = { headers: { "Content-Type": "application/json" } };
-return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/create`,config);
+return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/create`, body , config);
 }
 
 function activeQuiz(courseId,topicId,quizId) {

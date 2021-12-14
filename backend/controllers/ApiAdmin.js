@@ -1,7 +1,9 @@
 const cloudinary = require('cloudinary');
 const AdminService = require('../dbService/adminService');
 const { User, Course } = require('../db/models');
+const jwt = require('jsonwebtoken');
 const { pagination } = require('../utils/feature');
+const bcrypt = require('bcryptjs');
 
 module.exports = class ApiAdmin {
     // @route   DELETE api/admin/delete/:userId
@@ -120,6 +122,7 @@ module.exports = class ApiAdmin {
     // @desc    get listcourses by admin
     // @access  Private
     static async listCourses(req, res) {
+        let {page} = req.query;
         try {
             let courses = await AdminService.getCourses();
             courses.map((course) => {
@@ -132,6 +135,65 @@ module.exports = class ApiAdmin {
             });
             courses = pagination(courses, page);
             return res.status(200).json({ error: true, courses });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    
+    // @route   POST api/admin/login
+    // @desc    login user
+    // @access  Public
+    static async login(req, res) {
+        let { email, password } = req.body;
+        //find user
+        try {
+            let user = await User.findOne({ where: { email } });
+            if (!user) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Tài khoàn này không tồn tại'],
+                });
+            }
+
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (!isMatch) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Mật khẩu của bạn không chính xác'],
+                });
+            }
+            if (user.role !== 2) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Bạn phải đăng nhập bằng tài khoản admin'],
+                });
+            }
+            const payload = {
+                user: {
+                    id: user.id,
+                },
+            };
+
+            jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                { expiresIn: 36000 },
+                (err, token) => {
+                    if (err) throw err;
+
+                    if (user.imageUrl) {
+                        user.imageUrl = user.imageUrl.split(' ')[0];
+                    }
+                    return res.status(200).json({
+                        error: false,
+                        token,
+                        user: user,
+                    });
+                },
+            );
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

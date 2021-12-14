@@ -3,8 +3,21 @@ const router = express.Router();
 const ApiAdmin = require('../../controllers/ApiAdmin');
 const auth = require('../../middleware/auth/auth');
 const admin = require('../../middleware/auth/admin.auth');
+const {
+    checkUserInput,
+    validateInput,
+} = require('../../middleware/errors/Validate');
+// @route   POST api/admin/login
+// @desc    login user
+// @access  Public
+router.post(
+    '/login',
+    checkUserInput(['email', 'password']),
+    validateInput,
+    ApiAdmin.login,
+);
 
-// @route   DELETE api/user/deleteUser/:userId
+// @route   DELETE api/admin/deleteUser/:userId
 // @desc    Delete user by admin
 // @access  Private
 router.delete('/deleteUser/:userId', auth, admin, ApiAdmin.deleteUser);
@@ -23,5 +36,7 @@ router.get('/listUsers', auth, admin, ApiAdmin.listUsers);
 // @desc    get listCourses by admin
 // @access  Private
 router.get('/listCourses', auth, admin, ApiAdmin.listCourses);
+
+
 
 module.exports = router;

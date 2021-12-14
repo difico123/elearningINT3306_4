@@ -1,24 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import { ProtectedRoute, ProtectedInstructorRoute, ProtectedUserRoute } from "./components/protected.route/ProtectedRoute";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import AuthContext from "./service/authUser";
+import AuthRouter from "./routes/Auth";
+import DashBoard from "./routes/Dashboard.jsx";
+import AdminService from './service/AdminService'
 
 function App() {
+  const [user, setUser] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      AdminService.getAdmin().then(user => {
+        setUser({...user})
+        setLoading(false)
+      }).catch(error => {
+        setLoading(false)
+      });
+    })()
+
+  },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <div className="App">
+        <Router>
+          <Routes>
+
+            {!isLoading&&<Route
+              path="/*"
+              element={
+                <ProtectedRoute auth={user? true: false}>
+                  <DashBoard user={user}/>
+                </ProtectedRoute>
+              }
+            />}
+
+            <Route
+              path="/admin/*"
+              element={
+                <AuthRouter />
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
+    </AuthContext.Provider >
   );
 }
 

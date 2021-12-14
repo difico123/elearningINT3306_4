@@ -4,13 +4,10 @@ import { Link, useParams, Navigate } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import QuizService from "../../../service/quizService";
 import Loader from "../../common/loader";
-import { MoreVertIcon, SearchIcon } from "../../common/icons";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
-import { ArrowBackIosIcon, ArrowForwardIosIcon } from "../../common/icons";
-import dummyquizlist from "../../../dummydata/dummyquizlist.json";
-import dummy from "../../../dummydata/dummy.json";
+import {MoreVertIcon, SearchIcon , ArrowBackIosIcon, ArrowForwardIosIcon,EditIcon } from "../../common/icons";
 
 function ViewStudents() {
   let { id } = useParams();
@@ -19,12 +16,12 @@ function ViewStudents() {
       id: "",
       title: ""
   }])
-  const [topicId, setTopicId] = useState(-1);
+  const [topicId, setTopicId] = useState(null);
   const [change, setChange] = useState(false);
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
-  const [toggleSearch, setToggleSearch] = useState(false);
+  const [toggleAddQuiz, setToggleAddQuiz] = useState(false);
 
 
   const chooseTopic = topics.map((v, index) => (
@@ -54,7 +51,6 @@ function ViewStudents() {
     },[])
 
   useEffect(() => {
-      
     setLoading(true);
     let quiz = QuizService.getQuizNames(id, topicId).then((response) => {
         setQuizlist(response.quizes)
@@ -130,7 +126,6 @@ function ViewStudents() {
             <MoreVertIcon onClick={handleDropDown} />
             <span className="dropdown-content">
               <button>Xóa</button>
-              <button>Chỉnh sửa</button>
             </span>
           </div>
         </Wrap>
@@ -141,10 +136,10 @@ function ViewStudents() {
     setLoading(true);
     let page = Number(e.target.value);
     setCurrentPage(page);
-    CourseService.getCourseUsers(id, page).then((response) => {
-      setQuizlist(response.users);
-      setLoading(false);
-    });
+    // CourseService.getCourseUsers(id, page).then((response) => {
+    //   setQuizlist(response.users);
+    //   setLoading(false);
+    // });
   };
 
   const loading = (
@@ -154,58 +149,37 @@ function ViewStudents() {
     </div>
   );
 
-  const handleToggleSearch = () => {
-    setToggleSearch(!toggleSearch);
+  const handleToggleAddQuiz = () => {
+    setToggleAddQuiz(!toggleAddQuiz);
   };
 
   const [selectedUser, setSelectedUser] = useState("");
   const [toastList, setToastList] = useState([]);
 
-  const handleAddSelectedUser = (e) => {
-    if (!selectedUser) {
-      e.target.previousElementSibling.innerHTML = "Bạn chưa chọn học sinh";
+  const [titleString, setTitleString] = useState('');
+  const handleChange = (e) => {
+    setTitleString(e.target.value)
+  };
+  const handleAddQuiz = (e) => {
+    console.log(titleString)
+    if(titleString.length < 10) {
+      setToastList([showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự'),...toastList]);
     } else {
-      CourseService.inviteStudent(id, selectedUser)
-        .then(() => {
-          setToastList([
-            showToast("success", "Thông báo", "Bạn đã thêm quiz mới!"),
-          ]);
-          setToggleSearch(false);
-          setChange(!change);
-        })
-        .catch(() => {
-          setToastList([
-            showToast(
-              "danger",
-              "Thông báo",
-              "Bạn chưa thêm được học sinh mới!"
-            ),
-          ]);
-        });
+      QuizService.createQuiz(id, topicId, titleString).then((res) => {
+        console.log(res);
+        setToastList([showToast('success', 'Thông báo!', 'Tạo quiz thành công'),...toastList]);
+      }).catch((err) => {
+        console.log(err.response.data);
+      })
     }
   };
 
   const bodyPopup = (
     <div>
       <SearchBar>
-        <input type="text" placeholder="Tên quiz..." />
-        <CustomSearch />
+        <input type="text" placeholder="Tên quiz..." onChange={handleChange} />
+        <EditIcon />
       </SearchBar>
-      <UserList>
-        {quizList.length === 0
-          ? "Không có học sinh"
-          : quizList.map((student, index) => (
-              <Student
-                key={index}
-                className={student.id === selectedUser ? "bg-green-400" : ""}
-                onClick={() => {
-                  setSelectedUser(student.id);
-                }}
-              >
-                {student.email}
-              </Student>
-            ))}
-      </UserList>
     </div>
   );
 
@@ -213,7 +187,7 @@ function ViewStudents() {
     <div>
       <Wrapper>
         <p className="text-red-400"></p>
-        <button onClick={handleAddSelectedUser}>Thêm</button>
+        <Btn onClick={handleAddQuiz}>Thêm</Btn>
       </Wrapper>
     </div>
   );
@@ -223,7 +197,7 @@ function ViewStudents() {
       <Content>
         <Wrapper>
           {selectTopic}
-          <button onClick={handleToggleSearch}>Thêm quiz mới</button>
+          <button onClick={handleToggleAddQuiz} className={topicId? 'bg-green-500 hover:bg-green-600': 'bg-gray-500 cursor-not-allowed'} disabled={topicId? false: true} title='Chọn topic trước khi thêm'>Thêm quiz mới</button>
         </Wrapper>
 
         <Div>
@@ -288,8 +262,8 @@ function ViewStudents() {
         </Page>
       </Content>
       <Popup
-        toggle={toggleSearch}
-        setToggle={setToggleSearch}
+        toggle={toggleAddQuiz}
+        setToggle={setToggleAddQuiz}
         header={<h2>Thêm quiz mới</h2>}
         body={bodyPopup}
         footer={footerPopup}
@@ -306,19 +280,31 @@ border-radius: 0.25rem;
 padding: 0.25rem;
 width: 4rem;
 `
+const Btn = styled.button `
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  background-color: #22cb5c;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+&:hover {
+  background-color: #6ec72d;
+}
+`
 const Wrapper = styled.div`
   margin: 2vh 0;
   button {
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
       rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    background-color: #22cb5c;
+    // background-color: #22cb5c;
     color: white;
     font-weight: 600;
     padding: 0.5rem 1rem;
   }
   button:hover {
-    background-color: #6ec72d;
+    // background-color: #6ec72d;
   }
   display: flex;
   flex-flow: row nowrap;
@@ -490,12 +476,6 @@ const SearchBar = styled.div`
     right: 0;
   }
 `;
-const UserList = styled.div`
-  height: 15rem;
-  width: 100%;
-  margin-top: 1rem;
-`;
-
 const Student = styled.div`
   padding: 0.7rem 0.5rem;
   cursor: pointer;
