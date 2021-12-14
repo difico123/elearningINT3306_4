@@ -1,5 +1,6 @@
 const { Quiz } = require('../db/models');
 const  QuizService = require('../dbService/quizService')
+const {pagination} = require('../utils/feature')
 
 module.exports = class ApiQuizes {
     // @route   POST api/quizes/:courseId/:topicId/create
@@ -57,6 +58,40 @@ module.exports = class ApiQuizes {
         }
     }
 
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/edit/:quizId
+    // @desc    hide quiz by instructor
+    // @access  Private
+    static async editQuiz(req, res) {
+        try {
+            Quiz.update({title: req.body.title}, {where: {id: req.params.quizId}}).then((quiz) => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Đã sửa quiz!'
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/edit/:quizId
+    // @desc    hide quiz by instructor
+    // @access  Private
+    static async deleteQuiz(req, res) {
+        try {
+            Quiz.destroy({where: {id: req.params.quizId}}).then((quiz) => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Đã xoá quiz!'
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
     // @route   GET api/quizes/:courseId/:topicId/getQuizes
     // @desc    get quizzes by instructor and student
     // @access  Private
@@ -78,6 +113,7 @@ module.exports = class ApiQuizes {
     // @desc    get quizzes by instructor and student
     // @access  Private
     static async getQuizNames(req, res) {
+        let {page} = req.query
         try {
             let quizes =  await QuizService.getQuizNames(req.topicId);
 
@@ -86,6 +122,7 @@ module.exports = class ApiQuizes {
                     quizes[i].total = total[0].total;
                 })
             }
+            quizes = pagination(quizes, page, 7)
             res.status(200).json({
                 error: false,
                 quizes: quizes,

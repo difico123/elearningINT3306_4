@@ -44,6 +44,7 @@ router.get(
     '/instructorCourses/:courseId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.getCourseDetails,
 );
 
@@ -54,6 +55,7 @@ router.put(
     '/activate/:courseId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.activateCourse,
 );
 
@@ -64,6 +66,7 @@ router.put(
     '/suspend/:courseId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.suspendCourse,
 );
 
@@ -77,6 +80,7 @@ router.put(
     validateInput,
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.edit,
 );
 
@@ -87,6 +91,7 @@ router.delete(
     '/delete/:courseId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.delete,
 );
 
@@ -97,6 +102,7 @@ router.get(
     '/getUsers/:courseId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.showUsers,
 );
 
@@ -107,6 +113,7 @@ router.put(
     '/:courseId/kick/:userId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.kickUser,
 );
 
@@ -117,6 +124,7 @@ router.post(
     '/:courseId/invite/:userId',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.invite,
 );
 
@@ -127,6 +135,7 @@ router.get(
     '/:courseId/findUsers',
     auth,
     courseInstructorAuth(true),
+    coursePassport,
     ApiCourse.findUsers,
 );
 
@@ -138,7 +147,7 @@ router.get('/showAll', ApiCourse.showAll);
 // @route   GET api/course/showDetail/:courseId
 // @desc    Show all courses
 // @access  public
-router.get('/showDetail/:courseId', ApiCourse.showDetail);
+router.get('/showDetail/:courseId', coursePassport, ApiCourse.showDetail);
 
 
 module.exports = router;

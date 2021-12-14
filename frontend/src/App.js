@@ -11,7 +11,6 @@ import AuthRouter from "./routes/Auth";
 import CourseRouter from "./routes/Course"
 import UserCourseRouter from "./routes/UserCourse"
 import InstructorRouter from "./routes/Instructor"
-import Popup from './components/common/popup'
 
 function App() {
   const [auth, setAuth] = useState(() => {

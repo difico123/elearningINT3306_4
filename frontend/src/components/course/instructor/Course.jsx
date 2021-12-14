@@ -68,7 +68,7 @@ function InstructorCourses() {
           <CourseTitle>{course.name}</CourseTitle>
           <CourseCategory>
             <span className="bg-blue-400 rounded-full px-2 text-white">
-              Loại:
+              Danh mục:
             </span>{" "}
             {course.categoryName}
           </CourseCategory>
@@ -255,6 +255,9 @@ const CourseInfo = styled.div`
 `;
 
 const CourseCategory = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 600;
   height: 2rem;
   overflow: hidden;

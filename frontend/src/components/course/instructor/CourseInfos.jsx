@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import TopicContent from "./TopicContent";
-import {MoreVertIcon,EditIcon, ClearIcon, Warning} from '../../common/icons'
+import {MoreVertIcon,EditIcon, ClearIcon, Warning, GroupsIcon, StarIcon, BooksIcon} from '../../common/icons'
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
@@ -20,6 +20,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
     imageUrl: "",
     register: 0,
     rating: "",
+    numTopic:""
   });
 
   const [topicId, setTopicId] = useState();
@@ -88,7 +89,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
             <div className={toggle !== topic.id ? "hidden": ""}>
               <OverLay onClick={(e) => handleOverLayDropdown(e)}></OverLay>
             </div>
-          </WrapDrop>
+        </WrapDrop>
       </Title>
     </>
   ));
@@ -108,9 +109,10 @@ function EditCourseInfos({ courseParam, topicsParam }) {
             <CourseDescription>{course.description}</CourseDescription>
             <ARWrap>
               <CourseAttendance>
-                Số học viên: {course.register}
+                <span> Số học viên: {course.register}</span><GroupsIcon/>
               </CourseAttendance>
-              <CourseRating>Đánh giá: {course.rating} sao;</CourseRating>
+              <CourseRating><span>Đánh giá: {course.rating? course.rating: "0"} </span><StarIcon/></CourseRating>
+              <CourseAttendance><span>Chủ đề: {course.numTopic? course.numTopic: "0"} </span><BooksIcon/></CourseAttendance>
             </ARWrap>
           </InfoWrap>
           <CourseCover>
@@ -291,14 +293,29 @@ const ARWrap = styled.div`
 const CourseAttendance = styled.div`
   color: white;
   font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  svg{
+    color: #c7ecee;
+  }
 `;
 const CourseRating = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
   color: white;
   font-size: 1rem;
+  svg{
+    color: #f0932b;
+  }
 `;
 
 const CourseCover = styled.div`
   padding: 0 8vw;
+  margin: auto;
 `;
 
 const BackgroundImage = styled.img``;

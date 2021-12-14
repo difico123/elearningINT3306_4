@@ -66,8 +66,8 @@ function Course() {
   };
 
   const content = getCourses.map((course, index) => (
-    <Link to={`/category/${CategoryParam}/course/${course.courseId}`}>
-      <Wrap key={index}>
+    <Link to={`/category/${CategoryParam}/course/${course.courseId}`}  key={index}>
+      <Wrap>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <CourseTitle>{course.name}</CourseTitle>
         <CourseInstructor>
@@ -133,7 +133,6 @@ function Course() {
 
   const renderCategoryRatio = getCategoryName.map((element, index) => {
     return (
-      <>
         <FilterWrap key={index}>
           <input
             value={element.id}
@@ -144,7 +143,6 @@ function Course() {
           />
           <label for={element.name}>{element.name}</label>
         </FilterWrap>
-      </>
     );
   });
 

@@ -7,7 +7,7 @@ import Loader from "../../common/loader";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
-import {MoreVertIcon, SearchIcon , ArrowBackIosIcon, ArrowForwardIosIcon,EditIcon } from "../../common/icons";
+import {MoreVertIcon, SearchIcon , ArrowBackIosIcon, ArrowForwardIosIcon,EditIcon, ClearIcon,Warning } from "../../common/icons";
 
 function ViewStudents() {
   let { id } = useParams();
@@ -22,7 +22,9 @@ function ViewStudents() {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [toggleAddQuiz, setToggleAddQuiz] = useState(false);
-
+  const [toggleDelQuiz, setToggleDelQuiz] = useState(false);
+  const [toggleEditQuiz, setToggleEditQuiz] = useState(false);
+  const [quizIdSelection, setQuizIdSelection] = useState(-1);
 
   const chooseTopic = topics.map((v, index) => (
     <option value={v.id} key={index}>
@@ -52,7 +54,7 @@ function ViewStudents() {
 
   useEffect(() => {
     setLoading(true);
-    let quiz = QuizService.getQuizNames(id, topicId).then((response) => {
+    let quiz = QuizService.getQuizNames(id, topicId,currentPage).then((response) => {
         setQuizlist(response.quizes)
     }).catch((err) => {
         setLoading(false);
@@ -62,37 +64,6 @@ function ViewStudents() {
     })
   }, [change]);
 
-  
-  const handleDropDown = (e) => {
-    let dropdown = e.target.nextElementSibling;
-    if (dropdown) {
-      if (dropdown.style.display === "none") {
-        dropdown.style.display = "inline";
-      } else {
-        dropdown.style.display = "none";
-      }
-    } else {
-      return;
-    }
-  };
-
-  const handleKick = (e, userId) => {
-    CourseService.kickUser(id, userId)
-      .then(() => {
-        setToastList([
-          showToast("success", "Thông báo", "Bạn đã đuổi học sinh này!"),
-        ]);
-        setChange(!change);
-        if (e.target.parentElement) {
-          e.target.parentElement.style.display = "none";
-        }
-      })
-      .catch(() => {
-        setToastList([
-          showToast("danger", "Thông báo", "Bạn chưa đuổi học sinh này!"),
-        ]);
-      });
-  };
 
   const handleShowQuiz = (quizId) => {
     QuizService.activeQuiz(id,topicId, quizId).then(() => {
@@ -111,6 +82,19 @@ function ViewStudents() {
     })
   }
 
+  const handleEditQuizPopup = (e,title, quizId) => {
+    e.stopPropagation();
+    setToggleEditQuiz(true)
+    setTitleString(title)
+    setQuizIdSelection(quizId)
+  }
+  
+  const handleDeleteQuizPopup = (e,quizId) => {
+    e.stopPropagation();
+    setToggleDelQuiz(true);
+    setQuizIdSelection(quizId)
+  }
+
   const content =
     quizList.length === 0 ? (
       <p className="text-center mt-1">Không có quiz nào</p>
@@ -122,12 +106,11 @@ function ViewStudents() {
           <div>{quiz.shown === 1 ? <StatusBtn className="bg-green-500" onClick={() =>{handleHideQuiz(quiz.id); quiz.shown = 0} }>Hiện</StatusBtn> :
            <StatusBtn className="bg-gray-500" onClick={() => handleShowQuiz(quiz.id)}>Ẩn</StatusBtn>}</div>
           <div>{quiz.total}</div>
-          <div className="dropdown">
-            <MoreVertIcon onClick={handleDropDown} />
-            <span className="dropdown-content">
-              <button>Xóa</button>
-            </span>
-          </div>
+
+        <WrapDrop>
+          <EditTopicBtn onClick={(e)=> handleEditQuizPopup(e, quiz.title, quiz.id)}></EditTopicBtn>
+          <DelTopicBtn onClick={(e)=> handleDeleteQuizPopup(e, quiz.id)}></DelTopicBtn>
+        </WrapDrop>
         </Wrap>
       ))
     );
@@ -136,10 +119,7 @@ function ViewStudents() {
     setLoading(true);
     let page = Number(e.target.value);
     setCurrentPage(page);
-    // CourseService.getCourseUsers(id, page).then((response) => {
-    //   setQuizlist(response.users);
-    //   setLoading(false);
-    // });
+    setChange(!change)
   };
 
   const loading = (
@@ -151,43 +131,95 @@ function ViewStudents() {
 
   const handleToggleAddQuiz = () => {
     setToggleAddQuiz(!toggleAddQuiz);
+    setTitleString('');
   };
 
-  const [selectedUser, setSelectedUser] = useState("");
   const [toastList, setToastList] = useState([]);
 
   const [titleString, setTitleString] = useState('');
-  const handleChange = (e) => {
+  const handleChangeQuizString = (e) => {
     setTitleString(e.target.value)
   };
+
+  
   const handleAddQuiz = (e) => {
-    console.log(titleString)
     if(titleString.length < 10) {
-      setToastList([showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự'),...toastList]);
+      e.target.previousElementSibling.innerHTML = "Tên chủ đề phải ít nhất 10 kí tự"
+      setToastList([...toastList, showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự')]);
     } else {
-      QuizService.createQuiz(id, topicId, titleString).then((res) => {
-        console.log(res);
-        setToastList([showToast('success', 'Thông báo!', 'Tạo quiz thành công'),...toastList]);
+      e.target.previousElementSibling.innerHTML = ""
+      QuizService.createQuiz(id, topicId, {title: titleString}).then((res) => {
+        setToastList([...toastList,showToast('success', 'Thông báo!', 'Tạo quiz thành công')]);
+        setChange(!change);
+      }).catch((err) => {
+        console.log(err.response.data);
+      })
+    }
+  };
+  const handleEditQuiz = (e) => {
+    if(titleString.length < 10) {
+      e.target.previousElementSibling.innerHTML = "Tên chủ đề phải ít nhất 10 kí tự"
+      setToastList([...toastList, showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự')]);
+      
+    } else {
+      QuizService.editQuiz(id, topicId, quizIdSelection, {title: titleString}).then((res) => {
+        setToastList([...toastList,showToast('success', 'Thông báo!', 'sửa quiz thành công')]);
+        setToggleEditQuiz(false);
+        setChange(!change);
       }).catch((err) => {
         console.log(err.response.data);
       })
     }
   };
 
-  const bodyPopup = (
+  const handleDeleteQuiz = () => {
+    QuizService.delQuiz(id, topicId, quizIdSelection).then((res) => {
+      setToastList([...toastList,showToast('success', 'Thông báo!', 'Xoá quiz thành công!')]);
+      setToggleDelQuiz(false);
+      setChange(!change);
+    }).catch((err) => {
+      console.log(err.response.data);
+    })
+  }
+  const bodyAddPopup = (
     <div>
       <SearchBar>
-        <input type="text" placeholder="Tên quiz..." onChange={handleChange} />
+        <input type="text" placeholder="Tên quiz..." onChange={handleChangeQuizString} />
+        <EditIcon />
+      </SearchBar>
+    </div>
+  );
+  const bodyDelPopup = (
+    <div>
+        Bạn có chắc chắn muốn xoá quiz này không?
+    </div>
+  );
+  const bodyEditPopup = (
+    <div>
+      <SearchBar>
+        <input type="text" placeholder="Tên quiz..." value={titleString} onChange={handleChangeQuizString} />
         <EditIcon />
       </SearchBar>
     </div>
   );
 
-  const footerPopup = (
+  const footerAddPopup = (
     <div>
       <Wrapper>
         <p className="text-red-400"></p>
         <Btn onClick={handleAddQuiz}>Thêm</Btn>
+      </Wrapper>
+    </div>
+  );
+  const footerDelPopup = (
+    <DeleteButton onClick={handleDeleteQuiz}>Tôi muốn xóa!</DeleteButton>
+  );
+
+  const footerEditPopup = (
+    <div>
+      <Wrapper>
+        <p className="text-red-400"></p>
+        <Btn onClick={handleEditQuiz}>Sửa</Btn>
       </Wrapper>
     </div>
   );
@@ -197,9 +229,8 @@ function ViewStudents() {
       <Content>
         <Wrapper>
           {selectTopic}
-          <button onClick={handleToggleAddQuiz} className={topicId? 'bg-green-500 hover:bg-green-600': 'bg-gray-500 cursor-not-allowed'} disabled={topicId? false: true} title='Chọn topic trước khi thêm'>Thêm quiz mới</button>
+          {topicId&& <button onClick={handleToggleAddQuiz}  title='Chọn topic trước khi thêm'>Thêm quiz mới</button>}
         </Wrapper>
-
         <Div>
           <div>STT</div>
           <div>Tên quiz</div>
@@ -207,8 +238,9 @@ function ViewStudents() {
           <div>Số câu hỏi</div>
           <div></div>
         </Div>
-        {isLoading ? loading : content}
-
+        {/* {isLoading ? loading : content} */}
+        {content}
+        
         <Page>
           <ArrowBackIosIcon
             className="page"
@@ -265,8 +297,22 @@ function ViewStudents() {
         toggle={toggleAddQuiz}
         setToggle={setToggleAddQuiz}
         header={<h2>Thêm quiz mới</h2>}
-        body={bodyPopup}
-        footer={footerPopup}
+        body={bodyAddPopup}
+        footer={footerAddPopup}
+      />
+      <Popup
+        toggle={toggleDelQuiz}
+        setToggle={setToggleDelQuiz}
+        header={<HeaderDelPopup><img src={Warning} alt="" /><span>Cảnh báo!</span></HeaderDelPopup>}
+        body={bodyDelPopup}
+        footer={footerDelPopup}
+      />
+      <Popup
+        toggle={toggleEditQuiz}
+        setToggle={setToggleEditQuiz}
+        header={<h2>Sửa quiz</h2>}
+        body={bodyEditPopup}
+        footer={footerEditPopup}
       />
       <Toast toastList={toastList} />
     </Container>
@@ -274,6 +320,81 @@ function ViewStudents() {
 }
 
 export default ViewStudents;
+
+const HeaderDelPopup = styled.div`
+  text-align:center;
+  img{
+    width: 2rem;
+    background-color: red;
+    border-radius: 5px;
+  }
+  display: flex;
+  justify-content: start;
+  gap:1rem;
+  align-items: center;
+`
+const DeleteButton = styled.div`
+text-align:center;
+bottom: 0.5rem;
+background-color: white;
+color: black;
+font-weight: 600;
+padding: 1rem 2rem;
+font-size: 15px;
+width: 100%;
+transition: 0.5s ease 0s;
+cursor:pointer;
+&:hover {
+  color: white;
+  background-color: crimson;
+}
+
+`
+const DelTopicBtn = styled(ClearIcon)`
+  position:relative;
+  cursor: pointer;
+  z-index: 99;
+  &:hover {
+    color: red;
+    background-color: #CAD5E2;
+    border-radius: 3px;
+    transition: all 0.5s ease;
+  }
+`
+const EditTopicBtn = styled(EditIcon)`
+  position:relative;
+  z-index: 99;
+  cursor: pointer;
+  &:hover {
+    color: #120E43;
+    background-color: #CAD5E2;
+    border-radius: 3px;
+    transition: all 0.5s ease;
+  }
+`
+const WrapDrop = styled.div`
+  position:relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+const OverLay = styled.div`
+  background-color: gray;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw
+  height: 100vh;
+  z-index: 1;
+  div {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+`
 const StatusBtn = styled.button `
 color: white;
 border-radius: 0.25rem;
@@ -298,13 +419,13 @@ const Wrapper = styled.div`
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
       rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-    // background-color: #22cb5c;
+    background-color: #22cb5c;
     color: white;
     font-weight: 600;
     padding: 0.5rem 1rem;
   }
   button:hover {
-    // background-color: #6ec72d;
+    background-color: #6ec72d;
   }
   display: flex;
   flex-flow: row nowrap;

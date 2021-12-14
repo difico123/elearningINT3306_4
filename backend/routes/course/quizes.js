@@ -59,6 +59,32 @@ router.put(
     ApiQuizes.hideQuiz,
 );
 
+// @route   POST api/course/:courseId/topic/:topicId/quiz/edit/:quizId
+// @desc    active quiz by instructor
+// @access  Private
+router.put(
+    '/edit/:quizId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    quizTopicAuth,
+    checkCourseInput(["title"]),
+    validateInput,
+    ApiQuizes.editQuiz,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/delete/:quizId
+// @desc    active quiz by instructor
+// @access  Private
+router.delete(
+    '/delete/:quizId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    quizTopicAuth,
+    ApiQuizes.deleteQuiz,
+);
+
 // @route   GET api/course/:courseId/topic/:topicId/quiz/getQuizes
 // @desc    get quizzes by instructor and student
 // @access  Private

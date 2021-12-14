@@ -202,11 +202,10 @@ module.exports = class ApiCourse {
         let { courseId } = req.params;
         try {
             let course = (await CourseService.getSingleCourse(courseId))[0];
-
             if (course.imageUrl) {
                 course.imageUrl = course.imageUrl.split(' ')[0];
             }
-
+          
             let topics = await TopicService.getTopicNames(courseId);
             res.status(200).json({
                 error: false,
