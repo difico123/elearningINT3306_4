@@ -1,24 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { ProtectedRoute, ProtectedInstructorRoute, ProtectedUserRoute } from "./components/protected.route/ProtectedRoute";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+// import Footer from "./components/layout/Footer";
+import React, { useState } from "react";
+// import Header from "./components/layout/Header";
+import AuthContext from "./service/authUser";
+import AuthRouter from "./routes/Auth";
 
 function App() {
+  const [user, setUser] = useState({
+    uuid: "",
+    lastName: "",
+    firstName: "",
+    phoneNumber: "",
+    email: "",
+    city: "",
+    address: "",
+    imageUrl: "",
+    role: "",
+    dateAdded: "",
+    lastUpdated: "",
+    auth: false,
+  });
+
+  const [loading, setLoading] = useState(true)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{ user, setUser }}>
+      <div className="App">
+        <Router>
+          <Routes>
+            <Route
+              path="/auth/*"
+              element={
+                <AuthRouter />
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
+    </AuthContext.Provider >
   );
 }
 
