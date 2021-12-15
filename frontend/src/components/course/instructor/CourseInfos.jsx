@@ -55,6 +55,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
   const handleDeletePopup = (e) => {
     e.stopPropagation();
     setModelToggle(true)
+    setToggle(-1)
   }
 
   const handleDelete = (e) => {
@@ -75,6 +76,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
   const handleEdit = (e) => {
     e.stopPropagation();
     setEditToggle(true)
+    setToggle(-1)
   }
 
   const handleSelectedTopic = (id) => {
@@ -137,7 +139,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
           </TopicNav>
           <ContentWrapper>
             {!isLoading && (
-              editToggle? <EditTopic topicId={topicId} setEditToggle={setEditToggle} setTopics={setTopics} topics={topics}/>:
+              editToggle? <EditTopic topicId={topicId} setEditToggle={setEditToggle} topics={topics}/>:
               <TopicContent courseId={course.id} topicId={topicId ? topicId : -1} />
             )}
           </ContentWrapper>
@@ -360,6 +362,8 @@ const NavTitle = styled.div`
 const TopicWrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  height:85vh;
+  padding-right:3rem;
   overflow-y: auto;
   overflow-x: hidden;
   right: 0px;

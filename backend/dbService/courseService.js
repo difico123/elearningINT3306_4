@@ -59,10 +59,12 @@ module.exports = class CourseService {
                 concat(u.firstName,' ', u.lastName) as instructorName, 
                 c.imageUrl, COUNT(uc.id) as register,
                 round(avg(uc.rating),1) as rating,
-                COUNT(t.id) as numTopic
+                top.num_topic as numTopic
                 from courses c
-                left join usercourses uc on uc.courseId = c.id 
-                left join topics t on t.courseId = c.id
+               	left join usercourses uc on uc.courseId = c.id 
+                left join (select t.courseId, count(t.id) 
+                as num_topic from topics t group by t.courseId) 
+                as top on top.courseId = c.id
                 join users u on u.id = c.instructorId 
                 where c.id = ?
                 group by c.id;`,

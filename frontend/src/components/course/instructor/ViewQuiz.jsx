@@ -581,8 +581,8 @@ const SearchBar = styled.div`
     width: 90%;
     autocomplete: off;
     background-image: none;
-    font-size: 15px;
-    font-weight: lighter;
+    font-size: 1rem;
+    font-weight: 500;
   }
   button {
     cursor: pointer;

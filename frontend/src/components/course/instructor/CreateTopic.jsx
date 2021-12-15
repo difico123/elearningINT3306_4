@@ -57,7 +57,7 @@ function CreateTopic() {
         setListNotifications([showToast('success','Thông báo', res.msg.toString())])
         window.location.href = "./infos";
       }).catch((err) => {
-        setListNotifications([showToast('danger','Thông báo', err.response.data.msg.toString())])
+        setListNotifications([showToast('danger','Thông báo',"lỗi")])
       })
       setLoading(false);
   } 

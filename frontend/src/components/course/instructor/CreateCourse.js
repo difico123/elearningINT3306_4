@@ -45,9 +45,6 @@ function CreateCourse() {
         console.log(response.msg);
         isSuccess.current = true;
         setMsg(response.msg);
-        setTimeout(() => {
-          window.location.href = "./";
-        }, 3000);
       })
       .catch((error) => {
         isSuccess.current = false;

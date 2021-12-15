@@ -207,6 +207,7 @@ module.exports = class ApiCourse {
             }
           
             let topics = await TopicService.getTopicNames(courseId);
+            
             res.status(200).json({
                 error: false,
                 course: course,

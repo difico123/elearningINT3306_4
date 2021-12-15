@@ -87,6 +87,25 @@ module.exports = class ApiCourse {
         }
     }
 
+    // @route   GET api/userCourse/checkInstructor/:courseId
+    // @desc    check instructor enroll a course
+    // @access  private
+    static async checkInstructorEnroll(req, res, next) {
+        let courseId = req.params.courseId;
+        try {
+            UserCourseService.checkOtherInstructor(req.user.id, courseId).then((v) => {
+                if(v[0]) {
+                    return res.status(403).send({error: true})
+                } else {
+                    return res.status(200).send({error: false})
+                }
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
     // @route   GET api/userCourse/enroll/:courseId
     // @desc    enroll a course by student
     // @access  private

@@ -8,7 +8,7 @@ module.exports = class CategoryService {
                 `select ca.id as categoryId,ca.name as categoryName,ca.imageUrl,count(c.id) as courseNum, 
                 sum(ue.userNum) as register,
                 round(avg(ue.star),1) as rating from categories ca 
-                left join courses c on c.categoryId = ca.id
+                left join courses c on c.categoryId = ca.id and c.verified = 1
                 left join (select co.id, count(uc.id)as userNum,
                 round(avg(uc.rating),1) as star from courses co 
                 join usercourses uc on co.id = uc.courseId 

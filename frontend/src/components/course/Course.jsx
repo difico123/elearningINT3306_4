@@ -18,7 +18,6 @@ import Loader from "../common/loader";
 function Course() {
   const { id } = useParams();
   const [CategoryParam, setCategoryParam] = useState(id);
-
   const [category, setCategory] = useState(id);
   const [keyword, setKeyword] = useState("");
   const [rating, setRating] = useState("");
@@ -37,6 +36,7 @@ function Course() {
       register: "",
     },
   ]);
+  
   const [getCategoryName, SetCategoryName] = useState([
     {
       id: "",

@@ -38,4 +38,20 @@ module.exports = class UserCourseService {
             console.log(error);
         }
     }
+    static async checkOtherInstructor(userId, courseId) {
+        try {
+            const response = await sequelize.query(
+                `select c.id from courses c
+                join users u on u.role = 1 and u.id = c.instructorId  
+                where u.id = ? and c.id = ?;`,
+                {
+                    replacements: [userId,courseId],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };

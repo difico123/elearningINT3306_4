@@ -6,6 +6,7 @@ const {
     courseInstructorAuth,
 } = require('../../middleware/auth/courseInstructor.auth');
 const userCourseAuth = require('../../middleware/auth/userCourse.auth');
+const instructorAuth = require('../../middleware/auth/instructor.auth') ;
 const {
     checkCourseInput,
     validateInput,
@@ -36,6 +37,11 @@ router.get(
 // @desc    check enroll a course
 // @access  private
 router.get('/check/:courseId', auth, ApiUserCourse.checkCourse);
+
+// @route   GET api/userCourse/checkInstructor/:courseId
+// @desc    check instructor enroll a course
+// @access  private
+router.get('/checkInstructor/:courseId', auth, instructorAuth, ApiUserCourse.checkInstructorEnroll);
 
 // @route   Get api/userCourse/all
 // @desc    get the list of user courses

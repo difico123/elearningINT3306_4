@@ -8,18 +8,7 @@ import Toast from "../../common/toast"
 import showToast from "../../../dummydata/toast"
 
 function InstructorCourses() {
-  const [getCourses, setCourses] = useState([
-    {
-      id: "",
-      name: "",
-      description: "",
-      categoryName: "",
-      categoryId: "",
-      verified: true,
-      imageUrl: "",
-      dateAdded: "",
-    },
-  ]);
+  const [getCourses, setCourses] = useState([]);
   const [change, setChange] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -59,7 +48,7 @@ function InstructorCourses() {
     </ActivateButton>
   );
 
-  const content = getCourses.map((course, index) => (
+  const content = getCourses.length === 0 ? (<NoContent >không có khoá học nào</NoContent>) : (getCourses.map((course, index) => (
     <Wrap key={index}>
       {course.verified ? suspendCourse(course.id) : activateCourse(course.id)}
       <Link to={`/instructorcourses/${course.id}/infos`}>
@@ -79,7 +68,7 @@ function InstructorCourses() {
         </WrapItems>
       </Link>
     </Wrap>
-  ));
+  )));
 
   const CreateCourse = (
     <Link to={`/instructorcourses/create`}>
@@ -192,6 +181,10 @@ const Container = styled.div`
   flex-direction: column;
   gap: 30px;
   align-items: center;
+`;
+const NoContent = styled.span`
+  position: absolute;
+  margin: 0 auto;
 `;
 
 const Content = styled.div`

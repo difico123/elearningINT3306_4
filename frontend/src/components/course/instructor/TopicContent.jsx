@@ -3,9 +3,7 @@ import CourseService from "../../../service/courseService";
 import styled from 'styled-components';
 import Loader from '../../common/loader';
 
-function TopicContent(props) {
-    const {courseId, topicId} = props;
-
+function TopicContent({courseId, topicId}) {
     const [topic,setTopic] = useState({
         id: '',
         title: "",
@@ -14,7 +12,6 @@ function TopicContent(props) {
     })
     const [isLoading,setLoading] = useState(true);
 
-    console.log("abc",topicId)
     useEffect(() => {
         setLoading(true);
         let topic = CourseService.getTopicDetails(courseId, topicId).then((response) => {
@@ -36,6 +33,7 @@ function TopicContent(props) {
     },[courseId,topicId])
 
     const Loading = <WrapLoader><Loader/></WrapLoader>
+    
     const Loaded =  !topic.id ? <NoContent>Chưa có nội dung</NoContent>:<div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
 
     return (

@@ -11,65 +11,63 @@ import Loader from '../../common/loader'
 import Toast from '../../common/toast'
 import showToast from '../../../dummydata/toast'
 
-function EditTopic({setEditToggle, topicId, setTopics, topics}) {
+function EditTopic({setEditToggle, topicId, topics}) {
     const {id} = useParams();
 
-    const [topic, setTopic] = useState({
-      title: '',
-      content: '',
-      description: ''
-    });
-
     const [listNotifications,setListNotifications] = useState([]);
-    const [isLoading, setLoading] = useState(null)
+    const [isLoading, setLoading] = useState(true)
+    const [description,setDescription] = useState('')
+    const [title,setTitle] = useState('')
+    const [content,setContent] = useState('')
   
     const loading = <WrapLoader> <Loader /> </WrapLoader>
     
     useEffect(() => {
         (async () => {
-            await CourseService.getTopicDetails(id, topicId).then(res => {
-                setTopic({...res.topic})
-                console.log(res)
+            await CourseService.getTopicDetails(id, topicId).then((response) => {
+              let {description, title, content} = response.topic
+                setContent(content)
+                setDescription(description)
+                setTitle(title)
+                setLoading(false)
             })
         })()
     },[topicId])
-    console.log(topic)
 
-    const onChangeValue = (e) => {
-      setTopic({
-        ...topic,
-        [e.target.name]:e.target.value
-      });
+    const onChangeTitle = (e) => {
+      setTitle(e.target.value)
     }
-  
+    const onChangeDescription = (e) => {
+      setDescription(e.target.value)
+    }
     const onChangeContent = (value) => {
-      setTopic({ ...topic,
-          content: value
-      });
+      setContent(value)
     } 
   
     const [isError, setError] = useState(null);
-    const addDetails = async(e) => {
+    const handleEditTopic = async(e) => {
         e.preventDefault();
         e.persist();
-        if(topic.title.length < 10){
+        if(title.length < 10){
           setError('Tiêu đề bắt buộc phải có ít nhất 10 ký tự');
           return;
         }
-        if(topic.description.length < 20){
+        if(description.length < 20){
           setError('Phần mô tả bắt buộc phải có ít nhất 20 ký tự');
           return;
         }
-        if(topic.content.length < 30){
+        if(content.length < 30){
           setError('Phần nội dung bắt buộc phải có ít nhất 30 ký tự');
           return;
         }
         setLoading(true);
-        await CourseService.createTopic(id, topic).then((res) => {
+        await CourseService.editTopic(id, topicId, {title, description,content}).then((res) => {
           setListNotifications([showToast('success','Thông báo', res.msg.toString())])
-          window.location.href = "./infos";
+          let index = topics.findIndex(x => x.id === topicId)
+          topics[index].title = title
+          setEditToggle(false)
         }).catch((err) => {
-          setListNotifications([showToast('danger','Thông báo', err.response.data.msg.toString())])
+          setListNotifications([showToast('danger','Thông báo', "lỗi")])
         })
         setLoading(false);
     }
@@ -77,7 +75,8 @@ function EditTopic({setEditToggle, topicId, setTopics, topics}) {
     const handleEditToggle = () => {
         setEditToggle(false)
     }
-return ( 
+
+return (
     <>
         <Container>
             <Back onClick={handleEditToggle}>Quay lại</Back>
@@ -92,7 +91,7 @@ return (
                             <label className="font-weight-bold"> Tiêu đề <span className="required"> * </span> </label>
                             <br />
                             <br />
-                            <input type="text" name="title" value={topic.title} onChange={onChangeValue}  className="form-control" placeholder="Title" required />
+                            <input type="text" name="title" value={title} onChange={onChangeTitle}  className="form-control" placeholder="Title" required />
                             </div>
                             <br />
                             <div className="form-group col-md-12">
@@ -102,8 +101,8 @@ return (
                                 <textarea
                                 rows="3"
                                 name="description"
-                                value={topic.description}
-                                onChange={onChangeValue}
+                                value={description}
+                                onChange={onChangeDescription}
                                 ></textarea>
                             </div>
     
@@ -116,7 +115,7 @@ return (
                                 <EditorToolbar toolbarId={'t1'}/>
                                 <Editor
                                     theme="snow"
-                                    value={topic.content}
+                                    value={content}
                                     onChange={onChangeContent}
                                     placeholder={"Write something awesome..."}
                                     modules={modules('t1')}
@@ -128,7 +127,7 @@ return (
                                 {isLoading ? loading : isError !== null && <span className="errors absolute"> {isError} </span>}
                                 </div>
                             <div className="form-group col-sm-12 text-right">
-                            <button type="submit" className="btn btn__theme" onClick={addDetails}> Tạo topic  </button>
+                            <button type="submit" className="btn btn__theme" onClick={handleEditTopic}> Sửa topic  </button>
                             </div> 
                         </div> 
                         </form>

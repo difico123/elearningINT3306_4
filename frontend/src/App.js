@@ -28,9 +28,6 @@ function App() {
     address: "",
     imageUrl: "",
     role: "",
-    dateAdded: "",
-    lastUpdated: "",
-    auth: false,
   });
 
   const [loading, setLoading] = useState(true)
@@ -40,7 +37,7 @@ function App() {
       await UserService.getUserInfo()
       .then((data) => {
         let { info } = data;
-        setUser({ ...info, auth: true });
+        setUser({ ...info});
         setAuth(true);  
       })
       .catch(() => {
@@ -71,7 +68,7 @@ function App() {
             <Route
               path="/category/:id/*"
               element={
-                  <CourseRouter />
+                  <CourseRouter /> 
               }
             />
             

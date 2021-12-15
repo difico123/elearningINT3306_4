@@ -83,6 +83,10 @@ async function getTopicNames(courseId) {
 async function deleteTopic(courseId,topicId) {
   return await http.delete(apiEndpoint + `/${courseId}/topic/delete/${topicId}`);
 }
+async function editTopic(courseId,topicId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return await http.put(apiEndpoint + `/${courseId}/topic/edit/${topicId}`, body, config);
+}
 
 export default {
   findUsers,
@@ -102,5 +106,6 @@ export default {
   kickUser,
   getCourseTopics,
   deleteTopic,
-  getTopicNames
+  getTopicNames,
+  editTopic
 };
