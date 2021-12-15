@@ -17,11 +17,11 @@ async function login({ email, password }) {
   return data;
 }
 
-function getCourseList(page) {
-  return http.get(apiEndpoint + `/listCourses/?page=${page}`);
+async function getCourseList(page) {
+  return await http.get(apiEndpoint + `/listCourses/?page=${page}`);
 }
-function getUserList(page) {
-  return http.get(apiEndpoint + `/listCourses/?page=${page}`);
+async function getUserList(page) {
+  return await http.get(apiEndpoint + `/listUsers/?page=${page}`);
 }
 
 function logout() {

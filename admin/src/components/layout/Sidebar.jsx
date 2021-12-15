@@ -3,38 +3,44 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { LockIcon, PersonIcon, EditIcon } from "../common/icons";
 import AdminService from "../../service/AdminService";
-function Sidebar({user}) {
+function Sidebar({ user }) {
 
   const handleLogout = () => {
     AdminService.logout().then(() => {
-      window.location= '/admin/auth'
+      window.location = '/admin/auth'
     })
   }
 
   return (
     <SideBar>
-        <Avt>
-          <img src={user.info.imageUrl} alt="" />
-            <p>Admin</p>
-        </Avt>
-      <NavLink to="/students" activeClassName="active">
+      <Avt>
+        <img src={user.info.imageUrl} alt="" />
+        <p>Admin</p>
+      </Avt>
+      <NavLink to="/all" activeClassName="active">
+        <Wrap>
+          <EditIcon />
+          <p>Tổng quan</p>
+        </Wrap>
+      </NavLink>
+      <NavLink to="/users" activeClassName="active">
         <Wrap>
           <PersonIcon />
           <p>Người dùng</p>
         </Wrap>
       </NavLink>
-      <NavLink to="/instructors" activeClassName="active">
+      <NavLink to="/courses" activeClassName="active">
         <Wrap>
           <EditIcon />
           <p>Khoá học</p>
         </Wrap>
       </NavLink>
-        <NavLink to="/admin/login" activeClassName="active" onClick={handleLogout}>
-          <Wrap>
-            <LockIcon />
-            <p>Đăng xuất</p>
-          </Wrap>
-        </NavLink>
+      <NavLink to="/admin/login" activeClassName="active" onClick={handleLogout}>
+        <Wrap>
+          <LockIcon />
+          <p>Đăng xuất</p>
+        </Wrap>
+      </NavLink>
     </SideBar>
   );
 }

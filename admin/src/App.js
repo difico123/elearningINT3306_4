@@ -12,26 +12,26 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      AdminService.getAdmin().then(user => {
-        setUser({...user})
+      await AdminService.getAdmin().then(user => {
+        setUser({ ...user })
         setLoading(false)
       }).catch(error => {
         setLoading(false)
       });
     })()
 
-  },[])
+  }, [])
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">
         <Router>
           <Routes>
 
-            {!isLoading&&<Route
+            {!isLoading && <Route
               path="/*"
               element={
-                <ProtectedRoute auth={user? true: false}>
-                  <DashBoard user={user}/>
+                <ProtectedRoute auth={user ? true : false}>
+                  <DashBoard user={user} />
                 </ProtectedRoute>
               }
             />}

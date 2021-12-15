@@ -2,7 +2,7 @@ import React from 'react'
 import styled from "styled-components";
 import AdminService from '../../service/AdminService'
 
-function ViewInstructor() {
+function ViewAll() {
     return (
         <div>
             abc
@@ -10,4 +10,4 @@ function ViewInstructor() {
     )
 }
 
-export default ViewInstructor
+export default ViewAll
