@@ -22,8 +22,8 @@ module.exports = {
                 onUpdate: 'cascade',
                 onDelete: 'cascade',
             },
-            topic: {
-                type: DataTypes.STRING,
+            type: {
+                type: DataTypes.INTEGER,
                 allowNull: false,
             },
             details: {

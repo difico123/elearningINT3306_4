@@ -6,14 +6,16 @@ module.exports = class ApiNotification {
     // @desc    get notification by user
     // @access  Private
     static async getNotification(req, res) {
-        let { id } = req.user;
+        let { id, role } = req.user;
         try {
-            // let user = await User.findOne({where: {id: id}});
             let notifications = {};
-
-            notifications = await NotificationService.getInstructorNotification(
-                id,
-            );
+            if (role === 1) {
+                notifications =
+                    await NotificationService.getInstructorNotification(id);
+            } else if (role === 0) {
+                notifications =
+                    await NotificationService.getStudentNotification(id);
+            }
 
             // if(user.role === 1) {
             // } else {
@@ -54,9 +56,16 @@ module.exports = class ApiNotification {
     // @desc    get msg not seen
     // @access  Private
     static async getNotSeenMsgs(req, res) {
-        let { id } = req.user;
+        let { id, role } = req.user;
         try {
-            let notifications = await NotificationService.getWatch(id);
+            let notifications = {};
+            if (role === 1) {
+                notifications = await NotificationService.getInstructorWatch(
+                    id,
+                );
+            } else if (role === 0) {
+                notifications = await NotificationService.getStudentWatch(id);
+            }
             res.status(200).json({
                 error: false,
                 num: notifications[0].NotSeen,

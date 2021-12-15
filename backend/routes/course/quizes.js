@@ -29,7 +29,7 @@ router.post(
     '/create',
     auth,
     instructorAuth,
-    checkCourseInput(["title"]),
+    checkCourseInput(['title']),
     validateInput,
     courseInstructorAuth(true),
     ApiQuizes.createQuiz,
@@ -68,7 +68,7 @@ router.put(
     instructorAuth,
     courseInstructorAuth(true),
     quizTopicAuth,
-    checkCourseInput(["title"]),
+    checkCourseInput(['title']),
     validateInput,
     ApiQuizes.editQuiz,
 );
@@ -94,6 +94,11 @@ router.get('/getQuizes', auth, userCourseAuth, ApiQuizes.getquizes);
 // @desc    get quizzes by instructor and student
 // @access  Private
 router.get('/getQuizeNames', auth, userCourseAuth, ApiQuizes.getQuizNames);
+
+// @route   GET api/course/:courseId/topic/:topicId/quiz/getQuizeNames
+// @desc    get quizzes by instructor and student
+// @access  Private
+router.get('/getQuizeTitles', auth, userCourseAuth, ApiQuizes.getQuizTitles);
 
 // @route   GET /api/course/:courseId/topic/:topicId/quiz/getQuizScore/:quizId
 // @desc    rank quiz

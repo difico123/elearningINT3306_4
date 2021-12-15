@@ -7,7 +7,10 @@ const {
 const instructorAuth = require('../../middleware/auth/instructor.auth');
 const ApiTopic = require('../../controllers/ApiTopic');
 const upload = require('../../utils/multer');
-const { categoryPassport, topicPassport } = require('../../middleware/passport');
+const {
+    categoryPassport,
+    topicPassport,
+} = require('../../middleware/passport');
 const { topicCourseAuth } = require('../../middleware/course.auth');
 const {
     checkCourseInput,

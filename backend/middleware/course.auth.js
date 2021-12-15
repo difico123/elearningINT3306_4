@@ -1,4 +1,13 @@
-const { User, Course, Category, UserCourse, Topic, Quiz, Choice, Question } = require('../db/models');
+const {
+    User,
+    Course,
+    Category,
+    UserCourse,
+    Topic,
+    Quiz,
+    Choice,
+    Question,
+} = require('../db/models');
 module.exports = {
     topicCourseAuth: async function (req, res, next) {
         let courseId =
@@ -27,9 +36,7 @@ module.exports = {
 
     quizTopicAuth: async function (req, res, next) {
         let quizId =
-            req.params.quizId === undefined
-                ? req.quizId
-                : req.params.quizId;
+            req.params.quizId === undefined ? req.quizId : req.params.quizId;
         let topicId =
             req.params.topicId === undefined ? req.topicId : req.params.topicId;
 
@@ -42,7 +49,7 @@ module.exports = {
                     error: true,
                     msg: 'Quiz không nằm trong topic',
                 });
-            }else {
+            } else {
                 next();
             }
         } catch (error) {
@@ -51,7 +58,7 @@ module.exports = {
         }
     },
 
-    questionQuizAuth: async (req, res, next) =>  {
+    questionQuizAuth: async (req, res, next) => {
         let questionId =
             req.params.questionId === undefined
                 ? req.questionId
@@ -59,7 +66,6 @@ module.exports = {
         let quizId =
             req.params.quizId === undefined ? req.quizId : req.params.quizId;
         try {
-
             let check = await Question.findOne({
                 where: { id: questionId, quizId },
             });

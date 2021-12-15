@@ -11,16 +11,20 @@ import Loader from "../../components/common/loader";
 function CourseEnroll({ checkEnroll }) {
   const { id } = useParams();
   const [styleEnrollBtn, setStyleEnrollBtn] = useState(() =>
-    checkEnroll
+    checkEnroll === 200
       ? "bg-green-600 hover:bg-green-500"
       : "bg-gray-500 cursor-not-allowed"
   );
-  const [enrolled, setEnrolled] = useState(checkEnroll);
+
+  const [disabledEnrollBtn, setDisableEnrollBtn] = useState(() => (
+    checkEnroll === 200? false: true
+  ));
+
   const notification = useRef([]);
   const [isLoading, setLoading] = useState(true);
 
   const [msg, setMsg] = useState(() =>
-    !enrolled ? "Chờ giảng viên của bạn chấp nhận..." : "Tham gia"
+    disabledEnrollBtn ? (checkEnroll === 403? "Chờ giảng viên của bạn chấp nhận...": "Đăng nhập tài khoản học sinh để tham gia ..") : "Tham gia"
   );
 
   const [course, setCourse] = useState({
@@ -60,7 +64,7 @@ function CourseEnroll({ checkEnroll }) {
                 showToast("success", "Thông báo", response.msg),
               ];
               setStyleEnrollBtn("bg-gray-400 cursor-not-allowed");
-              setEnrolled(true);
+              setDisableEnrollBtn(true);
               setMsg("Chờ giảng viên của bạn chấp nhận...");
             })
             .catch((err) => {
@@ -69,7 +73,7 @@ function CourseEnroll({ checkEnroll }) {
               ];
             });
         }}
-        disabled={!enrolled}
+        disabled={disabledEnrollBtn}
         value={msg}
       />
       <Toast toastList={notification.current} />

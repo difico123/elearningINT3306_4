@@ -118,11 +118,28 @@ module.exports = class ApiAdmin {
         }
     }
 
+    // @route   GET api/admin/setInstructor/:userId
+    // @desc    get users by admin
+    // @access  Private
+    static async beInstructor(req, res) {
+        try {
+            await User.update({where: {id: req.params.userId}}).then(() => {
+                return res.status(200).json({ error: false, msg: "user này đã trở thành giảng viên" });
+            }).catch(() => {
+                return res.status(400).json({ error: true });
+            })
+            
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+    
     // @route   GET api/user/listCourses
     // @desc    get listcourses by admin
     // @access  Private
     static async listCourses(req, res) {
-        let {page} = req.query;
+        let { page } = req.query;
         try {
             let courses = await AdminService.getCourses();
             courses.map((course) => {
@@ -141,7 +158,6 @@ module.exports = class ApiAdmin {
         }
     }
 
-    
     // @route   POST api/admin/login
     // @desc    login user
     // @access  Public

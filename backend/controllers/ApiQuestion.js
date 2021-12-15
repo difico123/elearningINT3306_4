@@ -1,5 +1,5 @@
 const { Question } = require('../db/models');
-const QuizService = require('../dbService/quizService')
+const QuizService = require('../dbService/quizService');
 module.exports = class ApiQuestion {
     // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/create
     // @desc    create question by instructor
@@ -11,11 +11,11 @@ module.exports = class ApiQuestion {
             marks: req.body.marks,
         };
         try {
-            let newQuestion = await Question.create(question)
+            let newQuestion = await Question.create(question);
             return res.status(200).json({
                 error: false,
                 msg: 'tạo câu hỏi thành công',
-                newQuestion
+                newQuestion,
             });
         } catch (error) {
             console.log(error.message);

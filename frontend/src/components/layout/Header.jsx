@@ -161,10 +161,20 @@ function Header({ user }) {
         <NotificationItems>
           {!notifications
             ? "Không có thông báo"
-            : notifications.map((v, index) => (
+            : notifications.map((v, index) => {
+            let title = '';
+            switch(v.type) {
+              case 0:
+                title = "Đăng kí khoá học";
+                break;
+              case 1:
+                title = "Thông báo khoá học";
+                break;
+              default:
+            }
+            return (
                 <NotifiItem key={index}>
-                  <Title>{v.topic}</Title>
-
+                  <Title>{title}</Title>
                   <Des>
                     <span>{v.details}</span> - <span>{v.name}</span>
                   </Des>
@@ -242,7 +252,7 @@ function Header({ user }) {
                   </Btns>
 
                 </NotifiItem>
-              ))}
+              )})}
         </NotificationItems>
       </Wrapper>
     </BellWrap>

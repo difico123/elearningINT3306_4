@@ -1,4 +1,11 @@
-const { User, Category, Course, Topic, Quiz, Question} = require('../db/models');
+const {
+    User,
+    Category,
+    Course,
+    Topic,
+    Quiz,
+    Question,
+} = require('../db/models');
 
 module.exports = {
     categoryPassport: async (req, res, next) => {

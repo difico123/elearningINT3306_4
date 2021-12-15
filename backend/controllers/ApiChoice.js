@@ -1,4 +1,3 @@
-
 const { Choice } = require('../db/models');
 module.exports = class ApiChoice {
     // @route   POST api/question/:courseId/:quizId/:questionId/createchoice
@@ -11,11 +10,11 @@ module.exports = class ApiChoice {
             isAnswer: req.body.isAnswer,
         };
         try {
-            let newChoice = await Choice.create(choice)
+            let newChoice = await Choice.create(choice);
             return res.status(200).json({
                 error: false,
                 msg: 'tạo câu trả lời thành công',
-                newChoice
+                newChoice,
             });
         } catch (error) {
             console.log(error.message);

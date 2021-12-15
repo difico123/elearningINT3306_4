@@ -205,9 +205,9 @@ module.exports = class ApiCourse {
             if (course.imageUrl) {
                 course.imageUrl = course.imageUrl.split(' ')[0];
             }
-          
+
             let topics = await TopicService.getTopicNames(courseId);
-            
+
             res.status(200).json({
                 error: false,
                 course: course,
@@ -388,6 +388,8 @@ module.exports = class ApiCourse {
                     msg: ['Không có học sinh này trong khoá học'],
                 });
             }
+            await Notification.destroy({ where: { courseId, userId: userId } });
+
             await courseUser
                 .destroy()
                 .then(() => {
@@ -427,19 +429,19 @@ module.exports = class ApiCourse {
                 });
             }
 
-            // let course = await Course.findOne({ where: { id: courseId }})
-            // let topic = 'Đăng ký khoá học';
-            // let details = `Bạn vừa được giảng viên mời vào ${course.name}`;
-            // console.log(course)
+            let course = await Course.findOne({ where: { id: courseId } });
+            let type = 1;
+            let details = `Bạn vừa được giảng viên mời vào ${course.name}`;
 
-            // let notification = {
-            //     courseId: courseId,
-            //     userId: userId,
-            //     topic,
-            //     details,
-            // };
+            let notification = {
+                courseId: courseId,
+                userId: userId,
+                type,
+                details,
+                isConfirmed: 1,
+            };
 
-            // await Notification.create(notification)
+            await Notification.create(notification);
 
             await UserCourse.create(userCourse)
                 .then(() => {

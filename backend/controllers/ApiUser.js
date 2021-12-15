@@ -68,10 +68,10 @@ module.exports = class ApiUser {
                     msg: ['Mật khẩu của bạn không chính xác'],
                 });
             }
-
             const payload = {
                 user: {
                     id: user.id,
+                    role: user.role,
                 },
             };
 
@@ -81,7 +81,6 @@ module.exports = class ApiUser {
                 { expiresIn: 36000 },
                 (err, token) => {
                     if (err) throw err;
-
                     if (user.imageUrl) {
                         user.imageUrl = user.imageUrl.split(' ')[0];
                     }

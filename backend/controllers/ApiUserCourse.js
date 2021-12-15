@@ -15,10 +15,11 @@ module.exports = class ApiCourse {
     static async checkEnrollCourse(req, res, next) {
         let courseId = req.params.courseId;
         let studentId = req.user.id;
+        let role = req.user.role;
         try {
             let course = await Course.findOne({ where: { id: courseId } });
 
-            if (!course || !course.verified) {
+            if (!course || !course.verified || role === 1 || role == 2) {
                 return res.status(400).json({
                     error: true,
                     msg: ['Bạn không thể đăng kí khoá học này'],
@@ -29,7 +30,7 @@ module.exports = class ApiCourse {
                 where: { courseId: courseId, userId: studentId },
             });
             if (notification) {
-                return res.status(400).json({
+                return res.status(403).json({
                     error: true,
                     msg: ['Bạn đã đăng kí, chờ giảng viên của bản chấp thuận!'],
                 });
@@ -46,6 +47,28 @@ module.exports = class ApiCourse {
                     next();
                 }
             }
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    static async checkBtnEnrollCourse(req, res, next) {
+        let courseId = req.params.courseId;
+        let studentId = req.user.id;
+        try {
+            let course = await Course.findOne({ where: { id: courseId } });
+
+            if (!course || !course.verified) {
+                return res.status(400).json({
+                    error: true,
+                    msg: ['Bạn không thể đăng kí khoá học này'],
+                });
+            }
+            return res.status(400).json({
+                error: true,
+                msg: ['ok'],
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -93,13 +116,15 @@ module.exports = class ApiCourse {
     static async checkInstructorEnroll(req, res, next) {
         let courseId = req.params.courseId;
         try {
-            UserCourseService.checkOtherInstructor(req.user.id, courseId).then((v) => {
-                if(v[0]) {
-                    return res.status(403).send({error: true})
-                } else {
-                    return res.status(200).send({error: false})
-                }
-            })
+            UserCourseService.checkOtherInstructor(req.user.id, courseId).then(
+                (v) => {
+                    if (v[0]) {
+                        return res.status(403).send({ error: true });
+                    } else {
+                        return res.status(200).send({ error: false });
+                    }
+                },
+            );
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -110,19 +135,17 @@ module.exports = class ApiCourse {
     // @desc    enroll a course by student
     // @access  private
     static async enroll(req, res) {
-        let instructorId = req.instructorId;
         let { courseId } = req.params;
         let studentId = req.user.id;
         try {
             let user = await User.findOne({ where: { id: studentId } });
 
-            let topic = 'Đăng ký khoá học';
             let details = `${user.email} vừa đăng kí khoá học của bạn`;
 
             let notification = {
                 courseId: courseId,
                 userId: studentId,
-                topic,
+                type: 0,
                 details,
             };
 

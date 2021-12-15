@@ -1,13 +1,12 @@
 const { User } = require('../../db/models');
 
 module.exports = async function (req, res, next) {
-    let { id } = req.user;
+    let { id, role } = req.user;
 
     try {
         // Get user information by Id
         // User.role = 1 (instructor)
-        let user = await User.findOne({ where: { id } });
-        if (user.role != 1) {
+        if (role != 1) {
             return res.status(403).json({
                 error: true,
                 msg: 'Quyền truy cập này chỉ dành cho giảng viên',

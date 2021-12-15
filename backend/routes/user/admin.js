@@ -32,11 +32,14 @@ router.delete('/deleteCourse/:courseId', auth, admin, ApiAdmin.deleteCourse);
 // @access  Private
 router.get('/listUsers', auth, admin, ApiAdmin.listUsers);
 
+// @route   GET api/admin/listUsers
+// @desc    get users by admin
+// @access  Private
+router.put('/setInstructor/:userId', auth, admin, ApiAdmin.beInstructor);
+
 // @route   GET api/admin/listCourses
 // @desc    get listCourses by admin
 // @access  Private
 router.get('/listCourses', auth, admin, ApiAdmin.listCourses);
-
-
 
 module.exports = router;

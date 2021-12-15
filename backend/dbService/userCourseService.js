@@ -45,7 +45,7 @@ module.exports = class UserCourseService {
                 join users u on u.role = 1 and u.id = c.instructorId  
                 where u.id = ? and c.id = ?;`,
                 {
-                    replacements: [userId,courseId],
+                    replacements: [userId, courseId],
                     type: QueryTypes.SELECT,
                 },
             );

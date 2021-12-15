@@ -90,13 +90,16 @@ module.exports = class ApiTopic {
             content: req.body.content,
         };
         try {
-            Topic.update({...newTopic}, {where: {id: req.params.topicId}}).then(() => {
+            Topic.update(
+                { ...newTopic },
+                { where: { id: req.params.topicId } },
+            ).then(() => {
                 return res.status(200).json({
                     error: false,
                     msg: 'cập nhật topic thành công',
                     newTopic,
                 });
-            })
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -133,15 +136,16 @@ module.exports = class ApiTopic {
     // @access  Private
     static async deleteTopic(req, res) {
         try {
-            await Topic.destroy({where: {id: req.params.topicId}}).then((value) => {
-                if(value === 1) {
-                    res.status(200).json({
-                        error: true,
-                        msg: ['Xoá topic thành công'],
-                    })
-                }}
+            await Topic.destroy({ where: { id: req.params.topicId } }).then(
+                (value) => {
+                    if (value === 1) {
+                        res.status(200).json({
+                            error: true,
+                            msg: ['Xoá topic thành công'],
+                        });
+                    }
+                },
             );
-
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

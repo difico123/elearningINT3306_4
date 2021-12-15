@@ -18,27 +18,6 @@ const ProtectedUserRoute = ({ role, children }) => {
   return role === 0 ? children : <Navigate to="/" />;
 };
 
-const ProtectedEnrollCourseRoute = ({ role, children }) => {
-
-  const { id } = useParams();
-  const [isLoading, setLoading] = useState(true);
-  const [auth, setAuth] = useState(false);
-
-  useEffect(() => {
-    userCourseService.checkInstructorEnroll(id).then(() => {
-      setAuth(false)
-      setLoading(false)
-    }).catch((err) => {
-      setAuth(true)
-      setLoading(false)
-    })
-  },[])
-  const renderLoader = (
-    <WrapLoader>
-    </WrapLoader>
-  );
-  return isLoading ? renderLoader : (auth ? children : <Navigate to="../" />);
-};
 
 const ProtectedCourseRoute = () => {
   const { id } = useParams();
@@ -59,10 +38,10 @@ const ProtectedCourseRoute = () => {
     let checkErrorCourse = userCourseService
       .checkEnrollCourse(id)
       .then(() => {
-        checkEnroll.current = true;
+        checkEnroll.current = 200;
       })
       .catch((err) => {
-        checkEnroll.current = false;
+        checkEnroll.current = err.response.status;
       });
 
     Promise.all([checkCourse, checkErrorCourse]).then(() => {
@@ -90,7 +69,6 @@ export {
   ProtectedInstructorRoute,
   ProtectedUserRoute,
   ProtectedCourseRoute,
-  ProtectedEnrollCourseRoute
 };
 
 const WrapLoader = styled.div`

@@ -30,6 +30,20 @@ module.exports = class QuizService {
             console.log(error);
         }
     }
+    static async getQuizTitles(topicId) {
+        try {
+            const response = await sequelize.query(
+                `select q.id, q.title from quizzes q where q.topicId = ?`,
+                {
+                    replacements: [topicId],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
     static async getQuestionNumber(quizId) {
         try {
             const response = await sequelize.query(

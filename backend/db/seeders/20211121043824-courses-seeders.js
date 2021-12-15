@@ -22,6 +22,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942350/courses/qabh0ih5xcywmjqaw8vh.jpg courses/qabh0ih5xcywmjqaw8vh',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học C++ nâng cao',
@@ -30,6 +31,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942365/courses/zqnillptfnvrqsht5wan.jpg courses/zqnillptfnvrqsht5wan',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học Web căn bản (HTML - CSS - Javascript)',
@@ -39,6 +41,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639155388/courses/rgthp2ykumyyyfq4q6tx.jpg courses/rgthp2ykumyyyfq4q6tx',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học Front-end căn bản (ReactJS - Bootstrap)',
@@ -48,6 +51,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942622/courses/csetvbz8bxpzzlkpy9nx.png courses/csetvbz8bxpzzlkpy9nx',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học Back-end căn bản (NodeJS - MySQL)',
@@ -57,6 +61,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639155399/courses/gsbhupxwpafhsi3sbiqa.jpg courses/gsbhupxwpafhsi3sbiqa',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học Web Full-stack',
@@ -66,6 +71,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png courses/jpjdpc9ui2tu35cjet71',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học Lập trình Hướng đối tượng (Java)',
@@ -75,6 +81,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942746/courses/o55oms4bthat8wugtip1.jpg courses/o55oms4bthat8wugtip1',
+                    verified: 1,
                 },
                 {
                     name: 'Cấu trúc dữ liệu và giải thuật (C++)',
@@ -84,6 +91,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1637942841/courses/fbhwewswidmiovdqq2pc.jpg courses/fbhwewswidmiovdqq2pc',
+                    verified: 1,
                 },
                 {
                     name: 'Kỹ năng sale: Trở thành chiên da chốt đơn trong vỏn vẹn 3 ngày',
@@ -93,6 +101,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401456/courses/sha14782tzrqimg9gfey.jpg courses/sha14782tzrqimg9gfey',
+                    verified: 1,
                 },
                 {
                     name: 'Buôn bán như chuyên gia',
@@ -102,6 +111,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401557/courses/fpghpkaq9kimvm6no4bc.jpg courses/fpghpkaq9kimvm6no4bc',
+                    verified: 1,
                 },
                 {
                     name: 'How to Sell Anything to Anyone',
@@ -111,6 +121,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401605/courses/kwxmz80tvpccsddimmal.jpg courses/kwxmz80tvpccsddimmal',
+                    verified: 1,
                 },
                 {
                     name: 'Fundamentals of Real Customer Success',
@@ -120,6 +131,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401653/courses/vfuqnre7khxsxk4k43y7.jpg courses/vfuqnre7khxsxk4k43y7',
+                    verified: 1,
                 },
                 {
                     name: 'Sales Skills Mastery 1: Sales Training For Beginners',
@@ -129,6 +141,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401678/courses/v3wiufcbyodyqjyupcqi.jpg courses/v3wiufcbyodyqjyupcqi',
+                    verified: 1,
                 },
                 {
                     name: 'Chiến lược kinh doanh online',
@@ -138,6 +151,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401748/courses/tyb8j3erktt8ladoyukl.jpg courses/tyb8j3erktt8ladoyukl',
+                    verified: 1,
                 },
                 {
                     name: 'Chiến lược kinh doanh bất động sản',
@@ -147,6 +161,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639401869/courses/bevuwtxxthjthdtbmscy.jpg courses/bevuwtxxthjthdtbmscy',
+                    verified: 1,
                 },
                 {
                     name: 'Khóa học cho thuê giàn giáo',
@@ -156,6 +171,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639402174/courses/xzzopsj7j8wec3apo0ja.jpg courses/xzzopsj7j8wec3apo0ja',
+                    verified: 1,
                 },
                 {
                     name: 'Ngưng bình thường với kỹ năng tư duy sáng tạo',
@@ -165,6 +181,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639402672/courses/yvrxxzulo6d8mkr0rajc.jpg courses/yvrxxzulo6d8mkr0rajc',
+                    verified: 1,
                 },
                 {
                     name: 'Sáng tạo và kỹ năng giải quyết vấn đề',
@@ -174,6 +191,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639402767/courses/aw2mlnfyhh6clqpzv9oj.jpg courses/aw2mlnfyhh6clqpzv9oj',
+                    verified: 1,
                 },
                 {
                     name: 'Học cách trở thành tể tướng sáng tạo',
@@ -183,6 +201,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403055/courses/kfcseuu19qrucdlzwmxs.jpg courses/kfcseuu19qrucdlzwmxs',
+                    verified: 1,
                 },
                 {
                     name: 'Tư duy sáng tạo - đột phá',
@@ -192,6 +211,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639402672/courses/yvrxxzulo6d8mkr0rajc.jpg courses/yvrxxzulo6d8mkr0rajc',
+                    verified: 1,
                 },
                 {
                     name: 'Bí kíp khiến viết thơ không bị ngang',
@@ -201,6 +221,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403392/courses/cwgxzm2wmphqd7ajmn6g.jpg courses/cwgxzm2wmphqd7ajmn6g',
+                    verified: 1,
                 },
                 {
                     name: 'Quản lý thời gian hiệu quả',
@@ -210,6 +231,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403728/courses/ckt1mkzpk7vduvr9ro2v.jpg courses/ckt1mkzpk7vduvr9ro2v',
+                    verified: 1,
                 },
                 {
                     name: 'Vẫn là quản lý thời gian nhưng mà mô tả thì khác',
@@ -219,6 +241,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403826/courses/c5r4hv8sdro1bvirdbhe.jpg courses/c5r4hv8sdro1bvirdbhe',
+                    verified: 1,
                 },
                 {
                     name: 'Critical Thinking Strategies For Better Decisions',
@@ -228,6 +251,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403858/courses/lwvimz5h3kzruhluhgo6.jpg courses/lwvimz5h3kzruhluhgo6',
+                    verified: 1,
                 },
                 {
                     name: 'Become a SuperLearner® 2: Learn Speed Reading & Boost Memory',
@@ -237,6 +261,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403896/courses/wj4bq7byd4pqlu5ahsgi.jpg courses/wj4bq7byd4pqlu5ahsgi',
+                    verified: 1,
                 },
                 {
                     name: 'Anxiety Tool Kit',
@@ -246,6 +271,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639403945/courses/isqlhn6i607fxuejne3e.jpg courses/isqlhn6i607fxuejne3e',
+                    verified: 1,
                 },
                 {
                     name: 'Learn Ethical Hacking From Scratch',
@@ -255,6 +281,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404361/courses/zyqvujs1xbywpk9rsupv.jpg courses/zyqvujs1xbywpk9rsupv',
+                    verified: 1,
                 },
                 {
                     name: 'The Complete Cyber Security Course : Hackers Exposed!',
@@ -264,6 +291,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404383/courses/kfzniccg064dlmjktroi.jpg courses/kfzniccg064dlmjktroi',
+                    verified: 1,
                 },
                 {
                     name: 'The Complete Networking Fundamentals Course. Your CCNA start',
@@ -273,6 +301,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404406/courses/dqyebkpzalnpgwehkkdi.jpg courses/dqyebkpzalnpgwehkkdi',
+                    verified: 1,
                 },
                 {
                     name: 'The Complete Oracle SQL Certification Course',
@@ -282,6 +311,7 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404449/courses/jdhgysqi62hwrcwxmble.jpg courses/jdhgysqi62hwrcwxmble',
+                    verified: 1,
                 },
                 {
                     name: 'Linux Command Line Basics',
@@ -291,33 +321,37 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404472/courses/a9pfuqidwlhdmny4fjmi.jpg courses/a9pfuqidwlhdmny4fjmi',
+                    verified: 1,
                 },
                 {
                     name: 'The Ultimate Drawing Course - Beginner to Advanced',
                     description:
-                        "Use Blender to Create Beautiful 3D models for Video Games, 3D Printing & More. Beginners Level Course",
+                        'Use Blender to Create Beautiful 3D models for Video Games, 3D Printing & More. Beginners Level Course',
                     categoryId: 7,
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404651/courses/rfxkhel9ewuobfwim7oa.jpg courses/rfxkhel9ewuobfwim7oa',
+                    verified: 1,
                 },
                 {
                     name: 'Complete Blender Creator: Learn 3D Modelling for Beginners',
                     description:
-                        "Use Blender to Create Beautiful 3D models for Video Games, 3D Printing & More. Beginners Level Course",
+                        'Use Blender to Create Beautiful 3D models for Video Games, 3D Printing & More. Beginners Level Course',
                     categoryId: 7,
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404686/courses/me2twjgi1qixkwf1crtd.jpg courses/me2twjgi1qixkwf1crtd',
+                    verified: 1,
                 },
                 {
                     name: 'Drawing and Painting on the iPad with Procreate',
                     description:
-                        "Learn everything you need to know about Procreate with hands on drawing lessons. Now updated for Procreate 5",
+                        'Learn everything you need to know about Procreate with hands on drawing lessons. Now updated for Procreate 5',
                     categoryId: 7,
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404711/courses/wbrp05jtzisj3u0gwz8a.jpg courses/wbrp05jtzisj3u0gwz8a',
+                    verified: 1,
                 },
             ],
             {},

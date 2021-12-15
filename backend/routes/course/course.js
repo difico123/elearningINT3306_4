@@ -149,5 +149,4 @@ router.get('/showAll', ApiCourse.showAll);
 // @access  public
 router.get('/showDetail/:courseId', coursePassport, ApiCourse.showDetail);
 
-
 module.exports = router;
