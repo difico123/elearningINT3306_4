@@ -111,16 +111,16 @@ module.exports = {
                 if (names.includes(fields[i])) {
                     await check(fields[i])
                         .isLength({
-                            min: 10,
+                            min: 5,
                         })
-                        .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
+                        .withMessage(`${name} phải chứa từ 5 kí tự trở lên`)
                         .run(req);
                 } else if (contents.includes(fields[i])) {
                     await check(fields[i])
                         .isLength({
-                            min: 20,
+                            min: 10,
                         })
-                        .withMessage(`${name} phải chứa từ 20 kí tự trở lên`)
+                        .withMessage(`${name} phải chứa từ 10 kí tự trở lên`)
                         .run(req);
                 }
             }

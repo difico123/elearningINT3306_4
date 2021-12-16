@@ -6,6 +6,10 @@ const ApiCategory = require('../../controllers/ApiCategory');
 // @desc    get category
 // @access  Public
 router.get('/get', ApiCategory.getCategory);
+
+// @route   GET api/category/getName
+// @desc    get category
+// @access  Public
 router.get('/getName', ApiCategory.getName);
 
 module.exports = router;

@@ -32,7 +32,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
 import QuizIcon from "@mui/icons-material/Quiz";
-
+import AddIcon from '@mui/icons-material/Add';
 export {
     SearchIcon, 
     MenuIcon,
@@ -67,5 +67,6 @@ export {
     EditIcon,
     MoreVertIcon,
     ClearIcon,
-    QuizIcon
+    QuizIcon,
+    AddIcon
 }

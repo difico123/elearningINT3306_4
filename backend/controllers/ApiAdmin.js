@@ -32,7 +32,7 @@ module.exports = class ApiAdmin {
                             (deleted) => {
                                 if (!deleted) {
                                     return res.status(400).json({
-                                        error: true,
+                                        error: false,
                                         msg: 'Chưa xoá khoá học của instructor',
                                     });
                                 }
@@ -111,7 +111,7 @@ module.exports = class ApiAdmin {
                 }
             });
             users = pagination(users, page);
-            return res.status(200).json({ error: true, users });
+            return res.status(200).json({ error: false, users });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -123,12 +123,26 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async beInstructor(req, res) {
         try {
-            await User.update({where: {id: req.params.userId}}).then(() => {
+            await User.update({role: 1},{where: {id: req.params.userId}}).then(() => {
                 return res.status(200).json({ error: false, msg: "user này đã trở thành giảng viên" });
             }).catch(() => {
                 return res.status(400).json({ error: true });
             })
             
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   GET api/admin/statistic
+    // @desc    get users by admin
+    // @access  Private
+    static async statistic(req, res) {
+        try {
+            AdminService.getStatistic().then((data) => {
+                return res.status(400).json({ error: false, statistic: data[0] });
+            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -151,7 +165,7 @@ module.exports = class ApiAdmin {
                 }
             });
             courses = pagination(courses, page);
-            return res.status(200).json({ error: true, courses });
+            return res.status(200).json({ error: false, courses });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

@@ -32,10 +32,15 @@ router.delete('/deleteCourse/:courseId', auth, admin, ApiAdmin.deleteCourse);
 // @access  Private
 router.get('/listUsers', auth, admin, ApiAdmin.listUsers);
 
-// @route   GET api/admin/listUsers
-// @desc    get users by admin
+// @route   GET api/admin/setInstructor/:userId
+// @desc    set users by admin be instructor
 // @access  Private
 router.put('/setInstructor/:userId', auth, admin, ApiAdmin.beInstructor);
+
+// @route   GET api/admin/statistic 
+// @desc    get users by admin
+// @access  Private
+router.get('/statistic', auth, admin, ApiAdmin.statistic);
 
 // @route   GET api/admin/listCourses
 // @desc    get listCourses by admin

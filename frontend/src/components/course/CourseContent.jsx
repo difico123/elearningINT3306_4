@@ -167,6 +167,7 @@ const Content = styled.div`
   overflow: auto;
   background-color: white;
   width: 100%;
+  padding: 2rem;
 `;
 
 export default CourseContent;

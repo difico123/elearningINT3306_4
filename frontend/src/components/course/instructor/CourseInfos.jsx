@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import TopicContent from "./TopicContent";
-import {MoreVertIcon,EditIcon, ClearIcon, Warning, GroupsIcon, StarIcon, BooksIcon} from '../../common/icons'
+import {MoreVertIcon,EditIcon, ClearIcon, Warning, GroupsIcon, StarIcon, BooksIcon, AddIcon} from '../../common/icons'
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
@@ -132,7 +132,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
             <NavTitle>
               <span>Nội dung khóa học</span>
               <Link to="../createTopic">
-              <button>+</button>
+              <AddTopic><AddIcon/></AddTopic>
               </Link>
             </NavTitle>
             <TopicWrap>{!topics[0]? <NoContent>Chưa có chủ đề</NoContent>: renderTopics}</TopicWrap>
@@ -353,12 +353,20 @@ const NavTitle = styled.div`
   flex-flow: row nowrap;
   gap: 10px;
   width: 100%;
-  button {
-    background-color: #d0d0d0;
-    padding: 3px 8px;
-  }
-`;
 
+`;
+const AddTopic = styled.div `
+background-color:  #3a3e47;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+svg {
+  font-size: 2rem!important;
+  color: white;
+}
+
+`
 const TopicWrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -390,12 +398,6 @@ const Title = styled.div`
     border-radius:5px;
     color: white;
   }
-`;
-
-const TopicTitle = styled.div`
-  font-size: 1.25rem;
-  font-weight: 500;
-  padding-bottom: 3vh;
 `;
 
 const Content = styled.div``;

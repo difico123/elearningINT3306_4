@@ -27,4 +27,20 @@ function getQuizNames(courseId, topicId, page = 1) {
   return http.get(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getQuizeNames?page=${page}`);
 }
 
-export default { createQuiz, activeQuiz, hideQuiz, getQuizNames,editQuiz, delQuiz };
+function getQuizTitles(courseId, topicId) {
+  return http.get(
+    apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getQuizeTitles`
+  );
+}
+
+function createQuestion(courseId, topicId,quizId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/create`, body , config);
+  }
+
+function createAnswer(courseId, topicId,quizId, questionId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/create`, body , config);
+  }
+
+export default { createQuiz, activeQuiz, hideQuiz, getQuizNames,editQuiz, delQuiz, getQuizTitles, createQuestion, createAnswer };

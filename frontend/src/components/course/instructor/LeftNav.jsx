@@ -68,7 +68,7 @@ function Sidebar() {
         <NavLink to="./createquestion" activeClassName="active">
           <Wrap>
             <GroupsIcon />
-            <p>Tạo quiz mới</p>
+            <p>Tạo câu hỏi mới</p>
           </Wrap>
         </NavLink>
 
