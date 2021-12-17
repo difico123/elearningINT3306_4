@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         static associate({ Question }) {
             // define association here
             this.belongsTo(Question, {
-                foreignKey: 'quizId',
+                foreignKey: 'questionId',
                 onDelete: 'cascade',
             });
         }

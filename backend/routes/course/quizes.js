@@ -73,6 +73,40 @@ router.put(
     ApiQuizes.editQuiz,
 );
 
+// @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestions/:quizId
+// @desc    getQuestions by instructor
+// @access  Private
+router.get(
+    '/getInstructorQuestions/:quizId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    quizTopicAuth,
+    ApiQuizes.getInstructorAnswersByQuestionId,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestionsForStudent/:quizId
+// @desc    getQuestions by student
+// @access  Private
+router.get(
+    '/getStudentQuestions/:quizId',
+    auth,
+    userCourseAuth,
+    quizTopicAuth,
+    ApiQuizes.getStudentAnswersByQuestionId,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestionIds/:quizId
+// @desc    getQuestions by student
+// @access  Private
+router.get(
+    '/getQuestionIds/:quizId',
+    auth,
+    userCourseAuth,
+    quizTopicAuth,
+    ApiQuizes.getQuizQuestionIds,
+);
+
 // @route   POST api/course/:courseId/topic/:topicId/quiz/delete/:quizId
 // @desc    active quiz by instructor
 // @access  Private

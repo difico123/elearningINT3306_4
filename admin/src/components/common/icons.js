@@ -31,6 +31,8 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ClearIcon from '@mui/icons-material/Clear';
+import CheckIcon from '@mui/icons-material/Check';
+
 export {
     SearchIcon,
     MenuIcon,
@@ -64,5 +66,6 @@ export {
     GroupsIcon,
     EditIcon,
     MoreVertIcon,
-    ClearIcon
+    ClearIcon,
+    CheckIcon
 }

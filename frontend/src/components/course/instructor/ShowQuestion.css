@@ -16,6 +16,7 @@ table {
   th {
     background: #215A8E;
     color: #fff;
+    border: solid #ccc;
   }
   
   td:nth-child(1) {
@@ -23,14 +24,36 @@ table {
     color: #fff;
     border-radius: 1em 1em 0 0;
   }
+  th[colSpan],
   td[colSpan] {
     width:20rem;
   }
-  td[rowSpan] {
+  td[data-label="options"],
+  th[data-label="options"]
+  {
+    width:3rem;
+  }
+
+  td[data-label="marks"],
+  td[data-label="options"],
+  td[data-label="isAnswer"],
+  th[data-label="marks"],
+  th[data-label="options"],
+  th[data-label="isAnswer"]
+   {
+    text-align: center;
+  }
+
+  th:nth-child(1),
+  th:nth-child(2),
+  td[rowSpan]:nth-child(1),
+  td[rowSpan]:nth-child(2) {
     width:10rem;
   }
+
+  th[data-label="marks"], 
   td[data-label="marks"] {
-    max-width:5rem;
+    width:5rem;
   }
   th, td {
     padding: 1em;
@@ -41,6 +64,7 @@ table {
   }
   
   td {
+    border: solid #ccc;
     position: relative;
   }
   
@@ -56,7 +80,7 @@ table {
   
   tr {
     margin-bottom: 1.5em;
-    border: 1px solid #ddd;
+      border: solid #ccc;
     border-radius: 1em;
     text-align: right;
   }
@@ -93,9 +117,9 @@ table {
     }
     
     tr:nth-child(even) {
-    background-color: #ddd;
-  }
-    
+      background-color: #ddd;
+    }
+
     td {
       display: table-cell;
     }
@@ -114,9 +138,13 @@ table {
       background-color: transparent;
     }
     tbody:hover{
-        border: solid;
+        background-color: rgba(72, 226, 121, 0.2);
+        transition: 0.5s ease 0s;
     }
-    tbody{
-        margin-top: 10rem ;
-        border: solid #ccc;
+    tbody:hover tr:nth-child(even){
+        background-color: rgba(221, 221, 221, 0.5);
+        transition: 0.5s ease 0s;
     }
+
+
+  

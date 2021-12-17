@@ -72,7 +72,31 @@ module.exports = {
             if (!check) {
                 return res.status(403).json({
                     error: true,
-                    msg: 'Quiz không nằm trong topic',
+                    msg: 'Câu hỏi không nằm trong quiz',
+                });
+            } else {
+                next();
+            }
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server Error');
+        }
+    },
+    choiceQuestionAuth: async (req, res, next) => {
+        let questionId =
+            req.params.questionId === undefined
+                ? req.questionId
+                : req.params.questionId;
+        let choiceId =
+            req.params.choiceId === undefined ? req.choiceId : req.params.choiceId;
+        try {
+            let check = await Choice.findOne({
+                where: { id: choiceId, questionId },
+            });
+            if (!check) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Câu trả lời không nằm trong câu hỏi',
                 });
             } else {
                 next();

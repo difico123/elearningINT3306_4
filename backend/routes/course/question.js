@@ -44,6 +44,32 @@ router.post(
     ApiQuestion.createQuestion,
 );
 
+// @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/edit/:questionId
+// @desc    edit question by instructor
+// @access  Private
+router.put(
+    '/edit/:questionId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    questionQuizAuth,
+    checkCourseInput(['content']),
+    validateInput,
+    ApiQuestion.editQuestion,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/delete/:questionId
+// @desc    delete question by instructor
+// @access  Private
+router.delete(
+    '/delete/:questionId',
+    auth,
+    instructorAuth,
+    courseInstructorAuth(true),
+    questionQuizAuth,
+    ApiQuestion.deleteQuestion,
+);
+
 // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestion
 // @desc    get question with quizId by instructor and student
 // @access  Private

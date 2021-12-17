@@ -82,4 +82,18 @@ module.exports = {
             next();
         }
     },
+
+    choicePassport: async (req, res, next) => {
+        let choiceId = req.params.choiceId;
+        let choice = await Choice.findOne({ where: { id: choiceId } });
+        if (!choice) {
+            return res.status(404).json({
+                error: true,
+                msg: 'Không có câu hỏi',
+            });
+        } else {
+            req.choiceId = choiceId;
+            next();
+        }
+    }
 };

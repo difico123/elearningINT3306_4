@@ -47,6 +47,56 @@ module.exports = class ApiChoice {
         }
     }
 
+    // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/choice/edit/:choiceId
+    // @desc    edit choice
+    // @access  Private
+    static async editChoice(req, res) {
+        const choice = {
+            content: req.body.content,
+            questionId: req.questionId,
+            isAnswer: req.body.isAnswer,
+        };
+        try {
+            await Choice.update({...choice}, {where: {id : req.params.choiceId}}).then(() => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Sửa câu trả lời thành công'
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'lỗi',
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/choice/delete/:choiceId
+    // @desc    get question with quizId by instructor and student
+    // @access  Private
+    static async deleteChoice(req, res) {
+        try {
+            await Choice.destroy({where: {id : req.params.choiceId}}).then(() => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Xoá câu trả lời thành công'
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'lỗi',
+                    err
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
     // @route   GET api/topic/edit/:topicId
     // @desc    edit Topics
     // @access  Private

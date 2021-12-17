@@ -9,7 +9,7 @@ const {
     checkCourseInput,
     validateInput,
 } = require('../../middleware/errors/Validate');
-const { questionQuizAuth } = require('../../middleware/course.auth');
+const { choiceQuestionAuth } = require('../../middleware/course.auth');
 const userCourseAuth = require('../../middleware/auth/userCourse.auth');
 const { questionPassport } = require('../../middleware/passport');
 const ApiChoice = require('../../controllers/ApiChoice');
@@ -25,6 +25,32 @@ Router.post(
     validateInput,
     courseInstructorAuth(true),
     ApiChoice.createChoice,
+);
+
+// @route   PUT api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/choice/edit/:choiceId
+// @desc    edit a choice by instructor
+// @access  Private
+Router.put(
+    '/edit/:choiceId',
+    auth,
+    instructorAuth,
+    choiceQuestionAuth,
+    courseInstructorAuth(true),
+    checkCourseInput(['content']),
+    validateInput,
+    ApiChoice.editChoice,
+);
+
+// @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/choice/delete/:choiceId
+// @desc    create a choice by instructor
+// @access  Private
+Router.delete(
+    '/delete/:choiceId',
+    auth,
+    instructorAuth,
+    choiceQuestionAuth,
+    courseInstructorAuth(true),
+    ApiChoice.deleteChoice,
 );
 
 // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/choice/getChoices

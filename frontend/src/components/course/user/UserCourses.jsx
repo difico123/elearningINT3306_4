@@ -3,20 +3,24 @@ import styled from "styled-components";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import UserCourseService from "../../../service/userCourseService";
-import { ArrowBackIosIcon, ArrowForwardIosIcon, CheckIcon } from '../../common/icons'
+import {
+  ArrowBackIosIcon,
+  ArrowForwardIosIcon,
+  CheckIcon,
+} from "../../common/icons";
 
 function UserCourses() {
   const [getCourses, setCourses] = useState([
     {
-      courseId: '',
-      email: '',
-      enrollDate: '',
-      fullName: '',
-      imageUrl: '',
-      instructorId: '',
-      isComplete: '',
-      marks: '',
-      name: ''
+      courseId: "",
+      email: "",
+      enrollDate: "",
+      fullName: "",
+      imageUrl: "",
+      instructorId: "",
+      isComplete: "",
+      marks: "",
+      name: "",
     },
   ]);
   const [change, setChange] = useState(false);
@@ -27,7 +31,6 @@ function UserCourses() {
     UserCourseService.getAll().then((response) => {
       setCourses(response.courses);
     });
-
   }, [change]);
 
   const content = getCourses.map((course, index) => (
@@ -35,18 +38,22 @@ function UserCourses() {
       <Link to={`/`}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <WrapItems>
-          <CourseTitle>
-            {course.name}
-          </CourseTitle>
+          <CourseTitle>{course.name}</CourseTitle>
           <CourseCategory>
-            <span className="bg-blue-400 rounded px-2 text-white">Giảng viên</span> {course.fullName}
+            <span className="bg-blue-400 rounded px-2 text-white">
+              Giảng viên
+            </span>{" "}
+            {course.fullName}
           </CourseCategory>
           <CourseEmail>
             <span>Email: </span> {course.email}
           </CourseEmail>
           <Course>
-            <div>{course.isComplete ? 'Hoàn thành' : 'Chưa hoàn thành'}</div>
-            <div><span>Điểm: </span>{course.marks}</div>
+            <div>{course.isComplete ? "Hoàn thành" : "Chưa hoàn thành"}</div>
+            <div>
+              <span>Điểm: </span>
+              {course.marks}
+            </div>
           </Course>
           <CourseInfo>
             <CourseDateAdded>Ngày đăng ký: {course.enrollDate}</CourseDateAdded>
@@ -62,7 +69,7 @@ function UserCourses() {
     // UserCourseService.getAll(page).then((response) => {
     //     setCourses(response.courses);
     // });
-  }
+  };
 
   return (
     <React.Fragment>
@@ -70,35 +77,75 @@ function UserCourses() {
         <Title>Trang các khóa học của bạn</Title>
       </TitleWrap>
       <Container>
-        <Pagination>
-          <div></div>
-          <div>
-            <ArrowBackIosIcon className="page" onClick={() => { if (page > 1) { setPage(page - 1) } }} />
-            <button className={currentPage === page ? "bg-blue-300" : ""} value={page} onClick={pageClick}>{page}</button>
-            <button className={currentPage === page + 1 ? "bg-blue-300" : ""} value={page + 1} onClick={pageClick}>{page + 1}</button>
-            <button className={currentPage === page + 2 ? "bg-blue-300" : ""} value={page + 2} onClick={pageClick}>{page + 2}</button>
-            <button className={currentPage === page + 3 ? "bg-blue-300" : ""} value={page + 3} onClick={pageClick}>{page + 3}</button>
-            <button className={currentPage === page + 4 ? "bg-blue-300" : ""} value={page + 4} onClick={pageClick}>{page + 4}</button>
-            <ArrowForwardIosIcon className="page" onClick={() => { setPage(page + 1); }} />
-          </div>
-        </Pagination>
         <Content>
           <Courses>{content}</Courses>
         </Content>
-
+        <Pagination>
+          <div></div>
+          <div>
+            <ArrowBackIosIcon
+              className="page"
+              onClick={() => {
+                if (page > 1) {
+                  setPage(page - 1);
+                }
+              }}
+            />
+            <button
+              className={currentPage === page ? "bg-blue-300" : ""}
+              value={page}
+              onClick={pageClick}
+            >
+              {page}
+            </button>
+            <button
+              className={currentPage === page + 1 ? "bg-blue-300" : ""}
+              value={page + 1}
+              onClick={pageClick}
+            >
+              {page + 1}
+            </button>
+            <button
+              className={currentPage === page + 2 ? "bg-blue-300" : ""}
+              value={page + 2}
+              onClick={pageClick}
+            >
+              {page + 2}
+            </button>
+            <button
+              className={currentPage === page + 3 ? "bg-blue-300" : ""}
+              value={page + 3}
+              onClick={pageClick}
+            >
+              {page + 3}
+            </button>
+            <button
+              className={currentPage === page + 4 ? "bg-blue-300" : ""}
+              value={page + 4}
+              onClick={pageClick}
+            >
+              {page + 4}
+            </button>
+            <ArrowForwardIosIcon
+              className="page"
+              onClick={() => {
+                setPage(page + 1);
+              }}
+            />
+          </div>
+        </Pagination>
       </Container>
     </React.Fragment>
   );
 }
 
 const Pagination = styled.div`
-  display: flex;                  
-  flex-direction: row;     
+  display: flex;
+  flex-direction: row;
   justify-content: space-around;
-  align-self: flex-end;
-  flex-wrap: nowrap;              
+  margin: 2vh auto;
+  flex-wrap: nowrap;
   position: relative;
-  margin-bottom: 2rem;
   top: 0;
   button {
     width: 40px;
@@ -109,15 +156,15 @@ const Pagination = styled.div`
     border-radius: 5px;
   }
   & button:hover {
-    background: #7FFFD4;
+    background: #7fffd4;
   }
   div svg {
     cursor: pointer;
   }
   div svg:active {
-    background-color:lightblue;
+    background-color: lightblue;
   }
-`
+`;
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
@@ -163,14 +210,14 @@ const CourseImage = styled.img`
   height: 200px;
 `;
 const WrapItems = styled.div`
-  padding:0 1rem;
+  padding: 0 1rem;
 `;
 
 const CourseTitle = styled.div`
   font-size: 1.1rem;
   font-weight: 700;
-  height:3.5rem;
-  overflow:hidden;
+  height: 3.5rem;
+  overflow: hidden;
   div {
     font-size: 0.9rem;
     color: lightblue;
@@ -187,22 +234,22 @@ const CourseInfo = styled.div`
 
 const CourseCategory = styled.div`
   font-weight: 600;
-  height:2rem;
-  overflow:hidden;
+  height: 2rem;
+  overflow: hidden;
   font-size: 1.1rem;
-  span{
-    background-color:blue-sky;
+  span {
+    background-color: blue-sky;
     align-items: center;
   }
 `;
 
 const CourseEmail = styled.div`
   font-weight: 400;
-  height:2rem;
-  overflow:hidden;
+  height: 2rem;
+  overflow: hidden;
   font-size: 0.9rem;
-  span{
-    background-color:blue-sky;
+  span {
+    background-color: blue-sky;
     align-items: center;
   }
 `;
@@ -210,11 +257,11 @@ const Course = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: 400;
-  height:2rem;
-  overflow:hidden;
+  height: 2rem;
+  overflow: hidden;
   font-size: 0.9rem;
-  span{
-    background-color:blue-sky;
+  span {
+    background-color: blue-sky;
     align-items: center;
   }
 `;

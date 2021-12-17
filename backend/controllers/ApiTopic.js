@@ -1,4 +1,4 @@
-const { User, Course, Category, UserCourse, Topic } = require('../db/models');
+const { User, Course, Category, UserCourse, Topic,Quiz ,Question } = require('../db/models');
 const TopicService = require('../dbService/topicService');
 
 module.exports = class ApiTopic {
@@ -69,11 +69,24 @@ module.exports = class ApiTopic {
             let topic = await Topic.findOne({
                 where: { id: req.params.topicId },
             });
+            await Quiz.findAll({
+                where: {
+                    topicId: req.params.topicId 
+                },
+                attributes: ['id'],
 
-            res.status(200).json({
-                error: false,
-                topic: topic,
-            });
+            }).then((quizIds) => {
+                return res.status(200).json({
+                    error: false,
+                    topic: topic,
+                    quizIds: quizIds
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                });
+            })
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

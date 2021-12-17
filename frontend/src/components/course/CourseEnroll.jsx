@@ -201,7 +201,7 @@ const Back = styled.span`
 `;
 
 const Container = styled.div`
-  height: 90vh;
+  min-height: 90vh;
   display: flex;
   flex-flow: column nowrap;
   padding: 0;

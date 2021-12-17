@@ -22,6 +22,57 @@ module.exports = class ApiQuestion {
             res.status(500).send('Server error');
         }
     }
+    
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/edit/:questionId
+    // @desc    create question by instructor
+    // @access  Private
+    static async editQuestion(req, res) {
+        const question = {
+            content: req.body.content,
+            quizId: req.quizId,
+            marks: req.body.marks,
+        };
+        try {
+            await Question.update({...question}, {where: {id : req.params.questionId}}).then(() => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Sửa câu hỏi thành công'
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'lỗi',
+                    err
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/delete/:questionId
+    // @desc    create question by instructor
+    // @access  Private
+    static async deleteQuestion(req, res) {
+        try {
+            await Question.destroy({where: {id : req.params.questionId}}).then(() => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Xoá câu hỏi thành công'
+                });
+            }).catch((err) => {
+                return res.status(400).json({
+                    error: true,
+                    msg: 'lỗi',
+                    err
+                });
+            })
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
 
     // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestions
     // @desc    get question with quizId by instructor and student
@@ -58,29 +109,6 @@ module.exports = class ApiQuestion {
                 error: false,
                 quiz,
             });
-            await QuizService.getQuizById(req.quizId).then((quizes) => {
-                quiz.quizContent = quizes[0].title;
-            });
-            QuestionService.getQuestionByQuestionId(req.questionId).then(
-                (questions) => {
-                    let question = questions[0];
-                    question.answers = [];
-                    ChoiceService.getChoicesByQuestionId(question.id).then(
-                        (choices) => {
-                            if (choices.length === 0) {
-                                let empA = 'Không có câu trả lời';
-                                question.answers.push(empA);
-                            } else {
-                                question.answers = [...choices];
-                            }
-                            return res.status(200).json({
-                                error: false,
-                                question,
-                            });
-                        },
-                    );
-                },
-            );
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

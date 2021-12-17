@@ -48,7 +48,7 @@ function CreateQuestion() {
 
   const [topicId, setTopicId] = useState(-1);
   const [quizId, setQuizId] = useState(-1);
-
+  const selectInputRef = useRef();
   const chooseTopic = topics.map((v, index) => (
     <option value={v.id} key={index}>
       {v.title}
@@ -68,19 +68,20 @@ function CreateQuestion() {
   }, []);
 
   useEffect(() => {
-    setQuizId(-1)
     quizService.getQuizTitles(id, topicId).then((response) => {
       setQuizzes(response.quizes);
-    });
+    })
   }, [topicId]);
 
   const selectTopic = (
     <Dropdown
       onChange={(e) => {
+        setQuizId(-1);
+        selectInputRef.current.selected = true
         setTopicId(e.target.value);
       }}
     >
-      <option disabled selected={true} defaultValue="">
+      <option disabled selected={true} value={topicId} defaultValue={null}>
         Chọn topic
       </option>
       {chooseTopic}
@@ -90,10 +91,10 @@ function CreateQuestion() {
   const selectQuiz = (
     <Dropdown
       onChange={(e) => {
-        setQuizId(e.target.value);
+          setQuizId(e.target.value);
       }}
     >
-      <option disabled selected={true} defaultValue="">
+      <option disabled ref={selectInputRef} selected={true} value={quizId} defaultValue={null}>
         Chọn quiz
       </option>
       {chooseQuiz}
@@ -206,7 +207,7 @@ function CreateQuestion() {
   return (
     <Container>
       <AddQuestion>
-        <Title>Tạo quiz mới</Title>
+        <Title>Tạo câu hỏi mới</Title>
         <CreateQuestionForm>
           <CategoryWrap>
             <FormTitle>Lựa chọn topic</FormTitle>
@@ -243,7 +244,7 @@ function CreateQuestion() {
         </CreateQuestionForm>
      
       </AddQuestion>
-      <ShowQuestionContent>abc</ShowQuestionContent>
+      <ShowQuestionContent topicId={topicId} quizId={quizId}></ShowQuestionContent>
 
       <Toast toastList={toastList}/>
     </Container>
@@ -290,6 +291,7 @@ const Marks = styled.div`
     border-radius:5px;
     font-weight:bold;
     font-size:1.25rem;
+    border: 2px solid #ccc;
   }
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
@@ -314,6 +316,8 @@ const Container = styled.div`
   height: 90vh;
   display: flex;
   flex-flow: row nowrap;
+  background-color: rgba(255, 255, 255, 0.3);
+  
 `;
 
 const Title = styled.div`
@@ -325,12 +329,11 @@ const CreateQuestionForm = styled.form`
   position: relative;
   margin: 2rem auto;
   padding: 2rem 0 5rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   gap: 20px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.4);
 `;
 
 const CategoryWrap = styled.div`
@@ -383,7 +386,7 @@ const Confirm = styled.input`
 
 const QuizWrap = styled.div`
   padding: 0.2rem 2vw;
- 
+
   textarea {
     padding: 0.35rem 0.1rem 0.35rem 1rem;
     height: 45px;
@@ -399,7 +402,11 @@ const QuizWrap = styled.div`
     height: 6rem;
   }
 
-
+  textarea, input {
+    font-size: 1.2rem;
+    font-weight: 500;
+    border: 2px solid #ccc;
+  }
   display: flex;
   flex-flow: row nowrap;
 `;
@@ -447,6 +454,7 @@ const Inputs = styled.div`
   input[type="checkbox"] {
     height: 45px;
     width: 5%;
+    border: 2px solid #ccc;
   }
   input[type="text"]{
     padding: 0.35rem 0.1rem 0.35rem 1rem;
@@ -454,12 +462,12 @@ const Inputs = styled.div`
     width: 100%;
     autocomplete: off;
     background-image: none;
-    font-size: 18px;
-    font-weight: lighter;
+    font-weight: 500;
+    font-size: 1.2rem;
+
     background-color: #f9f9f9;
     outline: none;
     border-radius: 5px;
-    border: 1px solid #ccc;
   }
 `;
 

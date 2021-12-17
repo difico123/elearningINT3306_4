@@ -41,6 +41,26 @@ function createQuestion(courseId, topicId,quizId, body) {
 function createAnswer(courseId, topicId,quizId, questionId, body) {
   const config = { headers: { "Content-Type": "application/json" } };
   return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/create`, body , config);
-  }
+}
 
-export default { createQuiz, activeQuiz, hideQuiz, getQuizNames,editQuiz, delQuiz, getQuizTitles, createQuestion, createAnswer };
+async function getInstructorQuestions(courseId, topicId, quizId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getInstructorQuestions/${quizId}`);
+}
+
+async function getStudentQuestions(courseId, topicId,quizId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getStudentQuestions/${quizId}`);
+}
+
+export default { 
+  createQuiz, 
+  activeQuiz, 
+  hideQuiz, 
+  getQuizNames,
+  editQuiz, 
+  delQuiz, 
+  getQuizTitles, 
+  createQuestion, 
+  createAnswer,
+  getInstructorQuestions,
+  getStudentQuestions
+};
