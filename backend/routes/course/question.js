@@ -80,9 +80,9 @@ router.get('/getQuestions', auth, userCourseAuth, ApiQuestion.getQuestions);
 // @access  Private
 router.get(
     '/getQuestionAswers/:questionId',
-    questionPassport,
     auth,
     userCourseAuth,
+    questionQuizAuth,
     ApiQuestion.getQuestionAswers,
 );
 

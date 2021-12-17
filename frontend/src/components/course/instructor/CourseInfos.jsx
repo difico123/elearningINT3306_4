@@ -3,7 +3,16 @@ import styled from "styled-components";
 import { Link, useParams, Navigate, Route, Routes } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import TopicContent from "./TopicContent";
-import {MoreVertIcon,EditIcon, ClearIcon, Warning, GroupsIcon, StarIcon, BooksIcon, AddIcon} from '../../common/icons'
+import {
+  MoreVertIcon,
+  EditIcon,
+  ClearIcon,
+  Warning,
+  GroupsIcon,
+  StarIcon,
+  BooksIcon,
+  AddIcon,
+} from "../../common/icons";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
@@ -20,14 +29,14 @@ function EditCourseInfos({ courseParam, topicsParam }) {
     imageUrl: "",
     register: 0,
     rating: "",
-    numTopic:""
+    numTopic: "",
   });
 
   const [topicId, setTopicId] = useState();
   const [isLoading, setLoading] = useState(true);
-  const [toastList,setToastList] = useState([]);
-  const [toggle, setToggle]  = useState(-1);
-  let [modelToggle,setModelToggle] = useState(false);
+  const [toastList, setToastList] = useState([]);
+  const [toggle, setToggle] = useState(-1);
+  let [modelToggle, setModelToggle] = useState(false);
   const [topics, setTopics] = useState([
     {
       id: "",
@@ -36,7 +45,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
   ]);
 
   useEffect(() => {
-    setTopicId(topicsParam[0]? topicsParam[0].id:null)
+    setTopicId(topicsParam[0] ? topicsParam[0].id : null);
     setCourse({ ...courseParam });
     setTopics(topicsParam);
     setLoading(false);
@@ -44,60 +53,79 @@ function EditCourseInfos({ courseParam, topicsParam }) {
 
   const handleDropDown = (e, index) => {
     e.stopPropagation();
-    setToggle(index)
-  }
+    setToggle(index);
+  };
 
   const handleOverLayDropdown = (e) => {
     e.stopPropagation();
-    setToggle(-1)
-  }
+    setToggle(-1);
+  };
 
   const handleDeletePopup = (e) => {
     e.stopPropagation();
-    setModelToggle(true)
-    setToggle(-1)
-  }
+    setModelToggle(true);
+    setToggle(-1);
+  };
 
   const handleDelete = (e) => {
-    (async () => await CourseService.deleteTopic(id,toggle).then(() => {
-      setToastList([showToast('success','Thông báo!','Xoá thành công!')])
-      setToggle(-1)
-      setModelToggle(false);
+    (async () =>
+      await CourseService.deleteTopic(id, toggle)
+        .then(() => {
+          setToastList([showToast("success", "Thông báo!", "Xoá thành công!")]);
+          setToggle(-1);
+          setModelToggle(false);
 
-      setTopics(topics.filter(item => item.id !== toggle));
-      setTopicId( topics[0]? topics[0].id: -1)
-    }).catch(() => {
-      setToastList([showToast('danger','Thông báo!','Xoá thất bại!')])
-    }))()
-  }
+          setTopics(topics.filter((item) => item.id !== toggle));
+          setTopicId(topics[0] ? topics[0].id : -1);
+        })
+        .catch(() => {
+          setToastList([showToast("danger", "Thông báo!", "Xoá thất bại!")]);
+        }))();
+  };
 
-  const [editToggle,setEditToggle] = useState(false)
+  const [editToggle, setEditToggle] = useState(false);
 
   const handleEdit = (e) => {
     e.stopPropagation();
-    setEditToggle(true)
-    setToggle(-1)
-  }
+    setEditToggle(true);
+    setToggle(-1);
+  };
 
   const handleSelectedTopic = (id) => {
-    setTopicId(id)
-  }
+    setTopicId(id);
+  };
   const renderTopics = topics.map((topic, index) => (
-    <>  
-      <Title className={topicId === topic.id? 'active' : ''} key={index} onClick={() => handleSelectedTopic(topic.id)}>
+    <>
+      <Title
+        className={topicId === topic.id ? "active" : ""}
+        key={index}
+        onClick={() => handleSelectedTopic(topic.id)}
+      >
         <span className="font-bold">Chủ đề {index + 1}:</span> {topic.title}
-        <WrapDrop onClick={(e) => handleDropDown(e,topic.id)}>
-          {toggle !== topic.id ? <MoreVertIcon />: (<><EditTopicBtn onClick={handleEdit}></EditTopicBtn><DelTopicBtn onClick={handleDeletePopup}></DelTopicBtn></>)}
-            <div className={toggle !== topic.id ? "hidden": ""}>
-              <OverLay onClick={(e) => handleOverLayDropdown(e)}></OverLay>
-            </div>
+        <WrapDrop onClick={(e) => handleDropDown(e, topic.id)}>
+          {toggle !== topic.id ? (
+            <MoreVertIcon />
+          ) : (
+            <>
+              <EditTopicBtn onClick={handleEdit}></EditTopicBtn>
+              <DelTopicBtn onClick={handleDeletePopup}></DelTopicBtn>
+            </>
+          )}
+          <div className={toggle !== topic.id ? "hidden" : ""}>
+            <OverLay onClick={(e) => handleOverLayDropdown(e)}></OverLay>
+          </div>
         </WrapDrop>
       </Title>
     </>
   ));
 
   const bodyPopup = <div>Bạn có thực sự muốn xóa topic này không?</div>;
-  const headerPopup = <HeaderPopupWapper><img src={Warning} alt="" /><span>Cảnh báo!</span></HeaderPopupWapper>;
+  const headerPopup = (
+    <HeaderPopupWapper>
+      <img src={Warning} alt="" />
+      <span>Cảnh báo!</span>
+    </HeaderPopupWapper>
+  );
   const footerPopup = (
     <DeleteButton onClick={handleDelete}>Tôi muốn xóa!</DeleteButton>
   );
@@ -111,10 +139,17 @@ function EditCourseInfos({ courseParam, topicsParam }) {
             <CourseDescription>{course.description}</CourseDescription>
             <ARWrap>
               <CourseAttendance>
-                <span> Số học viên: {course.register}</span><GroupsIcon/>
+                <span> Số học viên: {course.register}</span>
+                <GroupsIcon />
               </CourseAttendance>
-              <CourseRating><span>Đánh giá: {course.rating? course.rating: "0"} </span><StarIcon/></CourseRating>
-              <CourseAttendance><span>Chủ đề: {course.numTopic? course.numTopic: "0"} </span><BooksIcon/></CourseAttendance>
+              <CourseRating>
+                <span>Đánh giá: {course.rating ? course.rating : "0"} </span>
+                <StarIcon />
+              </CourseRating>
+              <CourseAttendance>
+                <span>Chủ đề: {course.numTopic ? course.numTopic : "0"} </span>
+                <BooksIcon />
+              </CourseAttendance>
             </ARWrap>
           </InfoWrap>
           <CourseCover>
@@ -128,90 +163,113 @@ function EditCourseInfos({ courseParam, topicsParam }) {
           </CourseCover>
         </CourseInfos>
         <Topic>
-          <TopicNav >
+          <TopicNav>
             <NavTitle>
               <span>Nội dung khóa học</span>
               <Link to="../createTopic">
-              <AddTopic><AddIcon/></AddTopic>
+                <AddTopic>
+                  <AddIcon />
+                </AddTopic>
               </Link>
             </NavTitle>
-            <TopicWrap>{!topics[0]? <NoContent>Chưa có chủ đề</NoContent>: renderTopics}</TopicWrap>
+            <TopicWrap>
+              {!topics[0] ? (
+                <NoContent>Chưa có chủ đề</NoContent>
+              ) : (
+                renderTopics
+              )}
+            </TopicWrap>
           </TopicNav>
           <ContentWrapper>
-            {!isLoading && (
-              editToggle? <EditTopic topicId={topicId} setEditToggle={setEditToggle} topics={topics}/>:
-              <TopicContent courseId={course.id} topicId={topicId ? topicId : -1} />
-            )}
+            {!isLoading &&
+              (editToggle ? (
+                <EditTopic
+                  topicId={topicId}
+                  setEditToggle={setEditToggle}
+                  topics={topics}
+                />
+              ) : (
+                <TopicContent
+                  courseId={course.id}
+                  topicId={topicId ? topicId : -1}
+                />
+              ))}
           </ContentWrapper>
         </Topic>
       </Body>
-      <Popup toggle={modelToggle} setToggle={setModelToggle} header={headerPopup} body={bodyPopup} footer={footerPopup}/>
-      <Toast toastList={toastList}/>
+      <Popup
+        toggle={modelToggle}
+        setToggle={setModelToggle}
+        header={headerPopup}
+        body={bodyPopup}
+        footer={footerPopup}
+      />
+      <Toast toastList={toastList} />
     </Container>
   );
 }
 
 export default EditCourseInfos;
 
-
 const NoContent = styled.div`
-  text-align:center;
-`
+  text-align: center;
+  padding-top: 1rem;
+  font-weight: bold;
+`;
 const ContentWrapper = styled.div`
-  width:85vw;
- overflow:auto;
-`
+  width: 85vw;
+  overflow: auto;
+`;
 const HeaderPopupWapper = styled.div`
-  text-align:center;
-  img{
+  text-align: center;
+  img {
     width: 2rem;
     background-color: red;
     border-radius: 5px;
   }
   display: flex;
   justify-content: start;
-  gap:1rem;
+  gap: 1rem;
   align-items: center;
-`
+`;
 
 const DeleteButton = styled.div`
-text-align:center;
-bottom: 0.5rem;
-background-color: white;
-color: black;
-font-weight: 600;
-padding: 1rem 2rem;
-font-size: 15px;
-width: 100%;
-transition: 0.5s ease 0s;
-cursor:pointer;
-&:hover {
-  color: white;
-  background-color: crimson;
-}
-
-`
+  text-align: center;
+  bottom: 0.5rem;
+  background-color: white;
+  color: black;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  font-size: 15px;
+  width: 100%;
+  transition: 0.5s ease 0s;
+  cursor: pointer;
+  &:hover {
+    color: white;
+    background-color: crimson;
+  }
+`;
 
 const DelTopicBtn = styled(ClearIcon)`
-  position:relative;
+  position: relative;
   z-index: 99;
   &:hover {
     color: red;
-    background-color: #CAD5E2;
+    background-color: #cad5e2;
     border-radius: 3px;
     transition: all 0.5s ease;
   }
-`
+`;
 const EditTopicBtn = styled(EditIcon)`
-  position:relative;
+  position: relative;
   z-index: 99;
   &:hover {
-    color: #120E43;
-    background-color: #CAD5E2;
+    color: #120e43;
+    background-color: #cad5e2;
     border-radius: 3px;
     transition: all 0.5s ease;
   }
-`
+`;
 const WrapDrop = styled.div`
   display: flex;
   flex-direction: row;
@@ -220,7 +278,7 @@ const WrapDrop = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-`
+`;
 const OverLay = styled.div`
   position: fixed;
   top: 0;
@@ -235,7 +293,7 @@ const OverLay = styled.div`
     top: 0;
     left: 0;
   }
-`
+`;
 const Container = styled.div`
   height: 90vh;
   display: flex;
@@ -276,7 +334,6 @@ const CourseTitle = styled.div`
   overflow-wrap: break-word;
 `;
 
-
 const CourseDescription = styled.div`
   color: white;
   font-size: 1.2rem;
@@ -299,7 +356,7 @@ const CourseAttendance = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.4rem;
-  svg{
+  svg {
     color: #c7ecee;
   }
 `;
@@ -310,7 +367,7 @@ const CourseRating = styled.div`
   gap: 0.2rem;
   color: white;
   font-size: 1rem;
-  svg{
+  svg {
     color: #f0932b;
   }
 `;
@@ -327,7 +384,7 @@ const Topic = styled.div`
   background-color: white;
   display: flex;
   flex-flow: row nowrap;
-  height:90vh;
+  height: 90vh;
   gap: 0;
 `;
 
@@ -335,8 +392,8 @@ const TopicNav = styled.div`
   position: sticky;
   top: 0;
   position: -webkit-sticky;
-  min-width: 12.5vw;
-  height:90vh;
+  min-width: 12vw;
+  height: 90vh;
   box-sizing: border-box;
   box-shadow: 0px 0px 10px #232931;
 `;
@@ -346,6 +403,7 @@ const NavTitle = styled.div`
   font-size: 1.2rem;
   padding: 0.5vh 0.5vw;
   align-items: center;
+  justify-content: space-between;
   font-weight: bold;
   border-left: 5px solid #3d4450;
   color: #1c1d1f;
@@ -353,28 +411,15 @@ const NavTitle = styled.div`
   flex-flow: row nowrap;
   gap: 10px;
   width: 100%;
-
 `;
-const AddTopic = styled.div `
-background-color:  #3a3e47;
-display: flex;
-justify-content: center;
-align-items: center;
-border-radius: 5px;
-svg {
-  font-size: 2rem!important;
-  color: white;
-}
 
-`
 const TopicWrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  height:85vh;
-  padding-right:3rem;
   overflow-y: auto;
   overflow-x: hidden;
   right: 0px;
+  width: 100%;
 `;
 
 const Title = styled.div`
@@ -382,20 +427,32 @@ const Title = styled.div`
   padding: 1.5rem 0.75vw;
   font-weight: 500;
   word-wrap: break-word;
-  width: 15rem;
+  width: 100%;
   font-size: 1.15rem;
   cursor: pointer;
   transition: 0.471s ease-out;
-  border-bottom:1px solid rgba(59, 130, 246, 0.7);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.7);
   &:hover {
-    background-color:rgba(59, 130, 246, 0.7);
-    border-radius:5px;
+    background-color: rgba(59, 130, 246, 0.7);
+    border-radius: 5px;
     color: white;
     background-position: left;
   }
   &.active {
-    background-color:rgba(59, 130, 246, 0.7);
-    border-radius:5px;
+    background-color: rgba(59, 130, 246, 0.7);
+    border-radius: 5px;
+    color: white;
+  }
+`;
+
+const AddTopic = styled.div`
+  background-color: #3a3e47;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  svg {
+    font-size: 2rem !important;
     color: white;
   }
 `;

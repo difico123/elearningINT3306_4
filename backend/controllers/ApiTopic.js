@@ -71,7 +71,8 @@ module.exports = class ApiTopic {
             });
             await Quiz.findAll({
                 where: {
-                    topicId: req.params.topicId 
+                    topicId: req.params.topicId ,
+                    shown: 1
                 },
                 attributes: ['id'],
 

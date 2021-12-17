@@ -101,14 +101,13 @@ module.exports = class ApiQuestion {
     // @desc    getQuestionAswers by instructor and student
     // @access  Private
     static async getQuestionAswers(req, res) {
-        let quiz = {
-            quizId: req.quizId,
-        };
         try {
-            return res.status(200).json({
-                error: false,
-                quiz,
-            });
+            await QuizService.getStudentAnswersByQuestionId(req.params.questionId).then((v) => {
+                return res.status(200).json({
+                    error: false,
+                    question: v,
+                });
+            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
