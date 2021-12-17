@@ -39,7 +39,12 @@ module.exports = {
                 defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),
                 allowNull: false,
             },
-        });
+        })
+        .then(() => {
+            queryInterface.addIndex('UserQuestions', ['userId', 'questionId'], {
+                unique: true,
+            });
+        });;
     },
     down: async (queryInterface, DataTypes) => {
         await queryInterface.dropTable('UserQuestions');

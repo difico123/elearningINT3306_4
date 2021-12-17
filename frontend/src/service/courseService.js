@@ -19,8 +19,10 @@ async function getAll(categoryId, keyword, rating, page) {
   return await http.get(apiEndpoint + `/showAll${query}`);
 }
 
-function getInstructorCourses(page=1) {
-  return http.get(apiEndpoint + `/instructorCourses?page=${page}`);
+function getInstructorCourses(keyword, page=1) {
+  keyword = !keyword ? "" : `&keyword=${keyword}`;
+  console.log(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
+  return http.get(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
 }
 
 function getEnrollTopics(courseId) {

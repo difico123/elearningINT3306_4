@@ -104,16 +104,26 @@ module.exports = class ApiQuestion {
         }
     }
 
-    // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestionAswers/:questionId
+    // @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestionAnswers/:questionId
     // @desc    getQuestionAswers by instructor and student
     // @access  Private
-    static async getQuestionAswers(req, res) {
+    static async getQuestionAnswers(req, res) {
         try {
+            let question = {};
+            await Question.findOne({
+                where: {
+                    id: req.params.questionId,
+                },
+                attributes: ['content'],
+            }).then((v) => {
+                question = v.content
+            });
             await QuizService.getStudentAnswersByQuestionId(
                 req.params.questionId,
             ).then((v) => {
                 return res.status(200).json({
                     error: false,
+                    content: question,
                     question: v,
                 });
             });

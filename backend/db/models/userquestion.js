@@ -7,8 +7,12 @@ module.exports = (sequelize, DataTypes) => {
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
-        static associate(models) {
+        static associate({User,Question,Choice}) {
             // define association here
+            this.belongsTo(User, { foreignKey: 'userId', onDelete: 'cascade' });
+            this.belongsTo(Question, { foreignKey: 'questionId', onDelete: 'cascade' });
+            this.belongsTo(Choice, { foreignKey: 'choiceId', onDelete: 'cascade' });
+
         }
     }
     UserQuestion.init(
@@ -37,7 +41,14 @@ module.exports = (sequelize, DataTypes) => {
         },
         {
             sequelize,
+            tableName: 'userquestions',
             modelName: 'UserQuestion',
+            indexes: [
+                {
+                    unique: true,
+                    fields: ['userId', 'questionId'],
+                },
+            ],
         },
     );
     return UserQuestion;

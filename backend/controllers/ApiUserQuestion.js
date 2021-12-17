@@ -1,75 +1,46 @@
-const QuizService = require('../dbservice/QuizService');
-const QuestionService = require('../dbservice/QuestionService');
-const UserQuestionService = require('../dbservice/UserQuestionService');
-const ChoiceService = require('../dbservice/ChoiceService');
-
+const { Question, UserQuestion,Choice } = require('../db/models');
+const QuizService = require('../dbService/quizService');
 module.exports = class ApiUserQuestion {
     // @route   POST /api/userquestion/answer/:questionId
     // @desc    answer a question by student
     // @access  Private
     static async answerQuestion(req, res) {
+        const {role, id} = req.user
         const answer = {
-            user: req.user.id,
-            choice: req.body.choice,
-            question: parseInt(req.questionId),
+            userId: id,
+            choiceId: parseInt(req.params.choiceId),
+            questionId: parseInt(req.questionId),
         };
         try {
-            ChoiceService.getChoicesInQuestion(
-                req.body.choice,
-                req.questionId,
-            ).then((data) => {
-                if (data.length === 0) {
-                    return res.status(403).json({
-                        error: true,
-                        msg: 'Câu trả lời không nằm trong câu hỏi',
-                    });
-                } else {
-                    UserQuestionService.answeredCheck(
-                        answer.user,
-                        answer.question,
-                    ).then((value) => {
-                        if (value) {
-                            return res.status(400).json({
-                                error: true,
-                                msg: 'Bạn đã trả lời câu hỏi',
-                            });
-                        } else {
-                            const addAnswer = UserQuestionService.studentAnswer(
-                                answer,
-                            )
-                                .then((created) => {
-                                    if (!created) {
-                                        return res.status(400).json({
-                                            error: false,
-                                            msg: 'Bạn chưa trả lời câu hỏi',
-                                        });
-                                    }
-                                })
-                                .catch((err) => {
-                                    return res.status(400).json({
-                                        error: true,
-                                        msg: 'lỗi bạn đã trả lời',
-                                    });
-                                });
+            if(role === 1) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Bạn không thể trả lời câu hỏi này',
+                });
+            } 
+            if(!answer.choiceId) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Bạn phải chọn một đáp án!',
+                });
+            }
+            let check = await UserQuestion.findOne({ where: {userId: id, questionId: answer.questionId}})
+            if(check) {
+                return res.status(403).json({
+                    error: true,
+                    msg: 'Bạn đã trả lời khoá học',
+                });
+            }
 
-                            Promise.all([addAnswer]).then(() => {
-                                UserQuestionService.checkCorrectAnswer(
-                                    answer,
-                                ).then((correct) => {
-                                    return correct[0].isAnswer === 0
-                                        ? res.status(200).json({
-                                              error: false,
-                                              msg: 'Sai',
-                                          })
-                                        : res.status(200).json({
-                                              error: false,
-                                              msg: 'Đúng',
-                                          });
-                                });
-                            });
-                        }
-                    });
-                }
+           let isCorrect =  await Choice.findOne({where: { id: answer.choiceId, isAnswer: 1 }, attributes: ['id']})
+
+            await UserQuestion.create(answer).then((value) => {
+                return res.status(200).json({
+                    error: false,
+                    msg: 'Trả lời câu hỏi thành công!',
+                    value,
+                    isCorrect: isCorrect? true: false,
+                });
             });
         } catch (error) {
             console.log(error.message);
@@ -122,106 +93,17 @@ module.exports = class ApiUserQuestion {
         }
     }
 
-    // @route   GET /api/userquestion/:courseId/:questionId/history
+    // @route   GET /api/course/:courseId/topic/question/:questionId
     // @desc    history user question
     // @access  Private
     static async history(req, res) {
+        let {id} = req.user;
         try {
-            QuestionService.getQuestionByQuestionId(req.questionId).then(
-                async (questions) => {
-                    UserQuestionService.getChoiceByUserQuestion(
-                        req.user.id,
-                        req.questionId,
-                    ).then(async (data) => {
-                        if (data.length === 0) {
-                            return res.status(400).json({
-                                error: true,
-                                msg: 'Bạn chưa làm bài',
-                            });
-                        } else {
-                            let question = questions[0];
-                            question.answers = [];
-                            await ChoiceService.getChoicesByQuestionId(
-                                question.id,
-                            ).then((choices) => {
-                                if (choices.length === 0) {
-                                    let empA = 'Không có câu trả lời';
-                                    question.answers.push(empA);
-                                } else {
-                                    question.answers = [...choices];
-                                }
-                            });
-                            await ChoiceService.getCorrectAnswer(
-                                req.questionId,
-                            ).then((data) => {
-                                if (data.length === 0) {
-                                    let correctAnswer =
-                                        'Không có câu trả lời đúng';
-                                    question.correctAnswer = correctAnswer;
-                                } else {
-                                    question.correctAnswer = [...data];
-                                }
-                            });
-                            question.yourAnswer = [...data];
-                            return res.status(200).json({
-                                error: false,
-                                question,
-                            });
-                        }
-                    });
-                },
-            );
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).send('Server error');
-        }
-    }
-    static async history(req, res) {
-        try {
-            QuestionService.getQuestionByQuestionId(req.questionId).then(
-                async (questions) => {
-                    UserQuestionService.getChoiceByUserQuestion(
-                        req.user.id,
-                        req.questionId,
-                    ).then(async (data) => {
-                        if (data.length === 0) {
-                            return res.status(400).json({
-                                error: true,
-                                msg: 'Bạn chưa làm bài',
-                            });
-                        } else {
-                            let question = questions[0];
-                            question.answers = [];
-                            await ChoiceService.getChoicesByQuestionId(
-                                question.id,
-                            ).then((choices) => {
-                                if (choices.length === 0) {
-                                    let empA = 'Không có câu trả lời';
-                                    question.answers.push(empA);
-                                } else {
-                                    question.answers = [...choices];
-                                }
-                            });
-                            await ChoiceService.getCorrectAnswer(
-                                req.questionId,
-                            ).then((data) => {
-                                if (data.length === 0) {
-                                    let correctAnswer =
-                                        'Không có câu trả lời đúng';
-                                    question.correctAnswer = correctAnswer;
-                                } else {
-                                    question.correctAnswer = [...data];
-                                }
-                            });
-                            question.yourAnswer = [...data];
-                            return res.status(200).json({
-                                error: false,
-                                question,
-                            });
-                        }
-                    });
-                },
-            );
+            let history = await UserQuestion.findOne({where: {userId: id, questionId: req.params.questionId}})
+            res.status(200).json({
+                error: false,
+                history
+            }); 
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

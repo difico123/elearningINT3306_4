@@ -5,6 +5,7 @@ const {
     Topic,
     Quiz,
     Question,
+    UserQuestion
 } = require('../db/models');
 
 module.exports = {
@@ -86,6 +87,7 @@ module.exports = {
     choicePassport: async (req, res, next) => {
         let choiceId = req.params.choiceId;
         let choice = await Choice.findOne({ where: { id: choiceId } });
+        
         if (!choice) {
             return res.status(404).json({
                 error: true,
@@ -96,4 +98,16 @@ module.exports = {
             next();
         }
     },
+    
+    checkAnswerQuestion : async function (req, res, next) {
+        let check = await UserQuestion.findOne({ where: {userId: id, questionId: answer.questionId}})
+        if(check) {
+            return res.status(403).json({
+                error: true,
+                msg: 'Bạn đã trả lời khoá học',
+            });
+        } else {
+            next();
+        }
+    }
 };

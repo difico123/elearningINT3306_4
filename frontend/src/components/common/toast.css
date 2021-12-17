@@ -59,6 +59,7 @@
 .notification-image {
     float: left;
     margin-right: 15px;
+	margin-top: 0.5rem;
 }
 
 .notification-image img {

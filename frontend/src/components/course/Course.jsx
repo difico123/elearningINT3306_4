@@ -167,7 +167,7 @@ function Course() {
             placeholder="Tìm kiếm khóa học..."
           />
           <button type="submit">
-            <CustomSearch />
+          <CustomSearch />
           </button>
         </SearchBar>
         <Pagination>
@@ -339,7 +339,7 @@ const Pagination = styled.div`
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 40px 3vw 50px;
+  padding: 40px 5vw 50px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -416,6 +416,7 @@ const Wrap = styled.div`
 const CourseImage = styled.img`
   margin-bottom: 20px;
   height: 200px;
+  width:100%
 `;
 
 const CourseTitle = styled.div`

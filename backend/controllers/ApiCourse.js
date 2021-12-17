@@ -172,11 +172,11 @@ module.exports = class ApiCourse {
             // let courses = await Course.findAll({
             //     where: { instructorId: req.user.id },
             // });
-            let { page } = req.query;
-            let courses = await CourseService.getInstructorCourses(req.user.id);
-            let instructor = await User.findOne({
-                where: { id: req.user.id },
-            });
+            let { page, keyword } = req.query;
+            let courses = await CourseService.getInstructorCourses(req.user.id,keyword);
+            // let instructor = await User.findOne({
+            //     where: { id: req.user.id },
+            // });
 
             courses.map((course) => {
                 if (course.imageUrl) {
@@ -187,7 +187,7 @@ module.exports = class ApiCourse {
             let courseRes = pagination(courses, page);
             res.status(200).json({
                 error: false,
-                instructor,
+                // instructor,
                 courses: courseRes,
             });
         } catch (error) {

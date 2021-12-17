@@ -1,18 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const auth = require('../middleware/auth/auth');
-const ApiUserQuestion = require('../controllers/ApiUserQuestion');
+const auth = require('../../middleware/auth/auth');
+const ApiUserQuestion = require('../../controllers/ApiUserQuestion');
+const userCourseAuth = require('../../middleware/auth/userCourse.auth');
+const { checkAnswerQuestion } = require('../../middleware/passport');
 
-const userCourseAuth = require('../middleware/auth/userCourse.auth');
-
-// @route   POST /api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/userquestion/answer
+// @route   POST /api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/userquestion/answer/:choiceId
 // @desc    answer a question by student
 // @access  Private
-router.post('/answer', auth, userCourseAuth, ApiUserQuestion.answerQuestion);
+router.post('/answer/:choiceId', auth, userCourseAuth, ApiUserQuestion.answerQuestion);
 
-// @route   GET /api/userquestion/:courseId/:questionId/history
-// @desc    history user question
-// @access  Private
-router.get('/history', auth, userCourseAuth, ApiUserQuestion.history);
+
 
 module.exports = router;

@@ -45,18 +45,34 @@
 .ql-size span[data-value="large"]::before {
   font-size: 20px !important;
 }
-
+/* .ql-indent-4 img{
+  margin: 50vw;
+}
+.ql-indent-5 img{
+  margin: 50vw;
+}
+.ql-indent-3 img{
+  margin: 50vw;
+}
+.ql-indent-2 img{
+  margin: 50vw;
+} */
 .ql-editor {
-  min-height: 50vh; 
+  height: 50vh; 
   font-size: 16px;
   max-width: 56vw;
+  overflow-y: auto;
 }
 .App .ql-snow .ql-tooltip.ql-flip {
   width: auto;
   left: 17px!important;
   white-space: normal;
 }
-
+.quill {
+  /* height: 50vh;
+  overflow-y: auto;
+  outline: none; */
+}
  @page {
   margin: 1in;
 }
@@ -168,9 +184,17 @@ iframe{
   width: 70%;
   height: 537px;
   margin: 2rem auto;
-  box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px, rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px, rgb(255, 85, 85) 0px 0px 0px 15px;
+  box-shadow: rgb(85, 86, 103) 0px 0px 0px 3px, rgb(34, 44, 34) 0px 0px 0px 6px, rgb(29, 28, 25) 0px 0px 0px 9px, rgb(150, 135, 124) 0px 0px 0px 12px, rgb(111, 100, 100) 0px 0px 0px 15px;
 }
-
+.ql-syntax{
+  background: black ;
+  color:white;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  padding: 1rem;
+  margin: 2rem;
+  border-left: solid green;
+}
 .font-weight-bold {
   font-weight: 700;
 }
+

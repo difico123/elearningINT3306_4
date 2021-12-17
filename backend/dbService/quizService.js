@@ -138,4 +138,20 @@ module.exports = class QuizService {
             console.log(error);
         }
     }
+    static async checkCorrectAnswer(UserId ,questionId, ChoiceId ) {
+        try {
+            const response = await sequelize.query(
+                `select ch.id from userquestions qu 
+                join choices ch on ch.id = qu.choiceId
+                where qu.userId = ${UserId} and qu.choiceId = ${ChoiceId} and qu.questionId = ${questionId} and ch.isAnswer = 1;`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };

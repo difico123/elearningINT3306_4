@@ -16,7 +16,7 @@ const {
     checkCourseInput,
     validateInput,
 } = require('../../middleware/errors/Validate');
-
+const ApiUserQuestion = require('../../controllers/ApiUserQuestion');
 const userCourseAuth = require('../../middleware/auth/userCourse.auth');
 
 // @route api/course/:courseId/topic/:topicId/quiz
@@ -96,5 +96,11 @@ router.delete(
     topicCourseAuth,
     ApiTopic.deleteTopic,
 );
+
+
+// @route   GET /api/course/:courseId/topic/question/:questionId
+// @desc    history user question
+// @access  Private
+router.get('/question/:questionId', auth, userCourseAuth, ApiUserQuestion.history);
 
 module.exports = router;

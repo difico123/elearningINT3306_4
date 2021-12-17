@@ -4,12 +4,11 @@ import { useParams } from "react-router-dom";
 import CourseService from "../../service/courseService";
 import Loader from "../common/loader";
 import quizService from "../../service/quizService";
+import { GroupsIcon, StarIcon, BooksIcon } from "../common/icons";
 
 function CourseContent() {
   let { id } = useParams();
   const [isLoading, setLoading] = useState(true);
-
-  const [quizId, setQuizId] = useState(-1);
 
   const [course, setCourse] = useState({
     name: "",
@@ -28,29 +27,10 @@ function CourseContent() {
     },
   ]);
 
-  const [quizzes, setQuizzes] = useState([
-    {
-      id: "",
-      title: "",
-      shown: "",
-    },
-  ]);
-
   const [topicId, setTopicId] = useState(null);
 
   // console.log(topicId, id);
-  useEffect(() => {
-    quizService
-      .getQuizTitles(id, topicId)
-      .then((response) => {
-        setQuizzes(response.quizes);
-      })
-      .catch((err) => {
-        console.log(err.response.data.msg);
-      });
-  }, [topicId]);
 
-  console.log("abc", quizzes);
   useEffect(() => {
     (async () => {
       await CourseService.getEnrollTopics(id).then((res) => {
@@ -70,6 +50,7 @@ function CourseContent() {
 
   const renderTopics = topics.map((topic, index) => (
     <Title
+      className={topicId === topic.id ? "active" : ""}
       key={index}
       onClick={() => {
         setTopicId(topic.id);
@@ -78,6 +59,42 @@ function CourseContent() {
       Chủ đề {index + 1}: {topic.title}
     </Title>
   ));
+
+  const Loaded = (
+    <TopicContent courseId={id} topicId={topicId} course={course} />
+  );
+
+  return (
+    <Container>
+      <TopicWrap>{renderTopics}</TopicWrap>
+      <Content>{isLoading ? Loading : Loaded}</Content>
+    </Container>
+  );
+}
+
+function TopicContent({ topicId, courseId, course }) {
+  const [quizId, setQuizId] = useState(-1);
+  const [topic, setTopic] = useState({
+    content: "",
+    courseId: "",
+    createdAt: "",
+    description: "",
+    id: "",
+    title: "",
+  });
+  const [isLoading, setLoading] = useState(true);
+  const [quizzes, setQuizzes] = useState([
+    {
+      id: "",
+      title: "",
+      shown: "",
+    },
+  ]);
+  const Loading = (
+    <LoaderWrap>
+      <Loader />
+    </LoaderWrap>
+  );
   const handleSelectedQuiz = (id) => {
     setQuizId(id);
   };
@@ -93,88 +110,14 @@ function CourseContent() {
     </ShowQuizButton>
   ));
 
-  const DisplayQuizzes = (
-    <QuizSection>
-      <QuizWrap>
-        <QuizTitle>Tên của quiz</QuizTitle>
-        <QuestionSection>
-          <QuestionName>Tên câu hỏi</QuestionName>
-          <Answers>
-            <Answer>
-              <Inputs>
-                <input type="checkbox" name="isAnswer"></input>
-                <label> Văn anh</label>
-              </Inputs>
-            </Answer>
-            <Answer>
-              <Inputs>
-                <input type="checkbox" name="isAnswer"></input>
-                <label> Văn anh</label>
-              </Inputs>
-            </Answer>
-            <Answer>
-              <Inputs>
-                <input type="checkbox" name="isAnswer"></input>
-                <label> Văn anh</label>
-              </Inputs>
-            </Answer>
-            <Answer>
-              <Inputs>
-                <input type="checkbox" name="isAnswer"></input>
-                <label> Văn anh</label>
-              </Inputs>
-            </Answer>
-          </Answers>
-        </QuestionSection>
-      </QuizWrap>
-      <QuestionWrap>
-        <QuestionTitle>Bảng câu hỏi</QuestionTitle>
-        <SelectQuestion>
-          <ChooseQuestion>1</ChooseQuestion>
-          <ChooseQuestion>2</ChooseQuestion>
-          <ChooseQuestion>3</ChooseQuestion>
-          <ChooseQuestion>4</ChooseQuestion>
-          <ChooseQuestion>5</ChooseQuestion>
-          <ChooseQuestion>6</ChooseQuestion>
-        </SelectQuestion>
-        <SubmitQuiz>Nộp bài</SubmitQuiz>
-      </QuestionWrap>
-    </QuizSection>
+  const quizLoaded = (
+    <QuizWrapper>
+      <Buttons>{renderQuizzes}</Buttons>
+      {quizId !== -1 && <DisplayQuizzes topicId={topicId} quizId={quizId} />}
+    </QuizWrapper>
   );
 
-  const Loaded = <TopicContent courseId={id} topicId={topicId} />;
-
-  return (
-    <Container>
-      <TopicWrap>{renderTopics}</TopicWrap>
-      <Content>
-        {isLoading ? Loading : Loaded}
-        <Buttons>
-          {!quizzes[0] ? "Không có quiz cho chủ đề này" : renderQuizzes}
-        </Buttons>
-        {DisplayQuizzes}
-      </Content>
-    </Container>
-  );
-}
-
-function TopicContent({ topicId, courseId }) {
-  const [topic, setTopic] = useState({
-    content: "",
-    courseId: "",
-    createdAt: "",
-    description: "",
-    id: "",
-    title: "",
-  });
-  const [isLoading, setLoading] = useState(true);
-
-  const Loading = (
-    <LoaderWrap>
-      <Loader />
-    </LoaderWrap>
-  );
-
+  console.log("abc", quizzes);
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -182,6 +125,7 @@ function TopicContent({ topicId, courseId }) {
         .then((res) => {
           console.log(res);
           setTopic({ ...res.topic });
+          setQuizzes(res.quizIds);
           setLoading(false);
         })
         .catch((err) => {
@@ -189,19 +133,146 @@ function TopicContent({ topicId, courseId }) {
         });
     })();
   }, [topicId]);
+
   const Loaded = !topic.id ? (
     <NoContent>Không có nội dung</NoContent>
   ) : (
-    <Topic>
-      {" "}
-      <div>
-        <WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}
-      </div>
-      <WrapDescription>Nội dung: </WrapDescription>{" "}
-      <div dangerouslySetInnerHTML={{ __html: topic.content }} />
-    </Topic>
+    <>
+      <CourseInfos>
+        <InfoWrap>
+          <CourseTitle>{course.name}</CourseTitle>
+          <CourseDescription>{course.description}</CourseDescription>
+          <ARWrap>
+            <CourseAttendance>
+              <span> Số học viên: {course.register}</span>
+              <GroupsIcon />
+            </CourseAttendance>
+            <CourseRating>
+              <span>Đánh giá: {course.rating ? course.rating : "0"} </span>
+              <StarIcon />
+            </CourseRating>
+            <CourseAttendance>
+              <span>Chủ đề: {course.numTopic ? course.numTopic : "0"} </span>
+              <BooksIcon />
+            </CourseAttendance>
+          </ARWrap>
+        </InfoWrap>
+        <CourseCover>
+          <BackgroundImage
+            src={
+              course.imageUrl
+                ? course.imageUrl
+                : "https://www.optionabroad.com/wp-content/uploads/2021/03/Study-in-USA.jpg"
+            }
+          ></BackgroundImage>
+        </CourseCover>
+      </CourseInfos>
+      <Topic>
+        <div>
+          <WrapDescription>{topic.description}</WrapDescription>
+        </div>
+        <div dangerouslySetInnerHTML={{ __html: topic.content }} />
+      </Topic>{" "}
+      {!quizzes[0] ? "" : quizLoaded}
+      {/* {DisplayQuizzes} */}
+    </>
   );
   return <>{isLoading ? Loading : Loaded}</>;
+}
+
+function DisplayQuizzes({ topicId, quizId }) {
+  let { id } = useParams();
+  const [qzTitle, setQzTitle] = useState("");
+  const [questionIds, setQuestionIds] = useState([]);
+  const [questionId, setQuestionId] = useState(-1);
+  useEffect(() => {
+    quizService.getQuestionIds(id, topicId, quizId).then((response) => {
+      setQzTitle(response.quiz.title);
+      setQuestionIds(response.questionIds);
+      setQuestionId(!response.questionIds[0] ? -1 : response.questionIds[0].id);
+    });
+  }, [topicId, quizId]);
+  const questions =
+    questionIds.length === 0
+      ? ""
+      : questionIds.map((question, index) => (
+          <ChooseQuestion
+            key={index}
+            value={question}
+            onClick={() => setQuestionId(question.id)}
+          >
+            {index + 1}
+          </ChooseQuestion>
+        ));
+  console.log(questionId, "duc");
+  return (
+    <QuizSection>
+      <QuizWrap>
+        <QuizTitle>{qzTitle}</QuizTitle>
+        <DisplayAnswers
+          topicId={topicId}
+          quizId={quizId}
+          questionId={questionId}
+        />
+      </QuizWrap>
+      <QuestionWrap>
+        <QuestionTitle>Bảng câu hỏi</QuestionTitle>
+        <SelectQuestion>{questions}</SelectQuestion>
+        <SubmitQuiz>Nộp bài</SubmitQuiz>
+      </QuestionWrap>
+    </QuizSection>
+  );
+}
+
+function DisplayAnswers({ topicId, quizId, questionId }) {
+  let { id } = useParams();
+  const [qTitle, setQTitle] = useState("");
+  const [choiceIds, setChoiceIds] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const Loading = (
+    <LoaderWrap>
+      <Loader />
+    </LoaderWrap>
+  );
+  useEffect(() => {
+    setIsLoading(true);
+    quizService
+      .getQuestionAnswers(id, topicId, quizId, questionId)
+      .then((response) => {
+        setQTitle(response.content);
+        setChoiceIds(response.question);
+        setIsLoading(false);
+      });
+  }, [topicId, quizId, questionId]);
+
+  console.log(qTitle, "abc", choiceIds);
+  const [choiceId, setChoiceId] = useState(-1);
+
+  const choices =
+    choiceIds.length === 0
+      ? ""
+      : choiceIds.map((choice, index) => (
+          <Answer key={index} value={choice}>
+            <Inputs>
+              <input type="checkbox" name="isAnswer"></input>
+              <label>{choice.content}</label>
+            </Inputs>
+          </Answer>
+        ));
+  return (
+    <>
+      {questionId === -1 ? (
+        <NoContent>Quiz lừa</NoContent>
+      ) : isLoading ? (
+        Loading
+      ) : (
+        <QuestionSection>
+          <QuestionName>{qTitle}</QuestionName>
+          <Answers>{choices}</Answers>
+        </QuestionSection>
+      )}
+    </>
+  );
 }
 
 const NoContent = styled.div`
@@ -211,14 +282,14 @@ const NoContent = styled.div`
 const WrapDescription = styled.span`
   font-size: 1.2rem;
   font-weight: 500;
-  text-decoration: underline;
   margin-right: 1rem;
 `;
 const LoaderWrap = styled.div`
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  margin-top: 10vh;
+  justify-content: center;
 `;
 
 const Container = styled.div`
@@ -226,6 +297,7 @@ const Container = styled.div`
   display: flex;
   flex-flow: row nowrap;
   background-color: #f0f0f0;
+  overflow: hidden;
 `;
 
 const TopicWrap = styled.div`
@@ -233,48 +305,56 @@ const TopicWrap = styled.div`
   width: 20%;
   flex-flow: column nowrap;
   position: sticky;
-  background-color: #d0d0d0;
+  background-color: #969eaa;
   right: 0px;
 `;
 
 const Title = styled.div`
+  position: relative;
   padding: 1.5rem 0.75vw;
   font-weight: 500;
   word-wrap: break-word;
+  width: 100%;
   font-size: 1.15rem;
   cursor: pointer;
-  background: linear-gradient(to left, #d0d0d0 50%, #f0f0f0 50%) right;
-  background-size: 200%;
   transition: 0.471s ease-out;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  background-color: #969eaa;
   &:hover {
-    background-color: #f0f0f0;
-    color: black;
+    background-color: #3a3e47;
+    color: white;
     background-position: left;
   }
   &.active {
-    background-color: #f0f0f0;
+    background-color: #3a3e47;
     background-position: 0 0;
     color: #fff;
   }
 `;
 
 const Topic = styled.div`
-  padding: 2rem;
+  padding: 1vh 2vw;
+  div {
+    padding-bottom: 2vh;
+  }
 `;
 
 const Content = styled.div`
   position: relative;
   background-color: white;
   width: 100%;
-  background-color: #f0f0f0;
+  background-color: #e0e0e0;
   display: flex;
   flex-flow: column nowrap;
   gap: 4vh;
+  height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const ShowQuizButton = styled.button`
   border: 0.5px solid black;
-  margin: 0 auto;
   color: black;
   font-weight: 600;
   padding: 15px 20px;
@@ -286,18 +366,22 @@ const ShowQuizButton = styled.button`
     color: white;
     background-color: #04aa6d;
   }
+  &.active {
+    background-color: red;
+  }
 `;
 
-const QuizWrap = styled.div`
-  background-color: #f0f0f0;
-  width: 70%;
-  padding: 2rem;
-`;
 const QuizSection = styled.div`
   display: flex;
   flex-flow: row nowrap;
   height: 100%;
   border-top: 5px solid green;
+  overflow-y: hidden;
+`;
+const QuizWrap = styled.div`
+  background-color: #f0f0f0;
+  width: 70%;
+  padding: 2rem;
 `;
 
 const QuizTitle = styled.div`
@@ -332,10 +416,11 @@ const QuestionTitle = styled.div`
 const SelectQuestion = styled.div`
   display: flex;
   flex-flow: row wrap;
-  gap: 10px;
+  gap: 20px;
   width: 100%;
   padding: 0 2vw;
-  justify-content: space-around;
+  margin: 0 auto;
+  justify-content: flex-start;
 `;
 
 const ChooseQuestion = styled.div`
@@ -415,7 +500,80 @@ const Buttons = styled.div`
   display: flex;
   flex-flow: row nowrap;
   width: 100%;
-  justify-content: space-around;
+  justify-content: flex-start;
+  gap: 20px;
+  margin: 2vw;
 `;
+
+const CourseInfos = styled.div`
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 1rem;
+  padding: 4vh 2vw;
+  background-color: #3a3e47;
+`;
+
+const InfoWrap = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+`;
+
+const CourseTitle = styled.div`
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  padding-bottom: 0.5rem;
+  inline-size: 35vw;
+  overflow-wrap: break-word;
+`;
+
+const CourseDescription = styled.div`
+  color: white;
+  font-size: 1.2rem;
+  padding-bottom: 1rem;
+  inline-size: 35vw;
+  overflow-wrap: break-word;
+`;
+
+const ARWrap = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 50px;
+  padding-bottom: 20px;
+`;
+
+const CourseAttendance = styled.div`
+  color: white;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  svg {
+    color: #c7ecee;
+  }
+`;
+const CourseRating = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  color: white;
+  font-size: 1rem;
+  svg {
+    color: #f0932b;
+  }
+`;
+
+const CourseCover = styled.div`
+  padding: 0 8vw;
+  margin: auto;
+`;
+const QuizWrapper = styled.div`
+    height: 50vh;
+`;
+
+const BackgroundImage = styled.img``;
 
 export default CourseContent;

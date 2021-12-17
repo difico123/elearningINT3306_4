@@ -392,7 +392,6 @@ const TopicNav = styled.div`
   position: sticky;
   top: 0;
   position: -webkit-sticky;
-  min-width: 12vw;
   height: 90vh;
   box-sizing: border-box;
   box-shadow: 0px 0px 10px #232931;
@@ -420,6 +419,7 @@ const TopicWrap = styled.div`
   overflow-x: hidden;
   right: 0px;
   width: 100%;
+  min-width: 13vw;
 `;
 
 const Title = styled.div`

@@ -24,12 +24,12 @@ router.use(
 );
 
 // @route api/course/:courseId/topic/:topicId/quiz/:quizId/question/:questionId/userquestion
-// router.use(
-//     '/:questionId/userquestion',
-//     questionPassport,
-//     questionQuizAuth,
-//     require('./userquestion'),
-// );
+router.use(
+    '/:questionId/userquestion',
+    questionPassport,
+    questionQuizAuth,
+    require('../usercourse/userquestion'),
+);
 
 // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/question/create
 // @desc    create question by instructor
@@ -75,15 +75,15 @@ router.delete(
 // @access  Private
 router.get('/getQuestions', auth, userCourseAuth, ApiQuestion.getQuestions);
 
-// @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestions/:questionId
+// @route   GET api/course/:courseId/topic/:topicId/quiz/:quizId/question/getQuestionAnswers/:questionId
 // @desc    get questions and answers with quizId by instructor and student
 // @access  Private
 router.get(
-    '/getQuestionAswers/:questionId',
+    '/getQuestionAnswers/:questionId',
     auth,
     userCourseAuth,
     questionQuizAuth,
-    ApiQuestion.getQuestionAswers,
+    ApiQuestion.getQuestionAnswers,
 );
 
 module.exports = router;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import CourseService from "../../../service/courseService";
-import { ArrowBackIosIcon, ArrowForwardIosIcon } from "../../common/icons";
+import { ArrowBackIosIcon, ArrowForwardIosIcon,SearchIcon } from "../../common/icons";
 import Toast from "../../common/toast"
 import showToast from "../../../dummydata/toast"
 
@@ -14,9 +14,10 @@ function InstructorCourses() {
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [toastList, setToastList] = useState([]);
+  const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    CourseService.getInstructorCourses(currentPage).then((response) => {
+    CourseService.getInstructorCourses(keyword, currentPage).then((response) => {
       setCourses(response.courses);
     });
   }, [change]);
@@ -78,7 +79,13 @@ function InstructorCourses() {
   const pageClick = async (e) => {
     let page = Number(e.target.value);
     setCurrentPage(page);
-    CourseService.getInstructorCourses(page).then((response) => {
+    CourseService.getInstructorCourses(keyword,page).then((response) => {
+      setCourses(response.courses);
+    });
+  };
+  const searchByKeyword = async (e) => {
+    setKeyword(e.target.value)
+    CourseService.getInstructorCourses(e.target.value, currentPage).then((response) => {
       setCourses(response.courses);
     });
   };
@@ -86,6 +93,17 @@ function InstructorCourses() {
     <React.Fragment>
       <TitleWrap>
         <Title>Trang các khóa học của bạn</Title>
+        <SearchBar>
+          <input
+            value={keyword}
+            onChange={searchByKeyword}
+            type="text"
+            placeholder="Tìm kiếm khóa học..."
+          />
+          <button type="submit">
+          <CustomSearch />
+          </button>
+        </SearchBar>
         {CreateCourse}
       </TitleWrap>
       <Container>
@@ -328,5 +346,35 @@ const TitleWrap = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
 `;
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 900px;
+  border: 2px solid black;
+  cursor: pointer;
+  padding: 8px 25px;
+  cursor: text;
+  font-weight: lighter;
+  background-color: white;
+  input {
+    padding-left: 10px;
+    border: none;
+    width: 90%;
+    autocomplete: off;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+  }
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+`;
 
+const CustomSearch = styled(SearchIcon)``;
 export default InstructorCourses;
