@@ -37,7 +37,7 @@ router.get('/listUsers', auth, admin, ApiAdmin.listUsers);
 // @access  Private
 router.put('/setInstructor/:userId', auth, admin, ApiAdmin.beInstructor);
 
-// @route   GET api/admin/statistic 
+// @route   GET api/admin/statistic
 // @desc    get users by admin
 // @access  Private
 router.get('/statistic', auth, admin, ApiAdmin.statistic);

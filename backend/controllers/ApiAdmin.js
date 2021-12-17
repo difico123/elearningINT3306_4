@@ -123,12 +123,18 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async beInstructor(req, res) {
         try {
-            await User.update({role: 1},{where: {id: req.params.userId}}).then(() => {
-                return res.status(200).json({ error: false, msg: "user này đã trở thành giảng viên" });
-            }).catch(() => {
-                return res.status(400).json({ error: true });
-            })
-            
+            await User.update({ role: 1 }, { where: { id: req.params.userId } })
+                .then(() => {
+                    return res
+                        .status(200)
+                        .json({
+                            error: false,
+                            msg: 'user này đã trở thành giảng viên',
+                        });
+                })
+                .catch(() => {
+                    return res.status(400).json({ error: true });
+                });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -141,14 +147,16 @@ module.exports = class ApiAdmin {
     static async statistic(req, res) {
         try {
             AdminService.getStatistic().then((data) => {
-                return res.status(400).json({ error: false, statistic: data[0] });
-            })
+                return res
+                    .status(400)
+                    .json({ error: false, statistic: data[0] });
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
         }
     }
-    
+
     // @route   GET api/user/listCourses
     // @desc    get listcourses by admin
     // @access  Private

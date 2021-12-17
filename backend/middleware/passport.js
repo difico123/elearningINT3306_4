@@ -95,5 +95,5 @@ module.exports = {
             req.choiceId = choiceId;
             next();
         }
-    }
+    },
 };

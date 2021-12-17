@@ -92,7 +92,7 @@ module.exports = class QuizService {
     static async getQuestionsByQuizId(quizId) {
         try {
             const response = await sequelize.query(
-                    `select qu.quizId, q.shown,  qu.id as questionId,
+                `select qu.quizId, q.shown,  qu.id as questionId,
                     qu.content, qu.marks from quizzes q 
                     join questions qu on q.id = qu.quizId 
                     where q.id = ?`,

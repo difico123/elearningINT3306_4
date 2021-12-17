@@ -37,10 +37,29 @@ function createQuestion(courseId, topicId,quizId, body) {
   const config = { headers: { "Content-Type": "application/json" } };
   return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/create`, body , config);
   }
+function editQuestion(courseId, topicId,quizId, questionId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.put(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/edit/${questionId}`, body , config);
+}
+
+function deleteQuestion(courseId, topicId,quizId, questionId) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.delete(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/delete/${questionId}` , config);
+  }
 
 function createAnswer(courseId, topicId,quizId, questionId, body) {
   const config = { headers: { "Content-Type": "application/json" } };
   return http.post(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/create`, body , config);
+}
+
+function editAnswer(courseId, topicId,quizId, questionId, choiceId, body) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.put(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/edit/${choiceId}`, body , config);
+}
+
+function deleteAnswer(courseId, topicId,quizId, questionId,choiceId) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return http.delete(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/delete/${choiceId}` , config);
 }
 
 async function getInstructorQuestions(courseId, topicId, quizId) {
@@ -49,6 +68,10 @@ async function getInstructorQuestions(courseId, topicId, quizId) {
 
 async function getStudentQuestions(courseId, topicId,quizId) {
   return await http.get(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getStudentQuestions/${quizId}`);
+}
+
+async function getQuestionIds(courseId, topicId,quizId) {
+  return await http.get(apiEndpoint + `/${courseId}/topic/${topicId}/quiz/getQuestionIds/${quizId}`);
 }
 
 export default { 
@@ -62,5 +85,10 @@ export default {
   createQuestion, 
   createAnswer,
   getInstructorQuestions,
-  getStudentQuestions
+  getStudentQuestions,
+  editQuestion, 
+  deleteQuestion, 
+  editAnswer,
+  deleteAnswer,
+  getQuestionIds
 };

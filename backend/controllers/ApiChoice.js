@@ -57,17 +57,22 @@ module.exports = class ApiChoice {
             isAnswer: req.body.isAnswer,
         };
         try {
-            await Choice.update({...choice}, {where: {id : req.params.choiceId}}).then(() => {
-                return res.status(200).json({
-                    error: false,
-                    msg: 'Sửa câu trả lời thành công'
+            await Choice.update(
+                { ...choice },
+                { where: { id: req.params.choiceId } },
+            )
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: 'Sửa câu trả lời thành công',
+                    });
+                })
+                .catch((err) => {
+                    return res.status(400).json({
+                        error: true,
+                        msg: 'lỗi',
+                    });
                 });
-            }).catch((err) => {
-                return res.status(400).json({
-                    error: true,
-                    msg: 'lỗi',
-                });
-            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -79,18 +84,20 @@ module.exports = class ApiChoice {
     // @access  Private
     static async deleteChoice(req, res) {
         try {
-            await Choice.destroy({where: {id : req.params.choiceId}}).then(() => {
-                return res.status(200).json({
-                    error: false,
-                    msg: 'Xoá câu trả lời thành công'
+            await Choice.destroy({ where: { id: req.params.choiceId } })
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: 'Xoá câu trả lời thành công',
+                    });
+                })
+                .catch((err) => {
+                    return res.status(400).json({
+                        error: true,
+                        msg: 'lỗi',
+                        err,
+                    });
                 });
-            }).catch((err) => {
-                return res.status(400).json({
-                    error: true,
-                    msg: 'lỗi',
-                    err
-                });
-            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

@@ -88,7 +88,9 @@ module.exports = {
                 ? req.questionId
                 : req.params.questionId;
         let choiceId =
-            req.params.choiceId === undefined ? req.choiceId : req.params.choiceId;
+            req.params.choiceId === undefined
+                ? req.choiceId
+                : req.params.choiceId;
         try {
             let check = await Choice.findOne({
                 where: { id: choiceId, questionId },

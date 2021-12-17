@@ -22,7 +22,7 @@ module.exports = class ApiQuestion {
             res.status(500).send('Server error');
         }
     }
-    
+
     // @route   POST api/course/:courseId/topic/:topicId/quiz/:quizId/edit/:questionId
     // @desc    create question by instructor
     // @access  Private
@@ -33,18 +33,23 @@ module.exports = class ApiQuestion {
             marks: req.body.marks,
         };
         try {
-            await Question.update({...question}, {where: {id : req.params.questionId}}).then(() => {
-                return res.status(200).json({
-                    error: false,
-                    msg: 'Sửa câu hỏi thành công'
+            await Question.update(
+                { ...question },
+                { where: { id: req.params.questionId } },
+            )
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: 'Sửa câu hỏi thành công',
+                    });
+                })
+                .catch((err) => {
+                    return res.status(400).json({
+                        error: true,
+                        msg: 'lỗi',
+                        err,
+                    });
                 });
-            }).catch((err) => {
-                return res.status(400).json({
-                    error: true,
-                    msg: 'lỗi',
-                    err
-                });
-            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -56,18 +61,20 @@ module.exports = class ApiQuestion {
     // @access  Private
     static async deleteQuestion(req, res) {
         try {
-            await Question.destroy({where: {id : req.params.questionId}}).then(() => {
-                return res.status(200).json({
-                    error: false,
-                    msg: 'Xoá câu hỏi thành công'
+            await Question.destroy({ where: { id: req.params.questionId } })
+                .then(() => {
+                    return res.status(200).json({
+                        error: false,
+                        msg: 'Xoá câu hỏi thành công',
+                    });
+                })
+                .catch((err) => {
+                    return res.status(400).json({
+                        error: true,
+                        msg: 'lỗi',
+                        err,
+                    });
                 });
-            }).catch((err) => {
-                return res.status(400).json({
-                    error: true,
-                    msg: 'lỗi',
-                    err
-                });
-            })
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -102,12 +109,14 @@ module.exports = class ApiQuestion {
     // @access  Private
     static async getQuestionAswers(req, res) {
         try {
-            await QuizService.getStudentAnswersByQuestionId(req.params.questionId).then((v) => {
+            await QuizService.getStudentAnswersByQuestionId(
+                req.params.questionId,
+            ).then((v) => {
                 return res.status(200).json({
                     error: false,
                     question: v,
                 });
-            })
+            });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');

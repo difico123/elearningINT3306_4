@@ -26,11 +26,7 @@ router.put(
 // @route   GET api/userCourse/enroll/check/:courseId
 // @desc    check enroll a course by student
 // @access  private
-router.get(
-    '/enroll/check/:courseId',
-    auth,
-    ApiUserCourse.checkEnrollCourse,
-);
+router.get('/enroll/check/:courseId', auth, ApiUserCourse.checkEnrollCourse);
 
 // @route   GET api/userCourse/enroll/check/:courseId
 // @desc    check enroll a course by student

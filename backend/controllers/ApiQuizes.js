@@ -167,43 +167,49 @@ module.exports = class ApiQuizes {
     static async getQuizQuestionIds(req, res) {
         try {
             let quizQuestionIds = {};
-            await Quiz.findOne({where: {id: req.params.quizId },attributes: ['id', 'title']}).then((quiz) => {
-                quizQuestionIds = quiz
-            })
+            await Quiz.findOne({
+                where: { id: req.params.quizId },
+                attributes: ['id', 'title'],
+            }).then((quiz) => {
+                quizQuestionIds = quiz;
+            });
 
             await Question.findAll({
                 where: {
-                    quizId: req.params.quizId 
+                    quizId: req.params.quizId,
                 },
                 attributes: ['id'],
-
-            }).then((questionIds) => {
-                return res.status(200).json({
-                    error: false,
-                    quiz: quizQuestionIds,
-                    questionIds: questionIds
-                });
-            }).catch((err) => {
-                return res.status(400).json({
-                    error: true,
-                });
             })
-
+                .then((questionIds) => {
+                    return res.status(200).json({
+                        error: false,
+                        quiz: quizQuestionIds,
+                        questionIds: questionIds,
+                    });
+                })
+                .catch((err) => {
+                    return res.status(400).json({
+                        error: true,
+                    });
+                });
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
         }
     }
 
-// @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestions/:quizId
-// @desc    getQuestions by instructor
-// @access  Private
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestions/:quizId
+    // @desc    getQuestions by instructor
+    // @access  Private
     static async getInstructorAnswersByQuestionId(req, res) {
         try {
             let questions = await QuizService.getQuestionsByQuizId(req.topicId);
             for (let i = 0; i < questions.length; i++) {
-                let answers = await QuizService.getInstructorAnswersByQuestionId(questions[i].questionId);
-                questions[i].answers = [...answers]
+                let answers =
+                    await QuizService.getInstructorAnswersByQuestionId(
+                        questions[i].questionId,
+                    );
+                questions[i].answers = [...answers];
             }
             res.status(200).json({
                 error: false,
@@ -215,15 +221,17 @@ module.exports = class ApiQuizes {
         }
     }
 
-// @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestionsForStudent/:quizId
-// @desc    getQuestions by student
-// @access  Private
+    // @route   POST api/course/:courseId/topic/:topicId/quiz/getQuestionsForStudent/:quizId
+    // @desc    getQuestions by student
+    // @access  Private
     static async getStudentAnswersByQuestionId(req, res) {
         try {
             let questions = await QuizService.getQuestionsByQuizId(req.topicId);
             for (let i = 0; i < questions.length; i++) {
-                let answers = await QuizService.getStudentAnswersByQuestionId(questions[i].questionId);
-                questions[i].answers = [...answers]
+                let answers = await QuizService.getStudentAnswersByQuestionId(
+                    questions[i].questionId,
+                );
+                questions[i].answers = [...answers];
             }
             res.status(200).json({
                 error: false,
