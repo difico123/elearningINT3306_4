@@ -144,6 +144,11 @@ router.get(
 // @access  public
 router.get('/showAll', ApiCourse.showAll);
 
+// @route   GET api/course/rank/:courseId
+// @desc    Show all courses
+// @access  public
+router.get('/rank/:courseId', ApiCourse.rank);
+
 // @route   GET api/course/showDetail/:courseId
 // @desc    Show all courses
 // @access  public

@@ -203,7 +203,7 @@ module.exports = class ApiQuizes {
     // @access  Private
     static async getInstructorAnswersByQuestionId(req, res) {
         try {
-            let questions = await QuizService.getQuestionsByQuizId(req.topicId);
+            let questions = await QuizService.getQuestionsByQuizId(req.params.quizId);
             for (let i = 0; i < questions.length; i++) {
                 let answers =
                     await QuizService.getInstructorAnswersByQuestionId(

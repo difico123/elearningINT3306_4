@@ -154,4 +154,27 @@ module.exports = class QuizService {
             console.log(error);
         }
     }
+    static async rank(courseId ) {
+        try {
+            const response = await sequelize.query(
+                `select concat(us.firstName," ",us.lastName) as fullName, uq.userId, sum(qu.marks) 
+                as marks from userquestions uq 
+                join choices ch on ch.id = uq.choiceId
+                join questions qu on qu.id = uq.questionId
+                join quizzes qi on qu.quizId = qi.id
+                join topics ts on ts.id = qi.topicId
+                join courses cs on cs.id = ts.courseId
+                join users us on us.id = uq.userId
+                where ch.isAnswer = 1 and cs.id = ${courseId}
+                group by uq.userId ORDER by marks desc limit 10;`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };

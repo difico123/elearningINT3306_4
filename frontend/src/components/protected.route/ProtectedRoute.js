@@ -72,12 +72,9 @@ export {
 };
 
 const WrapLoader = styled.div`
-  height: 90vh;
-  width: 100vh;
-  > div {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+  width: 99vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

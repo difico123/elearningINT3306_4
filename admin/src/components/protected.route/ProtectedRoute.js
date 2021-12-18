@@ -21,7 +21,7 @@ export {
 };
 
 const WrapLoader = styled.div`
-  height: 90vh;
+  height: 100vh;
   width: 100vh;
   > div {
     position: absolute;

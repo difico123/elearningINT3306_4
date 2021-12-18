@@ -59,6 +59,7 @@ function createQuestion(courseId, topicId, quizId, body) {
     config
   );
 }
+
 function editQuestion(courseId, topicId, quizId, questionId, body) {
   const config = { headers: { "Content-Type": "application/json" } };
   return http.put(
@@ -78,9 +79,9 @@ function deleteQuestion(courseId, topicId, quizId, questionId) {
   );
 }
 
-function createAnswer(courseId, topicId, quizId, questionId, body) {
+async function createAnswer(courseId, topicId, quizId, questionId, body) {
   const config = { headers: { "Content-Type": "application/json" } };
-  return http.post(
+  return await http.post(
     apiEndpoint +
       `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/create`,
     body,
@@ -98,9 +99,9 @@ function editAnswer(courseId, topicId, quizId, questionId, choiceId, body) {
   );
 }
 
-function deleteAnswer(courseId, topicId, quizId, questionId, choiceId) {
+async function deleteAnswer(courseId, topicId, quizId, questionId, choiceId) {
   const config = { headers: { "Content-Type": "application/json" } };
-  return http.delete(
+  return await http.delete(
     apiEndpoint +
       `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/choice/delete/${choiceId}`,
     config

@@ -19,14 +19,18 @@ async function getAll(categoryId, keyword, rating, page) {
   return await http.get(apiEndpoint + `/showAll${query}`);
 }
 
+async function rank(courseId) {
+  return await http.get(apiEndpoint + `/rank/${courseId}`);
+}
+
 function getInstructorCourses(keyword, page=1) {
   keyword = !keyword ? "" : `&keyword=${keyword}`;
   console.log(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
   return http.get(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
 }
 
-function getEnrollTopics(courseId) {
-  return http.get(apiEndpoint + `/showDetail/${courseId}`);
+async function getEnrollTopics(courseId) {
+  return await http.get(apiEndpoint + `/showDetail/${courseId}`);
 }
 
 function suspendCourse(courseId) {
@@ -109,5 +113,6 @@ export default {
   getCourseTopics,
   deleteTopic,
   getTopicNames,
-  editTopic
+  editTopic,
+  rank
 };

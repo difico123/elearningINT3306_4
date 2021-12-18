@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
-import dummy from "../../../dummydata/dummy.json";
 import courseService from "../../../service/courseService";
 import { useParams } from "react-router-dom";
 import quizService from "../../../service/quizService";
@@ -20,20 +19,30 @@ function CreateQuestion() {
     },
   ]);
   const [quizzes, setQuizzes] = useState([]);
-
+  const [errorMsg, setErrorMsg] = useState('');
+  const [toastList, setToastList] = useState([])
+  const [isLoading, setLoading] = useState(false);
+  const [question,setQuestion] = useState({
+    content: "",
+    marks: 5,
+    questionId: '',
+  })
   const [answerList, setAnswerList] = useState([
     {
+      choiceId:"",
       content: "",
       isAnswer: false,
     },
   ]);
-
-  const [errorMsg, setErrorMsg] = useState('');
-  const [toastList, setToastList] = useState([])
-  const [isLoading, setLoading] = useState(false); //
-  const [question,setQuestion] = useState('')
-  const [marks, setMarks]  = useState(5);
-
+  const [topicId, setTopicId] = useState(-1);
+  const [quizId, setQuizId] = useState(-1);
+  const selectInputRef = useRef();
+  const [addAnswerQuestion,setAddAnswerQuestion] = useState({})
+  const [updateAnswerQuestion,setUpdateAnswerQuestion] = useState('')
+  const [updateMode, setUpdateMode] = useState(false)
+  const [selectedQuestionId,setSelectedQuestionId] = useState(-1)
+  const [deleteQuestionId, setDeleteQuestionId] = useState(-1);
+  const [correctAnswer, setCorrectAnswer] = useState(-1)
   const onChangeInput = (e, index) => {
     let newArr = [...answerList];
     newArr[index].content = e.target.value;
@@ -41,14 +50,23 @@ function CreateQuestion() {
   };
 
   const onChangeAnswer = (e, index) => {
-    let newArr = [...answerList];
-    newArr[index].isAnswer = e.target.checked;
-    setAnswerList(newArr);
+    // let newArr = [...answerList];
+    setCorrectAnswer(index)
+    // newArr[index].isAnswer = e.target.checked ? 1: 0;
+    // setAnswerList(newArr);
   };
 
-  const [topicId, setTopicId] = useState(-1);
-  const [quizId, setQuizId] = useState(-1);
-  const selectInputRef = useRef();
+
+  useEffect(() => {
+    if(updateAnswerQuestion) {
+      setUpdateMode(true)
+      let {content, marks, questionId, answers} = updateAnswerQuestion
+      setQuestion({content, marks,questionId })
+      setAnswerList(answers)
+      setCorrectAnswer(answers.findIndex(v => v.isAnswer === 1))
+    }
+  },[updateAnswerQuestion])
+
   const chooseTopic = topics.map((v, index) => (
     <option value={v.id} key={index}>
       {v.title}
@@ -79,6 +97,7 @@ function CreateQuestion() {
         setQuizId(-1);
         selectInputRef.current.selected = true
         setTopicId(e.target.value);
+        setCorrectAnswer(-1)
       }}
     >
       <option disabled selected={true} value={topicId} defaultValue={null}>
@@ -92,6 +111,7 @@ function CreateQuestion() {
     <Dropdown
       onChange={(e) => {
           setQuizId(e.target.value);
+          setCorrectAnswer(-1)
       }}
     >
       <option disabled ref={selectInputRef} selected={true} value={quizId} defaultValue={null}>
@@ -101,28 +121,35 @@ function CreateQuestion() {
     </Dropdown>
   );
 
-  // console.log("abc",answerList)
   const handleAddAnswer = (e) => {
     e.preventDefault();
-    if (answerList.length > 5) {
+    if (answerList.length > 3) {
+      setToastList([showToast('info', 'Thông báo!', 'Chỉ có tối đa 4 đáp án!')])
       return;
     } else {
       setAnswerList([
         ...answerList,
         {
+          choiceId:"",
           content: "",
           isAnswer: false,
         },
       ]);
     }
   };
+
   const handleDeleteAnswer = (e, index) => {
     e.preventDefault();
     setAnswerList(answerList.filter((answer, i) =>  i!== index));
+    if(correctAnswer === index ) {
+      setCorrectAnswer(-1)
+    } else if(correctAnswer > index) {
+      setCorrectAnswer(old => old - 1)
+    }
   };
 
   const quiz = answerList.map((v, index) => {
-    return index > 5 ? (
+    return index > 3 ? (
       ""
     ) : (
       <QuizWrap key={index}>
@@ -133,7 +160,8 @@ function CreateQuestion() {
           <input
             type="checkbox"
             name="isAnswer"
-            checked={v.isAnswer}
+            // checked={v.isAnswer}
+            checked={correctAnswer===index}
             onChange={(e) => onChangeAnswer(e, index)}
           ></input>
           <input
@@ -150,7 +178,7 @@ function CreateQuestion() {
     );
   });
 
-  const handleAddAnswerQuestion = (e) => {
+  const handleAddAnswerQuestion = async(e) => {
     e.preventDefault();
 
     if(topicId <= 0) {
@@ -161,7 +189,7 @@ function CreateQuestion() {
       setErrorMsg('Vui lòng chọn quiz');
       return;
     }
-    if(question.length <= 10) {
+    if(question.content.length <= 10) {
       setErrorMsg('Câu hỏi phải nhiều hơn 10 kí tự');
       return;
     }
@@ -169,29 +197,49 @@ function CreateQuestion() {
       setErrorMsg('Phải có 2 đáp án trở lên');
       return;
     }
+    if(correctAnswer === -1) {
+      setErrorMsg('Phải có 1 đáp án đúng');
+      return;
+    }
+    
     for(let i = 0; i < answerList.length; i++) {
+      answerList[i].isAnswer = false
       if(answerList[i].content.length <= 10) {
         setErrorMsg('Đáp án có nhiều hơn 10 kí tự');
         return;
       }
     }
+    answerList[correctAnswer].isAnswer = 1;
 
     let body = {
-      content: question,
-      marks: marks
+      content: question.content,
+      marks: question.marks
     }
-    setLoading(true);
-    quizService.createQuestion(id,topicId,quizId,body).then(async (response) => {
-      const questionId = response.newQuestion.id
 
+    let addedAnswerQuestion = {}
+    setLoading(true);
+
+    await quizService.createQuestion(id,topicId,quizId,body).then(async (response) => {
+      const questionId = response.newQuestion.id
+      const {content, marks} = response.newQuestion
+      addedAnswerQuestion = {
+        content, 
+        marks, 
+        questionId, 
+        answers: []
+      }
       for(let i = 0; i < answerList.length; i++) {
         await quizService.createAnswer(id,topicId,quizId,questionId,answerList[i]).then((res) => {
-          console.log(res)
+          const {id, isAnswer,content} = res.newChoice;
+          const choiceId = id;
+          let newChoice = {choiceId,isAnswer: isAnswer? 1: 0,content}
+          addedAnswerQuestion.answers.push(newChoice)
         }).catch((err) => {
           console.log(err.response)
           setToastList([...toastList, showToast('danger','Thông báo', 'lỗi')])
         })
       }
+
       setErrorMsg('');
       setLoading(false)
       setToastList([showToast('success','Thông báo', 'Tạo câu hỏi thành công')])
@@ -199,15 +247,120 @@ function CreateQuestion() {
       setErrorMsg(error.response.data.msg.toString());
       setToastList([showToast('danger','Thông báo',error.response.data.msg.toString())])
       setLoading(false)
-    })
+    })  
+    setAddAnswerQuestion({...addedAnswerQuestion})
+    setSelectedQuestionId(addedAnswerQuestion.questionId)
   }
+
+  const handleUpdateAnswerQuestion = async(e) => {
+    e.preventDefault();
+  
+    if(topicId <= 0) {
+      setErrorMsg('Vui lòng chọn topic');
+      return;
+    }
+    if(quizId <= 0) {
+      setErrorMsg('Vui lòng chọn quiz');
+      return;
+    }
+    if(question.content.length <= 10) {
+      setErrorMsg('Câu hỏi phải nhiều hơn 10 kí tự');
+      return;
+    }
+    if(answerList.length < 2) {
+      setErrorMsg('Phải có 2 đáp án trở lên');
+      return;
+    }
+    if(correctAnswer === -1) {
+      setErrorMsg('Phải có 1 đáp án đúng');
+      return;
+    }
+    
+    for(let i = 0; i < answerList.length; i++) {
+      answerList[i].isAnswer = false
+      if(answerList[i].content.length <= 10) {
+        setErrorMsg('Đáp án có nhiều hơn 10 kí tự');
+        return;
+      }
+    }
+    answerList[correctAnswer].isAnswer = 1;
+  try {
+   await quizService.deleteQuestion(id,topicId,quizId,selectedQuestionId)
+
+    let body = {
+      content: question.content,
+      marks: question.marks
+    }
+
+    let addedAnswerQuestion = {}
+    setLoading(true);
+
+   await quizService.createQuestion(id,topicId,quizId,body).then(async (response) => {
+      const questionId = response.newQuestion.id
+      const {content, marks} = response.newQuestion
+      addedAnswerQuestion = {
+        content, 
+        marks, 
+        questionId, 
+        answers: []
+      }
+      for(let i = 0; i < answerList.length; i++) {
+        await quizService.createAnswer(id,topicId,quizId,questionId,answerList[i]).then((res) => {
+          const {id, isAnswer,content} = res.newChoice;
+          const choiceId = id;
+          let newChoice = {choiceId,isAnswer: isAnswer? 1: 0,content}
+          addedAnswerQuestion.answers.push(newChoice)
+        }).catch((err) => {
+          console.log(err.response)
+          setToastList([...toastList, showToast('danger','Thông báo', 'lỗi')])
+        })
+      }
+
+      setErrorMsg('');
+      setLoading(false)
+      setToastList([showToast('success','Thông báo', 'Sửa câu hỏi thành công')])
+    }).catch((error) => {
+      setErrorMsg(error.response.data.msg.toString());
+      setToastList([showToast('danger','Thông báo',error.response.data.msg.toString())])
+      setLoading(false)
+    })
+    setDeleteQuestionId(selectedQuestionId)
+    setAddAnswerQuestion({...addedAnswerQuestion})
+    setSelectedQuestionId(addedAnswerQuestion.questionId)
+    } catch (error) {
+      setToastList([showToast('danger','Thông báo',"lỗi")])
+    }
+  }
+  
 
   const loading = <WrapLoader><Loader/></WrapLoader>
   const loaded = <WrapLoader><p className="text-red-600">{errorMsg}</p></WrapLoader>
+
+  const handleBackToAddQuestion = () => {
+    setQuestion({
+      content: "",
+      marks: 5,
+      questionId: '',
+    })
+    setAnswerList([
+      {
+        choiceId:"",
+        content: "",
+        isAnswer: false,
+      },
+    ])
+    setUpdateMode(false);
+    setSelectedQuestionId(-1)
+    setCorrectAnswer(-1);
+  }
+
   return (
     <Container>
       <AddQuestion>
-        <Title>Tạo câu hỏi mới</Title>
+        <WrapTitle>
+        {!updateMode? <Title>Tạo câu hỏi mới</Title>:<Title>Sửa câu hỏi</Title>}
+          {updateMode&&<BackBtn type="submit" value="Thêm câu trả lời" onClick={handleBackToAddQuestion}></BackBtn>}
+        </WrapTitle>
         <CreateQuestionForm>
           <CategoryWrap>
             <FormTitle>Lựa chọn topic</FormTitle>
@@ -219,7 +372,7 @@ function CreateQuestion() {
           </CategoryWrap>
           <QuizWrap>
             <FormTitle>Tên câu hỏi</FormTitle>
-            <textarea name="name" value={question} onChange={(e)=> {setQuestion(e.target.value)}}></textarea>
+            <textarea name="name" value={question.content} onChange={(e)=> {setQuestion({...question, content:e.target.value})}}></textarea>
           </QuizWrap>
           {quiz}
           <QuizWrap>
@@ -234,17 +387,25 @@ function CreateQuestion() {
               <input
                 type="number"
                 name="content"
-                value={marks}
-                onChange={(e) => {setMarks(e.target.value)}}
-              ></input>
+                value={question.marks}
+                onChange={(e) => {
+                    if(e.target.value > -1) {
+                      setQuestion({...question, marks:e.target.value})
+                    } else {
+                      setQuestion({...question, marks:5})
+                    }
+                  }}></input>
             </Marks>
-              <Confirm type="submit" value="Thêm câu hỏi" onClick={handleAddAnswerQuestion}></Confirm>
+              {updateMode ? <Confirm className="active" type="submit" value="Sửa câu hỏi" onClick={handleUpdateAnswerQuestion}></Confirm>: 
+              <Confirm type="submit" value="Thêm câu hỏi" onClick={handleAddAnswerQuestion}></Confirm>}
           </MarksSubmitBtn>
             {isLoading? loading :loaded}
         </CreateQuestionForm>
-     
       </AddQuestion>
-      <ShowQuestionContent topicId={topicId} quizId={quizId}></ShowQuestionContent>
+      <ShowQuestionContent topicId={topicId} quizId={quizId} addAnswerQuestion={addAnswerQuestion} setUpdateAnswerQuestion={setUpdateAnswerQuestion}
+          selectedQuestionId={selectedQuestionId} setSelectedQuestionId={setSelectedQuestionId} deleteQuestionId={deleteQuestionId}
+          setUpdateMode={setUpdateMode}
+      ></ShowQuestionContent>
 
       <Toast toastList={toastList}/>
     </Container>
@@ -253,6 +414,26 @@ function CreateQuestion() {
 
 export default CreateQuestion;
 
+const BackBtn = styled.input`
+  padding: 0 2rem;
+  background-color: rgba(255,255,255,0.2);
+  font-weight: 500;
+  transition: 0.3s ease 0s;
+  border: 1px solid black;
+  cursor: pointer;
+  
+  border-radius: 5px;
+  &:hover{
+    background-color: green;
+    border: 1px solid green;
+    color: white;
+  }
+`
+const WrapTitle = styled.div`
+  padding: 1rem 0;
+  display: flex;
+  justify-content: space-between
+`
 const AddQuestion = styled.div`
   padding: 1vh 1vw;
   min-height:100vh;
@@ -316,23 +497,27 @@ const Container = styled.div`
   height: 90vh;
   display: flex;
   flex-flow: row nowrap;
-  background-color: rgba(255, 255, 255, 0.3);
-  
+  background-color: rgba(189, 195, 199,0.7);
 `;
 
 const Title = styled.div`
   font-size: 1.75rem;
   font-weight: bold;
+  color: purple;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0 2rem;
+  border-radius: 5px;
 `;
 
 const CreateQuestionForm = styled.form`
   position: relative;
-  margin: 2rem auto;
+  margin: 1rem auto;
   padding: 2rem 0 5rem;
   width: 100%;
   display: flex;
   flex-flow: column nowrap;
   gap: 20px;
+  min-height: 80vh;
   background-color: rgba(255, 255, 255, 0.4);
 `;
 
@@ -369,8 +554,10 @@ const Dropdown = styled.select`
 `;
 
 const Confirm = styled.input`
+  border-radius: 5px;
   padding: 0 2rem;
   background-color: #4caf50;
+  width: 10rem;
   height: 45px;
   align-self: flex-end;
   font-weight: bold;
@@ -381,6 +568,10 @@ const Confirm = styled.input`
     border: transparent;
     color: white;
     background-color: #04aa6d;
+  }
+  &.active{
+    color: white;
+    background-color: purple;
   }
 `;
 

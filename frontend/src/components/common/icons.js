@@ -34,6 +34,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import QuizIcon from "@mui/icons-material/Quiz";
 import AddIcon from '@mui/icons-material/Add';
 import CheckIcon from '@mui/icons-material/Check';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 export {
     SearchIcon, 
     MenuIcon,
@@ -70,5 +71,6 @@ export {
     ClearIcon,
     QuizIcon,
     AddIcon,
-    CheckIcon
+    CheckIcon,
+    DeleteForeverIcon
 }

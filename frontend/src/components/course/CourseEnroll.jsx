@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import userCourseService from "../../service/userCourseService";
-import { ArrowBackIosIcon } from "../common/icons";
+import { ArrowBackIosIcon,GroupsIcon, StarIcon } from "../common/icons";
 import { useParams, Link } from "react-router-dom";
 import Toast from "../common/toast";
 import showToast from "../../dummydata/toast";
@@ -43,12 +43,20 @@ function CourseEnroll({ checkEnroll }) {
     },
   ]);
 
+  const [userRank, setUserRank] = useState([]);
+
   useEffect(() => {
-    CourseService.getEnrollTopics(id).then((response) => {
-      setCourse({ ...response.course });
-      setTopics([...response.topics]);
+    (async () => {
+      await CourseService.getEnrollTopics(id).then((response) => {
+        setCourse({ ...response.course });
+        setTopics([...response.topics]);
+      });
+      await CourseService.rank(id).then((data) => {
+        setUserRank(data.students)
+      })
       setLoading(false);
-    });
+    })()
+    
   }, []);
 
   const enroll = (id) => (
@@ -107,7 +115,8 @@ function CourseEnroll({ checkEnroll }) {
     );
 
   return (
-    <Container>
+    <>
+    {isLoading? loading: <Container>
       <CourseInfos>
         <InfoWrap>
           <Back>
@@ -119,13 +128,17 @@ function CourseEnroll({ checkEnroll }) {
           <CourseTitle>{course.name}</CourseTitle>
           <CourseDescription>{course.description}</CourseDescription>
           <ARWrap>
-            <CourseAttendance>Số học viên: {course.register}</CourseAttendance>
+            <CourseAttendance>
+              <span> Số học viên: {course.register}</span>
+              <GroupsIcon />
+            </CourseAttendance>
             <CourseRating>
-              Đánh giá: {course.rating ? course.rating : "0"} sao
+              Đánh giá: {course.rating ? course.rating : "0"}
+              <StarIcon />
             </CourseRating>
           </ARWrap>
           <CourseInstructor>
-            Giảng viên: {course.instructorName}
+            <span className="bg-green-800 text-xl rounded pb-1 pl-1 pr-1 mr-2">Giảng viên: </span> {course.instructorName}
           </CourseInstructor>
         </InfoWrap>
         <EnrollSection>
@@ -135,63 +148,66 @@ function CourseEnroll({ checkEnroll }) {
       </CourseInfos>
       <Title>Nội dung khóa học</Title>
       <Body>
-        <Content>{isLoading ? loading : loaded}</Content>
-        <Leaderboard>
+        <Content>{ loaded}</Content>
+       <Leaderboard>
           <LBTitle>Đại lộ danh vọng</LBTitle>
           <LBContent>
             <Pro>
-              <Grandmaster>Lăn Lông Lốc</Grandmaster>
-              <Point>10</Point>
+              <Grandmaster>{userRank[0]&&userRank[0].fullName}</Grandmaster>
+              <Point>{userRank[0]&&userRank[0].marks}</Point>
             </Pro>
             <Pro>
-              <Master>Lông Nương Múp</Master>
-              <Point>10</Point>
+              <Master>{userRank[1]&&userRank[1].fullName}</Master>
+              <Point>{userRank[1]&&userRank[1].marks}</Point>
             </Pro>
             <Pro>
-              <Master>Cindy Thái Tài</Master>
-              <Point>10</Point>
+              <Master>{userRank[2]&&userRank[2].fullName}</Master>
+              <Point>{userRank[2]&&userRank[2].marks}</Point>
             </Pro>
             <Pro>
-              <Master>Duy Mạnh</Master>
-              <Point>10</Point>
+              <Master>{userRank[3]&&userRank[3].fullName}</Master>
+              <Point>{userRank[3]&&userRank[3].marks}</Point>
             </Pro>
             <Pro>
-              <Master>Tiến Bịp</Master>
-              <Point>10</Point>
+              <Master>{userRank[4]&&userRank[4].fullName}</Master>
+              <Point>{userRank[4]&&userRank[4].marks}</Point>
             </Pro>
             <Pro>
-              <Hacker>Putin</Hacker>
-              <Point>10</Point>
+              <Hacker>{userRank[5]&&userRank[5].fullName}</Hacker>
+              <Point>{userRank[5]&&userRank[5].marks}</Point>
             </Pro>
             <Pro>
-              <Hacker>Chim Bé</Hacker>
-              <Point>10</Point>
+              <Hacker>{userRank[6]&&userRank[6].fullName}</Hacker>
+              <Point>{userRank[6]&&userRank[6].marks}</Point>
             </Pro>
             <Pro>
-              <Hacker>Bùi Xuân Huấn</Hacker>
-              <Point>10</Point>
+              <Hacker>{userRank[7]&&userRank[7].fullName}</Hacker>
+              <Point>{userRank[7]&&userRank[7].marks}</Point>
             </Pro>
             <Pro>
-              <Hacker>Tập Cận Bình</Hacker>
-              <Point>10</Point>
+              <Hacker>{userRank[8]&&userRank[8].fullName}</Hacker>
+              <Point>{userRank[8]&&userRank[8].marks}</Point>
             </Pro>
             <Pro>
-              <Hacker>ĐàM VĩnH HưnG</Hacker>
-              <Point>10</Point>
+              <Hacker>{userRank[9]&&userRank[9].fullName}</Hacker>
+              <Point>{userRank[9]&&userRank[9].marks}</Point>
             </Pro>
           </LBContent>
         </Leaderboard>
       </Body>
-    </Container>
+    </Container>}
+    </>
   );
 }
 
 const WrapLoader = styled.div`
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: 99vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
+
 const Back = styled.span`
   position: absolute;
   top: 1rem;
@@ -219,7 +235,7 @@ const CourseInfos = styled.div`
 const Breadcrumb = styled.div`
   color: #c0c0c0;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.4rem;
   padding-bottom: 1.5rem;
 `;
 
@@ -257,10 +273,24 @@ const CourseInstructor = styled.div`
 const CourseAttendance = styled.div`
   color: white;
   font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
+  svg {
+    color: #c7ecee;
+  }
 `;
 const CourseRating = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
   color: white;
   font-size: 1rem;
+  svg {
+    color: #f0932b;
+  }
 `;
 const ARWrap = styled.div`
   display: flex;
@@ -339,7 +369,7 @@ const Leaderboard = styled.div`
   border-top: 1px solid black;
   display: flex;
   flex-direction: column;
-  filter: drop-shadow(0 0 2.5rem crimson);
+  filter: drop-shadow(0 0 2.5rem brown);
 `;
 
 const LBTitle = styled.div`
@@ -355,6 +385,9 @@ const LBContent = styled.div`
   background-color: #f0f0f0;
   display: flex;
   flex-flow: column nowrap;
+  &>div{
+    min-height:2rem;
+  }
 `;
 const Pro = styled.div`
   display: flex;

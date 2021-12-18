@@ -11,6 +11,7 @@ const CourseService = require('../dbService/courseService');
 const UserService = require('../dbService/userService');
 const UserCourseService = require('../dbService/userCourseService');
 const TopicService = require('../dbService/topicService');
+const QuizService = require('../dbService/quizService');
 
 module.exports = class ApiCourse {
     // @route   POST api/course/create/:categoryId
@@ -475,6 +476,23 @@ module.exports = class ApiCourse {
                     error: false,
                     students,
                     filteredUser: students.length,
+                });
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   PUT api/course/:courseId/findUsers
+    // @desc    findUsers
+    // @access  private
+    static async rank(req, res) {
+        try {
+            QuizService.rank(req.params.courseId).then((students) => {
+                return res.status(200).json({
+                    error: false,
+                    students,
                 });
             });
         } catch (error) {

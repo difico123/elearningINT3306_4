@@ -31,7 +31,7 @@ table {
   td[data-label="options"],
   th[data-label="options"]
   {
-    width:3rem;
+    width:4rem;
   }
 
   td[data-label="marks"],
@@ -54,6 +54,10 @@ table {
   th[data-label="marks"], 
   td[data-label="marks"] {
     width:5rem;
+  }
+  td[data-label="marks"] {
+    font-weight: 500;
+    color:rgb(67, 12, 121);
   }
   th, td {
     padding: 1em;
@@ -116,9 +120,6 @@ table {
       text-align: left;
     }
     
-    tr:nth-child(even) {
-      background-color: #ddd;
-    }
 
     td {
       display: table-cell;
@@ -146,5 +147,14 @@ table {
         transition: 0.5s ease 0s;
     }
 
+.active {
+    background-color: rgba(70, 140, 89, 0.5);
+    transition: 0.5s ease 0s;
+}
 
-  
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
