@@ -65,6 +65,7 @@ function CreateQuestion() {
       setAnswerList(answers)
       setCorrectAnswer(answers.findIndex(v => v.isAnswer === 1))
     }
+    setErrorMsg('')
   },[updateAnswerQuestion])
 
   const chooseTopic = topics.map((v, index) => (
@@ -146,6 +147,7 @@ function CreateQuestion() {
     } else if(correctAnswer > index) {
       setCorrectAnswer(old => old - 1)
     }
+    setErrorMsg('')
   };
 
   const quiz = answerList.map((v, index) => {

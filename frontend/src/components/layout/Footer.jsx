@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import {FacebookIcon, InstagramIcon} from '../common/icons'
+import { FacebookIcon, InstagramIcon } from "../common/icons";
 
 function Footer() {
   return (
@@ -52,7 +52,9 @@ const BottomNav = styled.div`
   overflow: hidden;
   bottom: 0px;
   height: 350px;
-  background-color: #f0f0f0;
+  background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
+  background-size: 45rem 30rem;
+  background-repeat: repeat;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -102,7 +104,6 @@ const Wrap = styled.div`
     font-weight: 400;
     font-size: 16px;
   }
-
   display: flex;
   flex-direction: column;
   text-align: left;

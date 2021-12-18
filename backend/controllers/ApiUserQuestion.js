@@ -99,10 +99,15 @@ module.exports = class ApiUserQuestion {
     static async history(req, res) {
         let {id} = req.user;
         try {
-            let history = await UserQuestion.findOne({where: {userId: id, questionId: req.params.questionId}})
+            let history = await UserQuestion.findOne({where: {userId: id, questionId: req.params.questionId}, attributes: ['choiceId']});
+            let correctAnswer 
+            if(history) {
+                correctAnswer = (await QuizService.showCorrectAnswer(req.params.questionId))[0].choiceId
+            }   
             res.status(200).json({
                 error: false,
-                history
+                history,
+                correctAnswer
             }); 
         } catch (error) {
             console.log(error.message);

@@ -231,4 +231,24 @@ module.exports = class ApiCourse {
             res.status(500).send('Server error');
         }
     }
+
+    // @route   Get api/userCourse/getRating/:courseId
+    // @desc    get the list of user courses
+    // @access  private
+    static async getRating(req, res) {
+        try {
+            await UserCourse.findOne({
+                where: { userId: req.user.id, courseId: req.params.courseId },
+                attributes: ['rating'],
+            }).then((rating) => {
+                res.status(200).json({
+                    error: false,
+                    rating: rating.rating
+                });
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
 };

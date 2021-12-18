@@ -109,21 +109,24 @@ module.exports = class ApiQuestion {
     // @access  Private
     static async getQuestionAnswers(req, res) {
         try {
-            let question = {};
+            let content = '';
+            let marks = ''
             await Question.findOne({
                 where: {
                     id: req.params.questionId,
                 },
-                attributes: ['content'],
+                attributes: ['content',"marks"],
             }).then((v) => {
-                question = v.content
+                content = v.content
+                marks = v.marks
             });
             await QuizService.getStudentAnswersByQuestionId(
                 req.params.questionId,
             ).then((v) => {
                 return res.status(200).json({
                     error: false,
-                    content: question,
+                    content: content,
+                    marks: marks,
                     question: v,
                 });
             });

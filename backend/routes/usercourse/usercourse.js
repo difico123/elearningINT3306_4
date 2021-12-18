@@ -71,4 +71,15 @@ router.put(
     ApiUserCourse.rate,
 );
 
+// @route   POST api/userCourse/getRating/:courseId
+// @desc    rate the course
+// @access  private
+router.get(
+    '/getRating/:courseId',
+    validateInput,
+    auth,
+    userCourseAuth,
+    ApiUserCourse.getRating,
+);
+
 module.exports = router;

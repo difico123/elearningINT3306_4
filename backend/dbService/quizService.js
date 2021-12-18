@@ -177,4 +177,47 @@ module.exports = class QuizService {
             console.log(error);
         }
     }
+    static async showCorrectAnswer(questionId ) {
+        try {
+            const response = await sequelize.query(
+                `select ch.id as choiceId from questions qu 
+                join choices ch on ch.questionId = qu.id
+                where ch.isAnswer = 1 and qu.id = ${questionId};`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    static async isAvailableQuestion(quizId ,userId) {
+        try {
+            const quiz = await sequelize.query(
+                `select count(qu.id) as total from quizzes qi 
+                join questions qu on qu.quizId = qi.id
+                where qi.id = ${quizId} and qi.shown = 1`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            const question = await sequelize.query(
+                `select count(uq.id) as total from userquestions uq 
+                join questions qu on qu.id = uq.questionId
+                join quizzes qi on qi.id = qu.quizId
+                where qi.shown = 1 and uq.userId = ${userId} and qi.id = ${quizId}`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+
+            return question[0].total === quiz[0].total
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };

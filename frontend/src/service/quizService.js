@@ -135,6 +135,21 @@ async function getQuestionAnswers(courseId, topicId, quizId, questionId) {
   );
 }
 
+async function submitAnswer(courseId, topicId, quizId, questionId, choiceId) {
+  const config = { headers: { "Content-Type": "application/json" } };
+  return await http.post(
+    apiEndpoint +
+      `/${courseId}/topic/${topicId}/quiz/${quizId}/question/${questionId}/userquestion/answer/${choiceId}`,
+    config
+  );
+}
+
+async function getHistory(courseId, questionId) {
+  return await http.get(
+    apiEndpoint + `/${courseId}/topic/question/${questionId}`
+  );
+}
+
 export default {
   createQuiz,
   activeQuiz,
@@ -153,4 +168,6 @@ export default {
   deleteAnswer,
   getQuestionIds,
   getQuestionAnswers,
+  submitAnswer,
+  getHistory,
 };

@@ -8,6 +8,7 @@ const {
     Question,
 } = require('../db/models');
 const TopicService = require('../dbService/topicService');
+const QuizService = require('../dbService/quizService')
 
 module.exports = class ApiTopic {
     // @route   POST api/topic/create
@@ -84,16 +85,24 @@ module.exports = class ApiTopic {
                 },
                 attributes: ['id'],
             })
-                .then((quizIds) => {
+                .then(async(quizIds) => {
+
+
+                    for(let i = 0; i < quizIds.length; i++) {
+                        let quiz = await QuizService.isAvailableQuestion(quizIds[0].id,req.user.id)
+            
+                        quizIds[i]= {id: quizIds[i].id, avail: !quiz}
+                    }
                     return res.status(200).json({
                         error: false,
                         topic: topic,
                         quizIds: quizIds,
                     });
+
                 })
                 .catch((err) => {
                     return res.status(400).json({
-                        error: true,
+                        error: err,
                     });
                 });
         } catch (error) {

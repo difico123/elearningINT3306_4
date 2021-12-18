@@ -68,7 +68,7 @@ function App() {
             <Route
               path="/category/:id/*"
               element={
-                  <CourseRouter /> 
+                  <CourseRouter user={user} /> 
               }
             />
             

@@ -19,7 +19,7 @@ const ProtectedUserRoute = ({ role, children }) => {
 };
 
 
-const ProtectedCourseRoute = () => {
+const ProtectedCourseRoute = ({user}) => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const checkCourseEntry = useRef(false);
@@ -57,7 +57,7 @@ const ProtectedCourseRoute = () => {
 
   const loaded =
     checkCourseEntry.current && !loading ? (
-      <CourseContent />
+      <CourseContent user={user}/>
     ) : (
       <CourseEnroll checkEnroll={checkEnroll.current} />
     );

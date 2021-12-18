@@ -1,4 +1,4 @@
-const { Quiz, Question } = require('../db/models');
+const { Quiz, Question,UserQuestion } = require('../db/models');
 const QuizService = require('../dbService/quizService');
 const { pagination } = require('../utils/feature');
 
@@ -180,7 +180,21 @@ module.exports = class ApiQuizes {
                 },
                 attributes: ['id'],
             })
-                .then((questionIds) => {
+                .then(async (questionIds) => {
+                    for(let i = 0; i < questionIds.length; i++) {
+
+                        let ques = await UserQuestion.findOne({
+                            where: { questionId: questionIds[i].id,userId : req.user.id },
+                            attributes: ['id'],
+                        })
+                        
+                        let avai = false
+                        if(ques) {
+                            avai = true
+                        }
+                        questionIds[i]= {id: questionIds[i].id, avail: !avai}
+                    }
+
                     return res.status(200).json({
                         error: false,
                         quiz: quizQuestionIds,
@@ -189,7 +203,7 @@ module.exports = class ApiQuizes {
                 })
                 .catch((err) => {
                     return res.status(400).json({
-                        error: true,
+                        error: err,
                     });
                 });
         } catch (error) {

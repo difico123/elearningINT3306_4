@@ -155,104 +155,106 @@ function Header({ user }) {
       <NotificationIcon onClick={showNotification} />
       <Wrapper style={{ display: !toggleNotification ? "none" : "block" }}>
         <h2>Thông báo</h2>
-        <OverLay onClick={() => {
-          setToggleNotification(false);
-        }}></OverLay>
+        <OverLay
+          onClick={() => {
+            setToggleNotification(false);
+          }}
+        ></OverLay>
         <NotificationItems>
           {!notifications
             ? "Không có thông báo"
             : notifications.map((v, index) => {
-            let title = '';
-            switch(v.type) {
-              case 0:
-                title = "Đăng kí khoá học";
-                break;
-              case 1:
-                title = "Thông báo khoá học";
-                break;
-              default:
-            }
-            return (
-                <NotifiItem key={index}>
-                  <Title>{title}</Title>
-                  <Des>
-                    <span>{v.details}</span> - <span>{v.name}</span>
-                  </Des>
-                  <Time>
-                    <p>{v.sendAt}</p>
-                  </Time>
-                  <Btns className={v.isConfirmed == 1 ? "hidden" : "flex"}>
-                    <button
-                      value={v.courseId}
-                      className="bg-green-500 text-white"
-                      onClick={(e) => {
-                        CourseService.inviteStudent(v.courseId, v.userId)
-                          .then((data) => {
-                            NotificationService.setConfirm(v.id)
-                              .then(() => {
-                                e.target.parentElement.style.display = "none";
-                                setNotificationList([
-                                  showToast(
-                                    "success",
-                                    "Thông báo",
-                                    data.msg.toString()
-                                  ),
-                                ]);
-                              })
-                              .catch((error) => {
-                                setNotificationList([
-                                  showToast(
-                                    "danger",
-                                    "Thông báo",
-                                    error.response.data.msg.toString()
-                                  ),
-                                ]);
-                              });
-                          })
-                          .catch((error) => {
-                            setNotificationList([
-                              showToast(
-                                "danger",
-                                "Thông báo",
-                                error.response.data.msg.toString()
-                              ),
-                            ]);
-                          });
-                      }}
-                    >
-                      Chấp nhận
-                    </button>
-                    <button
-                      className="bg-gray-200"
-                      onClick={(e) => {
-                        NotificationService.delNotification(v.id)
-                          .then((data) => {
-                            e.target.parentElement.parentElement.remove();
-                            setNotificationList([
-                              showToast(
-                                "success",
-                                "Thông báo",
-                                data.msg.toString()
-                              ),
-                            ]);
-                          })
-                          .catch((error) => {
-                            setNotificationList([
-                              showToast(
-                                "danger",
-                                "Thông báo",
-                                error.response.data.msg.toString()
-                              ),
-                            ]);
-                          });
-                      }}
-                    >
-                      Từ Chối
-                    </button>
-                  </Btns>
-
-                </NotifiItem>
-              )})}
+                let title = "";
+                switch (v.type) {
+                  case 0:
+                    title = "Đăng kí khoá học";
+                    break;
+                  case 1:
+                    title = "Thông báo khoá học";
+                    break;
+                  default:
+                }
+                return (
+                  <NotifiItem key={index}>
+                    <Title>{title}</Title>
+                    <Des>
+                      <span>{v.details}</span> - <span>{v.name}</span>
+                    </Des>
+                    <Time>
+                      <p>{v.sendAt}</p>
+                    </Time>
+                    <Btns className={v.isConfirmed == 1 ? "hidden" : "flex"}>
+                      <button
+                        value={v.courseId}
+                        className="bg-green-500 text-white"
+                        onClick={(e) => {
+                          CourseService.inviteStudent(v.courseId, v.userId)
+                            .then((data) => {
+                              NotificationService.setConfirm(v.id)
+                                .then(() => {
+                                  e.target.parentElement.style.display = "none";
+                                  setNotificationList([
+                                    showToast(
+                                      "success",
+                                      "Thông báo",
+                                      data.msg.toString()
+                                    ),
+                                  ]);
+                                })
+                                .catch((error) => {
+                                  setNotificationList([
+                                    showToast(
+                                      "danger",
+                                      "Thông báo",
+                                      error.response.data.msg.toString()
+                                    ),
+                                  ]);
+                                });
+                            })
+                            .catch((error) => {
+                              setNotificationList([
+                                showToast(
+                                  "danger",
+                                  "Thông báo",
+                                  error.response.data.msg.toString()
+                                ),
+                              ]);
+                            });
+                        }}
+                      >
+                        Chấp nhận
+                      </button>
+                      <button
+                        className="bg-gray-200"
+                        onClick={(e) => {
+                          NotificationService.delNotification(v.id)
+                            .then((data) => {
+                              e.target.parentElement.parentElement.remove();
+                              setNotificationList([
+                                showToast(
+                                  "success",
+                                  "Thông báo",
+                                  data.msg.toString()
+                                ),
+                              ]);
+                            })
+                            .catch((error) => {
+                              setNotificationList([
+                                showToast(
+                                  "danger",
+                                  "Thông báo",
+                                  error.response.data.msg.toString()
+                                ),
+                              ]);
+                            });
+                        }}
+                      >
+                        Từ Chối
+                      </button>
+                    </Btns>
+                  </NotifiItem>
+                );
+              })}
         </NotificationItems>
       </Wrapper>
     </BellWrap>
@@ -300,7 +302,7 @@ const Wrapper = styled.div`
 `;
 
 const NotificationItems = styled.div`
-  position:relative;
+  position: relative;
   height: 25rem;
   width: 20rem;
   overflow-y: auto;
@@ -308,13 +310,13 @@ const NotificationItems = styled.div`
   z-index: 99999999;
 `;
 const OverLay = styled.div`
-  position:fixed;
-  top:0;
-  bottom:0;
-  left:0;
-  right:0;
-  width:100vw;
-  height:100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
 `;
 const NotifiItem = styled.div`
   box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
@@ -372,62 +374,12 @@ const Nav = styled.div`
   justify-content: space-around;
   position: sticky;
   top: 0;
-  background-color: white;
+  background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
+  background-size: 22rem 15rem;
+  background-repeat: repeat;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
     rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
     rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
-`;
-
-const Categories = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 5px;
-  justify-content: space-around;
-  align-items: center;
-  cursor: pointer;
-  font-weight: 600;
-`;
-
-const SearchBar = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 900px;
-  border: 2px solid black;
-  border-radius: 100px;
-  cursor: pointer;
-  padding: 8px 25px;
-  cursor: text;
-  font-weight: lighter;
-  input {
-    padding-left: 10px;
-    border: none;
-    width: 90%;
-    autocomplete: off;
-    background-image: none;
-    font-size: 15px;
-    font-weight: lighter;
-  }
-  button {
-    cursor: pointer;
-    border: none;
-    background: transparent;
-  }
-  textarea:focus,
-  input:focus {
-    outline: none;
-  }
-`;
-
-const BecomeInstructor = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  gap: 10px;
-  justify-content: space-around;
-  align-items: center;
-  cursor: pointer;
-  height: 40px;
-  font-weight: 600;
 `;
 
 const Wrap = styled.div`

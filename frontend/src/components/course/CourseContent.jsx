@@ -4,9 +4,20 @@ import { useParams } from "react-router-dom";
 import CourseService from "../../service/courseService";
 import Loader from "../common/loader";
 import quizService from "../../service/quizService";
-import { GroupsIcon, StarIcon, BooksIcon } from "../common/icons";
+import Rating from "./Rating";
+import Toast from "../common/toast";
+import showToast from "../../dummydata/toast";
 
-function CourseContent() {
+import {
+  GroupsIcon,
+  StarIcon,
+  BooksIcon,
+  ClearIcon,
+  CheckIcon,
+  EventAvailableIcon
+} from "../common/icons";
+
+function CourseContent({user}) {
   let { id } = useParams();
   const [isLoading, setLoading] = useState(true);
 
@@ -61,7 +72,7 @@ function CourseContent() {
   ));
 
   const Loaded = (
-    <TopicContent courseId={id} topicId={topicId} course={course} />
+    <TopicContent courseId={id} topicId={topicId} course={course} role={user.role} />
   );
 
   return (
@@ -72,7 +83,7 @@ function CourseContent() {
   );
 }
 
-function TopicContent({ topicId, courseId, course }) {
+function TopicContent({ topicId, courseId, course, role}) {
   const [quizId, setQuizId] = useState(-1);
   const [topic, setTopic] = useState({
     content: "",
@@ -95,35 +106,33 @@ function TopicContent({ topicId, courseId, course }) {
       <Loader />
     </LoaderWrap>
   );
-  const handleSelectedQuiz = (id) => {
-    setQuizId(id);
-  };
-  console.log(quizId, "abc");
+
   const renderQuizzes = quizzes.map((quiz, index) => (
     <ShowQuizButton
+      className={quiz.id === quizId ? "active" : ""}
       onClick={() => {
-        handleSelectedQuiz(quiz.id);
+        setQuizId(quiz.id);
       }}
       key={index}
     >
-      Làm quiz {index + 1}
+      {!quiz.avail&&<EventAvailableIcon />}
+      Quiz {index + 1}
     </ShowQuizButton>
   ));
 
   const quizLoaded = (
     <QuizWrapper>
       <Buttons>{renderQuizzes}</Buttons>
-      {quizId !== -1 && <DisplayQuizzes topicId={topicId} quizId={quizId} />}
+      {quizId !== -1 && <DisplayQuizzes topicId={topicId} quizId={quizId} role={role} />}
     </QuizWrapper>
   );
 
-  console.log("abc", quizzes);
   useEffect(() => {
     (async () => {
       setLoading(true);
       await CourseService.getTopicDetails(courseId, topicId)
         .then((res) => {
-          console.log(res);
+          console.log(res,"tiopic");
           setTopic({ ...res.topic });
           setQuizzes(res.quizIds);
           setLoading(false);
@@ -131,6 +140,7 @@ function TopicContent({ topicId, courseId, course }) {
         .catch((err) => {
           setLoading(false);
         });
+        setQuizId(-1);
     })();
   }, [topicId]);
 
@@ -144,12 +154,11 @@ function TopicContent({ topicId, courseId, course }) {
           <CourseDescription>{course.description}</CourseDescription>
           <ARWrap>
             <CourseAttendance>
-              <span> Số học viên: {course.register}</span>
-              <GroupsIcon />
+              <GroupsIcon /> : {course.register}
             </CourseAttendance>
             <CourseRating>
-              <span>Đánh giá: {course.rating ? course.rating : "0"} </span>
-              <StarIcon />
+              <span>Đánh giá:</span>
+              <Rating rating={course.rating} role={role}/>
             </CourseRating>
             <CourseAttendance>
               <span>Chủ đề: {course.numTopic ? course.numTopic : "0"} </span>
@@ -180,7 +189,7 @@ function TopicContent({ topicId, courseId, course }) {
   return <>{isLoading ? Loading : Loaded}</>;
 }
 
-function DisplayQuizzes({ topicId, quizId }) {
+function DisplayQuizzes({ topicId, quizId, role }) {
   let { id } = useParams();
   const [qzTitle, setQzTitle] = useState("");
   const [questionIds, setQuestionIds] = useState([]);
@@ -192,19 +201,22 @@ function DisplayQuizzes({ topicId, quizId }) {
       setQuestionId(!response.questionIds[0] ? -1 : response.questionIds[0].id);
     });
   }, [topicId, quizId]);
+  
   const questions =
     questionIds.length === 0
       ? ""
       : questionIds.map((question, index) => (
           <ChooseQuestion
+            className={question.id === questionId ? "active" : ""}
             key={index}
             value={question}
             onClick={() => setQuestionId(question.id)}
           >
-            {index + 1}
+             {!question.avail&& <EventAvailableIcon /> }
+             {index + 1}
           </ChooseQuestion>
         ));
-  console.log(questionId, "duc");
+
   return (
     <QuizSection>
       <QuizWrap>
@@ -213,52 +225,108 @@ function DisplayQuizzes({ topicId, quizId }) {
           topicId={topicId}
           quizId={quizId}
           questionId={questionId}
+          role={role}
         />
       </QuizWrap>
       <QuestionWrap>
         <QuestionTitle>Bảng câu hỏi</QuestionTitle>
         <SelectQuestion>{questions}</SelectQuestion>
-        <SubmitQuiz>Nộp bài</SubmitQuiz>
       </QuestionWrap>
     </QuizSection>
   );
 }
 
-function DisplayAnswers({ topicId, quizId, questionId }) {
+function DisplayAnswers({ topicId, quizId, questionId, role }) {
   let { id } = useParams();
   const [qTitle, setQTitle] = useState("");
+  const [marks, setMarks] = useState(5);
   const [choiceIds, setChoiceIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [toastList, setToastList] = useState([])
+  const [answerMsg, setAnswerMsg] = useState('');
+  const [history, setHistory] = useState(null);
+  const [correctAnswer, setCorrectAnswer] = useState(null);
+  const [result, setResult] = useState(-1);
   const Loading = (
     <LoaderWrap>
       <Loader />
     </LoaderWrap>
   );
   useEffect(() => {
-    setIsLoading(true);
-    quizService
-      .getQuestionAnswers(id, topicId, quizId, questionId)
-      .then((response) => {
-        setQTitle(response.content);
-        setChoiceIds(response.question);
+
+    (async () => {
+      setResult(-1);
+      setIsLoading(true);
+      if(quizId !== -1) {
+        await quizService
+        .getQuestionAnswers(id, topicId, quizId, questionId)
+        .then((response) => {
+          setQTitle(response.content);
+          setMarks(response.marks)
+          setChoiceIds(response.question);
+        });
+      }
+      if(role === 0) {
+        await quizService.getHistory(id,questionId).then((res) => {
+          setHistory(res.history)
+          setCorrectAnswer(res.correctAnswer)
+        })
+      }
         setIsLoading(false);
-      });
+    })()
+
   }, [topicId, quizId, questionId]);
 
-  console.log(qTitle, "abc", choiceIds);
+  const handleSubmitAnswer = () => {
+    if(role === 0) {
+      quizService
+      .submitAnswer(id, topicId, quizId, questionId, choiceId)
+      .then((response) => {
+        setResult(response.isCorrect);
+      })
+      .catch((error) => {
+        alert(error.response.data.msg);
+      });
+
+    } else {
+      setToastList([showToast('danger','Thông Báo','Bạn không thể nộp bài này!')])
+    }
+  };
+
   const [choiceId, setChoiceId] = useState(-1);
 
   const choices =
     choiceIds.length === 0
       ? ""
-      : choiceIds.map((choice, index) => (
-          <Answer key={index} value={choice}>
+      : choiceIds.map((choice, index) =>{
+        let anphabet = ['A','B','C','D','E','F','G','H','I','J'];
+        
+        return (
+          <Answer
+            className={choiceId === choice.choiceId ? "active" : "" + (((role === 0&&!history)&&result === -1) && " hover:bg-blue-300 rounded")}
+            key={index}
+            value={choice.choiceId}
+            onClick={() => {
+              if((role === 0&&!history)&&result === -1) {
+                setChoiceId(choice.choiceId);
+              }
+            }}
+          >
             <Inputs>
-              <input type="checkbox" name="isAnswer"></input>
+              {/* {result === -1 ? "" : result ? <Correct /> : <Incorrect />} */}
+              {history&& (history.choiceId === choice.choiceId && (correctAnswer===history.choiceId ?<Correct />: <Incorrect /> ))}
+              {result !== -1 && (choiceId === choice.choiceId&&(result? <Correct />: <Incorrect />) )}
+              {role===0&&(!history&&(result === -1&&<input
+                type="checkbox"
+                name="isAnswer"
+                checked={choiceId === choice.choiceId ? true : false}
+              ></input>))}
+              {anphabet[index]}.
               <label>{choice.content}</label>
             </Inputs>
           </Answer>
-        ));
+        )});
+
   return (
     <>
       {questionId === -1 ? (
@@ -266,10 +334,17 @@ function DisplayAnswers({ topicId, quizId, questionId }) {
       ) : isLoading ? (
         Loading
       ) : (
-        <QuestionSection>
-          <QuestionName>{qTitle}</QuestionName>
-          <Answers>{choices}</Answers>
-        </QuestionSection>
+        <>
+          <QuestionSection>
+            <QuestionName>{qTitle}</QuestionName>
+            <QuestionName>Điểm: {marks}</QuestionName>
+            <Answers>{choices}</Answers>
+          </QuestionSection>
+          {role===0&&(!history&&(result === -1? <SubmitQuiz onClick={handleSubmitAnswer}>Nộp bài</SubmitQuiz>: 
+          (result? <Result><span className="text-green-400">Bạn đã trả lời đúng câu hỏi này</span><span>Điểm: {marks}</span></Result>: <Result><span className="text-red-400">Bạn đã trả lời sai câu hỏi này</span><span>Điểm: 0 :(</span></Result>)
+          ))}
+          <Toast toastList={toastList}/>
+        </>
       )}
     </>
   );
@@ -279,6 +354,15 @@ const NoContent = styled.div`
   margin: 2rem 0;
   text-align: center;
 `;
+const Result = styled.div`
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: 500;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+`
 const WrapDescription = styled.span`
   font-size: 1.2rem;
   font-weight: 500;
@@ -349,25 +433,43 @@ const Content = styled.div`
   flex-flow: column nowrap;
   gap: 4vh;
   height: 90vh;
-  overflow-y: auto;
   overflow-x: hidden;
 `;
 
 const ShowQuizButton = styled.button`
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   border: 0.5px solid black;
   color: black;
   font-weight: 600;
-  padding: 15px 20px;
+  padding: 1rem 1rem;
   font-size: 15px;
   width: 120px;
   transition: 0.5s ease 0s;
-  background-color: transparent;
+  background-color: rgba(255,255,255, 0.2);
+  border-radius:5px;
   &:hover {
     color: white;
     background-color: #04aa6d;
+    border: 0.5px solid #04aa6d;
   }
   &.active {
-    background-color: red;
+    background-color: #03203C;
+    background-position: 0 0;
+    color: #fff;
+    svg {
+      color: white;
+    }
+  }
+  svg {
+    color: rgba(5, 150, 105,0.6);
+    transition: 0.5s ease 0s;
+    font-size: 2rem;
+  }
+  &:hover svg {
+    color: white;
   }
 `;
 
@@ -431,10 +533,16 @@ const ChooseQuestion = styled.div`
   font-weight: bold;
   color: white;
   cursor: pointer;
-  background-color: rgba(204, 33, 33, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10%;
+  border: 0.5px solid black;
+  color:#03203C;
   &:hover {
     background-color: rgba(229, 114, 28, 0.8);
+  }
+  &.active {
+    background-color: #03203C;
+    color:white;
   }
 `;
 
@@ -478,8 +586,8 @@ const Answer = styled.div`
   width: 100%;
   cursor: pointer;
   padding: 0.5rem 0.5rem;
-  &:hover {
-    background-color: #d9edf7;
+  &.active {
+    background-color: lightblue;
   }
 `;
 
@@ -556,7 +664,7 @@ const CourseAttendance = styled.div`
 `;
 const CourseRating = styled.div`
   display: flex;
-  justify-content: center;
+  gap: 20px;
   align-items: center;
   gap: 0.2rem;
   color: white;
@@ -571,9 +679,20 @@ const CourseCover = styled.div`
   margin: auto;
 `;
 const QuizWrapper = styled.div`
-    height: 50vh;
+  height: 50vh;
 `;
 
 const BackgroundImage = styled.img``;
 
+const Correct = styled(CheckIcon)`
+  position: absolute;
+  left: 2.5vw;
+  color: green;
+`;
+
+const Incorrect = styled(ClearIcon)`
+  position: absolute;
+  left: 2.5vw;
+  color: red;
+`;
 export default CourseContent;
