@@ -1,143 +1,91 @@
 import React, { useState, useEffect } from 'react'
+import Material from 'material-table';
+import MaterialTable from "material-table";
 import styled from "styled-components";
 import AdminService from '../../service/AdminService';
+import Popup from "../common/popup";
+import Toast from "../common/toast.jsx";
+import showToast from "../common/toast.js";
+import { Warning, BuildIcon, ClearIcon } from '../common/icons';
+
 
 function ViewUsers() {
-    const [getUsers, setUsers] = useState([
-        {
-            fullName: '',
-            email: '',
-            phoneNumber: '',
-            address: '',
-            role: '',
-            imageUrl: ''
-        },
-    ]);
-    const [change, setChange] = useState(false);
+  const [getUsers, setUsers] = useState([
+    {
+      fullName: '',
+      email: '',
+      phoneNumber: '',
+      address: '',
+      role: '',
+      imageUrl: ''
+    },
+  ]);
+  const [change, setChange] = useState(false);
 
-    // const [page, setPage] = useState(1);
-    // const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    AdminService.getUserList(1).then((response) => {
+      setUsers(response.users);
+      console.log(response.users)
+    });
+  }, [change]);
 
-    useEffect(() => {
-        AdminService.getUserList(1).then((response) => {
-            setUsers(response.users);
-        });
-    }, [change]);
+  const columns = [
+    {
+      field: 'imageUrl',
+      render: getUsers => <img src={getUsers.imageUrl} style={{ width: 50, height: 50, borderRadius: '50%' }} />,
+      type: 'numeric'
+    },
+    {
+      title: 'Họ tên', field: 'fullName'
+    },
+    {
+      title: 'Địa chị email', field: 'email'
+    },
+    {
+      title: 'Số điện thoại', field: 'phoneNumber'
+    },
+    {
+      title: 'Nơi ở hiện tại', field: 'address'
+    },
+    {
+      title: 'Vai trò', field: 'role', lookup: { 1: 'Giảng viên', 0: 'Học viên' }
+    }
+  ]
 
-    const content = getUsers.length == 0 ? <p className='text-center mt-1'>Không có người dùng nào</p> : getUsers.map((user, index) => {
-        let role = '';
-        switch (user.role) {
-            case 0:
-                role = 'Học viên'
-                break
-            case 1:
-                role = 'Giảng viên'
-                break
-        }
+  return (
+    <div>
+      <MaterialTable title="Danh sách người dùng"
+        style={{ padding: 50 }}
+        data={getUsers}
+        columns={columns}
+        actions={[
+          {
+            icon: 'library_add',
+            tooltip: 'Save User',
+            onClick: (event, rowData) => alert("Đã trở thành giảng viên ")
+          },
+          rowData => ({
+            icon: 'delete',
+            tooltip: 'Delete User',
+            onClick: (event, rowData) => window.confirm("Bạn có chắc muốn xóa người dùng này?"),
+            disabled: rowData.birthYear < 2000
+          })
+        ]}
+        options={{
+          actionsColumnIndex: -1,
+          headerStyle: {
+            backgroundColor: '#039be5',
+            color: '#FFF'
+          },
+          rowStyle: {
+            backgroundColor: '#EEE',
+            padding: 5,
+          }
 
-        return (
-            <Wrap key={index}>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>{index + 1}</td>
-                            <td><img src={`${user.imageUrl}`}></img></td>
-                            <td>{user.fullName}</td>
-                            <td>{user.email}</td>
-                            <td>{user.phoneNumber}</td>
-                            <td>{user.address}</td>
-                            <td>{role}</td>
-                            <td><span class="blue">View</span><span class="pink">Delete</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </Wrap>
-        )
-    })
-
-    return (
-        <>
-            <Div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Avatar</th>
-                            <th>Tên học viên</th>
-                            <th>Email liên lạc</th>
-                            <th>Số điện thoại</th>
-                            <th>Địa chỉ hiện tại</th>
-                            <th>Vai trò</th>
-                            <th>Control</th>
-                        </tr>
-                    </thead>
-                </table>
-            </Div>
-            {content}
-        </>
-    )
+        }}
+      />
+    </div>
+  )
 }
 
 export default ViewUsers;
-
-const Div = styled.div`
-table {
-    text-align: center;
-    width: 700px;
-    margin: 20px auto;
-    font-family: sans-serif;
-    border-bottom: 5px solid #009688;
-  }
-  th {
-    padding: 10px;
-  }
-  th {
-    background-color: #404040;
-    color: white;
-  }
-  td {
-    background-color: #eee;
-  }
-  span {
-    padding: 5px 10px;
-    margin: 3px;
-    color: white;
-  }
-  .blue {
-    background-color: #03a9f4;
-  }
-  .pink {
-    background-color: #e91e63;
-  }
-`
-
-const Wrap = styled.div`
-table {
-    text-align: center;
-    width: 700px;
-    margin: 20px auto;
-    font-family: sans-serif;
-    border-bottom: 5px solid #009688;
-  }
-  td {
-    padding: 10px;
-  }
-  th {
-    background-color: #404040;
-    color: white;
-  }
-  td {
-    background-color: #eee;
-  }
-  span {
-    padding: 5px 10px;
-    margin: 3px;
-    color: white;
-  }
-  .blue {
-    background-color: #03a9f4;
-  }
-  .pink {
-    background-color: #e91e63;
-  }
-`

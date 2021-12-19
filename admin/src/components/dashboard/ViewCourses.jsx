@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import styled from "styled-components";
-import AdminService from '../../service/AdminService'
+import Material from 'material-table';
+import MaterialTable from "material-table";
+import AdminService from '../../service/AdminService';
+import { ClearIcon } from '../common/icons';
 
 function ViewCourses() {
     const [getCourses, setCourses] = useState([
@@ -10,9 +12,16 @@ function ViewCourses() {
         },
     ]);
     const [change, setChange] = useState(false);
+    // const [toggleDelQuiz, setToggleDelQuiz] = useState(false);
 
-    // const [page, setPage] = useState(1);
-    // const [currentPage, setCurrentPage] = useState(1);
+    const columns = [
+        {
+            title: 'Tên khóa học', field: 'name'
+        },
+        {
+            title: 'Tên giảng viên', field: 'instructorName'
+        }
+    ]
 
     useEffect(() => {
         (async () => {
@@ -22,79 +31,44 @@ function ViewCourses() {
         })()
     }, [change]);
 
-    console.log('abc', getCourses)
-    const content = getCourses.length == 0 ? <p className='text-center mt-1'>Không có khóa học nào</p> : getCourses.map((courses, index) => (
-        <Wrap key={index}>
-            <div>{index + 1}</div>
-            <div>{courses.name}</div>
-            <div>{courses.instructorName}</div>
-            <div></div>
-        </Wrap>
-    ))
+    const handleDeleteCourse = (courseId) => {
+        AdminService.deleteCourse(courseId).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            console.log(err.response.data);
+        })
+    }
 
     return (
-        <>
-            <Div>
-                <div>STT</div>
-                <div>Tên khóa học </div>
-                <div>Tên giảng viên </div>
-                <div></div>
-            </Div>
-            {content}
-        </>
+        <div>
+            <MaterialTable title="Danh sách khóa học"
+                style={{ padding: 50 }}
+                data={getCourses}
+                columns={columns}
+                actions={[
+                    rowData => ({
+                        icon: 'delete',
+                        tooltip: 'Delete User',
+                        onClick: (event, rowData) => { if (window.confirm("Bạn có chắc muốn xóa khóa học này?") === true) { handleDeleteCourse(rowData.id) } else { } },
+                        disabled: rowData.birthYear < 2000
+                    })
+                ]}
+                options={{
+                    actionsColumnIndex: -1,
+                    headerStyle: {
+                        backgroundColor: '#039be5',
+                        color: '#FFF'
+                    },
+                    rowStyle: {
+                        backgroundColor: '#EEE',
+                        padding: 5,
+                    }
+
+                }}
+            />
+        </div>
     )
 
 }
 
 export default ViewCourses;
-
-const Div = styled.div`
-    display: flex; 
-    flex-nowrap: wrap;
-    background: white;
-    border: solid;
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-    div{
-        padding: 1rem;
-        font-weight: 700;
-    }
-    div:nth-child(1) {
-        width: 10%;
-    }
-    div:nth-child(2) {
-        width: 50%;
-    }
-    div:nth-child(3) {
-        width: 30%;
-    }
-    div:nth-child(3) {
-        width: 10%;
-    }
-`
-
-const Wrap = styled.div`
-    display: flex; 
-    flex-nowrap: wrap;
-    background: white;
-    border-bottom: solid;
-    border-left: solid;
-    border-right: solid;
-    div{
-        padding: 1rem;
-    }
-    div:nth-child(1) {
-        width: 10%;
-    }
-    div:nth-child(2) {
-        width: 50%;
-        
-    }
-    div:nth-child(3) {
-        width: 30%;
-    }
-    div:nth-child(3) {
-        width: 10%;
-    }
-    
-`

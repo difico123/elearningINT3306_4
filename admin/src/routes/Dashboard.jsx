@@ -20,7 +20,7 @@ function Dashboard({ user }) {
       <RightSide>
         <Routes>
           <Route path="/all" element={<ViewAll />} />
-          <Route exact path="/users" element={<ViewUsers />} />
+          <Route path="/users" element={<ViewUsers />} />
           <Route path="/courses" element={<ViewCourses />} />
         </Routes>
       </RightSide>
@@ -32,17 +32,17 @@ const Flexin = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 0;
-  height:100vh;
+  height: 100vh;
 `;
 const LeftSide = styled.div`
   position:relative;
-  flex:1;
+  flex: 1.5;
   width: 15vw;
 `;
 const RightSide = styled.div`
-  position:relative;
-  flex:8;
-  border:1px solid black;
+  position: relative;
+  flex: 8.5;
+  border: 1px solid black;
   width: 85vw;
 `;
 

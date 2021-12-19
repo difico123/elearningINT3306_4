@@ -37,6 +37,8 @@ router.get('/listUsers', auth, admin, ApiAdmin.listUsers);
 // @access  Private
 router.get('/listCourses', auth, admin, ApiAdmin.listCourses);
 
+router.get('/statistic', auth, admin, ApiAdmin.statistic);
+
 
 
 module.exports = router;

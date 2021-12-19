@@ -7,14 +7,14 @@ import Loader from "../../common/loader";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast";
 import showToast from "../../../dummydata/toast";
-import {MoreVertIcon, SearchIcon , ArrowBackIosIcon, ArrowForwardIosIcon,EditIcon, ClearIcon,Warning } from "../../common/icons";
+import { MoreVertIcon, SearchIcon, ArrowBackIosIcon, ArrowForwardIosIcon, EditIcon, ClearIcon, Warning } from "../../common/icons";
 
 function ViewStudents() {
   let { id } = useParams();
   const [quizList, setQuizlist] = useState([]);
-  const [topics,setTopics] = useState([{
-      id: "",
-      title: ""
+  const [topics, setTopics] = useState([{
+    id: "",
+    title: ""
   }])
   const [topicId, setTopicId] = useState(null);
   const [change, setChange] = useState(false);
@@ -46,50 +46,50 @@ function ViewStudents() {
     </Dropdown>
   );
 
-    useEffect(() => {
-        CourseService.getTopicNames(id).then((response) => {
-        setTopics(response.topics);
+  useEffect(() => {
+    CourseService.getTopicNames(id).then((response) => {
+      setTopics(response.topics);
     })
-    },[])
+  }, [])
 
   useEffect(() => {
     setLoading(true);
-    let quiz = QuizService.getQuizNames(id, topicId,currentPage).then((response) => {
-        setQuizlist(response.quizes)
+    let quiz = QuizService.getQuizNames(id, topicId, currentPage).then((response) => {
+      setQuizlist(response.quizes)
     }).catch((err) => {
-        setLoading(false);
+      setLoading(false);
     })
     Promise.all([quiz]).then(() => {
-        setLoading(false);
+      setLoading(false);
     })
   }, [change]);
 
 
   const handleShowQuiz = (quizId) => {
-    QuizService.activeQuiz(id,topicId, quizId).then(() => {
-        setToastList([showToast("success", "Thông báo", "Active Quiz!"),...toastList]) 
-        setChange(!change);
+    QuizService.activeQuiz(id, topicId, quizId).then(() => {
+      setToastList([showToast("success", "Thông báo", "Active Quiz!"), ...toastList])
+      setChange(!change);
     }).catch((err) => {
-        console.log(err.response)
+      console.log(err.response)
     })
   }
   const handleHideQuiz = (quizId) => {
-    QuizService.hideQuiz(id,topicId, quizId).then(() => {
-        setToastList([showToast("success", "Thông báo", "Hide Quiz!"),...toastList]) 
-        setChange(!change);
+    QuizService.hideQuiz(id, topicId, quizId).then(() => {
+      setToastList([showToast("success", "Thông báo", "Hide Quiz!"), ...toastList])
+      setChange(!change);
     }).catch((err) => {
-        console.log(err.response)
+      console.log(err.response)
     })
   }
 
-  const handleEditQuizPopup = (e,title, quizId) => {
+  const handleEditQuizPopup = (e, title, quizId) => {
     e.stopPropagation();
     setToggleEditQuiz(true)
     setTitleString(title)
     setQuizIdSelection(quizId)
   }
-  
-  const handleDeleteQuizPopup = (e,quizId) => {
+
+  const handleDeleteQuizPopup = (e, quizId) => {
     e.stopPropagation();
     setToggleDelQuiz(true);
     setQuizIdSelection(quizId)
@@ -99,18 +99,18 @@ function ViewStudents() {
     quizList.length === 0 ? (
       <p className="text-center mt-1">Không có quiz nào</p>
     ) : (
-        quizList.map((quiz, index) => (
+      quizList.map((quiz, index) => (
         <Wrap key={index}>
           <div>{6 * (currentPage - 1) + (index + 1)}</div>
           <div>{quiz.title}</div>
-          <div>{quiz.shown === 1 ? <StatusBtn className="bg-green-500" onClick={() =>{handleHideQuiz(quiz.id); quiz.shown = 0} }>Hiện</StatusBtn> :
-           <StatusBtn className="bg-gray-500" onClick={() => handleShowQuiz(quiz.id)}>Ẩn</StatusBtn>}</div>
+          <div>{quiz.shown === 1 ? <StatusBtn className="bg-green-500" onClick={() => { handleHideQuiz(quiz.id); quiz.shown = 0 }}>Hiện</StatusBtn> :
+            <StatusBtn className="bg-gray-500" onClick={() => handleShowQuiz(quiz.id)}>Ẩn</StatusBtn>}</div>
           <div>{quiz.total}</div>
 
-        <WrapDrop>
-          <EditTopicBtn onClick={(e)=> handleEditQuizPopup(e, quiz.title, quiz.id)}></EditTopicBtn>
-          <DelTopicBtn onClick={(e)=> handleDeleteQuizPopup(e, quiz.id)}></DelTopicBtn>
-        </WrapDrop>
+          <WrapDrop>
+            <EditTopicBtn onClick={(e) => handleEditQuizPopup(e, quiz.title, quiz.id)}></EditTopicBtn>
+            <DelTopicBtn onClick={(e) => handleDeleteQuizPopup(e, quiz.id)}></DelTopicBtn>
+          </WrapDrop>
         </Wrap>
       ))
     );
@@ -141,15 +141,15 @@ function ViewStudents() {
     setTitleString(e.target.value)
   };
 
-  
+
   const handleAddQuiz = (e) => {
-    if(titleString.length < 10) {
+    if (titleString.length < 10) {
       e.target.previousElementSibling.innerHTML = "Tên chủ đề phải ít nhất 10 kí tự"
       setToastList([...toastList, showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự')]);
     } else {
       e.target.previousElementSibling.innerHTML = ""
-      QuizService.createQuiz(id, topicId, {title: titleString}).then((res) => {
-        setToastList([...toastList,showToast('success', 'Thông báo!', 'Tạo quiz thành công')]);
+      QuizService.createQuiz(id, topicId, { title: titleString }).then((res) => {
+        setToastList([...toastList, showToast('success', 'Thông báo!', 'Tạo quiz thành công')]);
         setChange(!change);
       }).catch((err) => {
         console.log(err.response.data);
@@ -157,13 +157,13 @@ function ViewStudents() {
     }
   };
   const handleEditQuiz = (e) => {
-    if(titleString.length < 10) {
+    if (titleString.length < 10) {
       e.target.previousElementSibling.innerHTML = "Tên chủ đề phải ít nhất 10 kí tự"
       setToastList([...toastList, showToast('danger', 'Thông báo!', 'Tên chủ đề phải ít nhất 10 kí tự')]);
-      
+
     } else {
-      QuizService.editQuiz(id, topicId, quizIdSelection, {title: titleString}).then((res) => {
-        setToastList([...toastList,showToast('success', 'Thông báo!', 'sửa quiz thành công')]);
+      QuizService.editQuiz(id, topicId, quizIdSelection, { title: titleString }).then((res) => {
+        setToastList([...toastList, showToast('success', 'Thông báo!', 'sửa quiz thành công')]);
         setToggleEditQuiz(false);
         setChange(!change);
       }).catch((err) => {
@@ -174,7 +174,7 @@ function ViewStudents() {
 
   const handleDeleteQuiz = () => {
     QuizService.delQuiz(id, topicId, quizIdSelection).then((res) => {
-      setToastList([...toastList,showToast('success', 'Thông báo!', 'Xoá quiz thành công!')]);
+      setToastList([...toastList, showToast('success', 'Thông báo!', 'Xoá quiz thành công!')]);
       setToggleDelQuiz(false);
       setChange(!change);
     }).catch((err) => {
@@ -191,7 +191,7 @@ function ViewStudents() {
   );
   const bodyDelPopup = (
     <div>
-        Bạn có chắc chắn muốn xoá quiz này không?
+      Bạn có chắc chắn muốn xoá quiz này không?
     </div>
   );
   const bodyEditPopup = (
@@ -229,7 +229,7 @@ function ViewStudents() {
       <Content>
         <Wrapper>
           {selectTopic}
-          {topicId&& <button onClick={handleToggleAddQuiz}  title='Chọn topic trước khi thêm'>Thêm quiz mới</button>}
+          {topicId && <button onClick={handleToggleAddQuiz} title='Chọn topic trước khi thêm'>Thêm quiz mới</button>}
         </Wrapper>
         <Div>
           <div>STT</div>
@@ -240,7 +240,7 @@ function ViewStudents() {
         </Div>
         {/* {isLoading ? loading : content} */}
         {content}
-        
+
         <Page>
           <ArrowBackIosIcon
             className="page"
@@ -395,13 +395,13 @@ const OverLay = styled.div`
     left: 0;
   }
 `
-const StatusBtn = styled.button `
+const StatusBtn = styled.button`
 color: white;
 border-radius: 0.25rem;
 padding: 0.25rem;
 width: 4rem;
 `
-const Btn = styled.button `
+const Btn = styled.button`
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;

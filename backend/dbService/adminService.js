@@ -37,4 +37,20 @@ module.exports = class AdminService {
             console.log(error);
         }
     }
+    static async getStatistic() {
+        try {
+            const response = await sequelize.query(
+                `select (select count(id) from users) as users,  (select count(id) from courses) as courses,
+                (select count(id) from users where users.role = 0) as students, 
+                (select count(id) from users where users.role = 1) as instructors;`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 };

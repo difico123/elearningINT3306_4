@@ -36,11 +36,32 @@ function getJwt() {
   return localStorage.getItem("token");
 }
 
+async function setInstructor(userId) {
+  const config = { headers: { "Content-Type": "multipart/form-data" } };
+  return await http.put(apiEndpoint + `/setInstructor/${userId}`, config);
+}
+
+async function deleteUser(userId) {
+  return await http.delete(apiEndpoint + `/delete/${userId}`);
+}
+
+async function deleteCourse(courseId) {
+  return await http.delete(apiEndpoint + `/deleteCourse/${courseId}`);
+}
+
+async function getAll() {
+  return await http.get(apiEndpoint + `/statistic`);
+}
+
 export default {
   login,
   logout,
   getUserList,
   getCourseList,
   getJwt,
-  getAdmin
+  getAdmin,
+  setInstructor,
+  deleteCourse,
+  deleteUser,
+  getAll
 }
