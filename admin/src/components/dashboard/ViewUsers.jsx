@@ -6,7 +6,7 @@ import AdminService from '../../service/AdminService';
 import Popup from "../common/popup";
 import Toast from "../common/toast.jsx";
 import showToast from "../common/toast.js";
-import { Warning, BuildIcon, ClearIcon } from '../common/icons';
+import { Warning, BuildIcon, ClearIcon,AccountCircleIcon } from '../common/icons';
 
 
 function ViewUsers() {
@@ -21,58 +21,52 @@ function ViewUsers() {
     },
   ]);
   const [change, setChange] = useState(false);
+  const [toastList, setToastList] = useState([]);
 
   useEffect(() => {
     AdminService.getUserList(1).then((response) => {
       setUsers(response.users);
-      console.log(response.users)
     });
   }, [change]);
 
-  const columns = [
-    {
-      field: 'imageUrl',
-      render: getUsers => <img src={getUsers.imageUrl} style={{ width: 50, height: 50, borderRadius: '50%' }} />,
-      type: 'numeric'
-    },
-    {
-      title: 'Họ tên', field: 'fullName'
-    },
-    {
-      title: 'Địa chị email', field: 'email'
-    },
-    {
-      title: 'Số điện thoại', field: 'phoneNumber'
-    },
-    {
-      title: 'Nơi ở hiện tại', field: 'address'
-    },
-    {
-      title: 'Vai trò', field: 'role', lookup: { 1: 'Giảng viên', 0: 'Học viên' }
-    }
-  ]
 
+  const handleUpdateUsers = async (event, data) => {
+    setToastList([showToast('success','Thông báo!','Người dùng này đã trở thành giảng viên!')])
+    let index = getUsers.findIndex(v => v.id === data.id)
+    let newArr = [...getUsers]
+    newArr[index].role = 1
+    setUsers(newArr)
+    await AdminService.setInstructor(data.id).then((res) => {
+      console.log(res)
+    })
+  }
   return (
-    <div>
+    <Wrap>
       <MaterialTable title="Danh sách người dùng"
-        style={{ padding: 50 }}
+        style={{padding: 10}}
         data={getUsers}
-        columns={columns}
+        columns={[
+          { title: 'Avatar', field: 'imageUrl',render: rowData => (rowData.imageUrl? <img src={rowData.imageUrl} style={{width: 50,height: 50, borderRadius: '50%'}}/> : <AccountCircleIcon style={{width: 50,height: 50, borderRadius: '50%'}}/>),  cellStyle: {width: 1} },
+          { title: 'Họ tên', field: 'fullName', width: "1%"},
+          { title: 'Địa chỉ email', field: 'email' },
+          { title: 'Số điện thoại', field: 'phoneNumber' },
+          { title: 'Nơi ở hiện tại', field: 'address' },
+          { title: 'Vai trò', field: 'role', lookup: { 1: 'Giảng viên', 0: 'Học viên' } },
+        ]}
         actions={[
+          rowData => (
+          (rowData.role === 0) &&
           {
-            icon: 'library_add',
-            tooltip: 'Save User',
-            onClick: (event, rowData) => alert("Đã trở thành giảng viên ")
-          },
-          rowData => ({
-            icon: 'delete',
-            tooltip: 'Delete User',
-            onClick: (event, rowData) => window.confirm("Bạn có chắc muốn xóa người dùng này?"),
-            disabled: rowData.birthYear < 2000
-          })
+            icon: 'upgradeOutlinedIcon',
+            tooltip:  'Trở thành giảng viên',
+            onClick: (event, rowData) => handleUpdateUsers(event,rowData),
+          }
+          
+          )
         ]}
         options={{
           actionsColumnIndex: -1,
+          pageSize:10,
           headerStyle: {
             backgroundColor: '#039be5',
             color: '#FFF'
@@ -83,8 +77,17 @@ function ViewUsers() {
           }
         }}
       />
-    </div>
+      <Toast toastList={toastList}/>
+    </Wrap>
   )
 }
 
 export default ViewUsers;
+
+const Wrap = styled.div`
+    background-color: white;
+    width: 80vw;
+    height: 90vh;
+    overflow-y:auto;
+    padding: 1rem 1rem;
+`

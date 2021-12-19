@@ -67,13 +67,15 @@ module.exports = class UserCourseService {
     static async getScoreByCourseId(userId, courseId) {
         try {
             const response = await sequelize.query(
-                `select ts.id, ts.title ,sum(qu.marks) as total, count(qu.id) as quizNum from userquestions uq 
-                join choices ch on ch.id = uq.choiceId 
-                join questions qu on uq.questionId = qu.id
-                join quizzes qi on qi.id = qu.quizId
-                join topics ts on ts.id = qi.id
-                where uq.userId = ${userId} and ch.isAnswer = 1 and ch.id = uq.choiceId and ts.courseId = ${courseId}
-                GROUP by ts.id;`,
+                `select ts.id,ts.title,sum(qu.marks) as marks,count(qu.id) as quizNum, num.total from topics ts
+                join quizzes qi on qi.topicId = ts.id
+                join questions qu on qu.quizId = qi.id
+                join choices ch on ch.questionId = qu.id
+                join userquestions uq on uq.choiceId = ch.id
+                join (select ts.id,count(qu.id) as total from topics ts
+                join quizzes qi on qi.topicId = ts.id
+                join questions qu on qu.quizId = qi.id  where qi.shown = 1 group by ts.id) as num on num.id = ts.id
+                where ts.courseId = ${courseId} and ch.isAnswer = 1 and uq.userId = ${userId} group by ts.id;`,
                 {
                     replacements: [],
                     type: QueryTypes.SELECT,

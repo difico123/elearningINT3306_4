@@ -37,8 +37,9 @@ function LoginForm() {
   ));
   return (
     <Wrap>
+      <WrapContainer>
       <Container>
-        <Title>Tham gia vào những khóa học dành riêng cho bạn!</Title>
+      <Title>Gia nhập với chúng tôi!</Title>
         <Form>
           <Field>
             <MailIcon></MailIcon>
@@ -75,21 +76,29 @@ function LoginForm() {
           </Link>
         </RedirectSignUp>
       </Container>
+
+      </WrapContainer>
     </Wrap>
   );
 }
 
 const Wrap = styled.div`
   min-height: calc(100vh - 94px);
-  padding: 10vh 35vw;
-  background-image: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-english-winter-vacation-training-background-image_186800.jpg");
+  padding: 5vh 25vw;
+
+  background-image: url("https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/263406913_1269721300171380_2651181040426319644_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=LAxFfuZjmogAX_0-U6C&_nc_ht=scontent.fhan5-10.fna&oh=03_AVLMZ0OkMryY6gA6LdG8ajpih8DuclSzSoUXx8xuu6-RVA&oe=61E469D3");
   background-repeat: no-repeat;
   background-size:100vw 90vh ;
 `;
 
+const WrapContainer = styled.div`
+  height:100%;
+  margin: 1rem 0 0 -10rem;
+`
 const Container = styled.div`
   width: 100%;
   padding: 5vh 3vw;
+  width: 30rem;
   display: flex;
   align-items: center;
   flex-flow: column wrap;
@@ -104,14 +113,16 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 1.2rem;
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: bold;
   display: flex;
   align-self: flex-start;
   justify-content: space-between;
   border-bottom: 1px solid #878787;
-  padding-bottom: 5vh;
-  width: 100%;
+  padding-bottom: 4vh;
 `;
+
 
 const Form = styled.div`
   padding-top: 30px;
@@ -160,7 +171,7 @@ const PasswordIcon = styled(LockIcon)`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #4caf50;
+background-color: rgb(126,165,190);
   height: 40px;
   font-weight: bold;
   color: white;
@@ -168,18 +179,18 @@ const SubmitButton = styled.button`
   &:hover {
     border: transparent;
     color: white;
-    background-color: #04aa6d;
+    background-color: rgba(126,165,190,0.9);
   }
 `;
 
 const RedirectForgotPassword = styled.div`
   text-align: center;
   padding: 15px 0;
-  color: #4caf50;
+  color: rgb(126,165,190);
   transition: 0.3s ease 0.3s;
   font-weight: bold;
   a:hover {
-    color: #04aa6d;
+    color: rgba(126,165,190,0.9);
   }
 `;
 
@@ -187,14 +198,14 @@ const RedirectSignUp = styled.div`
   text-align: center;
   padding: 15px 0;
   font-size: 16px;
-  color: #4caf50;
+  color: rgb(126,165,190);
   span {
     font-weight: bold;
-    color: #4caf50;
+    color: rgb(126,165,190);
     cursor: pointer;
   }
   span:hover {
-    color: #04aa6d;
+    color:rgba(126,165,190,0.9);
   }
 `;
 

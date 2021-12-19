@@ -262,7 +262,7 @@ module.exports = class ApiCourse {
             let { page } = req.query;
             let userCourse = await UserCourseService.getScoreByCourseId(id, req.params.courseId);
 
-            let topics = pagination(userCourse, page);
+            let topics = pagination(userCourse, page, 5);
 
             res.status(200).json({
                 error: false,

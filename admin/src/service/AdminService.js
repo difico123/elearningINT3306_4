@@ -17,8 +17,8 @@ async function login({ email, password }) {
   return data;
 }
 
-async function getCourseList(page) {
-  return await http.get(apiEndpoint + `/listCourses/?page=${page}`);
+async function getCourseList() {
+  return await http.get(apiEndpoint + `/listCourses`);
 }
 async function getUserList(page) {
   return await http.get(apiEndpoint + `/listUsers/?page=${page}`);

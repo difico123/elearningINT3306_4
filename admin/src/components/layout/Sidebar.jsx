@@ -44,18 +44,22 @@ function Sidebar({ user }) {
     </SideBar>
   );
 }
+
 const SideBar = styled.div`
   display: flex;
   flex-flow: column nowrap;
-  background-color: #EEE;
   height: 100%;
-  border: 2px solid;
   a {
     padding: 10px 1.5rem;
-    background: linear-gradient(to left, #EEE 50%, #039be5 50%) right;
+    background: linear-gradient(to left, #FFF 50%, #039be5 50%) right;
+    background: white;
     background-size: 200%;
     transition: 0.471s ease-out;
     color: black;
+    text-decoration: none;
+    p {
+      font-size: 1.4rem;
+    }
   }
   a:hover {
     cursor: pointer;

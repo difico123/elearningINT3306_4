@@ -3,33 +3,37 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import auth from "../../service/AdminService";
 import { LockIcon, EmailIcon } from '../common/icons'
-
+import Loader from "../common/loader"
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState([]);
   const [isError, setIsError] = useState("");
+  const [isLoading, setLoading] = useState(false);
 
-  const signin = (e) => {
+  const loading = <WrapLoader><Loader/></WrapLoader>
+
+  const signin = async(e) => {
     e.preventDefault();
     let user = {
       email,
       password,
     };
-    console.log(user)
-    auth
+    setLoading(true)
+    await auth
       .login(user)
       .then((data) => {
         setIsError(data.error);
         console.log(data)
-        window.location = '/'
+        window.location = '/users'
       })
       .catch((err) => {
         console.log(err.response)
         setIsError(err.response.data.error);
         setErrorMsg(err.response.data.msg);
       });
+      setLoading(false)
   };
 
   const renderErrors = errorMsg.map((value, index) => (
@@ -64,15 +68,17 @@ function LoginForm() {
               }}
             ></input>
           </Field>
-          {isError ? renderErrors : ""}
           <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
+          {isLoading? loading : (isError ? renderErrors : "")}
         </Form>
-
       </Container>
     </Wrap>
   );
 }
-
+const WrapLoader = styled.div`
+  display: flex;
+  justify-content: center;
+`
 const Wrap = styled.div`
   display: flex;
   align-items: center;
@@ -82,11 +88,12 @@ const Wrap = styled.div`
 
 const Container = styled.div`
   width: 500px;
+  min-height: 50vh;
+  border-radius: 5px;
   padding: 50px 50px;
-  margin: 50px 0;
+  margin: 70px 0;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-flow: column wrap;
   background-color: #f9f9f9;
   gap: 40px;

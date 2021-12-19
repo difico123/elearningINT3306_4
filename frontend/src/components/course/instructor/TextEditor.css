@@ -93,6 +93,25 @@
     display: none;
   }
 } 
+.ql-indent-1{
+  margin-left: 3rem;
+}
+
+.ql-indent-3{
+  margin-left: 9rem;
+}
+.ql-indent-2{
+  margin-left: 6rem;
+}
+.ql-align-center{
+  text-align: center;
+}
+blockquote{
+  border-left: solid saddlebrown;
+  padding-left: 1rem;
+  background-color:rgba(150, 135, 124,0.2);
+  font-size: 1.2rem;
+}
 .rdw-editor-main {
   background-color: #f5f6f9;
   border: 1px solid#eee;

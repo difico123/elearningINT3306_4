@@ -158,7 +158,6 @@ function Course() {
       setLoading(false);
     });
   };
-  console.log(category, "abc");
   return (
     <Container>
       <WrapTitle>
@@ -379,7 +378,8 @@ const LeftNav = styled.div`
   flex-direction: column;
   background-color: #f7f9fa;
   justify-content: space-between;
-  border: 4px solid black;
+  box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+  border-radius: 5px;
   height: fit-content;
   gap: 2rem;
 `;
@@ -411,6 +411,7 @@ const Courses = styled.div`
 `;
 
 const Wrap = styled.div`
+
   width: 17vw;
   background-color: #f7f9fa;
   border: 3px solid rgba(5, 5, 5, 0.1);
@@ -425,6 +426,8 @@ const Wrap = styled.div`
     border-color: rgba(5, 5, 5, 0.314);
   }
   padding: 0 5px;
+  box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+border-radius: 5px;
 `;
 
 const CourseImage = styled.img`
@@ -461,6 +464,7 @@ const CourseInfo = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+
 `;
 
 const CourseRating = styled.div`
@@ -478,8 +482,9 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+  border-radius: 5px;
   width: 900px;
-  border: 2px solid black;
   cursor: pointer;
   padding: 8px 25px;
   cursor: text;

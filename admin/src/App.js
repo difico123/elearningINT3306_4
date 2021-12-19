@@ -19,8 +19,8 @@ function App() {
         setLoading(false)
       });
     })()
-
   }, [])
+  
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       <div className="App">

@@ -36,6 +36,7 @@ function CourseRouter() {
   const [course, setCourse] = useState({});
   const [topics, setTopics] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
     courseService.getInstructorCourseDetails(id).then((response) => {
       setCourse(response.course);

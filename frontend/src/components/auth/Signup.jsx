@@ -54,9 +54,9 @@ function SignUpForm() {
 
   return (
     <Wrap>
+      <WrapContainer>
       <Container>
         <Title>Gia nhập với chúng tôi!</Title>
-
         <Form autocomplete="off">
           <Field>
             <MailIcon className="Icon"></MailIcon>
@@ -145,6 +145,7 @@ function SignUpForm() {
           </Link>
         </RedirectLogIn>
       </Container>
+      </WrapContainer>
     </Wrap>
   );
 }
@@ -152,15 +153,20 @@ function SignUpForm() {
 const Wrap = styled.div`
   min-height: calc(100vh - 94px);
   padding: 5vh 25vw;
-  background-image: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-english-winter-vacation-training-background-image_186800.jpg");
+  background-image: url("https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/263406913_1269721300171380_2651181040426319644_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=LAxFfuZjmogAX_0-U6C&_nc_ht=scontent.fhan5-10.fna&oh=03_AVLMZ0OkMryY6gA6LdG8ajpih8DuclSzSoUXx8xuu6-RVA&oe=61E469D3");
   background-repeat: no-repeat;
   background-size:100vw 90vh ;
 `;
 
+const WrapContainer = styled.div`
+  height:100%;
+  margin: 1rem 0 0 -10rem;
+`
+
 const Container = styled.div`
-  width: 100%;
-  padding: 5vh 3vw;
+  padding: 2vh 1rem;
   display: flex;
+  width: 30rem;
   align-items: center;
   flex-flow: column wrap;
   background-size: cover;
@@ -232,7 +238,7 @@ const Field = styled.div`
 `;
 
 const SubmitButton = styled.button`
-  background-color: #4caf50;
+  background-color: rgb(126,165,190);
   height: 40px;
   font-weight: bold;
   color: white;
@@ -241,7 +247,7 @@ const SubmitButton = styled.button`
   &:hover {
     border: transparent;
     color: white;
-    background-color: #04aa6d;
+    background-color: rgba(126,165,190,0.9);
   }
 `;
 
@@ -249,14 +255,14 @@ const RedirectLogIn = styled.div`
   text-align: center;
   padding: 15px 0;
   font-size: 16px;
-  color: #4caf50;
+  color: rgb(126,165,190);
   span {
     font-weight: bold;
-    color: #4caf50;
+    color: rgb(126,165,190);
     cursor: pointer;
   }
   span:hover {
-    color: #04aa6d;
+    color: rgba(126,165,190,0.9);
   }
 `;
 

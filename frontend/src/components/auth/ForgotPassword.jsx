@@ -46,33 +46,35 @@ function ForgotPassword() {
 
   return (
     <Wrap>
-      <Container>
-        <Title>Khôi phục lại mật khẩu</Title>
-        <Form>
-          <Field>
-            <MailIcon></MailIcon>
-            <input
-              type="email"
-              id="email"
-              name="emailForgot"
-              placeholder="Địa chỉ Email...."
-              onChange={(e) => {
-                setEmailForgot(e.target.value);
-              }}
-            ></input>
-          </Field>
-          {renderLoaderMsg}
-          {renderButton}
-          <Redirect>
-            Không có tài khoản? Tạo mới 
-            <Link to="/auth/signup"> Đăng Ký</Link>
-          </Redirect>
-          <Redirect>
-            Đã có tài khoản? 
-            <Link to="/auth/login"> Đăng nhập</Link>
-          </Redirect>
-        </Form>
-      </Container>
+        <WrapContainer>
+        <Container>
+          <Title>Khôi phục lại mật khẩu</Title>
+          <Form>
+            <Field>
+              <MailIcon></MailIcon>
+              <input
+                type="email"
+                id="email"
+                name="emailForgot"
+                placeholder="Địa chỉ Email...."
+                onChange={(e) => {
+                  setEmailForgot(e.target.value);
+                }}
+              ></input>
+            </Field>
+            {renderLoaderMsg}
+            {renderButton}
+            <Redirect>
+              Không có tài khoản? Tạo mới 
+              <Link to="/auth/signup"> Đăng Ký</Link>
+            </Redirect>
+            <Redirect>
+              Đã có tài khoản? 
+              <Link to="/auth/login"> Đăng nhập</Link>
+            </Redirect>
+          </Form>
+        </Container>
+      </WrapContainer>
     </Wrap>
   );
 }
@@ -81,8 +83,8 @@ export default ForgotPassword;
 
 const Wrap = styled.div`
   min-height: calc(100vh - 94px);
-  padding: 10vh 35vw;
-  background-image: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-english-winter-vacation-training-background-image_186800.jpg");
+  padding: 5vh 35vw;
+  background-image: url("https://scontent.fhan5-10.fna.fbcdn.net/v/t1.15752-9/263406913_1269721300171380_2651181040426319644_n.png?_nc_cat=101&ccb=1-5&_nc_sid=ae9488&_nc_ohc=LAxFfuZjmogAX_0-U6C&_nc_ht=scontent.fhan5-10.fna&oh=03_AVLMZ0OkMryY6gA6LdG8ajpih8DuclSzSoUXx8xuu6-RVA&oe=61E469D3");
   background-repeat: no-repeat;
   background-size:100vw 90vh ;
 `;
@@ -91,6 +93,7 @@ const Container = styled.div`
   width: 100%;
   padding: 5vh 3vw;
   display: flex;
+  width: 30rem;
   align-items: center;
   flex-flow: column wrap;
   gap: 2.5vh;
@@ -100,6 +103,12 @@ const Container = styled.div`
   border-radius: 18px;
   background-color:white;
 `;
+
+const WrapContainer = styled.div`
+  height:100%;
+  margin: 1rem 0 0 -10rem;
+`
+
 const Title = styled.div`
   font-weight: bold;
   font-size: 15px;

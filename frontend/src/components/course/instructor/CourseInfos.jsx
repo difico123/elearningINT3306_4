@@ -64,7 +64,7 @@ function EditCourseInfos({ courseParam, topicsParam }) {
   const handleDeletePopup = (e) => {
     e.stopPropagation();
     setModelToggle(true);
-    setToggle(-1);
+    // setToggle(-1);
   };
 
   const handleDelete = (e) => {
@@ -74,7 +74,6 @@ function EditCourseInfos({ courseParam, topicsParam }) {
           setToastList([showToast("success", "Thông báo!", "Xoá thành công!")]);
           setToggle(-1);
           setModelToggle(false);
-
           setTopics(topics.filter((item) => item.id !== toggle));
           setTopicId(topics[0] ? topics[0].id : -1);
         })

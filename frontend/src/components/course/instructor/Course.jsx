@@ -232,6 +232,8 @@ const Wrap = styled.div`
     transform: scale(0.975);
     border-color: rgba(5, 5, 5, 0.314);
   }
+     box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
 `;
 
 const CourseImage = styled.img`
@@ -301,6 +303,8 @@ const CreateButton = styled.button`
     color: white;
     background-color: #04aa6d;
   }
+  box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+  border-radius: 5px;
 `;
 
 const SuspendButton = styled.button`
@@ -356,7 +360,6 @@ const SearchBar = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 900px;
-  border: 2px solid black;
   cursor: pointer;
   padding: 8px 25px;
   cursor: text;
@@ -379,6 +382,8 @@ const SearchBar = styled.div`
   input:focus {
     outline: none;
   }
+  box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+  border-radius: 5px;
 `;
 
 const CustomSearch = styled(SearchIcon)``;

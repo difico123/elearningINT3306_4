@@ -214,7 +214,7 @@ function CreateQuestion() {
 
     for (let i = 0; i < answerList.length; i++) {
       answerList[i].isAnswer = false;
-      if (answerList[i].content.length <= 1) {
+      if (answerList[i].content.length <= 10) {
         setErrorMsg("Đáp án có nhiều hơn 10 kí tự");
         return;
       }

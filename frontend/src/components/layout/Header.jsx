@@ -96,8 +96,9 @@ function Header({ user }) {
       <Buttons>
         <Link to={`/usercourses`}>
           <MyCourses>
-            <BooksIcon />
-            Khóa học của tôi
+            {/* <BooksIcon /> */}
+            <BookImg src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/2x/external-book-back-to-school-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"/>
+             Khóa học của tôi
           </MyCourses>
         </Link>
       </Buttons>
@@ -154,7 +155,7 @@ function Header({ user }) {
     <BellWrap>
       <div className="NotifiNum">{notificationNum}</div>
 
-      <NotificationIcon onClick={showNotification} />
+      <BellImg src="https://img.icons8.com/cotton/2x/appointment-reminders.png" onClick={showNotification} />
       <Wrapper style={{ display: !toggleNotification ? "none" : "block" }}>
         <h2>Thông báo</h2>
         <OverLay
@@ -352,6 +353,11 @@ const NotificationIcon = styled(NotificationsIcon)`
   font-size: 3rem !important;
   cursor: pointer;
 `;
+const BellImg = styled.img`
+  font-size: 3rem !important;
+  width: 4rem;
+  cursor: pointer;
+`;
 
 const BellWrap = styled.div`
   position: relative;
@@ -378,7 +384,8 @@ const Nav = styled.div`
   justify-content: space-between;
   position: sticky;
   top: 0;
-  background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
+  // background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
+  background-color: #82ccdd;
   background-size: 22rem 15rem;
   background-repeat: repeat;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
@@ -489,6 +496,8 @@ const Bgheader = styled.div`
 
 `
 const Home = styled.div`
+background-color: white;
+
   display:flex;
   gap: 2px;
   align-items: center;
@@ -517,6 +526,10 @@ const Buttons = styled.div`
   flex-flow; row nowrap;
   gap: 15px;
   align-items: center;
+  a{
+    background-color: white;
+    border-radius: 5px;
+  }
 `;
 const SigninButton = styled.button`
   border: 0.5px solid black;
@@ -534,15 +547,20 @@ const SigninButton = styled.button`
 
 const MyCourses = styled(SigninButton)`
   min-width: 10vw;
+  gap: 5px;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
+
+`;
+const BookImg = styled.img`
+  width: 2rem;
 `;
 
 const SignupButton = styled.button`
   color: white;
-  background-color: black;
+  background-color: rgb(126,165,190);
   font-weight: 600;
   padding: 5px 20px;
   cursor: pointer;

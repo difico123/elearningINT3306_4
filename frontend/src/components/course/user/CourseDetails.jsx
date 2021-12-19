@@ -38,8 +38,8 @@ function CourseDetails({ user }) {
         return (
           <XYZ>
             <div>{topic.title}</div>
-            <div>{topic.quizNum}</div>
-            <div>{topic.total}</div>
+            <div>{topic.quizNum}/ {topic.total}</div>
+            <div>{topic.marks}</div>
           </XYZ>
         );
       })
@@ -84,7 +84,7 @@ function CourseDetails({ user }) {
             <ABC>
               <WrapTable>
                 <div>Chủ đề</div>
-                <div>Số câu hỏi</div>
+                <div>Số câu đúng/Tổng số câu</div>
                 <div>Tổng điểm</div>
               </WrapTable>
               {topicTable}

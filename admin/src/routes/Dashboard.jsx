@@ -11,20 +11,21 @@ function Dashboard({ user }) {
   useEffect(() => {
 
   }, [user])
-  console.log(user)
   return (
-    <Flexin>
-      <LeftSide>
-        <Sidebar user={user} />
-      </LeftSide>
-      <RightSide>
-        <Routes>
-          <Route path="/all" element={<ViewAll />} />
-          <Route path="/users" element={<ViewUsers />} />
-          <Route path="/courses" element={<ViewCourses />} />
-        </Routes>
-      </RightSide>
-    </Flexin>
+    <Container>
+      <Flexin>
+        <LeftSide>
+          <Sidebar user={user} />
+        </LeftSide>
+        <RightSide>
+          <Routes>
+            <Route path="/all" element={<ViewAll />} />
+            <Route path="/users" element={<ViewUsers />} />
+            <Route path="/courses" element={<ViewCourses />} />
+          </Routes>
+        </RightSide>
+      </Flexin>
+    </Container>
   )
 }
 
@@ -32,18 +33,27 @@ const Flexin = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 0;
-  height: 100vh;
+`;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 97vh;
+  border-radius: 5px;
+  background-color: white;
+  overflow-x: hidden;
 `;
 const LeftSide = styled.div`
   position:relative;
   flex: 1.5;
   width: 15vw;
+  height: 90vh;
 `;
 const RightSide = styled.div`
   position: relative;
   flex: 8.5;
-  border: 1px solid black;
   width: 85vw;
+  background-color: white;
 `;
 
 export default Dashboard

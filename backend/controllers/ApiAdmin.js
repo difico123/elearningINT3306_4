@@ -1,6 +1,6 @@
 const cloudinary = require('cloudinary');
 const AdminService = require('../dbService/adminService');
-const { User, Course } = require('../db/models');
+const { User, Course, UserCourse } = require('../db/models');
 const jwt = require('jsonwebtoken');
 const { pagination } = require('../utils/feature');
 const bcrypt = require('bcryptjs');
@@ -102,7 +102,6 @@ module.exports = class ApiAdmin {
     // @desc    get users by admin
     // @access  Private
     static async listUsers(req, res) {
-        let { page } = req.query;
         try {
             let users = await AdminService.getUsers();
             users.map((user) => {
@@ -110,7 +109,6 @@ module.exports = class ApiAdmin {
                     user.imageUrl = user.imageUrl.split(' ')[0];
                 }
             });
-            users = pagination(users, page);
             return res.status(200).json({ error: false, users });
         } catch (error) {
             console.log(error.message);
@@ -123,6 +121,7 @@ module.exports = class ApiAdmin {
     // @access  Private
     static async beInstructor(req, res) {
         try {
+            await UserCourse.destroy({where: {userId: req.params.userId}})
             await User.update({ role: 1 }, { where: { id: req.params.userId } })
                 .then(() => {
                     return res
@@ -135,6 +134,8 @@ module.exports = class ApiAdmin {
                 .catch(() => {
                     return res.status(400).json({ error: true });
                 });
+
+
         } catch (error) {
             console.log(error.message);
             res.status(500).send('Server error');
@@ -161,7 +162,7 @@ module.exports = class ApiAdmin {
     // @desc    get listcourses by admin
     // @access  Private
     static async listCourses(req, res) {
-        let { page } = req.query;
+        // let { page } = req.query;
         try {
             let courses = await AdminService.getCourses();
             courses.map((course) => {
@@ -172,7 +173,7 @@ module.exports = class ApiAdmin {
                     course.avt = course.avt.split(' ')[0];
                 }
             });
-            courses = pagination(courses, page);
+            // courses = pagination(courses, page);
             return res.status(200).json({ error: false, courses });
         } catch (error) {
             console.log(error.message);
