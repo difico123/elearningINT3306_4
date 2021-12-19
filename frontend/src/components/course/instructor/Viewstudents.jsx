@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useParams, Navigate } from "react-router-dom";
 import CourseService from "../../../service/courseService";
 import Loader from "../../common/loader";
-import { MoreVertIcon, SearchIcon } from "../../common/icons";
+import { MoreVertIcon, SearchIcon,AccountCircleIcon } from "../../common/icons";
 import Popup from "../../common/popup";
 import Toast from "../../common/toast"
 import showToast from "../../../dummydata/toast"
@@ -65,11 +65,14 @@ function ViewStudents() {
     const content = getUsers.length == 0 ? <p className='text-center mt-1'>Không có học viên nào</p> : getUsers.map((user, index) => (
         <Wrap key={index}>
             <div>{(6 * (currentPage - 1)) + (index + 1)}</div>
-            <div>{user.studentName}</div>
+            <ImgNameWrap className="flex">
+                {user.imageUrl? <Img src={user.imageUrl} alt="" />:<AccountCircleIcon/>}
+                <span>{user.studentName}</span>
+            </ImgNameWrap>
             <div>{user.email}</div>
             <div>{user.phoneNumber}</div>
             <div>{user.address}</div>
-            <div>{user.marks}</div>
+            <div>{user.marks? user.marks: 0}</div>
             <div className="dropdown" >
                 <MoreVertIcon onClick={handleDropDown}/>
                 <span className="dropdown-content">
@@ -190,6 +193,8 @@ function ViewStudents() {
 
 
 export default ViewStudents;
+const ImgName = styled.div`
+`
 const Wrapper = styled.div`
     margin: 1rem;
   
@@ -259,7 +264,19 @@ const Div = styled.div`
         width: 10%;
     }
 `
-
+const Img = styled.img` 
+    width: 2rem;
+    height: 2rem;
+    border-radius:50%;
+`
+const ImgNameWrap = styled.div` 
+    display:flex;
+    gap: 1rem;
+    svg{
+        width: 2rem;
+        height: 2rem;
+    }
+`
 const Wrap = styled.div`
     display: flex; 
     flex-nowrap: wrap;
@@ -268,6 +285,8 @@ const Wrap = styled.div`
     border-left: solid;
     border-right: solid;
     div{
+        display: flex;
+        align-items:center;
         padding: 1rem;
     }
     div:nth-child(1) {

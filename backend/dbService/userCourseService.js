@@ -2,15 +2,23 @@ const { sequelize } = require('../db/models');
 const { QueryTypes } = require('sequelize');
 
 module.exports = class UserCourseService {
-    static async getUsersbyCourseId(id) {
+    static async getUsersbyCourseId(courseId) {
         try {
             const response = await sequelize.query(
-                `select uc.userId, concat(u.firstName," ",u.lastName)as studentName , u.imageUrl, uc.rating, uc.marks,
-                u.email, u.phoneNumber, u.address from usercourses uc 
-                join users u on u.id = uc.userId 
-                where uc.courseId = ?`,
+                `select uc.userId,concat(u.firstName, " ", u.lastName) as studentName, u.imageUrl, u.email, u.phoneNumber,u.address, m.marks  from usercourses uc 
+                left join (select uq.userId, sum(qu.marks) 
+                as marks from userquestions uq 
+                join choices ch on ch.id = uq.choiceId
+                join questions qu on qu.id = uq.questionId
+                join quizzes qi on qu.quizId = qi.id
+                join topics ts on ts.id = qi.topicId
+                join courses cs on cs.id = ts.courseId
+                where ch.isAnswer = 1 and cs.id = ${courseId}
+                group by uq.userId) as m on uc.userId = m.userId 
+                join users u on u.id = uc.userId
+                where uc.courseId = ${courseId};`,
                 {
-                    replacements: [id],
+                    replacements: [],
                     type: QueryTypes.SELECT,
                 },
             );
@@ -23,7 +31,8 @@ module.exports = class UserCourseService {
         let queryStr = keyword? `and c.name like '%${keyword}%'`: ""
         try {
             const response = await sequelize.query(
-                `SELECT c.id as courseId, c.name, uc.isComplete, uc.marks, c.instructorId , c.imageUrl,
+                `SELECT c.id as courseId, c.name, c.instructorId , c.imageUrl,
+                u.phoneNumber,
                 concat(u.firstName," ", u.lastName) as fullName, u.email , 
                 DATE_FORMAT(uc.dateAdded, "ngày %d tháng %m năm %Y") as enrollDate 
                 FROM usercourses uc join courses c on c.id = uc.courseId 

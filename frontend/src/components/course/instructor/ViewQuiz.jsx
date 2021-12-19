@@ -28,7 +28,7 @@ function ViewStudents() {
 
   const chooseTopic = topics.map((v, index) => (
     <option value={v.id} key={index}>
-      {v.title}
+      {v.title} 
     </option>
   ));
 

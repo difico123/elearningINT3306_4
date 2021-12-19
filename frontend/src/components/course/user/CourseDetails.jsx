@@ -36,24 +36,11 @@ function CourseDetails({ user }) {
     ) : (
       topics.map((topic, index) => {
         return (
-          <>
-          <tr>
-              <td class="p-2 whitespace-nowrap">
-                  <div class="flex items-center">
-                      <div class="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
-                        <img src="https://raw.githubusercontent.com/cruip/vuejs-admin-dashboard-template/main/src/images/user-36-05.jpg" alt="" />
-                        </div>
-                      <div class="font-medium text-gray-800">{topic.title}</div>
-                  </div>
-              </td>
-              <td class="p-2 whitespace-nowrap">
-                  <div class="text-left">{topic.total}</div>
-              </td>
-              <td class="p-2 whitespace-nowrap">
-                  <div class="text-left font-medium text-green-500">{topic.quizNum}</div>
-              </td>
-          </tr>
-          </>
+          <XYZ>
+            <div>{topic.title}</div>
+            <div>{topic.quizNum}</div>
+            <div>{topic.total}</div>
+          </XYZ>
         );
       })
     );
@@ -87,43 +74,21 @@ function CourseDetails({ user }) {
             <ImgWrap>
               <EnrollImg>
                 <img src={course.imageUrl} alt="abc" />
-                <Link to="/category/3/course/4">
+                <Link to={`/category/${course.categoryId}/course/${course.id}`}>
                   <Enroll>Vào ngay</Enroll>
                 </Link>
               </EnrollImg>
             </ImgWrap>
           </WrapCourse>
           <ContainerWrap>
-            <WrapTable>
-              <section class="flex flex-col justify-center antialiased bg-gray-100 text-gray-600 ">
-                <div class="h-full">
-                    <div class="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
-                        <div class="p-3">
-                            <div class="overflow-x-auto">
-                                <table class="table-auto w-full">
-                                    <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
-                                        <tr>
-                                            <th class="p-2 whitespace-nowrap">
-                                                <div class="font-semibold text-left">Name</div>
-                                            </th>
-                                            <th class="p-2 whitespace-nowrap">
-                                                <div class="font-semibold text-left">Email</div>
-                                            </th>
-                                            <th class="p-2 whitespace-nowrap">
-                                                <div class="font-semibold text-left">Spent</div>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-sm divide-y divide-gray-100">
-                                        {topicTable}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            </WrapTable>
+            <ABC>
+              <WrapTable>
+                <div>Chủ đề</div>
+                <div>Số câu hỏi</div>
+                <div>Tổng điểm</div>
+              </WrapTable>
+              {topicTable}
+            </ABC>
             <WrapRank>
               <Leaderboard>
                 <LBTitle>Đại lộ danh vọng</LBTitle>
@@ -191,9 +156,9 @@ const Container = styled.div`
 `;
 const ContainerWrap = styled.div`
   display: flex;
+  padding: 4vh 4vw;
+  width: 100%;
 `;
-
-const TitleContent = styled.div``;
 
 const WrapCourse = styled.div`
   background-color: #1c1d1f;
@@ -238,7 +203,6 @@ const Enroll = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
   padding: 1.2vh 0;
   transition: 0.4s ease 0s;
   &:hover {
@@ -247,24 +211,55 @@ const Enroll = styled.button`
 `;
 
 const WrapRank = styled.div`
-  border: solid black;
-  width: 100%;
-  margin-top: 3rem;
   height: 100%;
+  width: 20vw;
   display: flex;
-  justify-content: center;
-  flex: 3;
+  justify-content: flex-end;
+  flex: 2;
 `;
 const WrapTable = styled.div`
-  border: solid black;
-  width: 100%;
-  background-color: blue;
-  height: 100%;
-  flex: 4;
+  display: flex;
+  background: white;
+  border-bottom: 2.5px solid grey;
+  div {
+    padding: 1rem;
+    font-weight: 600;
+  }
+  div:nth-child(1) {
+    width: 60%;
+  }
+  div:nth-child(2) {
+    width: 20%;
+    text-align: end;
+  }
+  div:nth-child(3) {
+    width: 20%;
+    text-align: end;
+  }
+`;
+
+const XYZ = styled.div`
+  display: flex;
+  background: white;
+  border-bottom: 1px solid grey;
+  div {
+    padding: 1rem;
+  }
+  div:nth-child(1) {
+    width: 60%;
+  }
+  div:nth-child(2) {
+    width: 20%;
+    text-align: end;
+  }
+  div:nth-child(3) {
+    width: 20%;
+    text-align: end;
+  }
 `;
 
 const Leaderboard = styled.div`
-  width: 20vw;
+  width: 18vw;
   border-top: 1px solid black;
   display: flex;
   flex-direction: column;
@@ -371,14 +366,12 @@ const InstructorInfos = styled.div`
   gap: 1.5rem;
 `;
 
-const TopicContent = styled.div`
+const ABC = styled.div`
   display: flex;
-  flex-flow: row nowrap;
-  gap: 100px;
+  flex-flow: column nowrap;
+  width: 70vw;
+  flex: 4;
+  padding: 2vh 2vw 4vh;
+  background-color: white;
+  border-radius: 14px;
 `;
-
-const TopicTitle = styled.div``;
-
-const TopicTotal = styled.div``;
-
-const TopicQuiz = styled.div``;

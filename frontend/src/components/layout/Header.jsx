@@ -266,7 +266,7 @@ function Header({ user }) {
     <Nav>
       <Home>
         <Link to={`/`}>
-          <HomeIcon />
+        <Bgheader></Bgheader>
           <div>Trang chủ</div>
         </Link>
       </Home>
@@ -479,12 +479,23 @@ const Wrap = styled.div`
     box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
   }
 `;
+const Bgheader = styled.div`
+  height: 3rem;
+  width: 3rem;
+  background-image: url('https://library.kissclipart.com/20180930/zxe/kissclipart-icons-for-e-learning-clipart-computer-icons-educat-a2d7eebed7940575.png');
+  background-position: center; 
+  background-repeat: no-repeat;
+  background-size: cover;
 
+`
 const Home = styled.div`
+  display:flex;
+  gap: 2px;
+  align-items: center;
   a {
     display: flex;
     flex-flow: row nowrap;
-    padding: 1vh 1vw;
+    padding: 0.1rem 0.5rem;
     border-radius: 3px;
     border: 1px solid black;
     gap: 10px;
@@ -492,7 +503,7 @@ const Home = styled.div`
     transition: 0.25s ease;
   }
   a:hover {
-    transform: scale(1.02);
+    transform: scale(1.03);
   }
   div {
     font-weight: 500;

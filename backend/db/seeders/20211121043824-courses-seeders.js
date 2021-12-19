@@ -21,7 +21,7 @@ module.exports = {
                     categoryId: 1,
                     instructorId: 3,
                     imageUrl:
-                        'https://res.cloudinary.com/subarashis/image/upload/v1637942350/courses/qabh0ih5xcywmjqaw8vh.jpg courses/qabh0ih5xcywmjqaw8vh',
+                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
                     verified: 1,
                 },
                 {
@@ -30,7 +30,7 @@ module.exports = {
                     categoryId: 2,
                     instructorId: 3,
                     imageUrl:
-                        'https://res.cloudinary.com/subarashis/image/upload/v1637942365/courses/zqnillptfnvrqsht5wan.jpg courses/zqnillptfnvrqsht5wan',
+                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
                     verified: 1,
                 },
                 {

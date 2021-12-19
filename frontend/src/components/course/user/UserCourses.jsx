@@ -7,6 +7,7 @@ import {
   ArrowBackIosIcon,
   ArrowForwardIosIcon,
   SearchIcon,
+  LocalPhoneIcon
 } from "../../common/icons";
 
 function UserCourses() {
@@ -18,13 +19,12 @@ function UserCourses() {
       fullName: "",
       imageUrl: "",
       instructorId: "",
-      isComplete: "",
-      marks: "",
       name: "",
     },
   ]);
   const [keyword, setKeyword] = useState("");
   const [change, setChange] = useState(false);
+
 
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,14 +47,10 @@ function UserCourses() {
             {course.fullName}
           </CourseCategory>
           <CourseEmail>
-            <span>Email: </span> {course.email}
+          <ImgIcon></ImgIcon><span>Email: {course.email}</span> 
           </CourseEmail>
           <Course>
-            <div>{course.isComplete ? "Hoàn thành" : "Chưa hoàn thành"}</div>
-            <div>
-              <span>Điểm: </span>
-              {course.marks}
-            </div>
+            <div><LocalPhoneIcon/> Liên hệ: <span>{course.phoneNumber}</span></div>
           </Course>
           <CourseInfo>
             <CourseDateAdded>Ngày đăng ký: {course.enrollDate}</CourseDateAdded>
@@ -293,6 +289,9 @@ const CourseCategory = styled.div`
 `;
 
 const CourseEmail = styled.div`
+  display: flex;
+  gap: 2px;
+  align-items: center;
   font-weight: 400;
   height: 2rem;
   overflow: hidden;
@@ -304,7 +303,7 @@ const CourseEmail = styled.div`
 `;
 const Course = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   font-weight: 400;
   height: 2rem;
   overflow: hidden;
@@ -319,6 +318,15 @@ const CourseDateAdded = styled.div`
   position: relative;
   font-size: 0.7rem;
   margin: 0.3rem 0;
+`;
+
+const ImgIcon = styled.div`
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Circle-icons-mail.svg/2048px-Circle-icons-mail.svg.png');
+  width: 1.7rem;
+  height: 1.7rem;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
 `;
 
 const Title = styled.span`

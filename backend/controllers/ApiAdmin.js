@@ -148,7 +148,7 @@ module.exports = class ApiAdmin {
         try {
             AdminService.getStatistic().then((data) => {
                 return res
-                    .status(400)
+                    .status(200)
                     .json({ error: false, statistic: data[0] });
             });
         } catch (error) {
