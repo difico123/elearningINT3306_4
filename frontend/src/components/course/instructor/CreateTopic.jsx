@@ -4,9 +4,10 @@ import EditorToolbar, { modules, formats } from "./EditorToolbar";
 import {CourseImgIcon} from '../../common/icons'
 import styled from "styled-components";
 import "react-quill/dist/quill.snow.css";
+
 import "./TextEditor.css";
 import CourseService from "../../../service/courseService";
-import {useParams} from 'react-router-dom'
+import {useParams,Link} from 'react-router-dom'
 import Loader from '../../common/loader'
 import Toast from '../../common/toast'
 import showToast from '../../../dummydata/toast'
@@ -65,7 +66,7 @@ function CreateTopic() {
 return ( 
 <>
     <Container>
-      <Title><span>Tạo Topic mới</span> </Title>
+    <Link to="./"><Title>Tạo topic mới</Title></Link>
       <CreateCourseForm>
         <Wrap>
         <div className="App">
@@ -143,9 +144,14 @@ const Container = styled.div`
   overflow: auto;
 `;
 
-const Title = styled.div`
-  font-size: 1.75rem;
-  font-weight: bold;
+const Title = styled.span`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
+    background-color: white;
+    color: #3b5990;
 `;
 
 const CreateCourseForm = styled.form`

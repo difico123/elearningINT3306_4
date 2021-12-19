@@ -17,8 +17,9 @@ function checkInstructorEnroll(courseId) {
   return http.get(apiEndpoint + `/checkInstructor/${courseId}`);
 }
 
-function getAll(page = 1) {
-  return http.get(apiEndpoint + `/all?page=${page}`);
+function getAll(keyword, page = 1) {
+  keyword = !keyword ? "" : `&keyword=${keyword}`;
+  return http.get(apiEndpoint + `/all?page=${page}${keyword}`);
 }
 
 function Rate(courseId, rating) {
@@ -27,6 +28,12 @@ function Rate(courseId, rating) {
 function getRating(courseId) {
   return http.get(apiEndpoint + `/getRating/${courseId}`);
 }
+function getCourseDetails(courseId) {
+  return http.get(apiEndpoint + `/${courseId}`);
+}
+function showCourseScore(courseId,page=1) {
+  return http.get(apiEndpoint + `/all/${courseId}?page=${page}`);
+}
 export default {
   enrollCourse,
   checkEnrollCourse,
@@ -34,5 +41,7 @@ export default {
   getAll,
   checkInstructorEnroll,
   Rate,
-  getRating
+  getRating,
+  getCourseDetails,
+  showCourseScore
 };

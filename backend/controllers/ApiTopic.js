@@ -87,7 +87,6 @@ module.exports = class ApiTopic {
             })
                 .then(async(quizIds) => {
 
-
                     for(let i = 0; i < quizIds.length; i++) {
                         let quiz = await QuizService.isAvailableQuestion(quizIds[0].id,req.user.id)
             

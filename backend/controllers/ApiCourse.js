@@ -356,14 +356,17 @@ module.exports = class ApiCourse {
 
             await UserCourseService.getUsersbyCourseId(courseId).then(
                 (data) => {
+                    for(let i = 0; i < data.length; i++) {
+                        if (data[i].imageUrl) {
+                            data[i].imageUrl = data[i].imageUrl.split(' ')[0];
+                        }
+                    }
                     let users = pagination(data, page, 6);
                     return res.status(200).json({
                         error: false,
                         course: course,
                         users,
                         currentPage: page || 1,
-                        filteredUsers: users.length,
-                        total: data.length,
                     });
                 },
             );

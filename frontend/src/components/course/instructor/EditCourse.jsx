@@ -7,6 +7,7 @@ import Loader from "../../common/loader";
 import Toast from "../../common/toast";
 import toastList from "../../../dummydata/toast";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 function EditCourseContent({ courseParam }) {
   console.log(courseParam);
@@ -94,7 +95,7 @@ function EditCourseContent({ courseParam }) {
 
   return (
     <Container>
-      <Title>Chỉnh sửa khóa học</Title>
+      <Link to="./"><Title>Chỉnh sửa khoá học</Title></Link>
       <CreateCourseForm>
         <Cover>
           <FormTitle>Ảnh khóa học</FormTitle>
@@ -144,9 +145,14 @@ const CourseImage = styled(CourseImgIcon)`
   border: 1px solid green;
 `;
 
-const Title = styled.div`
-  font-size: 1.75rem;
-  font-weight: bold;
+const Title = styled.span`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
+    background-color: white;
+    color: #3b5990;
 `;
 
 const CreateCourseForm = styled.form`

@@ -170,12 +170,16 @@ const Wrap = styled.div`
   height: 100vh;
   display: flex;
   width: 100%;
+  padding: 6vh 6vw;
+  background-image: url("https://img.freepik.com/free-vector/winter-snowfall-snowflakes-light-blue-background-hand-drawn-snow-pattern-doodle-cold-winter-sky-background_548264-144.jpg?size=626&ext=jpg");
+  background-repeat: repeat;
+  background-size: 24rem 16rem;
 `;
 const Container = styled.div`
-  border: 1px solid black;
   width: 100%;
-  background-color: #fff;
   padding: 4vh 4vw;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
 `;
 const Title = styled.div`
   font-size: 25px;
@@ -185,7 +189,7 @@ const Title = styled.div`
 const Form = styled.form`
   display: flex;
   flex-flow: column nowrap;
-  padding: 0 10vw;
+  padding: 0 7vw;
   gap: 1rem;
 `;
 const UserDetails = styled.div`
@@ -203,6 +207,9 @@ const InputBox = styled.div`
     border: 1px solid #ccc;
     padding-left: 15px;
     font-size: 16px;
+  }
+  div {
+    font-weight: bold;
   }
 `;
 
@@ -233,6 +240,9 @@ const FullName = styled.div`
   flex-flow: row wrap;
   justify-content: space-between;
   font-weight: 500;
+  p {
+    font-weight: bold;
+  }
 `;
 
 const Name = styled.div`
@@ -244,6 +254,9 @@ const Name = styled.div`
     border: 1px solid #ccc;
     padding-left: 15px;
     font-size: 16px;
+  }
+  span {
+    font-weight: bold;
   }
 `;
 

@@ -92,7 +92,7 @@ function InstructorCourses() {
   return (
     <React.Fragment>
       <TitleWrap>
-        <Title>Trang các khóa học của bạn</Title>
+      <Link to="./"><Title>Trang các khóa học của bạn</Title></Link>
         <SearchBar>
           <input
             value={keyword}
@@ -335,9 +335,14 @@ const ActivateButton = styled.button`
         background-color: #04aa6d;
 `;
 
-const Title = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
+const Title = styled.span`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
+    background-color: white;
+    color: #3b5990;
 `;
 
 const TitleWrap = styled.div`

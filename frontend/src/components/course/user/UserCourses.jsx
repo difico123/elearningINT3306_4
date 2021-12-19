@@ -6,7 +6,7 @@ import UserCourseService from "../../../service/userCourseService";
 import {
   ArrowBackIosIcon,
   ArrowForwardIosIcon,
-  CheckIcon,
+  SearchIcon,
 } from "../../common/icons";
 
 function UserCourses() {
@@ -23,6 +23,7 @@ function UserCourses() {
       name: "",
     },
   ]);
+  const [keyword, setKeyword] = useState("");
   const [change, setChange] = useState(false);
 
   const [page, setPage] = useState(1);
@@ -33,9 +34,9 @@ function UserCourses() {
     });
   }, [change]);
 
-  const content = getCourses.map((course, index) => (
+  const content = getCourses.length === 0 ? (<NoContent >không có khoá học nào</NoContent>) : getCourses.map((course, index) => (
     <Wrap key={index}>
-      <Link to={`/`}>
+      <Link to={`/usercourses/${course.courseId}`}>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <WrapItems>
           <CourseTitle>{course.name}</CourseTitle>
@@ -64,17 +65,32 @@ function UserCourses() {
   ));
 
   const pageClick = async (e) => {
-    // let page = Number(e.target.value)
-    // setCurrentPage(page);
-    // UserCourseService.getAll(page).then((response) => {
-    //     setCourses(response.courses);
-    // });
+    let page = Number(e.target.value)
+    setCurrentPage(page);
+    UserCourseService.getAll(keyword,page).then((response) => {
+        setCourses(response.courses);
+    });
   };
-
+  const searchByKeyword = async (e) => {
+    await UserCourseService.getAll(e.target.value,currentPage).then((data) => {
+      setCourses(data.courses);
+      setKeyword(e.target.value);
+    });
+  };
   return (
     <React.Fragment>
       <TitleWrap>
-        <Title>Trang các khóa học của bạn</Title>
+      <Link to="./"><Title>Trang các khóa học của bạn</Title></Link>
+        <SearchBar>
+          <input
+            onChange={searchByKeyword}
+            type="text"
+            placeholder="Tìm kiếm khóa học..."
+          />
+          <button type="submit">
+          <SearchIcon />
+          </button>
+        </SearchBar>
       </TitleWrap>
       <Container>
         <Content>
@@ -138,7 +154,35 @@ function UserCourses() {
     </React.Fragment>
   );
 }
-
+const SearchBar = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 900px;
+  border: 2px solid black;
+  cursor: pointer;
+  padding: 8px 25px;
+  cursor: text;
+  font-weight: lighter;
+  background-color: white;
+  input {
+    padding-left: 10px;
+    border: none;
+    width: 90%;
+    autocomplete: off;
+    font-size: 15px;
+    font-weight: lighter;
+  }
+  button {
+    cursor: pointer;
+    border: none;
+    background: transparent;
+  }
+  textarea:focus,
+  input:focus {
+    outline: none;
+  }
+`;
 const Pagination = styled.div`
   display: flex;
   flex-direction: row;
@@ -165,27 +209,32 @@ const Pagination = styled.div`
     background-color: lightblue;
   }
 `;
+const NoContent = styled.span`
+  position: absolute;
+  margin: 0 auto;
+`;
 const Container = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   gap: 30px;
   align-items: center;
-  margin-bottom: 5rem;
-  padding: 0 12vw;
 `;
 
 const Content = styled.div`
   display: flex;
   flex-flow: row nowrap;
   gap: 50px;
+  height:100vh;
 `;
 
 const Courses = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 50px;
+  height:20rem;
 `;
+
 
 const Wrap = styled.div`
   position: relative;
@@ -272,15 +321,20 @@ const CourseDateAdded = styled.div`
   margin: 0.3rem 0;
 `;
 
-const Title = styled.div`
-  font-size: 1.5rem;
-  font-weight: bold;
+const Title = styled.span`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
+    background-color: white;
+    color: #3b5990;
 `;
 
 const TitleWrap = styled.div`
   padding: 5vh 5vw;
   display: flex;
-  justify-content: space-between;
+  gap: 20rem;
 `;
 
 export default UserCourses;

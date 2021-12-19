@@ -11,5 +11,4 @@ const { checkAnswerQuestion } = require('../../middleware/passport');
 router.post('/answer/:choiceId', auth, userCourseAuth, ApiUserQuestion.answerQuestion);
 
 
-
 module.exports = router;

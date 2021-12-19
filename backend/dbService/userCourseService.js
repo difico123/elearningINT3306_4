@@ -5,7 +5,7 @@ module.exports = class UserCourseService {
     static async getUsersbyCourseId(id) {
         try {
             const response = await sequelize.query(
-                `select uc.userId, concat(u.firstName," ",u.lastName) as studentName , uc.rating, uc.marks,
+                `select uc.userId, concat(u.firstName," ",u.lastName)as studentName , u.imageUrl, uc.rating, uc.marks,
                 u.email, u.phoneNumber, u.address from usercourses uc 
                 join users u on u.id = uc.userId 
                 where uc.courseId = ?`,
@@ -19,7 +19,8 @@ module.exports = class UserCourseService {
             console.log(error);
         }
     }
-    static async getUserCourses(userId) {
+    static async getUserCourses(userId, keyword) {
+        let queryStr = keyword? `and c.name like '%${keyword}%'`: ""
         try {
             const response = await sequelize.query(
                 `SELECT c.id as courseId, c.name, uc.isComplete, uc.marks, c.instructorId , c.imageUrl,
@@ -27,7 +28,7 @@ module.exports = class UserCourseService {
                 DATE_FORMAT(uc.dateAdded, "ngày %d tháng %m năm %Y") as enrollDate 
                 FROM usercourses uc join courses c on c.id = uc.courseId 
                 join users u on c.instructorId = u.id
-                 WHERE uc.userId = ${userId};`,
+                 WHERE uc.userId = ${userId} ${queryStr}`,
                 {
                     replacements: [],
                     type: QueryTypes.SELECT,
@@ -54,4 +55,45 @@ module.exports = class UserCourseService {
             console.log(error);
         }
     }
+    static async getScoreByCourseId(userId, courseId) {
+        try {
+            const response = await sequelize.query(
+                `select ts.id, ts.title ,sum(qu.marks) as total, count(qu.id) as quizNum from userquestions uq 
+                join choices ch on ch.id = uq.choiceId 
+                join questions qu on uq.questionId = qu.id
+                join quizzes qi on qi.id = qu.quizId
+                join topics ts on ts.id = qi.id
+                where uq.userId = ${userId} and ch.isAnswer = 1 and ch.id = uq.choiceId and ts.courseId = ${courseId}
+                GROUP by ts.id;`,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    static async getCourseDetails(userId, courseId) {
+        try {
+            const response = await sequelize.query(
+                `select c.id, c.name,c.description, c.categoryId,c.imageUrl,
+                concat(u.firstName, " ", u.lastName) as instructorName,
+                u.phoneNumber, u.address
+                from courses c 
+                join categories ca on ca.id = c.categoryId 
+                join users u on u.id = c.instructorId
+                where c.id = ${courseId} `,
+                {
+                    replacements: [],
+                    type: QueryTypes.SELECT,
+                },
+            );
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 };

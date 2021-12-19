@@ -207,10 +207,10 @@ module.exports = class ApiCourse {
     // @access  private
     static async getAll(req, res) {
         try {
-            let { page } = req.query;
+            let { page, keyword } = req.query;
             let { id } = req.user;
 
-            let userCourse = await UserCourseService.getUserCourses(id);
+            let userCourse = await UserCourseService.getUserCourses(id, keyword);
 
             let courses = pagination(userCourse, page);
 
@@ -225,6 +225,48 @@ module.exports = class ApiCourse {
                 courses: courses,
                 filteredCourse: courses.length,
                 totalCourse: userCourse.length,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   Get api/userCourse/all
+    // @desc    get the list of user courses
+    // @access  private
+    static async getSingleCourse(req, res) {
+        try {
+            let course = (await UserCourseService.getCourseDetails(req.user.id, req.params.courseId))[0]
+
+            if (course.imageUrl) {
+                course.imageUrl = course.imageUrl.split(' ')[0];
+            }
+
+            res.status(200).json({
+                error: false,
+                course: course,
+            });
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).send('Server error');
+        }
+    }
+
+    // @route   Get api/userCourse/all
+    // @desc    get the list of user courses
+    // @access  private
+    static async getCourseScore(req, res) {
+        try {
+            let { id } = req.user;
+            let { page } = req.query;
+            let userCourse = await UserCourseService.getScoreByCourseId(id, req.params.courseId);
+
+            let topics = pagination(userCourse, page);
+
+            res.status(200).json({
+                error: false,
+                topics
             });
         } catch (error) {
             console.log(error.message);

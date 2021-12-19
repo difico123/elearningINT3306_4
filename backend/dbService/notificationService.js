@@ -9,7 +9,7 @@ module.exports = class NotificationService {
                 n.viewed, n.isConfirmed,
                 DATE_FORMAT(n.createdAt, "%h:%i:%s' %d/%m/%Y") as sendAt from notifications n
                 join courses c on c.id = n.courseId
-                where c.instructorId = ? and n.type = 0  order by n.createdAt asc`,
+                where c.instructorId = ? and n.type = 0  order by n.id desc`,
                 {
                     replacements: [instructorId],
                     type: QueryTypes.SELECT,

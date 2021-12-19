@@ -323,6 +323,7 @@ const CourseInfos = styled.div`
 const InfoWrap = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  padding: 0 2vw;
 `;
 
 const CourseTitle = styled.div`
@@ -373,8 +374,9 @@ const CourseRating = styled.div`
 `;
 
 const CourseCover = styled.div`
-  padding: 0 8vw;
+  padding: 0 2vw;
   margin: auto;
+  width: 40%;
 `;
 
 const BackgroundImage = styled.img``;
@@ -418,8 +420,7 @@ const TopicWrap = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   right: 0px;
-  width: 100%;
-  min-width: 13vw;
+  width: 15vw;
 `;
 
 const Title = styled.div`
@@ -431,16 +432,14 @@ const Title = styled.div`
   font-size: 1.15rem;
   cursor: pointer;
   transition: 0.471s ease-out;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.7);
+  border-bottom: 1px solid #3a3e47;
   &:hover {
-    background-color: rgba(59, 130, 246, 0.7);
-    border-radius: 5px;
+    background-color: #3a3e47;
     color: white;
     background-position: left;
   }
   &.active {
-    background-color: rgba(59, 130, 246, 0.7);
-    border-radius: 5px;
+    background-color: #3a3e47;
     color: white;
   }
 `;

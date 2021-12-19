@@ -86,15 +86,18 @@ function EditPassword() {
 }
 
 const Wrap = styled.div`
-  height: 90vh;
-  display: flex;
   width: 100%;
+  min-height: 90vh;
+  background-image: url("https://img.freepik.com/free-vector/winter-snowfall-snowflakes-light-blue-background-hand-drawn-snow-pattern-doodle-cold-winter-sky-background_548264-144.jpg?size=626&ext=jpg");
+  background-repeat: repeat;
+  background-size: 24rem 16rem;
+  padding: 8vh 8vw;
 `;
 const Container = styled.div`
-  border: 1px solid black;
-  width: 100%;
-  background-color: #fff;
-  padding: 4vh 4vw;
+  padding: 6vh 4vw;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  margin: 8vh auto;
 `;
 const Title = styled.div`
   font-size: 25px;
@@ -109,6 +112,7 @@ const PW = styled.div`
   label {
     display: block;
     font: 1rem "Fira Sans", sans-serif;
+    font-weight: bold;
   }
   input,
   label {

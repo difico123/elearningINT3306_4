@@ -36,7 +36,7 @@ function Course() {
       register: "",
     },
   ]);
-  
+
   const [getCategoryName, SetCategoryName] = useState([
     {
       id: "",
@@ -66,7 +66,10 @@ function Course() {
   };
 
   const content = getCourses.map((course, index) => (
-    <Link to={`/category/${CategoryParam}/course/${course.courseId}`}  key={index}>
+    <Link
+      to={`/category/${CategoryParam}/course/${course.courseId}`}
+      key={index}
+    >
       <Wrap>
         <CourseImage alt="" src={course.imageUrl}></CourseImage>
         <CourseTitle>{course.name}</CourseTitle>
@@ -133,16 +136,16 @@ function Course() {
 
   const renderCategoryRatio = getCategoryName.map((element, index) => {
     return (
-        <FilterWrap key={index}>
-          <input
-            value={element.id}
-            type="radio"
-            checked={element.id === Number(category)}
-            name="category"
-            onChange={categoryRatio}
-          />
-          <label for={element.name}>{element.name}</label>
-        </FilterWrap>
+      <FilterWrap key={index}>
+        <input
+          value={element.id}
+          type="radio"
+          checked={element.id === Number(category)}
+          name="category"
+          onChange={categoryRatio}
+        />
+        <label for={element.name}>{element.name}</label>
+      </FilterWrap>
     );
   });
 
@@ -155,10 +158,13 @@ function Course() {
       setLoading(false);
     });
   };
-
+  console.log(category, "abc");
   return (
     <Container>
-      <Title>Các khóa học nổi bật về Lập trình</Title>
+      <WrapTitle>
+      <Link to="/"><Title>Danh mục khóa học</Title></Link><Link to="./"><Title>Các khóa học nổi bật</Title></Link>
+      </WrapTitle>
+      
       <SP>
         <SearchBar>
           <input
@@ -167,7 +173,7 @@ function Course() {
             placeholder="Tìm kiếm khóa học..."
           />
           <button type="submit">
-          <CustomSearch />
+            <CustomSearch />
           </button>
         </SearchBar>
         <Pagination>
@@ -339,7 +345,7 @@ const Pagination = styled.div`
 
 const Container = styled.div`
   min-height: 100vh;
-  padding: 40px 5vw 50px;
+  padding: 45px 5vw 50px;
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -347,10 +353,18 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Title = styled.div`
-  font-size: 25px;
-  font-weight: bold;
-  padding-bottom: 10px;
+const WrapTitle = styled.div`
+  display: flex;
+  gap: 10px;
+`
+const Title = styled.span`
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
+    border-radius: 5px;
+    background-color: white;
+    color: #3b5990;
 `;
 
 const Content = styled.div`
@@ -416,7 +430,7 @@ const Wrap = styled.div`
 const CourseImage = styled.img`
   margin-bottom: 20px;
   height: 200px;
-  width:100%
+  width: 100%;
 `;
 
 const CourseTitle = styled.div`

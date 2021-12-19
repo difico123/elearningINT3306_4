@@ -86,10 +86,19 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-const Title = styled.div`
-  font-size: 18px;
+
+const Title = styled.span`
+font-size: 1rem;
   font-weight: bold;
+  padding: 8px 20px;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  border-radius: 5px;
+  background-color: white;
+  color: #3b5990;
 `;
+
 
 const Content = styled.div`
   padding-top: 20px;

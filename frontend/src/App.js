@@ -87,7 +87,7 @@ function App() {
               path="/userCourses/*"
               element={
                 <ProtectedUserRoute role={user.role}>
-                  <UserCourseRouter />
+                  <UserCourseRouter user={user} />
                 </ProtectedUserRoute>
               }
             />}

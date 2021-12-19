@@ -14,6 +14,7 @@ import {
   SettingsIcon,
   NotificationsIcon,
   HomeIcon,
+  BooksIcon,
 } from "../common/icons";
 import Toast from "../common/toast";
 import showToast from "../../dummydata/toast";
@@ -81,7 +82,10 @@ function Header({ user }) {
     <React.Fragment>
       <Buttons>
         <Link to={`/instructorcourses`}>
-          <MyCourses>Khóa học của tôi</MyCourses>
+          <MyCourses>
+            <BooksIcon />
+            Khóa học của tôi
+          </MyCourses>
         </Link>
       </Buttons>
     </React.Fragment>
@@ -91,7 +95,10 @@ function Header({ user }) {
     <React.Fragment>
       <Buttons>
         <Link to={`/usercourses`}>
-          <MyCourses>Khóa học của tôi</MyCourses>
+          <MyCourses>
+            <BooksIcon />
+            Khóa học của tôi
+          </MyCourses>
         </Link>
       </Buttons>
     </React.Fragment>
@@ -121,11 +128,6 @@ function Header({ user }) {
               <Link to={"/user/profile"}>
                 <li>
                   <AccountBoxIcon /> Profile
-                </li>
-              </Link>
-              <Link to={`#`}>
-                <li>
-                  <SettingsIcon /> Setting
                 </li>
               </Link>
               <li>
@@ -268,9 +270,11 @@ function Header({ user }) {
           <div>Trang chủ</div>
         </Link>
       </Home>
-      {user.uuid && renderNotify}
-      {loading ? "" : userRole()}
-      {!user.uuid ? loginIcon : person}
+      <Right>
+        {loading ? "" : userRole()}
+        {user.uuid && renderNotify}
+        {!user.uuid ? loginIcon : person}
+      </Right>
       <Toast toastList={notificationList} />
     </Nav>
   );
@@ -369,9 +373,9 @@ const Nav = styled.div`
   height: 10vh;
   display: flex;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 3vw;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   position: sticky;
   top: 0;
   background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
@@ -481,15 +485,14 @@ const Home = styled.div`
     display: flex;
     flex-flow: row nowrap;
     padding: 1vh 1vw;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-      rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+    border-radius: 3px;
+    border: 1px solid black;
     gap: 10px;
     align-items: center;
     transition: 0.25s ease;
   }
   a:hover {
-    background-color: grey;
-    color: white;
+    transform: scale(1.02);
   }
   div {
     font-weight: 500;
@@ -508,21 +511,22 @@ const SigninButton = styled.button`
   border: 0.5px solid black;
   color: black;
   font-weight: 600;
-  padding: 0 20px;
+  padding: 14px 20px;
   font-size: 15px;
-  width: 120px;
-  height: 50px;
   transition: 0.5s ease 0s;
+  border-radius: 5px;
   background-color: transparent;
   &:hover {
-    border: transparent;
-    color: white;
-    background-color: #04aa6d;
+    transform: scale(1.02);
   }
 `;
 
 const MyCourses = styled(SigninButton)`
-  width: 10vw;
+  min-width: 10vw;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 const SignupButton = styled.button`
@@ -542,10 +546,10 @@ const SignupButton = styled.button`
   }
 `;
 
-const CustomSearch = styled(SearchIcon)``;
-
-const CustomMenu = styled(MenuIcon)``;
-
-const InstructorIcon = styled.img`
-  height: 10px;
+const Right = styled.div`
+  width: 30%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: center;
 `;

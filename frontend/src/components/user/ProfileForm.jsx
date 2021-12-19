@@ -51,8 +51,8 @@ function ProfileForm({ user }) {
 
   return (
     <>
-      <Wrap>
-        <Container>
+      <Container>
+        <Wrap>
           <Image>
             <Title>Thông tin cá nhân</Title>
             {userProfile.imageUrl ? (
@@ -93,28 +93,33 @@ function ProfileForm({ user }) {
               </div>
             </UserDetails>
           </Form>
-        </Container>
-      </Wrap>
+        </Wrap>
+      </Container>
     </>
   );
 }
 
-const Wrap = styled.div`
-  height: 90vh;
-  display: flex;
-  width: 100%;
-`;
 const Container = styled.div`
   width: 100%;
-  background-color: #fff;
-  padding: 5vh 15vw;
-  border: 1px solid black;
+  min-height: 90vh;
+  background-image: url("https://img.freepik.com/free-vector/winter-snowfall-snowflakes-light-blue-background-hand-drawn-snow-pattern-doodle-cold-winter-sky-background_548264-144.jpg?size=626&ext=jpg");
+  background-repeat: repeat;
+  background-size: 24rem 16rem;
+`;
+
+const Wrap = styled.div`
+  margin: 15vh auto;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 10vw;
+  height: 50vh;
+  width: 50vw;
   div {
     margin: 0.5rem 0;
-    a
   }
+  padding: 4vh 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
 `;
 const Title = styled.div`
   font-size: 25px;

@@ -58,6 +58,16 @@ router.get(
 // @access  private
 router.get('/all', auth, ApiUserCourse.getAll);
 
+// @route   Get api/userCourse/all
+// @desc    get the list of user courses
+// @access  private
+router.get('/:courseId', auth, ApiUserCourse.getSingleCourse);
+
+// @route   Get api/userCourse/all
+// @desc    get the list of user courses
+// @access  private
+router.get('/all/:courseId', auth, ApiUserCourse.getCourseScore);
+
 // @route   POST api/userCourse/rate/:courseId
 // @desc    rate the course
 // @access  private

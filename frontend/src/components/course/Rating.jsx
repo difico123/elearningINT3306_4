@@ -49,6 +49,8 @@ function Rate({ rating, role }) {
               value={givenRating}
               onClick={() => {
                 if(role === 0) {
+                console.log("ok")
+
                   handleRate(givenRating);
                 }
               }}

@@ -25,7 +25,6 @@ async function rank(courseId) {
 
 function getInstructorCourses(keyword, page=1) {
   keyword = !keyword ? "" : `&keyword=${keyword}`;
-  console.log(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
   return http.get(apiEndpoint + `/instructorCourses?page=${page}${keyword}`);
 }
 

@@ -14,10 +14,10 @@ import {
   BooksIcon,
   ClearIcon,
   CheckIcon,
-  EventAvailableIcon
+  EventAvailableIcon,
 } from "../common/icons";
 
-function CourseContent({user}) {
+function CourseContent({ user }) {
   let { id } = useParams();
   const [isLoading, setLoading] = useState(true);
 
@@ -72,7 +72,12 @@ function CourseContent({user}) {
   ));
 
   const Loaded = (
-    <TopicContent courseId={id} topicId={topicId} course={course} role={user.role} />
+    <TopicContent
+      courseId={id}
+      topicId={topicId}
+      course={course}
+      role={user.role}
+    />
   );
 
   return (
@@ -83,7 +88,7 @@ function CourseContent({user}) {
   );
 }
 
-function TopicContent({ topicId, courseId, course, role}) {
+function TopicContent({ topicId, courseId, course, role }) {
   const [quizId, setQuizId] = useState(-1);
   const [topic, setTopic] = useState({
     content: "",
@@ -115,7 +120,7 @@ function TopicContent({ topicId, courseId, course, role}) {
       }}
       key={index}
     >
-      {!quiz.avail&&<EventAvailableIcon />}
+      {!quiz.avail && <EventAvailableIcon />}
       Quiz {index + 1}
     </ShowQuizButton>
   ));
@@ -123,7 +128,9 @@ function TopicContent({ topicId, courseId, course, role}) {
   const quizLoaded = (
     <QuizWrapper>
       <Buttons>{renderQuizzes}</Buttons>
-      {quizId !== -1 && <DisplayQuizzes topicId={topicId} quizId={quizId} role={role} />}
+      {quizId !== -1 && (
+        <DisplayQuizzes topicId={topicId} quizId={quizId} role={role} />
+      )}
     </QuizWrapper>
   );
 
@@ -132,7 +139,7 @@ function TopicContent({ topicId, courseId, course, role}) {
       setLoading(true);
       await CourseService.getTopicDetails(courseId, topicId)
         .then((res) => {
-          console.log(res,"tiopic");
+          console.log(res, "tiopic");
           setTopic({ ...res.topic });
           setQuizzes(res.quizIds);
           setLoading(false);
@@ -140,7 +147,7 @@ function TopicContent({ topicId, courseId, course, role}) {
         .catch((err) => {
           setLoading(false);
         });
-        setQuizId(-1);
+      setQuizId(-1);
     })();
   }, [topicId]);
 
@@ -154,11 +161,11 @@ function TopicContent({ topicId, courseId, course, role}) {
           <CourseDescription>{course.description}</CourseDescription>
           <ARWrap>
             <CourseAttendance>
-              <GroupsIcon /> : {course.register}
+              <span>Số học viên: </span> {course.register} <GroupsIcon />
             </CourseAttendance>
             <CourseRating>
-              <span>Đánh giá:</span>
-              <Rating rating={course.rating} role={role}/>
+              <span>Đánh giá: </span>
+              <Rating rating={course.rating} role={role} />
             </CourseRating>
             <CourseAttendance>
               <span>Chủ đề: {course.numTopic ? course.numTopic : "0"} </span>
@@ -201,7 +208,7 @@ function DisplayQuizzes({ topicId, quizId, role }) {
       setQuestionId(!response.questionIds[0] ? -1 : response.questionIds[0].id);
     });
   }, [topicId, quizId]);
-  
+
   const questions =
     questionIds.length === 0
       ? ""
@@ -212,8 +219,8 @@ function DisplayQuizzes({ topicId, quizId, role }) {
             value={question}
             onClick={() => setQuestionId(question.id)}
           >
-             {!question.avail&& <EventAvailableIcon /> }
-             {index + 1}
+            {!question.avail && <EventAvailableIcon />}
+            {index + 1}
           </ChooseQuestion>
         ));
 
@@ -230,7 +237,9 @@ function DisplayQuizzes({ topicId, quizId, role }) {
       </QuizWrap>
       <QuestionWrap>
         <QuestionTitle>Bảng câu hỏi</QuestionTitle>
-        <SelectQuestion>{questions}</SelectQuestion>
+        <QuestionWap>
+          <SelectQuestion>{questions}</SelectQuestion>
+        </QuestionWap>
       </QuestionWrap>
     </QuizSection>
   );
@@ -242,8 +251,8 @@ function DisplayAnswers({ topicId, quizId, questionId, role }) {
   const [marks, setMarks] = useState(5);
   const [choiceIds, setChoiceIds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [toastList, setToastList] = useState([])
-  const [answerMsg, setAnswerMsg] = useState('');
+  const [toastList, setToastList] = useState([]);
+  const [answerMsg, setAnswerMsg] = useState("");
   const [history, setHistory] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(null);
   const [result, setResult] = useState(-1);
@@ -253,43 +262,42 @@ function DisplayAnswers({ topicId, quizId, questionId, role }) {
     </LoaderWrap>
   );
   useEffect(() => {
-
     (async () => {
       setResult(-1);
       setIsLoading(true);
-      if(quizId !== -1) {
+      if (quizId !== -1) {
         await quizService
-        .getQuestionAnswers(id, topicId, quizId, questionId)
-        .then((response) => {
-          setQTitle(response.content);
-          setMarks(response.marks)
-          setChoiceIds(response.question);
+          .getQuestionAnswers(id, topicId, quizId, questionId)
+          .then((response) => {
+            setQTitle(response.content);
+            setMarks(response.marks);
+            setChoiceIds(response.question);
+          });
+      }
+      if (role === 0) {
+        await quizService.getHistory(id, questionId).then((res) => {
+          setHistory(res.history);
+          setCorrectAnswer(res.correctAnswer);
         });
       }
-      if(role === 0) {
-        await quizService.getHistory(id,questionId).then((res) => {
-          setHistory(res.history)
-          setCorrectAnswer(res.correctAnswer)
-        })
-      }
-        setIsLoading(false);
-    })()
-
+      setIsLoading(false);
+    })();
   }, [topicId, quizId, questionId]);
 
   const handleSubmitAnswer = () => {
-    if(role === 0) {
+    if (role === 0) {
       quizService
-      .submitAnswer(id, topicId, quizId, questionId, choiceId)
-      .then((response) => {
-        setResult(response.isCorrect);
-      })
-      .catch((error) => {
-        alert(error.response.data.msg);
-      });
-
+        .submitAnswer(id, topicId, quizId, questionId, choiceId)
+        .then((response) => {
+          setResult(response.isCorrect);
+        })
+        .catch((error) => {
+          alert(error.response.data.msg);
+        });
     } else {
-      setToastList([showToast('danger','Thông Báo','Bạn không thể nộp bài này!')])
+      setToastList([
+        showToast("danger", "Thông Báo", "Bạn không thể nộp bài này!"),
+      ]);
     }
   };
 
@@ -298,37 +306,55 @@ function DisplayAnswers({ topicId, quizId, questionId, role }) {
   const choices =
     choiceIds.length === 0
       ? ""
-      : choiceIds.map((choice, index) =>{
-        let anphabet = ['A','B','C','D','E','F','G','H','I','J'];
-        
-        return (
-          <Answer
-            className={choiceId === choice.choiceId ? "active" : "" + (((role === 0&&!history)&&result === -1) && " hover:bg-blue-300 rounded")}
-            key={index}
-            value={choice.choiceId}
-            onClick={() => {
-              if((role === 0&&!history)&&result === -1) {
-                setChoiceId(choice.choiceId);
+      : choiceIds.map((choice, index) => {
+          let anphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+
+          return (
+            <Answer
+              className={
+                choiceId === choice.choiceId
+                  ? "active"
+                  : "" +
+                    (role === 0 &&
+                      !history &&
+                      result === -1 &&
+                      " hover:bg-blue-300 rounded")
               }
-            }}
-          >
-            <Inputs>
-              {/* {result === -1 ? "" : result ? <Correct /> : <Incorrect />} */}
-              {history&& (history.choiceId === choice.choiceId && (correctAnswer===history.choiceId ?<Correct />: <Incorrect /> ))}
-              {result !== -1 && (choiceId === choice.choiceId&&(result? <Correct />: <Incorrect />) )}
-              {role===0&&(!history&&(result === -1&&<input
-                type="checkbox"
-                name="isAnswer"
-                checked={choiceId === choice.choiceId ? true : false}
-              ></input>))}
-              {anphabet[index]}.
-              <label>{choice.content}</label>
-            </Inputs>
-          </Answer>
-        )});
+              key={index}
+              value={choice.choiceId}
+              onClick={() => {
+                if (role === 0 && !history && result === -1) {
+                  setChoiceId(choice.choiceId);
+                }
+              }}
+            >
+              <Inputs>
+                {/* {result === -1 ? "" : result ? <Correct /> : <Incorrect />} */}
+                {history &&
+                  history.choiceId === choice.choiceId &&
+                  (correctAnswer === history.choiceId ? (
+                    <Correct />
+                  ) : (
+                    <Incorrect />
+                  ))}
+                {result !== -1 &&
+                  choiceId === choice.choiceId &&
+                  (result ? <Correct /> : <Incorrect />)}
+                {role === 0 && !history && result === -1 && (
+                  <input
+                    type="checkbox"
+                    name="isAnswer"
+                    checked={choiceId === choice.choiceId ? true : false}
+                  ></input>
+                )}
+                {anphabet[index]}.<label>{choice.content}</label>
+              </Inputs>
+            </Answer>
+          );
+        });
 
   return (
-    <>
+    <AnswerWrap>
       {questionId === -1 ? (
         <NoContent>Quiz lừa</NoContent>
       ) : isLoading ? (
@@ -340,13 +366,29 @@ function DisplayAnswers({ topicId, quizId, questionId, role }) {
             <QuestionName>Điểm: {marks}</QuestionName>
             <Answers>{choices}</Answers>
           </QuestionSection>
-          {role===0&&(!history&&(result === -1? <SubmitQuiz onClick={handleSubmitAnswer}>Nộp bài</SubmitQuiz>: 
-          (result? <Result><span className="text-green-400">Bạn đã trả lời đúng câu hỏi này</span><span>Điểm: {marks}</span></Result>: <Result><span className="text-red-400">Bạn đã trả lời sai câu hỏi này</span><span>Điểm: 0 :(</span></Result>)
-          ))}
-          <Toast toastList={toastList}/>
+          {role === 0 &&
+            !history &&
+            (result === -1 ? (
+              <SubmitQuiz onClick={handleSubmitAnswer}>Nộp bài</SubmitQuiz>
+            ) : result ? (
+              <Result>
+                <span className="text-green-400">
+                  Bạn đã trả lời đúng câu hỏi này
+                </span>
+                <span>Điểm: {marks}</span>
+              </Result>
+            ) : (
+              <Result>
+                <span className="text-red-400">
+                  Bạn đã trả lời sai câu hỏi này
+                </span>
+                <span>Điểm: 0 :(</span>
+              </Result>
+            ))}
+          <Toast toastList={toastList} />
         </>
       )}
-    </>
+    </AnswerWrap>
   );
 }
 
@@ -361,8 +403,7 @@ const Result = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
-`
+`;
 const WrapDescription = styled.span`
   font-size: 1.2rem;
   font-weight: 500;
@@ -437,7 +478,7 @@ const Content = styled.div`
 `;
 
 const ShowQuizButton = styled.button`
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -448,15 +489,15 @@ const ShowQuizButton = styled.button`
   font-size: 15px;
   width: 120px;
   transition: 0.5s ease 0s;
-  background-color: rgba(255,255,255, 0.2);
-  border-radius:5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
   &:hover {
     color: white;
     background-color: #04aa6d;
     border: 0.5px solid #04aa6d;
   }
   &.active {
-    background-color: #03203C;
+    background-color: #03203c;
     background-position: 0 0;
     color: #fff;
     svg {
@@ -464,7 +505,7 @@ const ShowQuizButton = styled.button`
     }
   }
   svg {
-    color: rgba(5, 150, 105,0.6);
+    color: rgba(5, 150, 105, 0.6);
     transition: 0.5s ease 0s;
     font-size: 2rem;
   }
@@ -490,7 +531,7 @@ const QuizTitle = styled.div`
   font-size: 1.25rem;
   font-weight: bold;
   width: 100%;
-  background-color: rgba(231, 231, 231, 0.7);
+  background-color: rgba(231, 231, 231, 1);
   padding: 1vh 1vw;
   border-left: 5px solid lightgrey;
 `;
@@ -508,52 +549,63 @@ const QuestionWrap = styled.div`
 
 const QuestionTitle = styled.div`
   width: 100%;
-  background-color: rgba(231, 231, 231, 0.7);
+  background-color: rgba(255, 255, 255, 0.7);
   padding: 1vh 1vw;
   border-left: 5px solid blue;
   font-size: 1.25rem;
   font-weight: bold;
 `;
 
+const QuestionWap = styled.div`
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+  rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+  rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  min-height: 30vh;
+`
 const SelectQuestion = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   flex-flow: row wrap;
-  gap: 20px;
   width: 100%;
-  padding: 0 2vw;
+  padding: 3vh 2vw;
   margin: 0 auto;
+  gap: 20px;
   justify-content: flex-start;
 `;
 
 const ChooseQuestion = styled.div`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
     rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
-  padding: 14px;
-  font-size: 1.25rem;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+  padding: 10px;
+  font-size: 1.2rem;
   font-weight: bold;
   color: white;
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10%;
   border: 0.5px solid black;
-  color:#03203C;
+  color: #03203c;
   &:hover {
     background-color: rgba(229, 114, 28, 0.8);
   }
   &.active {
-    background-color: #03203C;
-    color:white;
+    background-color: #03203c;
+    color: white;
   }
 `;
 
 const SubmitQuiz = styled.div`
-  margin: 0 auto;
   background-color: #04aa6d;
+  margin: 2vh auto;
   color: white;
   font-weight: 600;
   padding: 15px 20px;
   font-size: 15px;
   cursor: pointer;
+  text-align: center;
   transition: 0.5s ease 0s;
   &:hover {
     background-color: #04aa6d;
@@ -666,7 +718,7 @@ const CourseRating = styled.div`
   display: flex;
   gap: 20px;
   align-items: center;
-  gap: 0.2rem;
+  gap: 10px;
   color: white;
   font-size: 1rem;
   svg {
@@ -679,7 +731,7 @@ const CourseCover = styled.div`
   margin: auto;
 `;
 const QuizWrapper = styled.div`
-  height: 50vh;
+  height: 60vh;
 `;
 
 const BackgroundImage = styled.img``;
@@ -694,5 +746,12 @@ const Incorrect = styled(ClearIcon)`
   position: absolute;
   left: 2.5vw;
   color: red;
+`;
+
+const AnswerWrap = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2vh;
+  min-height: 45vh;
 `;
 export default CourseContent;

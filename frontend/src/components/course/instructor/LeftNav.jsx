@@ -7,6 +7,7 @@ import {
   BooksIcon,
   ErrorIcon,
   QuizIcon,
+  AddIcon,
 } from "../../common/icons";
 import courseService from "../../../service/courseService";
 import Popup from "../../common/popup";
@@ -67,7 +68,7 @@ function Sidebar() {
         </NavLink>
         <NavLink to="./createquestion" activeClassName="active">
           <Wrap>
-            <GroupsIcon />
+            <AddIcon />
             <p>Tạo câu hỏi mới</p>
           </Wrap>
         </NavLink>

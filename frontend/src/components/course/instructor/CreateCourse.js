@@ -114,7 +114,11 @@ function CreateCourse() {
   const render = loading ? loadIcon : renderMsg;
   return (
     <Container>
-      <Title><span>Tạo khóa học mới</span><Link to='../'><span>Quay lại</span></Link></Title>
+      <TitleWrap>
+        <Link to="../"><Title>Trang các khóa học của bạn</Title></Link>
+        <Link to="./"><Title>Tạo Khoá học mới mới</Title></Link>
+      </TitleWrap>
+
       <CreateCourseForm>
         <CategoryWrap>
           <FormTitle>Danh mục khóa học</FormTitle>
@@ -167,23 +171,37 @@ const CourseImage = styled(CourseImgIcon)`
   border: 1px solid green;
 `;
 
-const Title = styled.div`
-  font-size: 1.75rem;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  a span{
-    border: 1px solid green;
-    padding: 10px;
-    font-weight: 400;
+// const Title = styled.div`
+//   font-size: 1.75rem;
+//   font-weight: bold;
+//   display: flex;
+//   justify-content: space-between;
+//   a span{
+//     border: 1px solid green;
+//     padding: 10px;
+//     font-weight: 400;
+//     font-size: 1rem;
+//     cursor: pointer;
+//     border-radius: 5px;
+//     &:hover {
+//       background: green;
+//       color:white;
+//     }
+//   }
+// `;
+const TitleWrap = styled.div`
+  display:flex;
+  gap:10px;
+  
+  `
+const Title = styled.span`
     font-size: 1rem;
-    cursor: pointer;
+    font-weight: bold;
+    padding: 8px 20px;
+    box-shadow: rgb(6 24 44 / 40%) 0px 0px 0px 2px, rgb(6 24 44 / 65%) 0px 4px 6px -1px, rgb(255 255 255 / 8%) 0px 1px 0px inset;
     border-radius: 5px;
-    &:hover {
-      background: green;
-      color:white;
-    }
-  }
+    background-color: white;
+    color: #3b5990;
 `;
 
 const CreateCourseForm = styled.form`
