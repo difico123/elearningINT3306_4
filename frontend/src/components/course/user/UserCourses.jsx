@@ -11,17 +11,7 @@ import {
 } from "../../common/icons";
 
 function UserCourses() {
-  const [getCourses, setCourses] = useState([
-    {
-      courseId: "",
-      email: "",
-      enrollDate: "",
-      fullName: "",
-      imageUrl: "",
-      instructorId: "",
-      name: "",
-    },
-  ]);
+  const [getCourses, setCourses] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [change, setChange] = useState(false);
 

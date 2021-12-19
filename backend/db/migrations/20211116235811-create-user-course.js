@@ -26,16 +26,6 @@ module.exports = {
                     defaultValue: '1',
                     allowNull: false,
                 },
-                isComplete: {
-                    type: DataTypes.BOOLEAN,
-                    allowNull: false,
-                    defaultValue: false,
-                },
-                marks: {
-                    type: DataTypes.INTEGER,
-                    defaultValue: 0,
-                    allowNull: false,
-                },
                 dateAdded: {
                     type: 'TIMESTAMP',
                     defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),

@@ -30,17 +30,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.ENUM('1', '2', '3', '4', '5'),
                 defaultValue: '1',
                 allowNull: false,
-            },
-            isComplete: {
-                type: DataTypes.BOOLEAN,
-                allowNull: false,
-                defaultValue: false,
-            },
-            marks: {
-                type: DataTypes.INTEGER,
-                defaultValue: 0,
-                allowNull: false,
-            },
+            }
         },
         {
             sequelize,

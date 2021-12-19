@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import AuthService from "../../service/authService";
+import {Link} from 'react-router-dom'
 import Loader from "../common/loader"
 import {EmailIcon} from "../common/icons"
 
@@ -63,10 +64,12 @@ function ForgotPassword() {
           {renderLoaderMsg}
           {renderButton}
           <Redirect>
-            Không có tài khoản? Tạo mới <a href="./signup">ở đây</a>
+            Không có tài khoản? Tạo mới 
+            <Link to="/auth/signup"> Đăng Ký</Link>
           </Redirect>
           <Redirect>
-            Đã có tài khoản? <a href="./login"> Đăng nhập </a>
+            Đã có tài khoản? 
+            <Link to="/auth/login"> Đăng nhập</Link>
           </Redirect>
         </Form>
       </Container>
@@ -77,24 +80,26 @@ function ForgotPassword() {
 export default ForgotPassword;
 
 const Wrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: calc(100vh - 435px);
+  min-height: calc(100vh - 94px);
+  padding: 10vh 35vw;
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-english-winter-vacation-training-background-image_186800.jpg");
+  background-repeat: no-repeat;
+  background-size:100vw 90vh ;
 `;
 
 const Container = styled.div`
-  width: 500px;
-  padding: 50px 50px;
-  margin: 50px 0;
+  width: 100%;
+  padding: 5vh 3vw;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-flow: column wrap;
-  background-color: #f9f9f9;
-  gap: 20px;
+  gap: 2.5vh;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  border-radius: 18px;
+  background-color:white;
 `;
-
 const Title = styled.div`
   font-weight: bold;
   font-size: 15px;

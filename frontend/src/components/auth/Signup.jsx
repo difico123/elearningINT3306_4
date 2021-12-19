@@ -2,7 +2,14 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import AuthService from "../../service/authService";
-import {LockIcon,PersonIcon,EmailIcon,LocationCityIcon, HomeIcon,LocalPhoneIcon} from '../common/icons'
+import {
+  LockIcon,
+  PersonIcon,
+  EmailIcon,
+  LocationCityIcon,
+  HomeIcon,
+  LocalPhoneIcon,
+} from "../common/icons";
 
 function SignUpForm() {
   const [userReg, setUserReg] = useState({
@@ -38,7 +45,7 @@ function SignUpForm() {
       });
   };
 
-  const errors = message.map((abc,index) => (
+  const errors = message.map((abc, index) => (
     <div key={index}>
       <label className="text-red-300">{abc}</label>
     </div>
@@ -50,7 +57,7 @@ function SignUpForm() {
       <Container>
         <Title>Gia nhập với chúng tôi!</Title>
 
-        <Form>
+        <Form autocomplete="off">
           <Field>
             <MailIcon className="Icon"></MailIcon>
             <input
@@ -143,33 +150,41 @@ function SignUpForm() {
 }
 
 const Wrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: calc(100vh - 94px);
+  padding: 5vh 25vw;
+  background-image: url("https://png.pngtree.com/thumb_back/fh260/back_our/20190621/ourmid/pngtree-english-winter-vacation-training-background-image_186800.jpg");
+  background-repeat: no-repeat;
+  background-size:100vw 90vh ;
 `;
 
 const Container = styled.div`
-  width: 500px;
-  padding: 50px 50px;
-  margin: 50px 0;
+  width: 100%;
+  padding: 5vh 3vw;
   display: flex;
   align-items: center;
-  justify-content: center;
   flex-flow: column wrap;
-  background-color: #f9f9f9;
-  gap: 20px;
+  background-size: cover;
+  gap: 2.5vh;
+  box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+    rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+    rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+  border-radius: 18px;
+  background-color:white;
 `;
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 15px;
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: bold;
   display: flex;
   align-self: flex-start;
   justify-content: space-between;
+  border-bottom: 1px solid #878787;
+  padding-bottom: 4vh;
 `;
 
 const Form = styled.div`
-  border-top: 1px solid #878787;
   padding-top: 30px;
   display: flex;
   flex-direction: column;
@@ -188,16 +203,16 @@ const Field = styled.div`
   min-width: 350px;
   height: 40px;
   display: flex;
-
   input {
     border: none;
-    width: 85%;
+    width: 100%;
     autocomplete: off;
     background-image: none;
     font-size: 15px;
     font-weight: lighter;
-    background-color: #f9f9f9;
+    background-color: transparent;
     textarea:focus,
+    color: black;
     input:focus {
       outline: none;
     }
@@ -207,7 +222,10 @@ const Field = styled.div`
     -webkit-appearance: none;
     margin: 0;
   }
-
+  input::-webkit-input-placeholder {
+    color: black;
+    font-weight: 400;
+  }
   .Icon {
     margin: 7px 5px 7px;
   }

@@ -54,7 +54,7 @@ module.exports = {
                     password:
                         '$2a$10$xP7NXfIrxLPyL1qB1qBf.eOLi8iLrQqQQuzCO9kPXYeWz7NHbTuZ.',
                     imageUrl:
-                        'https://res.cloudinary.com/subarashis/image/upload/v1638665119/avatars/nzpmlcyumbdl9llkryyq.jpg avatars/nzpmlcyumbdl9llkryyq',
+                        'https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg avatars/js6kmwjgfe36zlnxjljt',
                 },
             ],
             {},

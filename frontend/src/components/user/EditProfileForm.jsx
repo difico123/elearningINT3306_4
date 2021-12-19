@@ -167,19 +167,20 @@ function EditProfile({ user }) {
 }
 
 const Wrap = styled.div`
-  height: 100vh;
+  height: 110vh;
   display: flex;
   width: 100%;
   padding: 6vh 6vw;
-  background-image: url("https://img.freepik.com/free-vector/winter-snowfall-snowflakes-light-blue-background-hand-drawn-snow-pattern-doodle-cold-winter-sky-background_548264-144.jpg?size=626&ext=jpg");
-  background-repeat: repeat;
-  background-size: 24rem 16rem;
+  background-image: url("https://enbaca.com/web/assets/image-resources/poly-bg/poly-bg-8.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 const Container = styled.div`
   width: 100%;
   padding: 4vh 4vw;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 `;
 const Title = styled.div`
   font-size: 25px;

@@ -102,9 +102,9 @@ function ProfileForm({ user }) {
 const Container = styled.div`
   width: 100%;
   min-height: 90vh;
-  background-image: url("https://img.freepik.com/free-vector/winter-snowfall-snowflakes-light-blue-background-hand-drawn-snow-pattern-doodle-cold-winter-sky-background_548264-144.jpg?size=626&ext=jpg");
-  background-repeat: repeat;
-  background-size: 24rem 16rem;
+  background-image: url("https://enbaca.com/web/assets/image-resources/poly-bg/poly-bg-8.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const Wrap = styled.div`

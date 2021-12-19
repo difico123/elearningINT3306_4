@@ -15,25 +15,6 @@ module.exports = {
             'courses',
             [
                 {
-                    name: 'Khóa học C++ căn bản',
-                    description:
-                        'Dành cho học viên bắt đầu tiếp cận với lập trình',
-                    categoryId: 1,
-                    instructorId: 3,
-                    imageUrl:
-                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
-                    verified: 1,
-                },
-                {
-                    name: 'Khóa học C++ nâng cao',
-                    description: 'Khóa học tiếp theo của khóa C++ căn bản',
-                    categoryId: 2,
-                    instructorId: 3,
-                    imageUrl:
-                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
-                    verified: 1,
-                },
-                {
                     name: 'Khóa học Web căn bản (HTML - CSS - Javascript)',
                     description:
                         'Dành cho những học viên có đam mê lập trình web',
@@ -351,6 +332,25 @@ module.exports = {
                     instructorId: 3,
                     imageUrl:
                         'https://res.cloudinary.com/subarashis/image/upload/v1639404711/courses/wbrp05jtzisj3u0gwz8a.jpg courses/wbrp05jtzisj3u0gwz8a',
+                    verified: 1,
+                },
+                {
+                    name: 'Khóa học C++ căn bản',
+                    description:
+                        'Dành cho học viên bắt đầu tiếp cận với lập trình',
+                    categoryId: 1,
+                    instructorId: 3,
+                    imageUrl:
+                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
+                    verified: 1,
+                },
+                {
+                    name: 'Khóa học C++ nâng cao',
+                    description: 'Khóa học tiếp theo của khóa C++ căn bản',
+                    categoryId: 2,
+                    instructorId: 3,
+                    imageUrl:
+                        'https://res.cloudinary.com/subarashis/image/upload/v1637942420/courses/nbcb5ikwflvkvpt5aklt.jpg courses/nbcb5ikwflvkvpt5aklt',
                     verified: 1,
                 },
             ],

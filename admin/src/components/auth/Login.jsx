@@ -21,14 +21,14 @@ function LoginForm() {
     auth
       .login(user)
       .then((data) => {
-        // setIsError(data.error);
+        setIsError(data.error);
         console.log(data)
         window.location = '/'
       })
       .catch((err) => {
         console.log(err.response)
-        // setIsError(err.response.data.error);
-        // setErrorMsg(err.response.data.msg);
+        setIsError(err.response.data.error);
+        setErrorMsg(err.response.data.msg);
       });
   };
 
@@ -40,7 +40,7 @@ function LoginForm() {
   return (
     <Wrap>
       <Container>
-        <Title>Tham gia vào những khóa học dành riêng cho bạn!</Title>
+        <Title>ĐĂNG NHẬP ADMIN!</Title>
         <Form>
           <Field>
             <MailIcon></MailIcon>
@@ -67,15 +67,7 @@ function LoginForm() {
           {isError ? renderErrors : ""}
           <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
-        <RedirectForgotPassword>
-          <a href="./recover">Quên mật khẩu?</a>
-        </RedirectForgotPassword>
-        <RedirectSignUp>
-          Không có tài khoản? Tạo mới{" "}
-          <Link to="/auth/signup">
-            <span>ở đây</span>
-          </Link>
-        </RedirectSignUp>
+
       </Container>
     </Wrap>
   );
@@ -102,10 +94,10 @@ const Container = styled.div`
 
 const Title = styled.div`
   font-weight: bold;
-  font-size: 15px;
+  font-size: 1rem;
   display: flex;
-  align-self: flex-start;
-  justify-content: space-between;
+  justify-content: center;
+
 `;
 
 const Form = styled.div`

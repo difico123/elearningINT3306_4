@@ -150,7 +150,7 @@ function CourseEnroll({ checkEnroll }) {
               </CourseInstructor>
             </InfoWrap>
             <EnrollSection>
-              <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
+              <BackgroundImage src={course.imageUrl}></BackgroundImage>
               {enroll(id)}
             </EnrollSection>
           </CourseInfos>

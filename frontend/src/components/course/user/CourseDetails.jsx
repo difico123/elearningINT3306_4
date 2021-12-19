@@ -75,7 +75,7 @@ function CourseDetails({ user }) {
               <EnrollImg>
                 <img src={course.imageUrl} alt="abc" />
                 <Link to={`/category/${course.categoryId}/course/${course.id}`}>
-                  <Enroll>Vào ngay</Enroll>
+                  <Enroll>Vào học ngay!</Enroll>
                 </Link>
               </EnrollImg>
             </ImgWrap>
