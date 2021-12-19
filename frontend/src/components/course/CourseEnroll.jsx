@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import userCourseService from "../../service/userCourseService";
-import { ArrowBackIosIcon,GroupsIcon, StarIcon } from "../common/icons";
+import { ArrowBackIosIcon, GroupsIcon, StarIcon } from "../common/icons";
 import { useParams, Link } from "react-router-dom";
 import Toast from "../common/toast";
 import showToast from "../../dummydata/toast";
@@ -16,15 +16,19 @@ function CourseEnroll({ checkEnroll }) {
       : "bg-gray-500 cursor-not-allowed"
   );
 
-  const [disabledEnrollBtn, setDisableEnrollBtn] = useState(() => (
-    checkEnroll === 200? false: true
-  ));
+  const [disabledEnrollBtn, setDisableEnrollBtn] = useState(() =>
+    checkEnroll === 200 ? false : true
+  );
 
   const notification = useRef([]);
   const [isLoading, setLoading] = useState(true);
 
   const [msg, setMsg] = useState(() =>
-    disabledEnrollBtn ? (checkEnroll === 403? "Chờ giảng viên của bạn chấp nhận...": "Đăng nhập tài khoản học sinh để tham gia ..") : "Tham gia"
+    disabledEnrollBtn
+      ? checkEnroll === 403
+        ? "Chờ giảng viên của bạn chấp nhận..."
+        : "Đăng nhập tài khoản học sinh để tham gia .."
+      : "Tham gia"
   );
 
   const [course, setCourse] = useState({
@@ -52,11 +56,10 @@ function CourseEnroll({ checkEnroll }) {
         setTopics([...response.topics]);
       });
       await CourseService.rank(id).then((data) => {
-        setUserRank(data.students)
-      })
+        setUserRank(data.students);
+      });
       setLoading(false);
-    })()
-    
+    })();
   }, []);
 
   const enroll = (id) => (
@@ -116,86 +119,94 @@ function CourseEnroll({ checkEnroll }) {
 
   return (
     <>
-    {isLoading? loading: <Container>
-      <CourseInfos>
-        <InfoWrap>
-          <Back>
-            <Link to="../">
-              <ArrowBackIosIcon /> Trở về
-            </Link>
-          </Back>
-          <Breadcrumb>Đăng ký khoá học</Breadcrumb>
-          <CourseTitle>{course.name}</CourseTitle>
-          <CourseDescription>{course.description}</CourseDescription>
-          <ARWrap>
-            <CourseAttendance>
-              <span> Số học viên: {course.register}</span>
-              <GroupsIcon />
-            </CourseAttendance>
-            <CourseRating>
-              Đánh giá: {course.rating ? course.rating : "0"}
-              <StarIcon />
-            </CourseRating>
-          </ARWrap>
-          <CourseInstructor>
-            <span className="bg-green-800 text-xl rounded pb-1 pl-1 pr-1 mr-2">Giảng viên: </span> {course.instructorName}
-          </CourseInstructor>
-        </InfoWrap>
-        <EnrollSection>
-          <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
-          {enroll(id)}
-        </EnrollSection>
-      </CourseInfos>
-      <Title>Nội dung khóa học</Title>
-      <Body>
-        <Content>{ loaded}</Content>
-       <Leaderboard>
-          <LBTitle>Đại lộ danh vọng</LBTitle>
-          <LBContent>
-            <Pro>
-              <Grandmaster>{userRank[0]&&userRank[0].fullName}</Grandmaster>
-              <Point>{userRank[0]&&userRank[0].marks}</Point>
-            </Pro>
-            <Pro>
-              <Master>{userRank[1]&&userRank[1].fullName}</Master>
-              <Point>{userRank[1]&&userRank[1].marks}</Point>
-            </Pro>
-            <Pro>
-              <Master>{userRank[2]&&userRank[2].fullName}</Master>
-              <Point>{userRank[2]&&userRank[2].marks}</Point>
-            </Pro>
-            <Pro>
-              <Master>{userRank[3]&&userRank[3].fullName}</Master>
-              <Point>{userRank[3]&&userRank[3].marks}</Point>
-            </Pro>
-            <Pro>
-              <Master>{userRank[4]&&userRank[4].fullName}</Master>
-              <Point>{userRank[4]&&userRank[4].marks}</Point>
-            </Pro>
-            <Pro>
-              <Hacker>{userRank[5]&&userRank[5].fullName}</Hacker>
-              <Point>{userRank[5]&&userRank[5].marks}</Point>
-            </Pro>
-            <Pro>
-              <Hacker>{userRank[6]&&userRank[6].fullName}</Hacker>
-              <Point>{userRank[6]&&userRank[6].marks}</Point>
-            </Pro>
-            <Pro>
-              <Hacker>{userRank[7]&&userRank[7].fullName}</Hacker>
-              <Point>{userRank[7]&&userRank[7].marks}</Point>
-            </Pro>
-            <Pro>
-              <Hacker>{userRank[8]&&userRank[8].fullName}</Hacker>
-              <Point>{userRank[8]&&userRank[8].marks}</Point>
-            </Pro>
-            <Pro>
-              <Hacker>{userRank[9]&&userRank[9].fullName}</Hacker>
-              <Point>{userRank[9]&&userRank[9].marks}</Point>
-            </Pro>
-          </LBContent>
-        </Leaderboard>
-      </Body>
-    </Container>}
+      {isLoading ? (
+        loading
+      ) : (
+        <Container>
+          <CourseInfos>
+            <InfoWrap>
+              <Back>
+                <Link to="../">
+                  <ArrowBackIosIcon /> Trở về
+                </Link>
+              </Back>
+              <Breadcrumb>Đăng ký khoá học</Breadcrumb>
+              <CourseTitle>{course.name}</CourseTitle>
+              <CourseDescription>{course.description}</CourseDescription>
+              <ARWrap>
+                <CourseAttendance>
+                  <span> Số học viên: {course.register}</span>
+                  <GroupsIcon />
+                </CourseAttendance>
+                <CourseRating>
+                  Đánh giá: {course.rating ? course.rating : "0"}
+                  <StarIcon />
+                </CourseRating>
+              </ARWrap>
+              <CourseInstructor>
+                <span className="bg-green-800 text-xl rounded pb-1 pl-1 pr-1 mr-2">
+                  Giảng viên: {course.instructorName}
+                </span>{" "}
+              </CourseInstructor>
+            </InfoWrap>
+            <EnrollSection>
+              <BackgroundImage src="https://res.cloudinary.com/subarashis/image/upload/v1637942441/courses/hueihncfseglg2hkrkzg.jpg"></BackgroundImage>
+              {enroll(id)}
+            </EnrollSection>
+          </CourseInfos>
+          <Title>Nội dung khóa học</Title>
+          <Body>
+            <Content>{loaded}</Content>
+            <Leaderboard>
+              <LBTitle>Đại lộ danh vọng</LBTitle>
+              <LBContent>
+                <Pro>
+                  <Grandmaster>
+                    {userRank[0] && userRank[0].fullName}
+                  </Grandmaster>
+                  <Point>{userRank[0] && userRank[0].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Master>{userRank[1] && userRank[1].fullName}</Master>
+                  <Point>{userRank[1] && userRank[1].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Master>{userRank[2] && userRank[2].fullName}</Master>
+                  <Point>{userRank[2] && userRank[2].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Master>{userRank[3] && userRank[3].fullName}</Master>
+                  <Point>{userRank[3] && userRank[3].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Master>{userRank[4] && userRank[4].fullName}</Master>
+                  <Point>{userRank[4] && userRank[4].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Hacker>{userRank[5] && userRank[5].fullName}</Hacker>
+                  <Point>{userRank[5] && userRank[5].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Hacker>{userRank[6] && userRank[6].fullName}</Hacker>
+                  <Point>{userRank[6] && userRank[6].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Hacker>{userRank[7] && userRank[7].fullName}</Hacker>
+                  <Point>{userRank[7] && userRank[7].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Hacker>{userRank[8] && userRank[8].fullName}</Hacker>
+                  <Point>{userRank[8] && userRank[8].marks}</Point>
+                </Pro>
+                <Pro>
+                  <Hacker>{userRank[9] && userRank[9].fullName}</Hacker>
+                  <Point>{userRank[9] && userRank[9].marks}</Point>
+                </Pro>
+              </LBContent>
+            </Leaderboard>
+          </Body>
+        </Container>
+      )}
     </>
   );
 }
@@ -263,7 +274,7 @@ const CourseDescription = styled.div`
 
 const CourseInstructor = styled.div`
   color: white;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   padding-bottom: 1rem;
   inline-size: 45vw;
   overflow-wrap: break-word;
@@ -385,8 +396,8 @@ const LBContent = styled.div`
   background-color: #f0f0f0;
   display: flex;
   flex-flow: column nowrap;
-  &>div{
-    min-height:2rem;
+  & > div {
+    min-height: 2rem;
   }
 `;
 const Pro = styled.div`
