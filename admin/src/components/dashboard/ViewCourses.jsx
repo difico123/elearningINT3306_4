@@ -13,6 +13,7 @@ function ViewCourses() {
             instructorName: ''
         },
     ]);
+    
     const [toastList, setToastList] = useState([]);
 
     const columns = [
@@ -46,7 +47,7 @@ function ViewCourses() {
     return (
         <Wrap>
             <MaterialTable title={"Danh sách khóa học - " + getCourses.length+ " khoá học"}
-                style={{padding: 10}}   
+                style={{padding: 10}}
                 data={getCourses}
                 columns={columns}
                 options={{
@@ -79,7 +80,6 @@ function ViewCourses() {
             <Toast toastList={toastList}/>
         </Wrap>
     )
-
 }
 
 export default ViewCourses;

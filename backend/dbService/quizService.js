@@ -166,7 +166,7 @@ module.exports = class QuizService {
                 join courses cs on cs.id = ts.courseId
                 join users us on us.id = uq.userId
                 where ch.isAnswer = 1 and cs.id = ${courseId}
-                group by uq.userId ORDER by marks desc limit 10;`,
+                group by uq.userId ORDER by marks desc, uq.id desc limit 10;`,
                 {
                     replacements: [],
                     type: QueryTypes.SELECT,
