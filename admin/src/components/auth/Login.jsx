@@ -37,9 +37,9 @@ function LoginForm() {
   };
 
   const renderErrors = errorMsg.map((value, index) => (
-    <div key={index}>
-      <label className="text-red-300">{value}</label>
-    </div>
+    <ErrorMgs key={index}>
+      <label>{value}</label>
+    </ErrorMgs>
   ));
   return (
     <Wrap>
@@ -85,11 +85,13 @@ const Wrap = styled.div`
   justify-content: center;
   min-height: calc(100vh - 435px);
 `;
-
+const ErrorMgs = styled.div`
+  color: red;
+  margin-top: 2rem;
+`
 const Container = styled.div`
   width: 500px;
   min-height: 50vh;
-  border-radius: 5px;
   padding: 50px 50px;
   margin: 70px 0;
   display: flex;

@@ -79,7 +79,7 @@ function EditTopic({setEditToggle, topicId, topics}) {
 return (
     <>
         <Container>
-            <Back onClick={handleEditToggle}>Quay lại</Back>
+            <Back onClick={handleEditToggle}>Trở lại</Back>
             <CreateCourseForm>
             <Wrap>
             <div className="App">

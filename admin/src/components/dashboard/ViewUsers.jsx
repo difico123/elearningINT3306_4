@@ -42,7 +42,7 @@ function ViewUsers() {
   }
   return (
     <Wrap>
-      <MaterialTable title="Danh sách người dùng"
+      <MaterialTable title={"Danh sách người dùng - " + getUsers.length+ " người dùng"}
         style={{padding: 10}}
         data={getUsers}
         columns={[

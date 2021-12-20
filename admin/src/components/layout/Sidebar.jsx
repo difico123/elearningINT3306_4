@@ -15,14 +15,8 @@ function Sidebar({ user }) {
     <SideBar>
       <Avt>
         <img src={user.info.imageUrl} alt="" />
-        <p>Admin</p>
+        <p>ADMIN</p>
       </Avt>
-      <NavLink to="/all" activeClassName="active">
-        <Wrap>
-          <EditIcon />
-          <p>Tổng quan</p>
-        </Wrap>
-      </NavLink>
       <NavLink to="/users" activeClassName="active">
         <Wrap>
           <PersonIcon />
@@ -81,20 +75,20 @@ const Wrap = styled.div`
   align-items: center;
 `;
 const Avt = styled.div`
-  padding: 10px 1.5rem;
+  padding: 5px 1.5rem;
   display: flex;
   flex-flow: row nowrap;
   gap: 10px;
   align-items: center;
   height:3rem;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 400;
   img{
     height:100%;
     border-radius:100%;
   }
   p{
-    background: gray;
+    font-weight: 600;
     padding: 0.3rem;
     border-radius: 5px;
   }

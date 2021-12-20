@@ -82,9 +82,10 @@ function Header({ user }) {
     <React.Fragment>
       <Buttons>
         <Link to={`/instructorcourses`}>
-          <MyCourses>
-            <BooksIcon />
-            Khóa học của tôi
+        <MyCourses>
+            {/* <BooksIcon /> */}
+            <BookImg src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/2x/external-book-back-to-school-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png"/>
+             Khóa học của tôi
           </MyCourses>
         </Link>
       </Buttons>
@@ -232,21 +233,25 @@ function Header({ user }) {
                         onClick={(e) => {
                           NotificationService.delNotification(v.id)
                             .then((data) => {
-                              e.target.parentElement.parentElement.remove();
                               setNotificationList([
                                 showToast(
                                   "success",
                                   "Thông báo",
-                                  data.msg.toString()
+                                  "Từ chối học sinh"
                                 ),
                               ]);
+                              const dataDelete = [...notifications];
+                              const index = notifications.findIndex(n => n.id === v.id);
+                              dataDelete.splice(index, 1);
+                              setNotifications([...dataDelete]);
                             })
                             .catch((error) => {
+                              console.log(error.response.data);
                               setNotificationList([
                                 showToast(
                                   "danger",
                                   "Thông báo",
-                                  error.response.data.msg.toString()
+                                  "Thất bại"
                                 ),
                               ]);
                             });
@@ -287,7 +292,8 @@ const Wrapper = styled.div`
   position: absolute;
   top: 115%;
   right: -25%;
-  border: 1px solid #38cc77;
+  border: 1px solid black;
+  border-radius:5px;
   background: white;
   h2 {
     padding: 0.5rem;
@@ -385,7 +391,8 @@ const Nav = styled.div`
   position: sticky;
   top: 0;
   // background-image: url("https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/vp933-audi-41_1_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=71e74d1507e7b8637b84e9fb9601ecbd");
-  background-color: #82ccdd;
+  background-color: white;
+  // background-color: #82ccdd;
   background-size: 22rem 15rem;
   background-repeat: repeat;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
@@ -568,6 +575,7 @@ const SignupButton = styled.button`
   width: 120px;
   height: 50px;
   transition: 0.3s ease 0s;
+  border-radius: 5px;
   &:hover {
     border: transparent;
     color: white;

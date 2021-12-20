@@ -5,6 +5,7 @@ import Rating from "../Rating.jsx";
 import UserCourseService from "../../../service/userCourseService.js";
 import CourseService from "../../../service/courseService.js";
 import Loader from "../../common/loader.jsx";
+import {ArrowBackIosIcon,ArrowForwardIosIcon} from '../../common/icons'
 
 function CourseDetails({ user }) {
   const { id } = useParams();
@@ -12,7 +13,8 @@ function CourseDetails({ user }) {
   const [topics, setTopics] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [userRank, setUserRank] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   useEffect(() => {
     (async () => {
       await UserCourseService.getCourseDetails(id).then((res) => {
@@ -44,7 +46,15 @@ function CourseDetails({ user }) {
         );
       })
     );
-
+    const pageClick = async (e) => {
+      let page = Number(e.target.value);
+     
+      await UserCourseService.showCourseScore(id, page).then((res) => {
+        setCurrentPage(page);
+        setTopics(res.topics);
+      });
+    };
+    console.log(currentPage,"currentPage")
   return (
     <>
       {isLoading ? (
@@ -81,6 +91,7 @@ function CourseDetails({ user }) {
             </ImgWrap>
           </WrapCourse>
           <ContainerWrap>
+            <div>
             <ABC>
               <WrapTable>
                 <div>Chủ đề</div>
@@ -89,6 +100,60 @@ function CourseDetails({ user }) {
               </WrapTable>
               {topicTable}
             </ABC>
+            <Pagination>
+              <div>
+                <ArrowBackIosIcon
+                  className="page"
+                  onClick={() => {
+                    if (page > 1) {
+                      setPage(page - 1);
+                    }
+                  }}
+                />
+                <button
+                  className={currentPage === page ? "bg-blue-300" : ""}
+                  value={page}
+                  onClick={pageClick}
+                >
+                  {page}
+                </button>
+                <button
+                  className={currentPage === page + 1 ? "bg-blue-300" : ""}
+                  value={page + 1}
+                  onClick={pageClick}
+                >
+                  {page + 1}
+                </button>
+                <button
+                  className={currentPage === page + 2 ? "bg-blue-300" : ""}
+                  value={page + 2}
+                  onClick={pageClick}
+                >
+                  {page + 2}
+                </button>
+                <button
+                  className={currentPage === page + 3 ? "bg-blue-300" : ""}
+                  value={page + 3}
+                  onClick={pageClick}
+                >
+                  {page + 3}
+                </button>
+                <button
+                  className={currentPage === page + 4 ? "bg-blue-300" : ""}
+                  value={page + 4}
+                  onClick={pageClick}
+                >
+                  {page + 4}
+                </button>
+                <ArrowForwardIosIcon
+                  className="page"
+                  onClick={() => {
+                    setPage(page + 1);
+                  }}
+                />
+              </div>
+            </Pagination>
+            </div>
             <WrapRank>
               <Leaderboard>
                 <LBTitle>Đại lộ danh vọng</LBTitle>
@@ -144,7 +209,30 @@ function CourseDetails({ user }) {
     </>
   );
 }
-
+const Pagination = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  position: relative;
+  margin: 2rem 0;
+  button {
+    width: 40px;
+    text-align: center;
+    margin: 0.1rem;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+  & button:hover {
+    background: #7fffd4;
+  }
+  div svg {
+    cursor: pointer;
+  }
+  div svg:active {
+    background-color: lightblue;
+  }
+`;
 export default CourseDetails;
 
 const Container = styled.div`
@@ -374,4 +462,5 @@ const ABC = styled.div`
   padding: 2vh 2vw 4vh;
   background-color: white;
   border-radius: 14px;
+  min-height: 25rem;
 `;

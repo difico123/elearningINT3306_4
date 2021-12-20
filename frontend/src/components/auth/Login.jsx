@@ -66,9 +66,9 @@ function LoginForm() {
           {isError ? renderErrors : ""}
           <SubmitButton onClick={signin}>Đăng nhập</SubmitButton>
         </Form>
-        <RedirectForgotPassword>
+        {/* <RedirectForgotPassword>
           <Link to="/auth/recover">Quên mật khẩu?</Link>
-        </RedirectForgotPassword>
+        </RedirectForgotPassword> */}
         <RedirectSignUp>
           Không có tài khoản? Tạo mới{" "}
           <Link to="/auth/signup">

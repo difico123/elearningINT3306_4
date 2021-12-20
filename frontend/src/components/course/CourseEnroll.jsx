@@ -313,6 +313,7 @@ const ARWrap = styled.div`
 const EnrollSection = styled.div`
   display: flex;
   flex-flow: column nowrap;
+  margin: auto auto;
 `;
 
 const BackgroundImage = styled.img`
@@ -327,6 +328,7 @@ const EnrollButton = styled.input`
   font-size: 15px;
   height: 50px;
   transition: 0.5s ease 0s;
+  padding: 0 1rem;
 `;
 
 const Body = styled.div`

@@ -433,6 +433,8 @@ module.exports = class ApiCourse {
                 });
             }
 
+            await Notification.update({isConfirmed: 1}, {where: {courseId: courseId, userId: userId}})
+
             let course = await Course.findOne({ where: { id: courseId } });
             let type = 1;
             let details = `Bạn vừa được giảng viên mời vào ${course.name}`;

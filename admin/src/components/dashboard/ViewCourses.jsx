@@ -45,7 +45,7 @@ function ViewCourses() {
 
     return (
         <Wrap>
-            <MaterialTable title="Danh sách khóa học"
+            <MaterialTable title={"Danh sách khóa học - " + getCourses.length+ " khoá học"}
                 style={{padding: 10}}   
                 data={getCourses}
                 columns={columns}

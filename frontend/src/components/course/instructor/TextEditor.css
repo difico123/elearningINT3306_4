@@ -150,8 +150,8 @@ blockquote{
 
 .btn__theme {
   color: #fff;
-  background-color: #673ab7;
-  border-color: #673ab7;
+  background-color: green;
+  border-color: green;
 }
 .App__tittle {
   text-align: center;

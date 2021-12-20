@@ -42,6 +42,8 @@ const Container = styled.div`
   border-radius: 5px;
   background-color: white;
   overflow-x: hidden;
+  padding-right:1rem;
+
 `;
 const LeftSide = styled.div`
   position:relative;

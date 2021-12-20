@@ -34,7 +34,7 @@ function TopicContent({courseId, topicId}) {
 
     const Loading = <WrapLoader><Loader/></WrapLoader>
     
-    const Loaded =  !topic.id ? <NoContent>Chưa có nội dung</NoContent>:<div> <div><WrapDescription>Mô tả ngắn gọn: </WrapDescription> {topic.description}</div><WrapDescription>Nội dung: </WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
+    const Loaded =  !topic.id ? <NoContent>Chưa có nội dung</NoContent>:<div> <div><WrapDescription>{topic.description}</WrapDescription></div><WrapDescription></WrapDescription> <div dangerouslySetInnerHTML={{ __html: topic.content}} /></div>
 
     return (
         <WrapperContent>
@@ -51,9 +51,11 @@ const NoContent = styled.div`
     left:50%;
     transform: translateX(-50%);
     font-size: 1.2rem;
+
 `
 const WrapperContent = styled.div`
     padding: 1rem;
+    overflow-x: hidden;
 `
 const WrapLoader = styled.div`
     position: absolute;
@@ -64,6 +66,5 @@ const WrapLoader = styled.div`
 const WrapDescription = styled.span`
     font-size:1.2rem;
     font-weight:500;
-    text-decoration: underline;
     margin-right: 1rem;
 `
