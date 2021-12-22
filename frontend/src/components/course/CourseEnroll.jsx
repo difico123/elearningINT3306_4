@@ -145,8 +145,8 @@ function CourseEnroll({ checkEnroll }) {
               </ARWrap>
               <CourseInstructor>
                 <span className="bg-green-800 text-xl rounded pb-1 pl-1 pr-1 mr-2">
-                  Giảng viên: {course.instructorName}
-                </span>{" "}
+                  Giảng viên: 
+                </span>{" "}{course.instructorName}
               </CourseInstructor>
             </InfoWrap>
             <EnrollSection>
@@ -382,7 +382,7 @@ const Leaderboard = styled.div`
   border-top: 1px solid black;
   display: flex;
   flex-direction: column;
-  filter: drop-shadow(0 0 2.5rem brown);
+  filter: drop-shadow(0 0 1.5rem black);
 `;
 
 const LBTitle = styled.div`
@@ -395,6 +395,7 @@ const LBTitle = styled.div`
 `;
 
 const LBContent = styled.div`
+
   background-color: #f0f0f0;
   display: flex;
   flex-flow: column nowrap;

@@ -155,7 +155,6 @@ function Header({ user }) {
   const renderNotify = (
     <BellWrap>
       <div className="NotifiNum">{notificationNum}</div>
-
       <BellImg src="https://img.icons8.com/cotton/2x/appointment-reminders.png" onClick={showNotification} />
       <Wrapper style={{ display: !toggleNotification ? "none" : "block" }}>
         <h2>Thông báo</h2>
@@ -504,7 +503,6 @@ const Bgheader = styled.div`
 `
 const Home = styled.div`
 background-color: white;
-
   display:flex;
   gap: 2px;
   align-items: center;
@@ -513,7 +511,6 @@ background-color: white;
     flex-flow: row nowrap;
     padding: 0.1rem 0.5rem;
     border-radius: 3px;
-    border: 1px solid black;
     gap: 10px;
     align-items: center;
     transition: 0.25s ease;

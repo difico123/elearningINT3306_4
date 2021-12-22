@@ -122,7 +122,7 @@ const WrapLoader = styled.div `
 const Wrap = styled.div`
   position: relative;
   background-color: #f7f9fa;
-  border-radius: 10%;
+  border-radius: 10px;
   border: 3px solid rgba(5, 5, 5, 0.1);
   cursor: pointer;
   transition: all 314ms cubic-bezier(0.2, 0.4, 0.38, 0.7) 0s;
