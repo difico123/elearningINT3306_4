@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, DataTypes) => {
-        await queryInterface.createTable('Users', {
+        await queryInterface.createTable('users', {
             uuid: {
                 type: DataTypes.UUID,
                 defaultValue: DataTypes.UUIDV4,
@@ -49,12 +49,6 @@ module.exports = {
             imageUrl: {
                 type: DataTypes.STRING,
             },
-            resetPasswordToken: {
-                type: DataTypes.STRING,
-            },
-            resetPasswordExpire: {
-                type: DataTypes.DATE,
-            },
             dateAdded: {
                 type: 'TIMESTAMP',
                 defaultValue: DataTypes.literal('CURRENT_TIMESTAMP'),
@@ -68,6 +62,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, DataTypes) => {
-        await queryInterface.dropTable('Users');
+        await queryInterface.dropTable('users');
     },
 };

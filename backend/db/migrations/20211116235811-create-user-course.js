@@ -2,7 +2,7 @@
 module.exports = {
     up: async (queryInterface, DataTypes) => {
         await queryInterface
-            .createTable('UserCourses', {
+            .createTable('usercourses', {
                 id: {
                     allowNull: false,
                     autoIncrement: true,
@@ -38,12 +38,12 @@ module.exports = {
                 },
             })
             .then(() => {
-                queryInterface.addIndex('UserCourses', ['userId', 'courseId'], {
+                queryInterface.addIndex('usercourses', ['userId', 'courseId'], {
                     unique: true,
                 });
             });
     },
     down: async (queryInterface, DataTypes) => {
-        await queryInterface.dropTable('UserCourses');
+        await queryInterface.dropTable('usercourses');
     },
 };

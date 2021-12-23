@@ -45,7 +45,7 @@ function SignUpForm() {
       });
   };
 
-  const errors = message.map((abc, index) => (
+  const errors = message.length>0&&message.map((abc, index) => (
     <div key={index}>
       <label className="text-red-300">{abc}</label>
     </div>

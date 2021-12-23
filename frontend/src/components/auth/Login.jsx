@@ -30,7 +30,7 @@ function LoginForm() {
       });
   };
 
-  const renderErrors = errorMsg.map((value, index) => (
+  const renderErrors = errorMsg.length>0&&errorMsg.map((value, index) => (
     <div key={index}>
       <label className="text-red-300">{value}</label>
     </div>

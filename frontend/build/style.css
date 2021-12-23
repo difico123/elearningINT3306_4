@@ -1,0 +1,176 @@
+/* Set content for font-families */
+.ql-font-arial,
+.ql-font span[data-value="arial"]::before {
+  font-family: Arial, sans-serif;
+}
+.ql-font-comic-sans,
+.ql-font span[data-value="comic-sans"]::before {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+.ql-font-courier-new,
+.ql-font span[data-value="courier-new"]::before {
+  font-family: "Courier New";
+}
+.ql-font-georgia,
+.ql-font span[data-value="georgia"]::before {
+  font-family: Georgia, serif;
+}
+.ql-font-helvetica,
+.ql-font span[data-value="helvetica"]::before {
+  font-family: Helvetica, sans-serif;
+}
+.ql-font-Inter,
+.ql-font span[data-value="Inter"]::before {
+  font-family: 'Inter', sans-serif;
+}
+.ql-font-lucida,
+.ql-font span[data-value="lucida"]::before {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+/* Set content for sizes */
+.ql-size-extra-small,
+.ql-size span[data-value="extra-small"]::before {
+  font-size: 13px !important;
+}
+.ql-size-small,
+.ql-size span[data-value="small"]::before {
+  font-size: 14px !important;
+}
+.ql-size-medium,
+.ql-size span[data-value="medium"]::before {
+  font-size: 18px !important;
+}
+.ql-size-large,
+.ql-size span[data-value="large"]::before {
+  font-size: 20px !important;
+}
+
+.ql-editor {
+  min-height: 50vh; 
+  font-size: 16px;
+  max-width: 56vw;
+}
+.App .ql-snow .ql-tooltip.ql-flip {
+  width: auto;
+  left: 17px!important;
+  white-space: normal;
+}
+
+ @page {
+  margin: 1in;
+}
+
+@media print {
+  body {
+    background: none;
+  }
+  .container .ql-editor {
+    width: 6.5in;
+    height: 9in;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    align-self: flex-start;
+  }
+  .container .ql-toolbar.ql-snow {
+    display: none;
+  }
+} 
+.rdw-editor-main {
+  background-color: #f5f6f9;
+  border: 1px solid#eee;
+  margin-bottom: 17px;
+  padding: 7px 17px 7px 17px;
+  line-height: 27px;
+}
+.public-DraftEditor-content {
+  min-height: 300px;
+}
+
+
+.btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: 400;
+  font-family: 'Inter', sans-serif;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  letter-spacing: 0;
+  padding: 9px 30px;
+  font-size: 15px;
+  line-height: 2;
+  border-radius: 8px;
+  -webkit-user-select: none;
+  user-select: none;
+  transition: all 0.3s ease-in-out 0s;
+}
+.btn {
+  outline: none !important;
+}
+
+.btn__theme {
+  color: #fff;
+  background-color: #673ab7;
+  border-color: #673ab7;
+}
+.App__tittle {
+  text-align: center;
+  font-size: 47px;
+  font-weight: 700;
+  margin-bottom: 17px;
+}
+.App__tittle span{
+  color: #673ab7;
+}
+.post__list {
+  margin: 37px 0 17px 0;
+  border-bottom: 1px solid lavender;
+  padding-bottom: 17px;
+}
+
+.post__list h2 {
+  margin-bottom: 17px;
+  font-size: 24px;
+  font-weight: 600;
+}
+.post__list p {
+  margin-bottom: 17px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #524c4c;
+}
+span.required {
+  color: #f44336;
+}
+
+.errors{
+  color: #f44336;
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 17px;
+}
+.btn__add{
+  margin: 37px auto;
+  display: table;
+  padding: 14px 37px 14px 37px;
+  font-size: 20px;
+  line-height: normal;
+}
+.post__description{
+  position: relative;
+}
+iframe{
+  width: 70%;
+  height: 537px;
+  margin: 2rem auto;
+  box-shadow: rgb(85, 91, 255) 0px 0px 0px 3px, rgb(31, 193, 27) 0px 0px 0px 6px, rgb(255, 217, 19) 0px 0px 0px 9px, rgb(255, 156, 85) 0px 0px 0px 12px, rgb(255, 85, 85) 0px 0px 0px 15px;
+}
+
+.font-weight-bold {
+  font-weight: 700;
+}

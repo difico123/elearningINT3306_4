@@ -1,7 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint = "/api/category";
-
+const apiEndpoint = apiUrl+ "/api/category";
 function getAll() {
   return http.get(apiEndpoint + "/get");
 }

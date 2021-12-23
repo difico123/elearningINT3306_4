@@ -1,6 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint = "/api/userCourse";
+const apiEndpoint = apiUrl+"/api/userCourse";
 
 function enrollCourse(courseId) {
   return http.put(apiEndpoint + `/enroll/${courseId}`);

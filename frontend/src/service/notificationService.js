@@ -1,6 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint = "/api/notification";
+const apiEndpoint = apiUrl + "/api/notification";
 
 function getNotSeenNotifications() {
   return http.get(apiEndpoint + "/getNotSeenMsgs");

@@ -1,6 +1,6 @@
 import http from "./httpService";
-
-const apiEndpoint = "/api/course";
+import {apiUrl} from '../config.json'
+const apiEndpoint = apiUrl + "/api/course";
 
 async function findUsers(courseId, UserEmail) {
   return await http.get(apiEndpoint + `/${courseId}/findUsers?keyword=${UserEmail}`);

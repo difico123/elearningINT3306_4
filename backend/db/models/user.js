@@ -77,12 +77,6 @@ module.exports = (sequelize, DataTypes) => {
             imageUrl: {
                 type: DataTypes.STRING,
             },
-            resetPasswordToken: {
-                type: DataTypes.STRING,
-            },
-            resetPasswordExpire: {
-                type: DataTypes.DATE,
-            },
             dateAdded: {
                 type: 'TIMESTAMP',
                 defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),

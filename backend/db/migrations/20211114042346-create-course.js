@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, DataTypes) => {
-        await queryInterface.createTable('Courses', {
+        await queryInterface.createTable('courses', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -51,6 +51,6 @@ module.exports = {
         });
     },
     down: async (queryInterface, DataTypes) => {
-        await queryInterface.dropTable('Courses');
+        await queryInterface.dropTable('courses');
     },
 };

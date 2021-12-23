@@ -1,6 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint ="/api/user";
+const apiEndpoint = apiUrl + "/api/user";
 
 async function getUserInfo() {
   const config = { headers: { 'Content-Type': 'application/json' } };

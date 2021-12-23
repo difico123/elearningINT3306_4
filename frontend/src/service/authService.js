@@ -1,7 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint = "/api/auth";
-
+const apiEndpoint =apiUrl+ "/api/auth";
 http.setJwt(getJwt());
 
 async function login({ email, password }) {

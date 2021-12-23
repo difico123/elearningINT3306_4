@@ -6,7 +6,7 @@ const { sequelize } = require('./db/models');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 5000;
-const allowlist = ['http://localhost:3000', 'http://localhost:3001'];
+const allowlist = ['http://localhost:3000', 'http://localhost:3001', 'https://academix.netlify.app'];
 
 const corsOptions = {
     credentials: true,

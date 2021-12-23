@@ -1,6 +1,7 @@
 import http from "./httpService";
+import {apiUrl} from '../config.json'
 
-const apiEndpoint = "/api/course";
+const apiEndpoint =apiUrl+  "/api/course";
 
 function createQuiz(courseId, topicId, body) {
   const config = { headers: { "Content-Type": "application/json" } };

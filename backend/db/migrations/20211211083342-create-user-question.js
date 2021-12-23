@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
     up: async (queryInterface, DataTypes) => {
-        await queryInterface.createTable('UserQuestions', {
+        await queryInterface.createTable('userquestions', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
@@ -41,12 +41,12 @@ module.exports = {
             },
         })
         .then(() => {
-            queryInterface.addIndex('UserQuestions', ['userId', 'questionId'], {
+            queryInterface.addIndex('userquestions', ['userId', 'questionId'], {
                 unique: true,
             });
         });;
     },
     down: async (queryInterface, DataTypes) => {
-        await queryInterface.dropTable('UserQuestions');
+        await queryInterface.dropTable('userquestions');
     },
 };
