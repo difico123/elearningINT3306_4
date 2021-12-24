@@ -32,6 +32,7 @@ function logout() {
 async function getAdmin() {
   return await http.get('https://mi-learn.herokuapp.com/api/user/info');
 }
+
 function getJwt() {
   return localStorage.getItem("token");
 }
