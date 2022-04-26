@@ -1,0 +1,3916 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "1.0.0",
+    "title" : "elearning",
+    "contact" : { }
+  },
+  "host" : "mi-learn.herokuapp.com",
+  "basePath" : "/api",
+  "tags" : [ {
+    "name" : "Auth"
+  }, {
+    "name" : "User"
+  }, {
+    "name" : "UserCourse"
+  }, {
+    "name" : "category"
+  }, {
+    "name" : "Course"
+  }, {
+    "name" : "Notification"
+  }, {
+    "name" : "Topic"
+  }, {
+    "name" : "Admin"
+  }, {
+    "name" : "Quiz"
+  }, {
+    "name" : "Question"
+  }, {
+    "name" : "Choice"
+  }, {
+    "name" : "UserQuestion"
+  } ],
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/auth/register" : {
+      "post" : {
+        "tags" : [ "Auth" ],
+        "summary" : "Register",
+        "operationId" : "Register",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/RegisterRequest"
+          }
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : [ "Đăng kí tài khoản thành công" ],
+                "user" : {
+                  "firstName" : "ssdsd",
+                  "lastName" : "ssdsd",
+                  "phoneNumber" : 123433241,
+                  "email" : "user2@gmail.com",
+                  "password" : "$2a$10$RvveHIZ16sZWgWGL0ELLJ.ZqDb9ALABC7G/hNF3Sh/6KH7AOm5EIS",
+                  "city" : "gfdsafdsaom",
+                  "address" : "gfdsafdsaom"
+                }
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "279"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"117-8H41X+p6BxGYqELyl+SLrWEzoxk\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:55:11 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/Registersuccess"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : true,
+                "msg" : [ "Email không hợp lệ" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "48"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"30-ZYNEIxsekybAGw0Bb/lC5+jz0/w\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:55:42 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/Registerfail1"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "Auth" ],
+        "summary" : "login",
+        "operationId" : "login",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/loginrequest"
+          }
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJyb2xlIjoxfSwiaWF0IjoxNjQwMjcwODE1LCJleHAiOjE2NDAzMDY4MTV9.Ow9j_Al19EX1HWJWdX1b84-qgA-mc9aCepwMYAC5yHc",
+                "user" : {
+                  "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+                  "firstName" : "Văn",
+                  "lastName" : "Anh",
+                  "email" : "instructor1@gmail.com",
+                  "phoneNumber" : 12345678,
+                  "address" : "Hoang Cuong Thanh Ba Phu Tho",
+                  "city" : "Phu Tho",
+                  "role" : 1,
+                  "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+                  "dateAdded" : "2021-12-23T14:03:17.000Z",
+                  "lastUpdated" : "2021-12-23T14:03:17.000Z"
+                }
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "589"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"24d-6vh8z5Cx2135WRMflbXrTaE3T9U\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:46:55 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : true,
+                "msg" : [ "Tài khoàn này không tồn tại" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "60"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"3c-VDjL0j0BzYnq8YYIm5GYkVm9RC8\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:53:17 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/fail1"
+            }
+          }
+        }
+      }
+    },
+    "/user/info" : {
+      "get" : {
+        "tags" : [ "User" ],
+        "summary" : "getUserInfomation",
+        "operationId" : "getUserInfomation",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "info" : {
+                  "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+                  "firstName" : "Văn",
+                  "lastName" : "Anh",
+                  "email" : "instructor1@gmail.com",
+                  "phoneNumber" : 12345678,
+                  "address" : "Hoang Cuong Thanh Ba Phu Tho",
+                  "city" : "Phu Tho",
+                  "role" : 1,
+                  "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+                  "dateAdded" : "2021-12-23T14:03:17.000Z",
+                  "lastUpdated" : "2021-12-23T14:03:17.000Z"
+                },
+                "url" : "116.100.92.247"
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "440"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"1b8-zr0TIaDZcHBvGkd8nbSuiFAcR44\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:56:45 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success1"
+            }
+          }
+        }
+      }
+    },
+    "/user/editInfo" : {
+      "put" : {
+        "tags" : [ "User" ],
+        "summary" : "editUserInfomation",
+        "operationId" : "editUserInfomation",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "firstName",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "lastName",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "phoneNumber",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "address",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "city",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "imageUrl",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : [ "Đã sửa thông tin của bạn" ],
+                "info" : {
+                  "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+                  "firstName" : "nong",
+                  "lastName" : "duc",
+                  "email" : "instructor1@gmail.com",
+                  "phoneNumber" : "123456789",
+                  "address" : "Cao Bang",
+                  "city" : "Cao Bang",
+                  "role" : 1,
+                  "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg avatars/js6kmwjgfe36zlnxjljt",
+                  "dateAdded" : "2021-12-23T14:03:17.000Z",
+                  "lastUpdated" : "2021-12-23T14:03:17.000Z"
+                }
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "474"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"1da-DyoXijXoQ6si35iOOCyPTKG5mpI\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:58:43 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success2"
+            }
+          }
+        }
+      }
+    },
+    "/user/editPw" : {
+      "put" : {
+        "tags" : [ "User" ],
+        "summary" : "editpw",
+        "operationId" : "editpw",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/editpwrequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : [ "Mật khẩu của bạn đã được cập nhật" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "77"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"4d-E69UixesS+rOElcE3c3F4Vvynps\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:59:52 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success3"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : true,
+                "msg" : "Không có token, không thể truy cập"
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "64"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"40-TRgAktUKoGh4VkZy8H/4LD1zQ1c\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 14:59:13 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/fail3"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/enroll/{courseId}" : {
+      "put" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "enrollCourse",
+        "operationId" : "enrollCourse",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : "Đã thông báo đến giáo viên, xin vui lòng chờ giáo viên của bạn chấp nhận"
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "118"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"76-a6JlBEW0OED1HVobvjRcLzxnXnk\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:11:20 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success4"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/all" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "showUserCourses",
+        "operationId" : "showUserCourses",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "courses" : [ {
+                  "courseId" : 4,
+                  "name" : "Khóa học Web Full-stack",
+                  "instructorId" : 3,
+                  "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png",
+                  "phoneNumber" : 123456789,
+                  "fullName" : "Văn Anh",
+                  "email" : "instructor1@gmail.com",
+                  "enrollDate" : "ngày 23 tháng 12 năm 2021"
+                } ],
+                "filteredCourse" : 1,
+                "totalCourse" : 1
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "361"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"169-rHGL7HfPpWFsejF8pyknTDnqTzc\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:12:13 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success5"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/enroll/check/{courseId}" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "checkCourseEnroll",
+        "operationId" : "checkCourseEnroll",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : [ "oke" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "29"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"1d-oSPMhYVUm8zYdB3Cqzjzq0Vk/Rc\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:13:20 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success3"
+            }
+          },
+          "403" : {
+            "description" : "Forbidden",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : true,
+                "msg" : [ "Bạn đã đăng kí, chờ giảng viên của bản chấp thuận!" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "95"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"5f-GzdIWJPuu0teLsb+h4EB6fHe4T4\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:14:23 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/fail1"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/rate/{courseId}/{rating}" : {
+      "put" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "rating",
+        "operationId" : "rating",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "rating",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "rating" : 4,
+                "msg" : "Bạn đã đánh giá khoá học"
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "69"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"45-ajoL5/aoQo56hNVeJkaF60hIm8A\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:14:38 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success7"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/check/{courseId}" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "checkCourse",
+        "operationId" : "checkCourse",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "400" : {
+            "description" : "Bad Request",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : true,
+                "msg" : [ "Bạn phải đăng kí khoá học này trước đã" ]
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "79"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"4f-cWT+iujLqciUY3arQ8jFwKp9ivY\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:15:14 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/fail1"
+            }
+          }
+        }
+      }
+    },
+    "/userCourse/getRating/{courseId}" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "getRating",
+        "operationId" : "getRating",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/userCourse/all/{courseId}" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "showCourseScore",
+        "operationId" : "showCourseScore",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/userCourse/{courseId}" : {
+      "get" : {
+        "tags" : [ "UserCourse" ],
+        "summary" : "getSingleCourse",
+        "operationId" : "getSingleCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/category/get" : {
+      "get" : {
+        "tags" : [ "category" ],
+        "summary" : "getCategory",
+        "operationId" : "getCategory",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/category/getName" : {
+      "get" : {
+        "tags" : [ "category" ],
+        "summary" : "getCategoryName",
+        "operationId" : "getCategoryName",
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/create/{categoryId}" : {
+      "post" : {
+        "tags" : [ "Course" ],
+        "summary" : "createCourse",
+        "operationId" : "createCourse",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "categoryId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "description",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/instructorCourses" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "showCourseByInstructor",
+        "operationId" : "showCourseByInstructor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "keyword",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/instructorCourses/{courseId}" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "getInstructorCourseDetails",
+        "operationId" : "getInstructorCourseDetails",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/activate/{courseId}" : {
+      "put" : {
+        "tags" : [ "Course" ],
+        "summary" : "activeCourse",
+        "operationId" : "activeCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/suspend/{courseId}" : {
+      "put" : {
+        "tags" : [ "Course" ],
+        "summary" : "suspendCourse",
+        "operationId" : "suspendCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/edit/{courseId}" : {
+      "put" : {
+        "tags" : [ "Course" ],
+        "summary" : "editCourse",
+        "operationId" : "editCourse",
+        "consumes" : [ "application/x-www-form-urlencoded" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "name",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "description",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "courseImageUrl",
+          "in" : "formData",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/delete/{courseId}" : {
+      "delete" : {
+        "tags" : [ "Course" ],
+        "summary" : "deleteCourse",
+        "operationId" : "deleteCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/getUsers/{courseId}" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "getCourseStudents",
+        "operationId" : "getCourseStudents",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/kick/{userId}" : {
+      "put" : {
+        "tags" : [ "Course" ],
+        "summary" : "kickStudent",
+        "operationId" : "kickStudent",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/invite/{userId}" : {
+      "post" : {
+        "tags" : [ "Course" ],
+        "summary" : "inviteStudent",
+        "operationId" : "inviteStudent",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/findUsers" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "findStudentOutsideCourse",
+        "operationId" : "findStudentOutsideCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "keyword",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/showAll" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "showAllCourse",
+        "operationId" : "showAllCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "categoryId",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/rank/{courseId}" : {
+      "get" : {
+        "tags" : [ "Course" ],
+        "summary" : "rank",
+        "operationId" : "rank",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/notification/get" : {
+      "get" : {
+        "tags" : [ "Notification" ],
+        "summary" : "getNotifications",
+        "operationId" : "getNotifications",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/notification/getNotSeenMsg" : {
+      "get" : {
+        "tags" : [ "Notification" ],
+        "summary" : "getNotSeenMsg",
+        "operationId" : "getNotSeenMsg",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/notification/delete/{notificationId}" : {
+      "delete" : {
+        "tags" : [ "Notification" ],
+        "summary" : "deleteNotification",
+        "operationId" : "deleteNotification",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notificationId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/notification/setConfirm/{notificationId}" : {
+      "put" : {
+        "tags" : [ "Notification" ],
+        "summary" : "setConfirm",
+        "operationId" : "setConfirm",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "notificationId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/create" : {
+      "post" : {
+        "tags" : [ "Topic" ],
+        "summary" : "createTopic",
+        "operationId" : "createTopic",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createTopicRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/getCourseTopics" : {
+      "get" : {
+        "tags" : [ "Topic" ],
+        "summary" : "courseTopics",
+        "operationId" : "courseTopics",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/getSingleTopic/{topicId}" : {
+      "get" : {
+        "tags" : [ "Topic" ],
+        "summary" : "getSingleTopic",
+        "operationId" : "getSingleTopic",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/edit/{topicId}" : {
+      "put" : {
+        "tags" : [ "Topic" ],
+        "summary" : "editTopic",
+        "operationId" : "editTopic",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/editTopicRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/delete/{topicId}" : {
+      "delete" : {
+        "tags" : [ "Topic" ],
+        "summary" : "deleteTopic",
+        "operationId" : "deleteTopic",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/getTopicNames" : {
+      "get" : {
+        "tags" : [ "Topic" ],
+        "summary" : "getTopicNames",
+        "operationId" : "getTopicNames",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/admin/listUsers" : {
+      "get" : {
+        "tags" : [ "Admin" ],
+        "summary" : "listUser",
+        "operationId" : "listUser",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/admin/listCourses" : {
+      "get" : {
+        "tags" : [ "Admin" ],
+        "summary" : "listCourses",
+        "operationId" : "listCourses",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/admin/deleteCourse/{courseId}" : {
+      "delete" : {
+        "tags" : [ "Admin" ],
+        "summary" : "deleteCourse",
+        "operationId" : "DeletedeleteCourse",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/admin/login" : {
+      "post" : {
+        "tags" : [ "Admin" ],
+        "summary" : "loginAdmin",
+        "operationId" : "loginAdmin",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/loginAdminRequest"
+          }
+        } ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/admin/setInstructor/{userId}" : {
+      "put" : {
+        "tags" : [ "Admin" ],
+        "summary" : "beAnInstructor",
+        "operationId" : "beAnInstructor",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/create" : {
+      "post" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "createQuiz",
+        "operationId" : "createQuiz",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createQuizRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/active/{quizId}" : {
+      "put" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "activeQuiz",
+        "operationId" : "activeQuiz",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/hide/{quizId}" : {
+      "put" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "suspendQuiz",
+        "operationId" : "suspendQuiz",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/getQuizeNames" : {
+      "get" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "getQuizNames",
+        "operationId" : "getQuizNames",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/getQuizeTitles" : {
+      "get" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "quizTitles",
+        "operationId" : "quizTitles",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/edit/{quizId}" : {
+      "put" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "editQuiz",
+        "operationId" : "editQuiz",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/editQuizRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/delete/{quizId}" : {
+      "delete" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "deleteQuiz",
+        "operationId" : "deleteQuiz",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/getInstructorQuestions/{quizId}" : {
+      "get" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "getInstructorQuestions",
+        "operationId" : "getInstructorQuestions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/getStudentQuestions/{quizId}" : {
+      "get" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "getStudentQuestions",
+        "operationId" : "getStudentQuestions",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/getQuestionIds/{quizId}" : {
+      "get" : {
+        "tags" : [ "Quiz" ],
+        "summary" : "getQuestionIds",
+        "operationId" : "getQuestionIds",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/create" : {
+      "post" : {
+        "tags" : [ "Question" ],
+        "summary" : "createQuestion",
+        "operationId" : "createQuestion",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createQuestionRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/getQuestionAnswers/{questionId}" : {
+      "get" : {
+        "tags" : [ "Question" ],
+        "summary" : "getQuestionAswers",
+        "operationId" : "getQuestionAswers",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/edit/{questionId}" : {
+      "put" : {
+        "tags" : [ "Question" ],
+        "summary" : "Editquestion",
+        "operationId" : "Editquestion",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/EditquestionRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/delete/{questionId}" : {
+      "delete" : {
+        "tags" : [ "Question" ],
+        "summary" : "deleteQuestion",
+        "operationId" : "deleteQuestion",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/deleteQuestionRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/{questionId}/choice/create" : {
+      "post" : {
+        "tags" : [ "Choice" ],
+        "summary" : "createChoice",
+        "operationId" : "createChoice",
+        "produces" : [ "application/json; charset=utf-8" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/createChoiceRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "examples" : {
+              "application/json; charset=utf-8" : {
+                "error" : false,
+                "msg" : "tạo câu trả lời thành công",
+                "newChoice" : {
+                  "id" : 1,
+                  "questionId" : "2",
+                  "content" : "javascript-JS",
+                  "isAnswer" : true,
+                  "updatedAt" : "2021-12-23T15:43:31.022Z",
+                  "createdAt" : "2021-12-23T15:43:31.022Z"
+                }
+              }
+            },
+            "headers" : {
+              "Server" : {
+                "type" : "string",
+                "default" : "Cowboy"
+              },
+              "Connection" : {
+                "type" : "string",
+                "default" : "keep-alive"
+              },
+              "X-Powered-By" : {
+                "type" : "string",
+                "default" : "Express"
+              },
+              "Vary" : {
+                "type" : "string",
+                "default" : "Origin"
+              },
+              "Access-Control-Allow-Credentials" : {
+                "type" : "string",
+                "default" : "true"
+              },
+              "Content-Length" : {
+                "type" : "string",
+                "default" : "217"
+              },
+              "Etag" : {
+                "type" : "string",
+                "default" : "W/\"d9-cXVx391IR7VrjYqbE9F9RzS6Gcw\""
+              },
+              "Date" : {
+                "type" : "string",
+                "default" : "Thu, 23 Dec 2021 15:43:31 GMT"
+              },
+              "Via" : {
+                "type" : "string",
+                "default" : "1.1 vegur"
+              }
+            },
+            "schema" : {
+              "$ref" : "#/definitions/success8"
+            }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/{questionId}/choice/delete/{choiceId}" : {
+      "delete" : {
+        "tags" : [ "Choice" ],
+        "summary" : "deleteChoice",
+        "operationId" : "deleteChoice",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "choiceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/{questionId}/choice/edit/{choiceId}" : {
+      "put" : {
+        "tags" : [ "Choice" ],
+        "summary" : "editChoice",
+        "operationId" : "editChoice",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "choiceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/editChoiceRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/{topicId}/quiz/{quizId}/question/{questionId}/userquestion/answer/{choiceId}" : {
+      "post" : {
+        "tags" : [ "UserQuestion" ],
+        "summary" : "submitStudentAnswer",
+        "operationId" : "submitStudentAnswer",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "topicId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "quizId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "choiceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "Body",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/submitStudentAnswerRequest"
+          }
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    },
+    "/course/{courseId}/topic/question/{questionId}" : {
+      "get" : {
+        "tags" : [ "UserQuestion" ],
+        "summary" : "history",
+        "operationId" : "history",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "courseId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "questionId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "type" : "integer",
+          "format" : "int32"
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "security" : [ ],
+        "deprecated" : false,
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "headers" : { }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions" : { },
+  "definitions" : {
+    "RegisterRequest" : {
+      "type" : "object",
+      "required" : [ "address", "city", "email", "firstName", "lastName", "password", "phoneNumber" ],
+      "properties" : {
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        }
+      },
+      "title" : "RegisterRequest",
+      "example" : {
+        "firstName" : "ssdsd",
+        "lastName" : "ssdsd",
+        "phoneNumber" : 123433241,
+        "email" : "usl.com",
+        "password" : "12345678",
+        "city" : "gfdsafdsaom",
+        "address" : "gfdsafdsaom"
+      }
+    },
+    "Registersuccess" : {
+      "type" : "object",
+      "required" : [ "error", "msg", "user" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "user" : {
+          "$ref" : "#/definitions/User"
+        }
+      },
+      "title" : "Registersuccess",
+      "example" : {
+        "error" : false,
+        "msg" : [ "Đăng kí tài khoản thành công" ],
+        "user" : {
+          "firstName" : "ssdsd",
+          "lastName" : "ssdsd",
+          "phoneNumber" : 123433241,
+          "email" : "user2@gmail.com",
+          "password" : "$2a$10$RvveHIZ16sZWgWGL0ELLJ.ZqDb9ALABC7G/hNF3Sh/6KH7AOm5EIS",
+          "city" : "gfdsafdsaom",
+          "address" : "gfdsafdsaom"
+        }
+      }
+    },
+    "User" : {
+      "type" : "object",
+      "required" : [ "address", "city", "email", "firstName", "lastName", "password", "phoneNumber" ],
+      "properties" : {
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        }
+      },
+      "title" : "User",
+      "example" : {
+        "firstName" : "ssdsd",
+        "lastName" : "ssdsd",
+        "phoneNumber" : 123433241,
+        "email" : "user2@gmail.com",
+        "password" : "$2a$10$RvveHIZ16sZWgWGL0ELLJ.ZqDb9ALABC7G/hNF3Sh/6KH7AOm5EIS",
+        "city" : "gfdsafdsaom",
+        "address" : "gfdsafdsaom"
+      }
+    },
+    "Registerfail1" : {
+      "type" : "object",
+      "required" : [ "error", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "title" : "Registerfail1",
+      "example" : {
+        "error" : true,
+        "msg" : [ "Email không hợp lệ" ]
+      }
+    },
+    "loginrequest" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      },
+      "title" : "loginrequest",
+      "example" : {
+        "email" : "user2@gmail.com",
+        "password" : "12345678"
+      }
+    },
+    "success" : {
+      "type" : "object",
+      "required" : [ "error", "token", "user" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "token" : {
+          "type" : "string"
+        },
+        "user" : {
+          "$ref" : "#/definitions/User1"
+        }
+      },
+      "title" : "success",
+      "example" : {
+        "error" : false,
+        "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjozLCJyb2xlIjoxfSwiaWF0IjoxNjQwMjcwODE1LCJleHAiOjE2NDAzMDY4MTV9.Ow9j_Al19EX1HWJWdX1b84-qgA-mc9aCepwMYAC5yHc",
+        "user" : {
+          "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+          "firstName" : "Văn",
+          "lastName" : "Anh",
+          "email" : "instructor1@gmail.com",
+          "phoneNumber" : 12345678,
+          "address" : "Hoang Cuong Thanh Ba Phu Tho",
+          "city" : "Phu Tho",
+          "role" : 1,
+          "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+          "dateAdded" : "2021-12-23T14:03:17.000Z",
+          "lastUpdated" : "2021-12-23T14:03:17.000Z"
+        }
+      }
+    },
+    "User1" : {
+      "type" : "object",
+      "required" : [ "address", "city", "dateAdded", "email", "firstName", "imageUrl", "lastName", "lastUpdated", "phoneNumber", "role", "uuid" ],
+      "properties" : {
+        "uuid" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "role" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "imageUrl" : {
+          "type" : "string"
+        },
+        "dateAdded" : {
+          "type" : "string"
+        },
+        "lastUpdated" : {
+          "type" : "string"
+        }
+      },
+      "title" : "User1",
+      "example" : {
+        "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+        "firstName" : "Văn",
+        "lastName" : "Anh",
+        "email" : "instructor1@gmail.com",
+        "phoneNumber" : 12345678,
+        "address" : "Hoang Cuong Thanh Ba Phu Tho",
+        "city" : "Phu Tho",
+        "role" : 1,
+        "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+        "dateAdded" : "2021-12-23T14:03:17.000Z",
+        "lastUpdated" : "2021-12-23T14:03:17.000Z"
+      }
+    },
+    "fail1" : {
+      "type" : "object",
+      "required" : [ "error", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "title" : "fail1",
+      "example" : {
+        "error" : true,
+        "msg" : [ "Tài khoàn này không tồn tại" ]
+      }
+    },
+    "success1" : {
+      "type" : "object",
+      "required" : [ "error", "info", "url" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "info" : {
+          "$ref" : "#/definitions/Info"
+        },
+        "url" : {
+          "type" : "string"
+        }
+      },
+      "title" : "success1",
+      "example" : {
+        "error" : false,
+        "info" : {
+          "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+          "firstName" : "Văn",
+          "lastName" : "Anh",
+          "email" : "instructor1@gmail.com",
+          "phoneNumber" : 12345678,
+          "address" : "Hoang Cuong Thanh Ba Phu Tho",
+          "city" : "Phu Tho",
+          "role" : 1,
+          "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+          "dateAdded" : "2021-12-23T14:03:17.000Z",
+          "lastUpdated" : "2021-12-23T14:03:17.000Z"
+        },
+        "url" : "116.100.92.247"
+      }
+    },
+    "Info" : {
+      "type" : "object",
+      "required" : [ "address", "city", "dateAdded", "email", "firstName", "imageUrl", "lastName", "lastUpdated", "phoneNumber", "role", "uuid" ],
+      "properties" : {
+        "uuid" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "role" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "imageUrl" : {
+          "type" : "string"
+        },
+        "dateAdded" : {
+          "type" : "string"
+        },
+        "lastUpdated" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Info",
+      "example" : {
+        "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+        "firstName" : "Văn",
+        "lastName" : "Anh",
+        "email" : "instructor1@gmail.com",
+        "phoneNumber" : 12345678,
+        "address" : "Hoang Cuong Thanh Ba Phu Tho",
+        "city" : "Phu Tho",
+        "role" : 1,
+        "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg",
+        "dateAdded" : "2021-12-23T14:03:17.000Z",
+        "lastUpdated" : "2021-12-23T14:03:17.000Z"
+      }
+    },
+    "success2" : {
+      "type" : "object",
+      "required" : [ "error", "info", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "info" : {
+          "$ref" : "#/definitions/Info1"
+        }
+      },
+      "title" : "success2",
+      "example" : {
+        "error" : false,
+        "msg" : [ "Đã sửa thông tin của bạn" ],
+        "info" : {
+          "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+          "firstName" : "nong",
+          "lastName" : "duc",
+          "email" : "instructor1@gmail.com",
+          "phoneNumber" : "123456789",
+          "address" : "Cao Bang",
+          "city" : "Cao Bang",
+          "role" : 1,
+          "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg avatars/js6kmwjgfe36zlnxjljt",
+          "dateAdded" : "2021-12-23T14:03:17.000Z",
+          "lastUpdated" : "2021-12-23T14:03:17.000Z"
+        }
+      }
+    },
+    "Info1" : {
+      "type" : "object",
+      "required" : [ "address", "city", "dateAdded", "email", "firstName", "imageUrl", "lastName", "lastUpdated", "phoneNumber", "role", "uuid" ],
+      "properties" : {
+        "uuid" : {
+          "type" : "string"
+        },
+        "firstName" : {
+          "type" : "string"
+        },
+        "lastName" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "city" : {
+          "type" : "string"
+        },
+        "role" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "imageUrl" : {
+          "type" : "string"
+        },
+        "dateAdded" : {
+          "type" : "string"
+        },
+        "lastUpdated" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Info1",
+      "example" : {
+        "uuid" : "d18cdc82-0941-48a8-940f-7c2e5882w914",
+        "firstName" : "nong",
+        "lastName" : "duc",
+        "email" : "instructor1@gmail.com",
+        "phoneNumber" : "123456789",
+        "address" : "Cao Bang",
+        "city" : "Cao Bang",
+        "role" : 1,
+        "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1639913561/avatars/js6kmwjgfe36zlnxjljt.jpg avatars/js6kmwjgfe36zlnxjljt",
+        "dateAdded" : "2021-12-23T14:03:17.000Z",
+        "lastUpdated" : "2021-12-23T14:03:17.000Z"
+      }
+    },
+    "editpwrequest" : {
+      "type" : "object",
+      "required" : [ "confirmPassword", "newPassword", "password" ],
+      "properties" : {
+        "password" : {
+          "type" : "string"
+        },
+        "newPassword" : {
+          "type" : "string"
+        },
+        "confirmPassword" : {
+          "type" : "string"
+        }
+      },
+      "title" : "editpwrequest",
+      "example" : {
+        "password" : "123456789",
+        "newPassword" : "12345678",
+        "confirmPassword" : "12345678"
+      }
+    },
+    "fail3" : {
+      "type" : "object",
+      "required" : [ "error", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "title" : "fail3",
+      "example" : {
+        "error" : true,
+        "msg" : "Không có token, không thể truy cập"
+      }
+    },
+    "success3" : {
+      "type" : "object",
+      "required" : [ "error", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "title" : "success3",
+      "example" : {
+        "error" : false,
+        "msg" : [ "Mật khẩu của bạn đã được cập nhật" ]
+      }
+    },
+    "success4" : {
+      "type" : "object",
+      "required" : [ "error", "msg" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "title" : "success4",
+      "example" : {
+        "error" : false,
+        "msg" : "Đã thông báo đến giáo viên, xin vui lòng chờ giáo viên của bạn chấp nhận"
+      }
+    },
+    "success5" : {
+      "type" : "object",
+      "required" : [ "courses", "error", "filteredCourse", "totalCourse" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "courses" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Course"
+          }
+        },
+        "filteredCourse" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "totalCourse" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "title" : "success5",
+      "example" : {
+        "error" : false,
+        "courses" : [ {
+          "courseId" : 4,
+          "name" : "Khóa học Web Full-stack",
+          "instructorId" : 3,
+          "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png",
+          "phoneNumber" : 123456789,
+          "fullName" : "Văn Anh",
+          "email" : "instructor1@gmail.com",
+          "enrollDate" : "ngày 23 tháng 12 năm 2021"
+        } ],
+        "filteredCourse" : 1,
+        "totalCourse" : 1
+      }
+    },
+    "Course" : {
+      "type" : "object",
+      "required" : [ "courseId", "email", "enrollDate", "fullName", "imageUrl", "instructorId", "name", "phoneNumber" ],
+      "properties" : {
+        "courseId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "instructorId" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "imageUrl" : {
+          "type" : "string"
+        },
+        "phoneNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "fullName" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "enrollDate" : {
+          "type" : "string"
+        }
+      },
+      "title" : "Course",
+      "example" : {
+        "courseId" : 4,
+        "name" : "Khóa học Web Full-stack",
+        "instructorId" : 3,
+        "imageUrl" : "https://res.cloudinary.com/subarashis/image/upload/v1637942672/courses/jpjdpc9ui2tu35cjet71.png",
+        "phoneNumber" : 123456789,
+        "fullName" : "Văn Anh",
+        "email" : "instructor1@gmail.com",
+        "enrollDate" : "ngày 23 tháng 12 năm 2021"
+      }
+    },
+    "success7" : {
+      "type" : "object",
+      "required" : [ "error", "msg", "rating" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "rating" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "msg" : {
+          "type" : "string"
+        }
+      },
+      "title" : "success7",
+      "example" : {
+        "error" : false,
+        "rating" : 4,
+        "msg" : "Bạn đã đánh giá khoá học"
+      }
+    },
+    "createTopicRequest" : {
+      "type" : "object",
+      "required" : [ "content", "description", "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        }
+      },
+      "title" : "createTopicRequest",
+      "example" : {
+        "title" : "abcadsfasfsaf",
+        "content" : "abcadsfasfsafabcadsfasfsafabcadsfasfsafabcadsfasfsafabcadsfasfsafabcadsfasfsafabcadsfasfsaf",
+        "description" : "abcadsfasfsafabcadsfasfsafaadsfasfsafabcadsfasfsaf"
+      }
+    },
+    "editTopicRequest" : {
+      "type" : "object",
+      "required" : [ "content", "description", "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        }
+      },
+      "title" : "editTopicRequest",
+      "example" : {
+        "title" : "ducnong0915",
+        "description" : "avasfdsafsdafsdafsdsdfsa",
+        "content" : "avasfdsafsdafsdafsdsdfsa"
+      }
+    },
+    "loginAdminRequest" : {
+      "type" : "object",
+      "required" : [ "email", "password" ],
+      "properties" : {
+        "email" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      },
+      "title" : "loginAdminRequest",
+      "example" : {
+        "email" : "admin@gmail.com",
+        "password" : "12345678"
+      }
+    },
+    "createQuizRequest" : {
+      "type" : "object",
+      "required" : [ "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        }
+      },
+      "title" : "createQuizRequest",
+      "example" : {
+        "title" : "đề kiểm tra thứ nhất"
+      }
+    },
+    "editQuizRequest" : {
+      "type" : "object",
+      "required" : [ "title" ],
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        }
+      },
+      "title" : "editQuizRequest",
+      "example" : {
+        "title" : "abcsadfdsafsasdfsad"
+      }
+    },
+    "createQuestionRequest" : {
+      "type" : "object",
+      "required" : [ "content", "marks" ],
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "marks" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "title" : "createQuestionRequest",
+      "example" : {
+        "content" : "react js là thư viện của ngôn ngữ nào",
+        "marks" : 5
+      }
+    },
+    "EditquestionRequest" : {
+      "type" : "object",
+      "required" : [ "content", "marks" ],
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "marks" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "title" : "EditquestionRequest",
+      "example" : {
+        "content" : "adafdsfsdafsdafsadfsacxzvczxvxczvafdsafs",
+        "marks" : 5
+      }
+    },
+    "deleteQuestionRequest" : {
+      "type" : "object",
+      "required" : [ "content", "marks" ],
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "marks" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "title" : "deleteQuestionRequest",
+      "example" : {
+        "content" : "adafdsfsdafsdafsadfsacxzvczxvxczvafdsafs",
+        "marks" : 5
+      }
+    },
+    "createChoiceRequest" : {
+      "type" : "object",
+      "required" : [ "content", "isAnswer" ],
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "isAnswer" : {
+          "type" : "boolean"
+        }
+      },
+      "title" : "createChoiceRequest",
+      "example" : {
+        "content" : "javascript-JS",
+        "isAnswer" : true
+      }
+    },
+    "success8" : {
+      "type" : "object",
+      "required" : [ "error", "msg", "newChoice" ],
+      "properties" : {
+        "error" : {
+          "type" : "boolean"
+        },
+        "msg" : {
+          "type" : "string"
+        },
+        "newChoice" : {
+          "$ref" : "#/definitions/NewChoice"
+        }
+      },
+      "title" : "success8",
+      "example" : {
+        "error" : false,
+        "msg" : "tạo câu trả lời thành công",
+        "newChoice" : {
+          "id" : 1,
+          "questionId" : "2",
+          "content" : "javascript-JS",
+          "isAnswer" : true,
+          "updatedAt" : "2021-12-23T15:43:31.022Z",
+          "createdAt" : "2021-12-23T15:43:31.022Z"
+        }
+      }
+    },
+    "NewChoice" : {
+      "type" : "object",
+      "required" : [ "content", "createdAt", "id", "isAnswer", "questionId", "updatedAt" ],
+      "properties" : {
+        "id" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "questionId" : {
+          "type" : "string"
+        },
+        "content" : {
+          "type" : "string"
+        },
+        "isAnswer" : {
+          "type" : "boolean"
+        },
+        "updatedAt" : {
+          "type" : "string"
+        },
+        "createdAt" : {
+          "type" : "string"
+        }
+      },
+      "title" : "NewChoice",
+      "example" : {
+        "id" : 1,
+        "questionId" : "2",
+        "content" : "javascript-JS",
+        "isAnswer" : true,
+        "updatedAt" : "2021-12-23T15:43:31.022Z",
+        "createdAt" : "2021-12-23T15:43:31.022Z"
+      }
+    },
+    "editChoiceRequest" : {
+      "type" : "object",
+      "required" : [ "content", "isAnswer" ],
+      "properties" : {
+        "content" : {
+          "type" : "string"
+        },
+        "isAnswer" : {
+          "type" : "boolean"
+        }
+      },
+      "title" : "editChoiceRequest",
+      "example" : {
+        "content" : "ội dung phải chứa từ 10 kí tự trở lên",
+        "isAnswer" : true
+      }
+    },
+    "submitStudentAnswerRequest" : {
+      "type" : "object",
+      "required" : [ "choice" ],
+      "properties" : {
+        "choice" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "title" : "submitStudentAnswerRequest",
+      "example" : {
+        "choice" : 1
+      }
+    }
+  }
+}
